@@ -8,6 +8,7 @@ import java.time.Duration;
 public abstract class HasMinChangeoverTime extends HasId {
 
 	private Duration minChangeoverTime;
+
 	@Basic
 	public Duration getMinChangeoverTime() {
 		return this.minChangeoverTime;
