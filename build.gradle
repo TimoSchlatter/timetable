@@ -27,6 +27,7 @@ dependencies {
     compile 'com.h2database:h2:1.4.196'
     compile 'org.slf4j:slf4j-api:1.8.0-alpha2'
     compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'ch.qos.logback:logback-core:1.2.3'
     compile 'org.springframework.boot:spring-boot-devtools'
     compile 'org.springframework.boot:spring-boot:1.5.8.RELEASE'
 }
