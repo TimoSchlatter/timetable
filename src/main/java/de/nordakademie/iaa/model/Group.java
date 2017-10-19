@@ -1,10 +1,11 @@
 package de.nordakademie.iaa.model;
 
-import javax.persistence.Basic;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
+import java.io.Serializable;
 
-@MappedSuperclass
-public abstract class Group extends HasMinChangeoverTime {
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Group extends HasMinChangeoverTime implements Serializable {
 
 	private int numberOfStudents;
 
