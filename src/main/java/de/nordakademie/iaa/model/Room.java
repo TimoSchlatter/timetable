@@ -6,9 +6,10 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.io.Serializable;
 
 @Entity (name = "Room")
-public class Room extends HasMinChangeoverTime {
+public class Room extends HasMinChangeoverTime implements Serializable {
 
 	private String building;
 	private int maxSeats;
