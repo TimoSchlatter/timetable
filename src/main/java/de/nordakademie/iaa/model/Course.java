@@ -4,9 +4,10 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import java.io.Serializable;
 
 @Entity
-public class Course extends HasId {
+public class Course extends HasId implements Serializable {
 
 	private char field;
 	private int number;
