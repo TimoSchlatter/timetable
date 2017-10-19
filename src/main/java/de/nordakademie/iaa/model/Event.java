@@ -4,6 +4,8 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -18,6 +20,7 @@ public class Event extends HasId implements Serializable {
 	private Set<Room> rooms;
 	private Subject subject;
 	@NaturalId
+	@ManyToMany
 	public Set<Docent> getDocents() {
 		return docents;
 	}
@@ -26,6 +29,7 @@ public class Event extends HasId implements Serializable {
 		this.docents = docents;
 	}
 	@NaturalId
+	@ManyToOne
 	public Group getGroup() {
 		return group;
 	}
@@ -50,6 +54,7 @@ public class Event extends HasId implements Serializable {
 		this.endTime = endTime;
 	}
 	@NaturalId
+	@ManyToMany
 	public Set<Room> getRooms() {
 		return rooms;
 	}
@@ -58,6 +63,7 @@ public class Event extends HasId implements Serializable {
 		this.rooms = rooms;
 	}
 	@Basic
+	@ManyToOne
 	public Subject getSubject() {
 		return subject;
 	}
