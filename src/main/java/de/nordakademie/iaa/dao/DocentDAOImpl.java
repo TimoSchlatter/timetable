@@ -2,14 +2,13 @@ package de.nordakademie.iaa.dao;
 
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.model.Docent;
-import de.nordakademie.iaa.model.Room;
 
 import java.util.List;
 
 /**
  * Created by arvid on 19.10.17.
  */
-public class DocentDAOImpl extends AbstractDAO <Docent> implements IDocentDAO {
+public class DocentDAOImpl extends DAO<Docent> implements DocentDAO {
 
     public DocentDAOImpl() {
         setClass(Docent.class);

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by arvid on 18.10.17.
  */
-public abstract class AbstractDAO < T extends Serializable> {
+public abstract class DAO< T extends Serializable> implements Operations<T> {
 
         private Class< T > aClass;
 

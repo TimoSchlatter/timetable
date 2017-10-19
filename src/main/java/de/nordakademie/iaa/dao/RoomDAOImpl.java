@@ -2,16 +2,13 @@ package de.nordakademie.iaa.dao;
 
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.model.RoomType;
-import org.hibernate.exception.ConstraintViolationException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
  * Created by arvid on 18.10.17.
  */
-public class RoomDAOImpl extends AbstractDAO <Room> implements IRoomDAO {
+public class RoomDAOImpl extends DAO<Room> implements RoomDAO {
 
     public RoomDAOImpl() {
         setClass(Room.class);
