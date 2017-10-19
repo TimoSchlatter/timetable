@@ -33,6 +33,7 @@ public abstract class AbstractDAO < T extends Serializable> {
         public void delete( final T entity ){
             entityManager.remove(entity);
         }
+
         public void deleteById( final long id ){
             final T entity = findOne( id);
             delete( entity );

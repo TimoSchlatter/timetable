@@ -1,6 +1,7 @@
 package de.nordakademie.iaa.dao;
 
 import de.nordakademie.iaa.model.Room;
+import de.nordakademie.iaa.model.RoomType;
 import org.hibernate.exception.ConstraintViolationException;
 
 import javax.persistence.EntityManager;
@@ -27,5 +28,14 @@ public class RoomDAOImpl extends AbstractDAO <Room> implements IRoomDAO {
             return null;
         }
         else return rooms.get(0);
+    }
+
+    @Override
+    public List<Room> findRoomsByType(RoomType type) {
+        List<Room> rooms = entityManager.createQuery(
+                "select r from Room r where r.roomType = :type ")
+                .setParameter("type", type)
+                .getResultList();
+        return rooms;
     }
 }
