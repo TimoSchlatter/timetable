@@ -5,10 +5,11 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.Set;
 
-@Entity
-public class Docent extends HasMinChangeoverTime {
+@Entity(name = "Docent")
+public class Docent extends HasMinChangeoverTime implements Serializable{
 
 	private String email;
 	private String forename;

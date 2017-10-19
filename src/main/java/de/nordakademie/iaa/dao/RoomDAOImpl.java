@@ -16,7 +16,7 @@ public class RoomDAOImpl extends AbstractDAO <Room> implements IRoomDAO {
         setClass(Room.class);
     }
 
-    public Room findRoomByNaturalId(String building, int number) {
+    public Room findRoomByBuildingAndNumber(String building, int number) {
         List<Room> rooms = entityManager.createQuery(
                 "select r from Room r where r.building = :building " +
                         "and r.room_number = :room_number")

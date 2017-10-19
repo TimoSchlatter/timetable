@@ -7,5 +7,5 @@ import de.nordakademie.iaa.model.Room;
  */
 
 public interface IRoomDAO {
-    Room findRoomByNaturalId(String building, int number);
+    Room findRoomByBuildingAndNumber(String building, int number);
 }
