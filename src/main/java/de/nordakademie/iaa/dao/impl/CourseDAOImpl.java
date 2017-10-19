@@ -1,7 +1,8 @@
-package de.nordakademie.iaa.dao;
+package de.nordakademie.iaa.dao.impl;
 
+import de.nordakademie.iaa.dao.CourseDAO;
+import de.nordakademie.iaa.dao.common.DAO;
 import de.nordakademie.iaa.model.Course;
-import de.nordakademie.iaa.model.Room;
 
 import java.util.List;
 

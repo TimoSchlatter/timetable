@@ -1,5 +1,7 @@
-package de.nordakademie.iaa.dao;
+package de.nordakademie.iaa.dao.impl;
 
+import de.nordakademie.iaa.dao.common.DAO;
+import de.nordakademie.iaa.dao.RoomDAO;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.model.RoomType;
 

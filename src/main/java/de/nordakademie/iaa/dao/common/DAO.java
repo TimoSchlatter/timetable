@@ -1,4 +1,4 @@
-package de.nordakademie.iaa.dao;
+package de.nordakademie.iaa.dao.common;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

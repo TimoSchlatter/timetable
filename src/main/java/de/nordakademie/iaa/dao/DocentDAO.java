@@ -1,5 +1,6 @@
 package de.nordakademie.iaa.dao;
 
+import de.nordakademie.iaa.dao.common.Operations;
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.model.Docent;
 
