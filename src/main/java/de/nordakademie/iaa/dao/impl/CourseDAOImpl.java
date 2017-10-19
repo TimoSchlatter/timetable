@@ -1,7 +1,8 @@
-package de.nordakademie.iaa.dao;
+package de.nordakademie.iaa.dao.impl;
 
+import de.nordakademie.iaa.dao.CourseDAO;
+import de.nordakademie.iaa.dao.common.DAO;
 import de.nordakademie.iaa.model.Course;
-import de.nordakademie.iaa.model.Room;
 
 import java.util.List;
 
@@ -9,6 +10,10 @@ import java.util.List;
  * Created by arvid on 19.10.17.
  */
 public class CourseDAOImpl extends DAO<Course> implements CourseDAO {
+
+    public CourseDAOImpl() {
+        setClass(Course.class);
+    }
     @Override
     public Course findCourseByFieldAndNumber(String field, int number) {
         List<Course> courses = entityManager.createQuery(
