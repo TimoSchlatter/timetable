@@ -4,12 +4,14 @@ import de.nordakademie.iaa.dao.common.DAO;
 import de.nordakademie.iaa.dao.DocentDAO;
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.model.Docent;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by arvid on 19.10.17.
  */
+@Repository
 public class DocentDAOImpl extends DAO<Docent> implements DocentDAO {
 
     public DocentDAOImpl() {

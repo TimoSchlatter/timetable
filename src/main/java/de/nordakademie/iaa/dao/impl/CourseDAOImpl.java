@@ -3,12 +3,14 @@ package de.nordakademie.iaa.dao.impl;
 import de.nordakademie.iaa.dao.CourseDAO;
 import de.nordakademie.iaa.dao.common.DAO;
 import de.nordakademie.iaa.model.Course;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by arvid on 19.10.17.
  */
+@Repository
 public class CourseDAOImpl extends DAO<Course> implements CourseDAO {
 
     public CourseDAOImpl() {
