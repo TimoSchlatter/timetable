@@ -18,5 +18,4 @@ public class Century extends Group {
 	public int getNumberOfStudents() {
 		return numberOfStudents;
 	}
-
 }

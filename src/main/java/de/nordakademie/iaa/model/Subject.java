@@ -1,6 +1,12 @@
 package de.nordakademie.iaa.model;
 
-public abstract class Subject extends HasId {
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Subject extends HasMinChangeoverTime {
 
 	public abstract String getTitle();
 
