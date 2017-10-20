@@ -1,31 +1,41 @@
 package de.nordakademie.iaa.model;
 
-import org.hibernate.annotations.NaturalId;
-
+import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Maniple extends Group {
 
-	private Cohort cohort;
-	private char field;
+	private List<Century> centuries = new ArrayList<>();
 
-	@NaturalId
-	@ManyToOne
-	public Cohort getCohort() {
-		return cohort;
+    public Maniple(String name) {
+        super(name);
+    }
+
+	@Basic
+	@OneToMany
+	public List<Century> getCenturies() {
+		return centuries;
 	}
 
-	public void setCohort(Cohort cohort) {
-		this.cohort = cohort;
-	}
-	@NaturalId
-	public char getField() {
-		return field;
+	@Override
+	public int getNumberOfStudents() {
+		if(centuries.isEmpty()) {
+			return 0;
+		}
+		else {
+			return centuries.stream().mapToInt(Century::getNumberOfStudents).sum();
+		}
 	}
 
-	public void setField(char field) {
-		this.field = field;
+	public void addCentury(char name, int numberOfStudents) {
+		centuries.add(new Century(this.getName() + name, numberOfStudents));
+	}
+
+	public void removeCentury(Century century) {
+		centuries.remove(century);
 	}
 }

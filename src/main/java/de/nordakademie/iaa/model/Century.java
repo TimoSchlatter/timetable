@@ -1,33 +1,22 @@
 package de.nordakademie.iaa.model;
 
-import org.hibernate.annotations.NaturalId;
-
+import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Century extends Group {
 
+	private int numberOfStudents;
 
-	private char name;
+    public Century(String name, int numberOfStudents) {
+        super(name);
+		this.numberOfStudents = numberOfStudents;
+    }
 
-	private Maniple maniple;
-
-	@NaturalId
-	@ManyToOne
-	public Maniple getManiple() {
-		return maniple;
+	@Override
+	@Basic
+	public int getNumberOfStudents() {
+		return numberOfStudents;
 	}
 
-	public void setManiple(Maniple maniple) {
-		this.maniple = maniple;
-	}
-	@NaturalId
-	public char getName() {
-		return name;
-	}
-
-	public void setName(char name) {
-		this.name = name;
-	}
 }

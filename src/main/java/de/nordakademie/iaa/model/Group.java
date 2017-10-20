@@ -1,5 +1,7 @@
 package de.nordakademie.iaa.model;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -7,14 +9,16 @@ import java.io.Serializable;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Group extends HasMinChangeoverTime implements Serializable {
 
-	private int numberOfStudents;
+	private String name;
 
-	@Basic
-	public int getNumberOfStudents() {
-		return numberOfStudents;
+	public Group(String name) {
+		this.name = name;
 	}
 
-	public void setNumberOfStudents(int numberOfStudents) {
-		this.numberOfStudents = numberOfStudents;
+	@NaturalId
+	public String getName() {
+		return name;
 	}
+
+	public abstract int getNumberOfStudents();
 }

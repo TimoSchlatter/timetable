@@ -1,20 +1,41 @@
 package de.nordakademie.iaa.model;
 
-import org.hibernate.annotations.NaturalId;
-
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Cohort extends Group {
 
-	private int year;
+	private List<Maniple> maniples = new ArrayList<>();
 
-	@NaturalId
-	public int getYear() {
-		return year;
+	public Cohort(String name) {
+		super(name);
 	}
 
-	public void setYear(int year) {
-		this.year = year;
+	@Basic
+	@OneToMany
+	public List<Maniple> getManiples() {
+		return maniples;
+	}
+
+	@Override
+	public int getNumberOfStudents() {
+		if(maniples.isEmpty()) {
+			return 0;
+		}
+		else {
+			return maniples.stream().mapToInt(Maniple::getNumberOfStudents).sum();
+		}
+	}
+
+	public void addManiple(char name) {
+		maniples.add(new Maniple(name + this.getName()));
+	}
+
+	public void removeManiple(Maniple maniple) {
+		maniples.remove(maniple);
 	}
 }
