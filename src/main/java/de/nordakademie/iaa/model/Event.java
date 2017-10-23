@@ -2,12 +2,10 @@ package de.nordakademie.iaa.model;
 
 import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
@@ -15,14 +13,43 @@ public class Event extends HasId implements Serializable {
 
 	private Set<Docent> docents;
 	private Group group;
-	private LocalDateTime startTime;
-	private LocalDateTime endTime;
+	private LocalDate date;
+	private LocalTime startTime;
+	private LocalTime endTime;
 	private Set<Room> rooms;
 	private Subject subject;
 	@NaturalId
 	@ManyToMany
 	public Set<Docent> getDocents() {
 		return docents;
+	}
+
+	@NaturalId
+	@Temporal(TemporalType.DATE)
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+	@NaturalId
+	@Temporal(TemporalType.TIME)
+	public LocalTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(LocalTime startTime) {
+		this.startTime = startTime;
+	}
+	@NaturalId
+	@Temporal(TemporalType.TIME)
+	public LocalTime getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = endTime;
 	}
 
 	public void setDocents(Set<Docent> docents) {
@@ -37,22 +64,7 @@ public class Event extends HasId implements Serializable {
 	public void setGroup(Group group) {
 		this.group = group;
 	}
-	@NaturalId
-	public LocalDateTime getStartTime() {
-		return startTime;
-	}
 
-	public void setStartTime(LocalDateTime startTime) {
-		this.startTime = startTime;
-	}
-	@NaturalId
-	public LocalDateTime getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(LocalDateTime endTime) {
-		this.endTime = endTime;
-	}
 	@NaturalId
 	@ManyToMany
 	public Set<Room> getRooms() {
