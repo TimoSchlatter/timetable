@@ -6,8 +6,14 @@ import javax.persistence.Entity;
 @Entity
 public class Seminar extends Subject {
 
-	private String title;
 	private int maxNumberOfParticipants;
+
+	public Seminar() {}
+
+	public Seminar(int maxNumberOfParticipants, String title) {
+		super(title);
+		this.maxNumberOfParticipants = maxNumberOfParticipants;
+	}
 
 	@Basic
 	public int getMaxNumberOfParticipants() {
@@ -20,7 +26,7 @@ public class Seminar extends Subject {
 
 	@Override
 	public String getTitle() {
-		return null;
+		return title;
 	}
 
 	public void setTitle(String title) {

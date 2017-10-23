@@ -19,6 +19,18 @@ public class Docent extends HasMinChangeoverTime implements Serializable{
 	private Set<Course> courses;
 	private boolean isPermanentlyEmployed;
 
+	public Docent() {}
+
+	public Docent(String email, String forename, String surname, String phoneNumber, String title, Set<Course> courses, boolean isPermanentlyEmployed) {
+		this.email = email;
+		this.forename = forename;
+		this.surname = surname;
+		this.phoneNumber = phoneNumber;
+		this.title = title;
+		this.courses = courses;
+		this.isPermanentlyEmployed = isPermanentlyEmployed;
+	}
+
 	@Basic
 	public String getEmail() {
 		return email;

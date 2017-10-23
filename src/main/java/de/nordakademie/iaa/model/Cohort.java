@@ -11,6 +11,8 @@ public class Cohort extends Group {
 
 	private List<Maniple> maniples = new ArrayList<>();
 
+	public Cohort() {}
+
 	public Cohort(String name) {
 		super(name);
 	}

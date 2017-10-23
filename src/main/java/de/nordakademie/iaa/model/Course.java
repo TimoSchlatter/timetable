@@ -13,6 +13,8 @@ public class Course extends HasId implements Serializable {
 	private int number;
 	private String title;
 
+	public Course() {}
+
 	@NaturalId
 	public char getField() {
 		return field;

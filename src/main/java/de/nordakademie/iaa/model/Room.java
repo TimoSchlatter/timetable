@@ -16,6 +16,15 @@ public class Room extends HasMinChangeoverTime implements Serializable {
 	private int number;
 	private RoomType roomType;
 
+	public Room() {}
+
+	public Room(String building, int maxSeats, int number, RoomType roomType) {
+		this.building = building;
+		this.maxSeats = maxSeats;
+		this.number = number;
+		this.roomType = roomType;
+	}
+
 	@NaturalId
 	public String getBuilding() {
 		return building;

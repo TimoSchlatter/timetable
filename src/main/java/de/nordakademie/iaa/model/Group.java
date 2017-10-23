@@ -11,6 +11,8 @@ public abstract class Group extends HasMinChangeoverTime implements Serializable
 
 	private String name;
 
+	public Group() {}
+
 	public Group(String name) {
 		this.name = name;
 	}

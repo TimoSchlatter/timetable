@@ -11,7 +11,9 @@ public class Maniple extends Group {
 
 	private List<Century> centuries = new ArrayList<>();
 
-    public Maniple(String name) {
+	public Maniple() {}
+
+	public Maniple(String name) {
         super(name);
     }
 

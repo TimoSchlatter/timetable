@@ -8,7 +8,9 @@ public class Century extends Group {
 
 	private int numberOfStudents;
 
-    public Century(String name, int numberOfStudents) {
+	public Century() {}
+
+	public Century(String name, int numberOfStudents) {
         super(name);
 		this.numberOfStudents = numberOfStudents;
     }

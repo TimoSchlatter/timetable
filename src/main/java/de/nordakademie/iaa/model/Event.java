@@ -18,6 +18,19 @@ public class Event extends HasId implements Serializable {
 	private LocalTime endTime;
 	private Set<Room> rooms;
 	private Subject subject;
+
+	public Event() {}
+
+	public Event(Set<Docent> docents, Group group, LocalDate date, LocalTime startTime, LocalTime endTime, Set<Room> rooms, Subject subject) {
+		this.docents = docents;
+		this.group = group;
+		this.date = date;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.rooms = rooms;
+		this.subject = subject;
+	}
+
 	@NaturalId
 	@ManyToMany
 	public Set<Docent> getDocents() {
@@ -52,6 +65,7 @@ public class Event extends HasId implements Serializable {
 	public void setDocents(Set<Docent> docents) {
 		this.docents = docents;
 	}
+
 	@NaturalId
 	@ManyToOne
 	public Group getGroup() {
@@ -71,7 +85,7 @@ public class Event extends HasId implements Serializable {
 	public void setRooms(Set<Room> rooms) {
 		this.rooms = rooms;
 	}
-	@Basic
+
 	@ManyToOne
 	public Subject getSubject() {
 		return subject;
