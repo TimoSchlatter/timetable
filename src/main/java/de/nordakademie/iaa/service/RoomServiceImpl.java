@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.service;
 
-import de.nordakademie.iaa.dao.Room2DAO;
 import de.nordakademie.iaa.dao.RoomDAO;
 import de.nordakademie.iaa.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import java.util.List;
 public class RoomServiceImpl implements RoomService {
 
     @Autowired
-    private Room2DAO roomDAO;
+    private RoomDAO roomDAO;
 
     @Override
     public void saveRoom(Room room) {

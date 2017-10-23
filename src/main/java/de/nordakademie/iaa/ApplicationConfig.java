@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,6 +19,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+import static org.springframework.orm.jpa.vendor.Database.H2;
+
 @ComponentScan
 @Configuration
 @EnableAutoConfiguration
@@ -28,9 +31,20 @@ public class ApplicationConfig {
 
     @Bean
     public DataSource getDataSource() {
-        DataSource dataSource = DataSourceBuilder.create().build();
-        return dataSource;
+        return DataSourceBuilder.create()
+                .username("sa")
+                .password("")
+                .url("jdbc:h2:~/nak;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE")
+                .driverClassName("org.h2.Driver")
+                .build();
     }
+
+//    @Bean
+//    @ConfigurationProperties("spring.datasource")
+//    public DataSource getDataSource() {
+//        DataSource dataSource = DataSourceBuilder.create().build();
+//        return dataSource;
+//    }
 
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
@@ -40,6 +54,7 @@ public class ApplicationConfig {
         entityManagerFactoryBean.setPackagesToScan("de.nordakademie.iaa.model");
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setDatabasePlatform("H2");
+        adapter.setDatabase(H2);
         entityManagerFactoryBean.setJpaVendorAdapter(adapter);
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
