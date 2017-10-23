@@ -43,7 +43,6 @@ public class Room extends HasMinChangeoverTime implements Serializable {
 		this.number = number;
 	}
 
-	@Basic
 	@Enumerated(EnumType.STRING)
 	public RoomType getRoomType() {
 		return roomType;
