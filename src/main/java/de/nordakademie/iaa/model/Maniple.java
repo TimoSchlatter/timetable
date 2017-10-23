@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class Maniple extends Group {
 
-	private List<Century> centuries = new ArrayList<>();
+    private List<Century> centuries = new ArrayList<>();
 
 	public Maniple() {}
 
