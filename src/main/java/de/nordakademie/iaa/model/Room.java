@@ -60,4 +60,23 @@ public class Room extends HasMinChangeoverTime implements Serializable {
 	public void setRoomType(RoomType roomType) {
 		this.roomType = roomType;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Room room = (Room) o;
+
+		if (number != room.number) return false;
+		return building != null ? building.equals(room.building) : room.building == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = building != null ? building.hashCode() : 0;
+		result = 31 * result + number;
+		return result;
+	}
 }

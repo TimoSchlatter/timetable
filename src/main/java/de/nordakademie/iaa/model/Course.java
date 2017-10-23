@@ -39,4 +39,23 @@ public class Course extends HasId implements Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Course course = (Course) o;
+
+		if (field != course.field) return false;
+		return number == course.number;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = (int) field;
+		result = 31 * result + number;
+		return result;
+	}
 }

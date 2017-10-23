@@ -88,4 +88,23 @@ public class Docent extends HasMinChangeoverTime implements Serializable{
 	public void setPermanentlyEmployed(boolean permanentlyEmployed) {
 		isPermanentlyEmployed = permanentlyEmployed;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Docent docent = (Docent) o;
+
+		if (forename != null ? !forename.equals(docent.forename) : docent.forename != null) return false;
+		return surname != null ? surname.equals(docent.surname) : docent.surname == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = forename != null ? forename.hashCode() : 0;
+		result = 31 * result + (surname != null ? surname.hashCode() : 0);
+		return result;
+	}
 }

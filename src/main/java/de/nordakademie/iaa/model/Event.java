@@ -100,4 +100,30 @@ public class Event extends HasId implements Serializable {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Event event = (Event) o;
+
+		if (docents != null ? !docents.equals(event.docents) : event.docents != null) return false;
+		if (group != null ? !group.equals(event.group) : event.group != null) return false;
+		if (date != null ? !date.equals(event.date) : event.date != null) return false;
+		if (startTime != null ? !startTime.equals(event.startTime) : event.startTime != null) return false;
+		if (endTime != null ? !endTime.equals(event.endTime) : event.endTime != null) return false;
+		return rooms != null ? rooms.equals(event.rooms) : event.rooms == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = docents != null ? docents.hashCode() : 0;
+		result = 31 * result + (group != null ? group.hashCode() : 0);
+		result = 31 * result + (date != null ? date.hashCode() : 0);
+		result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
+		result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
+		result = 31 * result + (rooms != null ? rooms.hashCode() : 0);
+		return result;
+	}
 }

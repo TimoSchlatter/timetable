@@ -32,4 +32,6 @@ public class Seminar extends Subject {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+
 }

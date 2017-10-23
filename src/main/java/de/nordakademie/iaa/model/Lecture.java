@@ -1,6 +1,8 @@
 package de.nordakademie.iaa.model;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Lecture extends Subject {
@@ -13,8 +15,10 @@ public class Lecture extends Subject {
 	public Lecture(Course course, boolean isExam) {
 		this.course = course;
 		this.isExam = isExam;
+		this. title = course.getTitle();
 	}
 
+	@ManyToOne
 	public Course getCourse() {
 		return course;
 	}
@@ -23,6 +27,7 @@ public class Lecture extends Subject {
 		this.course = course;
 	}
 
+	@Basic
 	public boolean isExam() {
 		return isExam;
 	}
@@ -33,6 +38,6 @@ public class Lecture extends Subject {
 
 	@Override
 	public String getTitle() {
-		return null;
+		return title;
 	}
 }
