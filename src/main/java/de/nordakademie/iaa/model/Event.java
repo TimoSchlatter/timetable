@@ -25,7 +25,6 @@ public class Event extends HasId implements Serializable {
 	}
 
 	@NaturalId
-	@Temporal(TemporalType.DATE)
 	public LocalDate getDate() {
 		return date;
 	}
@@ -34,7 +33,6 @@ public class Event extends HasId implements Serializable {
 		this.date = date;
 	}
 	@NaturalId
-	@Temporal(TemporalType.TIME)
 	public LocalTime getStartTime() {
 		return startTime;
 	}
@@ -43,7 +41,6 @@ public class Event extends HasId implements Serializable {
 		this.startTime = startTime;
 	}
 	@NaturalId
-	@Temporal(TemporalType.TIME)
 	public LocalTime getEndTime() {
 		return endTime;
 	}
