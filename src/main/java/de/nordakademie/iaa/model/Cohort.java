@@ -31,6 +31,10 @@ public class Cohort extends Group {
 		}
 	}
 
+	public void setManiples(List<Maniple> maniples) {
+		this.maniples = maniples;
+	}
+
 	public void addManiple(char name) {
 		maniples.add(new Maniple(name + this.getName()));
 	}

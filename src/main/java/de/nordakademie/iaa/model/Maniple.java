@@ -31,6 +31,10 @@ public class Maniple extends Group {
 		}
 	}
 
+	public void setCenturies(List<Century> centuries) {
+		this.centuries = centuries;
+	}
+
 	public void addCentury(char name, int numberOfStudents) {
 		centuries.add(new Century(this.getName() + name, numberOfStudents));
 	}

@@ -14,8 +14,16 @@ public class Seminar extends Subject {
 		return maxNumberOfParticipants;
 	}
 
+	public void setMaxNumberOfParticipants(int maxNumberOfParticipants) {
+		this.maxNumberOfParticipants = maxNumberOfParticipants;
+	}
+
 	@Override
 	public String getTitle() {
 		return null;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }

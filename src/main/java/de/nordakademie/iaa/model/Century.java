@@ -13,6 +13,10 @@ public class Century extends Group {
 		this.numberOfStudents = numberOfStudents;
     }
 
+	public void setNumberOfStudents(int numberOfStudents) {
+		this.numberOfStudents = numberOfStudents;
+	}
+
 	@Override
 	@Basic
 	public int getNumberOfStudents() {

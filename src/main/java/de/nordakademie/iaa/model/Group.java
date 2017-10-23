@@ -15,6 +15,10 @@ public abstract class Group extends HasMinChangeoverTime implements Serializable
 		this.name = name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@NaturalId
 	public String getName() {
 		return name;
