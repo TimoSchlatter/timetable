@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping("/rooms")
 public class RoomController {
 
-    @Autowired
     private RoomService roomService;
+
+    @Autowired
+    public RoomController(RoomService roomService) {
+        this.roomService = roomService;
+    }
 
     /**
      * List all rooms.
