@@ -4,7 +4,9 @@ import de.nordakademie.iaa.ApplicationConfig;
 import de.nordakademie.iaa.dao.DocentDAO;
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.model.Docent;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,6 +17,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.Duration;
 import java.util.HashSet;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by arvid on 24.10.17.
@@ -24,21 +30,29 @@ import java.util.HashSet;
 @Transactional
 public class DocentDAOTest {
 
-    @Autowired
+
     private DocentDAO docentDAO;
+
     @PersistenceContext
     private EntityManager entityManager;
 
     private Docent docent;
+    private Course course;
+
+    @Autowired
+    public void setDocentDAO(DocentDAO docentDAO) {
+        this.docentDAO = docentDAO;
+    }
 
     @Before
     public void setupData() {
         HashSet<Course> courses = new HashSet<>();
-        courses.add(new Course('I',123,"Test Driven Development"));
+        course = new Course('I',123,"Test Driven Development");
+        courses.add(course);
         docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, Duration.ofMinutes(20), courses);
         docentDAO.save(docent);
     }
-/**
+
     @After
     public void tearDown() {
         entityManager.clear();
@@ -47,22 +61,15 @@ public class DocentDAOTest {
     @Test
     public void testFindOne() {
         Docent docent = docentDAO.findOne(this.docent.getId());
-
-        assertEquals(this.docent.getMinChangeoverTime(), docent.get());
-        assertEquals(this.docent.getNumber(), docent.getNumber());
-        assertEquals(this.docent.getTitle(), docent.getTitle());
+        compareDocents(docent);
     }
 
     @Test
     public void testFindAll() {
         List<Docent> docents = docentDAO.findAll();
-
         assertEquals(1, docents.size());
-
         for (Docent docent : docents) {
-            assertEquals(this.docent.getField(), docent.getField());
-            assertEquals(this.docent.getNumber(), docent.getNumber());
-            assertEquals(this.docent.getTitle(), docent.getTitle());
+            compareDocents(docent);
         }
     }
 
@@ -70,7 +77,6 @@ public class DocentDAOTest {
     public void testDelete() {
         docentDAO.delete(this.docent);
         List<Docent> docents = docentDAO.findAll();
-
         assertTrue(docents.isEmpty());
 
     }
@@ -79,17 +85,31 @@ public class DocentDAOTest {
     public void testDeleteById() {
         docentDAO.deleteById(this.docent.getId());
         List<Docent> docents = docentDAO.findAll();
-
         assertTrue(docents.isEmpty());
     }
 
     @Test
-    public void testFindDocentByFieldAndNumber() {
-        Docent docent = docentDAO.findDocentByFieldAndNumber(this.docent.getField(), this.docent.getNumber());
+    public void testFindDocentByName() {
+        Docent docent = docentDAO.findDocentByName("John","Doe");
+        compareDocents(docent);
+    }
 
-        assertEquals(this.docent.getField(), docent.getField());
-        assertEquals(this.docent.getNumber(), docent.getNumber());
-        assertEquals(this.docent.getTitle(), docent.getTitle());
+    @Test
+    public void testFindDocentsByCourse() {
+        List<Docent> docents = docentDAO.findDocentsByCourse(course);
+        assertEquals(1, docents.size());
+        for (Docent docent : docents) {
+            compareDocents(docent);
+        }
+    }
+
+    @Test
+    public void testFindDocentsByEmploymentState() {
+        List<Docent> docents = docentDAO.findDocentsByEmploymentState(true);
+        assertEquals(1, docents.size());
+        for (Docent docent : docents) {
+            compareDocents(docent);
+        }
     }
 
     private void compareDocents(Docent docent) {
@@ -101,5 +121,4 @@ public class DocentDAOTest {
         assertEquals(this.docent.getPhoneNumber(), docent.getPhoneNumber());
         assertEquals(this.docent.getTitle(), docent.getTitle());
     }
-    **/
 }
