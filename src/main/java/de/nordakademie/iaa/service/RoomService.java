@@ -1,6 +1,7 @@
 package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Room;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public interface RoomService {
      * Deletes the room with the given id.
      *
      * @param id The identifier.
-     * @throws EntityNotFoundException if no room could be fount for the given id.
+     * @throws EntityNotFoundException if no room could be found for the given id.
      */
     void deleteRoom(Long id) throws EntityNotFoundException;
 }

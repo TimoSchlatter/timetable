@@ -1,7 +1,9 @@
-package de.nordakademie.iaa.service;
+package de.nordakademie.iaa.service.impl;
 
 import de.nordakademie.iaa.dao.CourseDAO;
 import de.nordakademie.iaa.model.Course;
+import de.nordakademie.iaa.service.CourseService;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

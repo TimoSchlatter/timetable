@@ -1,6 +1,7 @@
 package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Course;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public interface CourseService {
      * Deletes the course with the given id.
      *
      * @param id The identifier.
-     * @throws EntityNotFoundException if no course could be fount for the given id.
+     * @throws EntityNotFoundException if no course could be found for the given id.
      */
     void deleteCourse(Long id) throws EntityNotFoundException;
 }

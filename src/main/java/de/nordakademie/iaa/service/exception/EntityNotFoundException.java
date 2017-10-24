@@ -1,4 +1,4 @@
-package de.nordakademie.iaa.service;
+package de.nordakademie.iaa.service.exception;
 
 /**
  * Exception throws if a room could not be found.

@@ -2,7 +2,7 @@ package de.nordakademie.iaa.controller;
 
 
 import de.nordakademie.iaa.model.Room;
-import de.nordakademie.iaa.service.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
