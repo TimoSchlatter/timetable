@@ -34,7 +34,7 @@ public interface RoomService {
      * Deletes the room with the given id.
      *
      * @param id The identifier.
-     * @throws EntityNotFoundException if no room could be fount for the given id.
+     * @throws EntityNotFoundException if no room could be found for the given id.
      */
     void deleteRoom(Long id) throws EntityNotFoundException;
 }

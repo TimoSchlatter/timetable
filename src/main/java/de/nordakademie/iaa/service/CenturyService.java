@@ -33,7 +33,7 @@ public interface CenturyService {
      * Deletes the century with the given id.
      *
      * @param id The identifier.
-     * @throws EntityNotFoundException if no century could be fount for the given id.
+     * @throws EntityNotFoundException if no century could be found for the given id.
      */
     void deleteCentury(Long id) throws EntityNotFoundException;
 }

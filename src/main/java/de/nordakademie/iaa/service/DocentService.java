@@ -33,7 +33,7 @@ public interface DocentService {
      * Deletes the docent with the given id.
      *
      * @param id The identifier.
-     * @throws EntityNotFoundException if no docent could be fount for the given id.
+     * @throws EntityNotFoundException if no docent could be found for the given id.
      */
     void deleteDocent(Long id) throws EntityNotFoundException;
 }

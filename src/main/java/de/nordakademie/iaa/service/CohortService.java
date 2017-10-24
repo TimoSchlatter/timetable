@@ -33,7 +33,7 @@ public interface CohortService {
      * Deletes the cohort with the given id.
      *
      * @param id The identifier.
-     * @throws EntityNotFoundException if no cohort could be fount for the given id.
+     * @throws EntityNotFoundException if no cohort could be found for the given id.
      */
     void deleteCohort(Long id) throws EntityNotFoundException;
 }
