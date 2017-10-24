@@ -19,6 +19,10 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Created by arvid on 24.10.17.
+ */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { ApplicationConfig.class})
 @Transactional
