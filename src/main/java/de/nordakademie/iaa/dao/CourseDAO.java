@@ -8,5 +8,5 @@ import de.nordakademie.iaa.model.Course;
  */
 public interface CourseDAO extends Operations<Course> {
 
-    Course findCourseByFieldAndNumber(String field, int number);
+    Course findCourseByFieldAndNumber(char field, int number);
 }

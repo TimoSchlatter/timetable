@@ -17,7 +17,7 @@ public class CourseDAOImpl extends DAO<Course> implements CourseDAO {
         setClass(Course.class);
     }
     @Override
-    public Course findCourseByFieldAndNumber(String field, int number) {
+    public Course findCourseByFieldAndNumber(char field, int number) {
         List<Course> courses = entityManager.createQuery(
                 "select c from Course c where c.field = :field " +
                         "and c.number = :number")

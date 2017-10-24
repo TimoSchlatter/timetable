@@ -15,6 +15,12 @@ public class Course extends HasId implements Serializable {
 
 	public Course() {}
 
+	public Course(char field, int number, String title) {
+		this.field = field;
+		this.number = number;
+		this.title = title;
+	}
+
 	@NaturalId
 	public char getField() {
 		return field;
