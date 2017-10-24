@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.io.Serializable;
+import java.time.Duration;
 
 @Entity
 public class Room extends HasMinChangeoverTime implements Serializable {
@@ -18,7 +19,8 @@ public class Room extends HasMinChangeoverTime implements Serializable {
 
 	public Room() {}
 
-	public Room(String building, int maxSeats, int number, RoomType roomType) {
+	public Room(Duration minChangeoverTime, String building, int maxSeats, int number, RoomType roomType) {
+		super(minChangeoverTime);
 		this.building = building;
 		this.maxSeats = maxSeats;
 		this.number = number;
