@@ -7,6 +7,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.time.Duration;
 
 @Entity
 @Table(name = "group_table")
@@ -17,7 +18,8 @@ public abstract class Group extends HasMinChangeoverTime implements Serializable
 
     public Group() {}
 
-    public Group(String name) {
+    public Group(String name, Duration minChangeoverTime) {
+        super(minChangeoverTime);
         this.name = name;
     }
 
