@@ -24,7 +24,7 @@ public class Maniple extends Group {
 	}
 
 	@Override
-	public int getNumberOfStudents() {
+	public int calculateNumberOfStudents() {
 		if(centuries.isEmpty()) {
 			return 0;
 		}

@@ -24,12 +24,12 @@ public class Cohort extends Group {
 	}
 
 	@Override
-	public int getNumberOfStudents() {
+	public int calculateNumberOfStudents() {
 		if(maniples.isEmpty()) {
 			return 0;
 		}
 		else {
-			return maniples.stream().mapToInt(Maniple::getNumberOfStudents).sum();
+			return maniples.stream().mapToInt(Maniple::calculateNumberOfStudents).sum();
 		}
 	}
 

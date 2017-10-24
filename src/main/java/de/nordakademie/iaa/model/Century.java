@@ -19,11 +19,13 @@ public class Century extends Group {
 		this.numberOfStudents = numberOfStudents;
 	}
 
-	@Override
 	@Basic
 	public int getNumberOfStudents() {
 		return numberOfStudents;
 	}
 
-
+	@Override
+	public int calculateNumberOfStudents() {
+		return getNumberOfStudents();
+	}
 }

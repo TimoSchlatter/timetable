@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "group_table")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Group extends HasMinChangeoverTime implements Serializable {
 
@@ -17,16 +18,16 @@ public abstract class Group extends HasMinChangeoverTime implements Serializable
 		this.name = name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	@NaturalId
 	public String getName() {
 		return name;
 	}
 
-	public abstract int getNumberOfStudents();
+    public void setName(String name) {
+        this.name = name;
+    }
+
+	public abstract int calculateNumberOfStudents();
 
 	@Override
 	public boolean equals(Object o) {
