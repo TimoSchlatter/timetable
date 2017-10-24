@@ -9,6 +9,12 @@ public abstract class HasMinChangeoverTime extends HasId {
 
 	private Duration minChangeoverTime;
 
+	public HasMinChangeoverTime(Duration minChangeoverTime) {
+		this.minChangeoverTime = minChangeoverTime;
+	}
+
+	public HasMinChangeoverTime() {}
+
 	@Basic
 	public Duration getMinChangeoverTime() {
 		return this.minChangeoverTime;
