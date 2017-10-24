@@ -8,7 +8,7 @@
         </encoder>
     </appender>
 
-    <logger name="de.nordakademie.iaa.roommanagement" level="ERROR" additivity="false">
+    <logger name="de.nordakademie.iaa" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 
