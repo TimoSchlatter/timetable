@@ -6,22 +6,22 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 public class Event extends HasId implements Serializable {
 
-	private Set<Docent> docents;
+	private HashSet<Docent> docents;
 	private Group group;
 	private LocalDate date;
 	private LocalTime startTime;
 	private LocalTime endTime;
-	private Set<Room> rooms;
+	private HashSet<Room> rooms;
 	private Subject subject;
 
 	public Event() {}
 
-	public Event(Set<Docent> docents, Group group, LocalDate date, LocalTime startTime, LocalTime endTime, Set<Room> rooms, Subject subject) {
+	public Event(HashSet<Docent> docents, Group group, LocalDate date, LocalTime startTime, LocalTime endTime, HashSet<Room> rooms, Subject subject) {
 		this.docents = docents;
 		this.group = group;
 		this.date = date;
@@ -32,8 +32,7 @@ public class Event extends HasId implements Serializable {
 	}
 
 	@NaturalId
-	@ManyToMany
-	public Set<Docent> getDocents() {
+	public HashSet<Docent> getDocents() {
 		return docents;
 	}
 
@@ -62,7 +61,8 @@ public class Event extends HasId implements Serializable {
 		this.endTime = endTime;
 	}
 
-	public void setDocents(Set<Docent> docents) {
+	@ManyToMany
+	public void setDocents(HashSet<Docent> docents) {
 		this.docents = docents;
 	}
 
@@ -77,12 +77,12 @@ public class Event extends HasId implements Serializable {
 	}
 
 	@NaturalId
-	@ManyToMany
-	public Set<Room> getRooms() {
+	public HashSet<Room> getRooms() {
 		return rooms;
 	}
 
-	public void setRooms(Set<Room> rooms) {
+	@ManyToMany
+	public void setRooms(HashSet<Room> rooms) {
 		this.rooms = rooms;
 	}
 
