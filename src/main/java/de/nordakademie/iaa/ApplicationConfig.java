@@ -2,7 +2,6 @@ package de.nordakademie.iaa;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +23,13 @@ import static org.springframework.orm.jpa.vendor.Database.H2;
 public class ApplicationConfig {
 
     @Bean
-    @ConfigurationProperties("spring.datasource")
     public DataSource getDataSource() {
-        return DataSourceBuilder.create().build();
+        return DataSourceBuilder.create()
+                .username("sa")
+                .password("")
+                .url("jdbc:h2:~/nak;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE")
+                .driverClassName("org.h2.Driver")
+                .build();
     }
 
     @Bean(name = "entityManagerFactory")
