@@ -25,10 +25,10 @@ public class ApplicationConfig {
     @Bean
     public DataSource getDataSource() {
         return DataSourceBuilder.create()
+                .driverClassName("org.h2.Driver")
+                .url("jdbc:h2:~/nak;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE")
                 .username("sa")
                 .password("")
-                .url("jdbc:h2:~/nak;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE")
-                .driverClassName("org.h2.Driver")
                 .build();
     }
 
@@ -46,7 +46,7 @@ public class ApplicationConfig {
         properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         properties.put("hibernate.show_sql", false);
         properties.put("hibernate.format_sql", true);
-        properties.put("hibernate.hbm2ddl.auto", "create-drop");
+        properties.put("hibernate.ddl-auto", "create-drop");
         entityManagerFactoryBean.setJpaProperties(properties);
         return entityManagerFactoryBean;
     }
