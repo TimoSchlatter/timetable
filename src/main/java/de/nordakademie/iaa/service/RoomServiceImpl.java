@@ -12,8 +12,12 @@ import java.util.List;
 @Transactional
 public class RoomServiceImpl implements RoomService {
 
-    @Autowired
     private RoomDAO roomDAO;
+
+    @Autowired
+    public RoomServiceImpl(RoomDAO roomDAO) {
+        this.roomDAO = roomDAO;
+    }
 
     @Override
     public void saveRoom(Room room) {

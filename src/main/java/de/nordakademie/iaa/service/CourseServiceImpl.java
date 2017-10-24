@@ -12,8 +12,12 @@ import java.util.List;
 @Transactional
 public class CourseServiceImpl implements CourseService {
 
-    @Autowired
     private CourseDAO courseDAO;
+
+    @Autowired
+    public CourseServiceImpl(CourseDAO courseDAO) {
+        this.courseDAO = courseDAO;
+    }
 
     @Override
     public void saveCourse(Course course) {

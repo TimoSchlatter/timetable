@@ -12,8 +12,12 @@ import java.util.List;
 @Transactional
 public class DocentServiceImpl implements DocentService {
 
-    @Autowired
     private DocentDAO docentDAO;
+
+    @Autowired
+    public DocentServiceImpl(DocentDAO docentDAO) {
+        this.docentDAO = docentDAO;
+    }
 
     @Override
     public void saveDocent(Docent docent) {
