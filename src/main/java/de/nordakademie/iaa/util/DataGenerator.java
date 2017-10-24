@@ -1,21 +1,26 @@
 package de.nordakademie.iaa.util;
 
+import de.nordakademie.iaa.model.Docent;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.model.RoomType;
+import de.nordakademie.iaa.service.DocentService;
 import de.nordakademie.iaa.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.Duration;
+import java.util.HashSet;
 
 @Component
 public class DataGenerator {
 
+    private DocentService docentService;
     private RoomService roomService;
 
     @Autowired
-    public DataGenerator(RoomService roomService) {
+    public DataGenerator(DocentService docentService, RoomService roomService) {
+        this.docentService = docentService;
         this.roomService = roomService;
     }
 
@@ -45,4 +50,11 @@ public class DataGenerator {
         roomService.saveRoom(new Room(Duration.ofMinutes(30), "D", 20, "105", RoomType.LECTUREROOM));
     }
 
-}
+    private void createDocents() {
+        docentService.saveDocent(new Docent("stefan.reichert@nordakademie.de", "Stefan", "Reichert", "04074735656", "", true, Duration.ofMinutes(30), new HashSet<>()));
+        docentService.saveDocent(new Docent("uwe.neuhaus@nordakademie.de", "Uwe", "Neuhaus", "04074720656", "", true, Duration.ofMinutes(20), new HashSet<>()));
+        docentService.saveDocent(new Docent("almut.lewe@nordakademie.de", "Almut", "Lewe", "04012320656", "", false, Duration.ofMinutes(45), new HashSet<>()));
+        docentService.saveDocent(new Docent("joachim.sauer@nordakademie.de", "Joachim", "Sauer", "04018520656", "Prof. Dr.", true, Duration.ofMinutes(30), new HashSet<>()));
+    }
+
+    }
