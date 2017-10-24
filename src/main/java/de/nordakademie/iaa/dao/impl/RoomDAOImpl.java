@@ -18,7 +18,7 @@ public class RoomDAOImpl extends DAO<Room> implements RoomDAO {
         setClass(Room.class);
     }
 
-    public Room findRoomByBuildingAndNumber(String building, int number) {
+    public Room findRoomByBuildingAndNumber(String building, String number) {
         List<Room> rooms = entityManager.createQuery(
                 "select r from Room r where r.building = :building " +
                         "and r.number = :number")

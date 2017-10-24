@@ -12,73 +12,72 @@ import java.time.Duration;
 @Entity
 public class Room extends HasMinChangeoverTime implements Serializable {
 
-	private String building;
-	private int maxSeats;
-	private int number;
-	private RoomType roomType;
+    private String building;
+    private int maxSeats;
+    private String number;
+    private RoomType roomType;
 
-	public Room() {}
+    public Room() {}
 
-	public Room(Duration minChangeoverTime, String building, int maxSeats, int number, RoomType roomType) {
-		super(minChangeoverTime);
-		this.building = building;
-		this.maxSeats = maxSeats;
-		this.number = number;
-		this.roomType = roomType;
-	}
+    public Room(Duration minChangeoverTime, String building, int maxSeats, String number, RoomType roomType) {
+        super(minChangeoverTime);
+        this.building = building;
+        this.maxSeats = maxSeats;
+        this.number = number;
+        this.roomType = roomType;
+    }
 
-	@NaturalId
-	public String getBuilding() {
-		return building;
-	}
+    @NaturalId
+    public String getBuilding() {
+        return building;
+    }
 
-	public void setBuilding(String building) {
-		this.building = building;
-	}
+    public void setBuilding(String building) {
+        this.building = building;
+    }
 
-	@Basic
-	public int getMaxSeats() {
-		return maxSeats;
-	}
+    @Basic
+    public int getMaxSeats() {
+        return maxSeats;
+    }
 
-	public void setMaxSeats(int maxSeats) {
-		this.maxSeats = maxSeats;
-	}
+    public void setMaxSeats(int maxSeats) {
+        this.maxSeats = maxSeats;
+    }
 
-	@NaturalId
-	public int getNumber() {
-		return number;
-	}
+    @NaturalId
+    public String getNumber() {
+        return number;
+    }
 
-	public void setNumber(int number) {
-		this.number = number;
-	}
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
-	@Enumerated(EnumType.STRING)
-	public RoomType getRoomType() {
-		return roomType;
-	}
+    @Enumerated(EnumType.STRING)
+    public RoomType getRoomType() {
+        return roomType;
+    }
 
-	public void setRoomType(RoomType roomType) {
-		this.roomType = roomType;
-	}
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		Room room = (Room) o;
+        Room room = (Room) o;
 
-		if (number != room.number) return false;
-		return building != null ? building.equals(room.building) : room.building == null;
+        if (!building.equals(room.building)) return false;
+        return number.equals(room.number);
+    }
 
-	}
-
-	@Override
-	public int hashCode() {
-		int result = building != null ? building.hashCode() : 0;
-		result = 31 * result + number;
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int result = building.hashCode();
+        result = 31 * result + number.hashCode();
+        return result;
+    }
 }

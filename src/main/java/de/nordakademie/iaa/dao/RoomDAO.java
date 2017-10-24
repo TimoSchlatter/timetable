@@ -11,6 +11,6 @@ import java.util.List;
  */
 
 public interface RoomDAO extends Operations<Room> {
-    Room findRoomByBuildingAndNumber(String building, int number);
+    Room findRoomByBuildingAndNumber(String building, String number);
     List<Room> findRoomsByType(RoomType type);
 }
