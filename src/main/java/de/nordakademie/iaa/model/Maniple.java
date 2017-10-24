@@ -14,8 +14,13 @@ public class Maniple extends Group {
 
 	public Maniple() {}
 
-	public Maniple(String name, Duration duration) {
-        super(name,duration);
+	public Maniple(String name, Duration minChangeoverTime) {
+		super(name, minChangeoverTime);
+	}
+
+	public Maniple(String name, Duration duration, List<Century> centuries) {
+		super(name,duration);
+		this.centuries = centuries;
     }
 
 	@Basic
