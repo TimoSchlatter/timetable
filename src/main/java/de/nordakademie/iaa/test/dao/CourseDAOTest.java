@@ -29,13 +29,18 @@ import static org.junit.Assert.assertTrue;
 public class CourseDAOTest
 {
 
-    @Autowired
+
     private CourseDAO courseDAO;
+
     @PersistenceContext
     private EntityManager entityManager;
 
     private Course course;
 
+    @Autowired
+    public void setCourseDAO(CourseDAO courseDAO) {
+        this.courseDAO = courseDAO;
+    }
     @Before
     public void setupData() {
         course = new Course('I', 123, "Test Driven Development");
@@ -50,22 +55,15 @@ public class CourseDAOTest
     @Test
     public void testFindOne() {
         Course course = courseDAO.findOne(this.course.getId());
-
-        assertEquals(this.course.getField(), course.getField());
-        assertEquals(this.course.getNumber(), course.getNumber());
-        assertEquals(this.course.getTitle(), course.getTitle());
+        compareCourses(course);
     }
 
     @Test
     public void testFindAll() {
         List<Course> courses = courseDAO.findAll();
-
         assertEquals(1, courses.size());
-
         for(Course course : courses) {
-            assertEquals(this.course.getField(), course.getField());
-            assertEquals(this.course.getNumber(), course.getNumber());
-            assertEquals(this.course.getTitle(), course.getTitle());
+            compareCourses(course);
         }
     }
 
@@ -73,7 +71,6 @@ public class CourseDAOTest
     public void testDelete() {
         courseDAO.delete(this.course);
         List<Course> courses = courseDAO.findAll();
-
         assertTrue(courses.isEmpty());
 
     }
@@ -82,14 +79,16 @@ public class CourseDAOTest
     public void testDeleteById() {
         courseDAO.deleteById(this.course.getId());
         List<Course> courses = courseDAO.findAll();
-
         assertTrue(courses.isEmpty());
     }
 
     @Test
     public void testFindCourseByFieldAndNumber() {
         Course course = courseDAO.findCourseByFieldAndNumber(this.course.getField(), this.course.getNumber());
+        compareCourses(course);
+    }
 
+    private void compareCourses(Course course) {
         assertEquals(this.course.getField(), course.getField());
         assertEquals(this.course.getNumber(), course.getNumber());
         assertEquals(this.course.getTitle(), course.getTitle());

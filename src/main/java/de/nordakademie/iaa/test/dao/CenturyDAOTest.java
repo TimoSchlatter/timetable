@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.Duration;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -27,16 +28,22 @@ import static org.junit.Assert.assertTrue;
 @ContextConfiguration(classes = { ApplicationConfig.class})
 @Transactional
 public class CenturyDAOTest {
-    @Autowired
+    
     private CenturyDAO centuryDAO;
+    
     @PersistenceContext
     private EntityManager entityManager;
 
     private Century century;
 
+    @Autowired
+    public void setCenturyDAO(CenturyDAO centuryDAO) {
+        this.centuryDAO = centuryDAO;
+    }
+        
     @Before
     public void setupData() {
-        century = new Century("I14a",42);
+        century = new Century("I14a",42, Duration.ofMinutes(20));
         centuryDAO.save(century);
     }
 
@@ -48,20 +55,15 @@ public class CenturyDAOTest {
     @Test
     public void testFindOne() {
         Century century = centuryDAO.findOne(this.century.getId());
-
-        assertEquals(this.century.getNumberOfStudents(), century.getNumberOfStudents());
-        assertEquals(this.century.getName(), century.getName());
+        compareCentury(century);
     }
 
     @Test
     public void testFindAll() {
         List<Century> centurys = centuryDAO.findAll();
-
         assertEquals(1, centurys.size());
-
         for(Century century : centurys) {
-            assertEquals(this.century.getNumberOfStudents(), century.getNumberOfStudents());
-            assertEquals(this.century.getName(), century.getName());
+            compareCentury(century);
         }
     }
 
@@ -69,7 +71,6 @@ public class CenturyDAOTest {
     public void testDelete() {
         centuryDAO.delete(this.century);
         List<Century> centurys = centuryDAO.findAll();
-
         assertTrue(centurys.isEmpty());
 
     }
@@ -78,7 +79,12 @@ public class CenturyDAOTest {
     public void testDeleteById() {
         centuryDAO.deleteById(this.century.getId());
         List<Century> centurys = centuryDAO.findAll();
-
         assertTrue(centurys.isEmpty());
+    }
+
+    private void compareCentury(Century century) {
+        assertEquals(this.century.getNumberOfStudents(), century.getNumberOfStudents());
+        assertEquals(this.century.getName(), century.getName());
+        assertEquals(this.century.getMinChangeoverTime(), century.getMinChangeoverTime());
     }
 }

@@ -3,6 +3,7 @@ package de.nordakademie.iaa.model;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,8 @@ public class Maniple extends Group {
 
 	public Maniple() {}
 
-	public Maniple(String name) {
-        super(name);
+	public Maniple(String name, Duration duration) {
+        super(name,duration);
     }
 
 	@Basic
@@ -37,8 +38,8 @@ public class Maniple extends Group {
 		this.centuries = centuries;
 	}
 
-	public void addCentury(char name, int numberOfStudents) {
-		centuries.add(new Century(this.getName() + name, numberOfStudents));
+	public void addCentury(char name, int numberOfStudents, Duration duration) {
+		centuries.add(new Century(this.getName() + name, numberOfStudents, duration));
 	}
 
 	public void removeCentury(Century century) {
