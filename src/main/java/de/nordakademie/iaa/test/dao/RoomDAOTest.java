@@ -25,16 +25,21 @@ import static org.junit.Assert.assertTrue;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { ApplicationConfig.class})
+@ContextConfiguration(classes = {ApplicationConfig.class})
 @Transactional
 public class RoomDAOTest {
 
-    @Autowired
     private RoomDAO roomDAO;
+
     @PersistenceContext
     private EntityManager entityManager;
 
     private Room room;
+
+    @Autowired
+    public void setRoomDAO(RoomDAO roomDAO) {
+        this.roomDAO = roomDAO;
+    }
 
     @Before
     public void setupData() {
@@ -50,65 +55,47 @@ public class RoomDAOTest {
     @Test
     public void testFindOne() {
         Room room = roomDAO.findOne(this.room.getId());
-
-        assertEquals(this.room.getNumber(), room.getNumber());
-        assertEquals(this.room.getBuilding(), room.getBuilding());
-        assertEquals(this.room.getMaxSeats(), room.getMaxSeats());
-        assertEquals(this.room.getRoomType(), room.getRoomType());
+        compareRooms(room);
     }
 
     @Test
     public void testFindAll() {
         List<Room> rooms = roomDAO.findAll();
-
         assertEquals(1, rooms.size());
-
-        for (Room room : rooms) {
-            assertEquals(this.room.getNumber(), room.getNumber());
-            assertEquals(this.room.getBuilding(), room.getBuilding());
-            assertEquals(this.room.getMaxSeats(), room.getMaxSeats());
-            assertEquals(this.room.getRoomType(), room.getRoomType());
-        }
+        rooms.forEach(this::compareRooms);
     }
 
     @Test
     public void testDelete() {
         roomDAO.delete(this.room);
         List<Room> rooms = roomDAO.findAll();
-
         assertTrue(rooms.isEmpty());
-
     }
 
     @Test
     public void testDeleteById() {
         roomDAO.deleteById(this.room.getId());
         List<Room> rooms = roomDAO.findAll();
-
         assertTrue(rooms.isEmpty());
     }
 
     @Test
     public void testFindRoomByBuildingAndNumber() {
         Room room = roomDAO.findRoomByBuildingAndNumber(this.room.getBuilding(), this.room.getNumber());
-
-        assertEquals(this.room.getNumber(), room.getNumber());
-        assertEquals(this.room.getBuilding(), room.getBuilding());
-        assertEquals(this.room.getMaxSeats(), room.getMaxSeats());
-        assertEquals(this.room.getRoomType(), room.getRoomType());
+        compareRooms(room);
     }
 
     @Test
     public void testFindRoomsByType() {
         List<Room> rooms = roomDAO.findRoomsByType(this.room.getRoomType());
-
         assertEquals(1, rooms.size());
+        rooms.forEach(this::compareRooms);
+    }
 
-        for (Room room : rooms) {
-            assertEquals(this.room.getNumber(), room.getNumber());
-            assertEquals(this.room.getBuilding(), room.getBuilding());
-            assertEquals(this.room.getMaxSeats(), room.getMaxSeats());
-            assertEquals(this.room.getRoomType(), room.getRoomType());
-        }
+    private void compareRooms(Room room) {
+        assertEquals(this.room.getNumber(), room.getNumber());
+        assertEquals(this.room.getBuilding(), room.getBuilding());
+        assertEquals(this.room.getMaxSeats(), room.getMaxSeats());
+        assertEquals(this.room.getRoomType(), room.getRoomType());
     }
 }
