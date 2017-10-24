@@ -8,7 +8,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.io.Serializable;
 
-@Entity (name = "Room")
+@Entity
 public class Room extends HasMinChangeoverTime implements Serializable {
 
 	private String building;

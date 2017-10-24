@@ -8,7 +8,7 @@ import javax.persistence.ManyToMany;
 import java.io.Serializable;
 import java.util.HashSet;
 
-@Entity(name = "Docent")
+@Entity
 public class Docent extends HasMinChangeoverTime implements Serializable{
 
 	private String email;
