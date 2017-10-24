@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.Duration;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -43,7 +44,7 @@ public class RoomDAOTest {
 
     @Before
     public void setupData() {
-        room = new Room("T", 42, 123, RoomType.COMPUTERROOM);
+        room = new Room(Duration.ofMinutes(20),"A", 42, "101", RoomType.COMPUTERROOM);
         roomDAO.save(room);
     }
 
@@ -94,6 +95,7 @@ public class RoomDAOTest {
 
     private void compareRooms(Room room) {
         assertEquals(this.room.getNumber(), room.getNumber());
+        assertEquals(this.room.getMinChangeoverTime(), room.getMinChangeoverTime());
         assertEquals(this.room.getBuilding(), room.getBuilding());
         assertEquals(this.room.getMaxSeats(), room.getMaxSeats());
         assertEquals(this.room.getRoomType(), room.getRoomType());
