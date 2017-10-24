@@ -3,7 +3,7 @@ package de.nordakademie.iaa.controller;
 
 import de.nordakademie.iaa.model.Cohort;
 import de.nordakademie.iaa.service.CohortService;
-import de.nordakademie.iaa.service.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

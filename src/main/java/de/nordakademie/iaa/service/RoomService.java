@@ -1,6 +1,7 @@
 package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Room;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 
 import java.util.List;
 

@@ -1,7 +1,9 @@
-package de.nordakademie.iaa.service;
+package de.nordakademie.iaa.service.impl;
 
 import de.nordakademie.iaa.dao.CohortDAO;
 import de.nordakademie.iaa.model.Cohort;
+import de.nordakademie.iaa.service.CohortService;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

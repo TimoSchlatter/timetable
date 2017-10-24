@@ -1,7 +1,9 @@
-package de.nordakademie.iaa.service;
+package de.nordakademie.iaa.service.impl;
 
 import de.nordakademie.iaa.dao.CenturyDAO;
 import de.nordakademie.iaa.model.Century;
+import de.nordakademie.iaa.service.CenturyService;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,8 +2,8 @@ package de.nordakademie.iaa.controller;
 
 
 import de.nordakademie.iaa.model.Event;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.EventService;
-import de.nordakademie.iaa.service.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
