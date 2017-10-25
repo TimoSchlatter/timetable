@@ -10,6 +10,11 @@ public class Century extends Group {
 
 	public Century() {}
 
+	public Century(String name, int numberOfStudents) {
+		super(name);
+		this.numberOfStudents = numberOfStudents;
+	}
+
 	public Century(String name, int minChangeoverTime, int numberOfStudents) {
 		super(name, minChangeoverTime);
 		this.numberOfStudents = numberOfStudents;

@@ -12,6 +12,10 @@ public class Maniple extends Group {
 
 	public Maniple() {}
 
+	public Maniple(String name) {
+		super(name);
+	}
+
 	Maniple(String name, int minChangeoverTime) {
 		super(name, minChangeoverTime);
 	}
