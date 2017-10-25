@@ -52,7 +52,7 @@ public class ManipleDAOTest {
     @Before
     public void setupData() {
         List<Century> centuries = new ArrayList<>();
-        Century century = new Century("I14a",42, 20);
+        Century century = new Century("I14a",20, 42);
         centuryDAO.save(century);
         centuries.add(century);
         maniple = new Maniple("I14", 20,centuries);

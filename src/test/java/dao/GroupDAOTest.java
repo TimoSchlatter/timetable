@@ -43,7 +43,7 @@ public class GroupDAOTest {
 
     @Before
     public void setupData() {
-        group = new Century("I14a",42, 20);
+        group = new Century("I14a",20, 42);
         groupDAO.save(group);
     }
 
