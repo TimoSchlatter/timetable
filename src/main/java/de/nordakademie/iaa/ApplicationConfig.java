@@ -48,7 +48,7 @@ public class ApplicationConfig {
         properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         properties.put("hibernate.show_sql", false);
         properties.put("hibernate.format_sql", true);
-        properties.put("hibernate.ddl-auto", "create-drop");
+        properties.put("hibernate.hbm2ddl.auto", "create-drop");
         entityManagerFactory.setJpaProperties(properties);
         return entityManagerFactory;
     }
