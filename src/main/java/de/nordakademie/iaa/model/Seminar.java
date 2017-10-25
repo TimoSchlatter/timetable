@@ -2,9 +2,10 @@ package de.nordakademie.iaa.model;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import java.io.Serializable;
 
 @Entity
-public class Seminar extends Subject {
+public class Seminar extends Subject implements Serializable {
 
     private int maxNumberOfParticipants;
 
@@ -12,6 +13,11 @@ public class Seminar extends Subject {
 
     public Seminar(int maxNumberOfParticipants, String title) {
         super(title);
+        this.maxNumberOfParticipants = maxNumberOfParticipants;
+    }
+
+    public Seminar(int minChangeoverTime, String title, int maxNumberOfParticipants) {
+        super(minChangeoverTime, title);
         this.maxNumberOfParticipants = maxNumberOfParticipants;
     }
 

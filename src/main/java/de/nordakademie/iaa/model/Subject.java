@@ -18,6 +18,11 @@ public abstract class Subject extends HasMinChangeoverTime {
         this.title = title;
     }
 
+    public Subject(int minChangeoverTime, String title) {
+        super(minChangeoverTime);
+        this.title = title;
+    }
+
     @NaturalId
     public String getTitle() {
         return title;
