@@ -53,7 +53,7 @@ public class LectureDAOTest {
     public void setupData() {
         Course course = new Course('I', 123, "Test Driven Development");
         courseDAO.save(course);
-        lecture = new Lecture(20, "Test Vorlesung", course, false);
+        lecture = new Lecture(20, course, false);
         lectureDAO.save(lecture);
     }
 
