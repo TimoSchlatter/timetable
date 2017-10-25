@@ -78,11 +78,11 @@ public class Docent extends HasMinChangeoverTime implements Serializable {
         this.title = title;
     }
 
-    @ManyToMany
     public HashSet<Course> getCourses() {
         return courses;
     }
 
+    @ManyToMany
     public void setCourses(HashSet<Course> courses) {
         this.courses = courses;
     }
