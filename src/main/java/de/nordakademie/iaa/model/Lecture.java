@@ -3,9 +3,10 @@ package de.nordakademie.iaa.model;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 @Entity
-public class Lecture extends Subject {
+public class Lecture extends Subject implements Serializable {
 
     private Course course;
     private boolean isExam;
@@ -16,6 +17,12 @@ public class Lecture extends Subject {
         this.course = course;
         this.isExam = isExam;
         this.title = course.getTitle();
+    }
+
+    public Lecture(int minChangeoverTime, String title, Course course, boolean isExam) {
+        super(minChangeoverTime, title);
+        this.course = course;
+        this.isExam = isExam;
     }
 
     @ManyToOne
