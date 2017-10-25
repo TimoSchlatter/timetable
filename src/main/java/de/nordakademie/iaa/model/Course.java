@@ -73,12 +73,9 @@ public class Course extends HasId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Course course = (Course) o;
-
         if (field != course.field) return false;
         return number == course.number;
-
     }
 
     @Override
