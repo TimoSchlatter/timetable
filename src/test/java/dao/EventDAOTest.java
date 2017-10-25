@@ -1,10 +1,9 @@
 package dao;
 
 import de.nordakademie.iaa.ApplicationConfig;
-import de.nordakademie.iaa.dao.EventDAO;
+import de.nordakademie.iaa.dao.*;
 import de.nordakademie.iaa.model.Event;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,34 +20,74 @@ import javax.persistence.PersistenceContext;
 public class EventDAOTest {
 
     private EventDAO eventDAO;
+    private GroupDAO groupDAO;
+    private DocentDAO docentDAO;
+    private LectureDAO lectureDAO;
+    private RoomDAO roomDAO;
+    private CourseDAO courseDAO;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     private Event event;
-
+/**
     @Autowired
     public void setEventDAO(EventDAO eventDAO) {
         this.eventDAO = eventDAO;
     }
-/**
+
+    @Autowired
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
+    @Autowired
+    public void setDocentDAO(DocentDAO docentDAO) {
+        this.docentDAO = docentDAO;
+    }
+
+    @Autowired
+    public void setLectureDAO(LectureDAO lectureDAO) {
+        this.lectureDAO = lectureDAO;
+    }
+
+    @Autowired
+    public void setRoomDAO(RoomDAO roomDAO) {
+        this.roomDAO = roomDAO;
+    }
+
+    @Autowired
+    public void setCourseDAO(CourseDAO courseDAO) {
+        this.courseDAO = courseDAO;
+    }
+
     @Before
     public void setupData() {
         HashSet<Course> courses = new HashSet<>();
         Course course = new Course('I',123,"Test Driven Development");
+        courseDAO.save(course);
         courses.add(course);
 
-        Docent docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, Duration.ofMinutes(20), courses);
+        Docent docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20, courses);
+        docentDAO.save(docent);
         HashSet<Docent> docents = new HashSet<>();
         docents.add(docent);
 
-        Group group;
-        LocalDate date;
-        LocalTime startTime;
-        LocalTime endTime;
-        HashSet<Room> rooms;
-        Subject subject;
-        event = new Event("I14a",42, Duration.ofMinutes(20));
+        Group group = new Century("I14a",30,20);
+        groupDAO.save(group);
+
+        LocalDate date = LocalDate.of(2017,12,24);
+        LocalTime startTime = LocalTime.of(20,0);
+        LocalTime endTime = LocalTime.of(22,30);
+
+        HashSet<Room> rooms = new HashSet<>();
+        Room room = new Room(30,"X",45,"999",RoomType.LABORATORY);
+        roomDAO.save(room);
+        rooms.add(room);
+
+        Lecture lecture = new Lecture(5,"Kurze Methoden Teil I",course,false);
+        lectureDAO.save(lecture);
+        event = new Event(docents,group,date,startTime,endTime,rooms,lecture);
         eventDAO.save(event);
     }
 
@@ -88,10 +127,14 @@ public class EventDAOTest {
     }
 
     private void compareEvent(Event event) {
-        assertEquals(this.event.getNumberOfStudents(), event.getNumberOfStudents());
-        assertEquals(this.event.getName(), event.getName());
-        assertEquals(this.event.getMinChangeoverTime(), event.getMinChangeoverTime());
+        assertEquals(this.event.getDate(), event.getDate());
+        assertEquals(this.event.getDocents(), event.getDocents());
+        assertEquals(this.event.getEndTime(), event.getEndTime());
+        assertEquals(this.event.getStartTime(), event.getStartTime());
+        assertEquals(this.event.getGroup(), event.getGroup());
+        assertEquals(this.event.getSubject(), event.getSubject());
+        assertEquals(this.event.getRooms(), event.getRooms());
     }
-    **/
+**/
 }
 
