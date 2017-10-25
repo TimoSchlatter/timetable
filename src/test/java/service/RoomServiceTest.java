@@ -1,14 +1,27 @@
 package service;
 
 
+import de.nordakademie.iaa.dao.RoomDAO;
+import de.nordakademie.iaa.model.Room;
+import de.nordakademie.iaa.model.RoomType;
+import de.nordakademie.iaa.service.RoomService;
+import de.nordakademie.iaa.service.impl.RoomServiceImpl;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.internal.verification.VerificationModeFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class RoomServiceTest {
-/**
+
     @Autowired
     private RoomService roomService;
 
@@ -45,5 +58,5 @@ public class RoomServiceTest {
             return Mockito.mock(RoomDAO.class);
         }
     }
-    **/
+
 }
