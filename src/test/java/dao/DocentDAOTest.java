@@ -1,4 +1,4 @@
-package de.nordakademie.iaa.test.dao;
+package dao;
 
 import de.nordakademie.iaa.ApplicationConfig;
 import de.nordakademie.iaa.dao.DocentDAO;

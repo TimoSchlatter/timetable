@@ -1,10 +1,8 @@
-package de.nordakademie.iaa.test.dao;
+package dao;
 
 import de.nordakademie.iaa.ApplicationConfig;
 import de.nordakademie.iaa.dao.CourseDAO;
-import de.nordakademie.iaa.dao.LectureDAO;
 import de.nordakademie.iaa.model.Course;
-import de.nordakademie.iaa.model.Lecture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,39 +20,31 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 25.10.17.
+ * Created by arvid on 24.10.17.
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { ApplicationConfig.class})
 @Transactional
-public class LectureDAOTest {
+public class CourseDAOTest
+{
 
 
-    private LectureDAO lectureDAO;
     private CourseDAO courseDAO;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    private Lecture lecture;
-
-    @Autowired
-    public void setLectureDAO(LectureDAO lectureDAO) {
-        this.lectureDAO = lectureDAO;
-    }
+    private Course course;
 
     @Autowired
     public void setCourseDAO(CourseDAO courseDAO) {
         this.courseDAO = courseDAO;
     }
-
     @Before
     public void setupData() {
-        Course course = new Course('I', 123, "Test Driven Development");
+        course = new Course('I', 123, "Test Driven Development");
         courseDAO.save(course);
-        lecture = new Lecture(20, "Test Vorlesung", course, false);
-        lectureDAO.save(lecture);
     }
 
     @After
@@ -64,37 +54,43 @@ public class LectureDAOTest {
 
     @Test
     public void testFindOne() {
-        Lecture lecture = lectureDAO.findOne(this.lecture.getId());
-        compareLectures(lecture);
+        Course course = courseDAO.findOne(this.course.getId());
+        compareCourses(course);
     }
 
     @Test
     public void testFindAll() {
-        List<Lecture> lectures = lectureDAO.findAll();
-        assertEquals(1, lectures.size());
-        for (Lecture lecture : lectures) {
-            compareLectures(lecture);
+        List<Course> courses = courseDAO.findAll();
+        assertEquals(1, courses.size());
+        for(Course course : courses) {
+            compareCourses(course);
         }
     }
 
     @Test
     public void testDelete() {
-        lectureDAO.delete(this.lecture);
-        List<Lecture> lectures = lectureDAO.findAll();
-        assertTrue(lectures.isEmpty());
+        courseDAO.delete(this.course);
+        List<Course> courses = courseDAO.findAll();
+        assertTrue(courses.isEmpty());
 
     }
 
     @Test
     public void testDeleteById() {
-        lectureDAO.deleteById(this.lecture.getId());
-        List<Lecture> lectures = lectureDAO.findAll();
-        assertTrue(lectures.isEmpty());
+        courseDAO.deleteById(this.course.getId());
+        List<Course> courses = courseDAO.findAll();
+        assertTrue(courses.isEmpty());
     }
 
-    private void compareLectures(Lecture lecture) {
-        assertEquals(this.lecture.getMinChangeoverTime(), lecture.getMinChangeoverTime());
-        assertEquals(this.lecture.getTitle(), lecture.getTitle());
-        assertEquals(this.lecture.getCourse(), lecture.getCourse());
+    @Test
+    public void testFindCourseByFieldAndNumber() {
+        Course course = courseDAO.findCourseByFieldAndNumber(this.course.getField(), this.course.getNumber());
+        compareCourses(course);
+    }
+
+    private void compareCourses(Course course) {
+        assertEquals(this.course.getField(), course.getField());
+        assertEquals(this.course.getNumber(), course.getNumber());
+        assertEquals(this.course.getTitle(), course.getTitle());
     }
 }

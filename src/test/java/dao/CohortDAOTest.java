@@ -1,9 +1,11 @@
-package de.nordakademie.iaa.test.dao;
+package dao;
 
 import de.nordakademie.iaa.ApplicationConfig;
 import de.nordakademie.iaa.dao.CenturyDAO;
+import de.nordakademie.iaa.dao.CohortDAO;
 import de.nordakademie.iaa.dao.ManipleDAO;
 import de.nordakademie.iaa.model.Century;
+import de.nordakademie.iaa.model.Cohort;
 import de.nordakademie.iaa.model.Maniple;
 import org.junit.After;
 import org.junit.Before;
@@ -23,21 +25,27 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 24.10.17.
+ * Created by arvid on 25.10.17.
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { ApplicationConfig.class})
 @Transactional
-public class ManipleDAOTest {
+public class CohortDAOTest {
 
+    private CohortDAO cohortDAO;
     private ManipleDAO manipleDAO;
     private CenturyDAO centuryDAO;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    private Maniple maniple;
+    private Cohort cohort;
+
+    @Autowired
+    public void setCohortDAO(CohortDAO cohortDAO) {
+        this.cohortDAO = cohortDAO;
+    }
 
     @Autowired
     public void setManipleDAO(ManipleDAO manipleDAO) {
@@ -55,8 +63,12 @@ public class ManipleDAOTest {
         Century century = new Century("I14a",42, 20);
         centuryDAO.save(century);
         centuries.add(century);
-        maniple = new Maniple("I14", 20,centuries);
+        Maniple maniple = new Maniple("I14", 20,centuries);
         manipleDAO.save(maniple);
+        List<Maniple> maniples = new ArrayList<>();
+        maniples.add(maniple);
+        cohort = new Cohort("I",42, maniples);
+        cohortDAO.save(cohort);
     }
 
     @After
@@ -66,37 +78,37 @@ public class ManipleDAOTest {
 
     @Test
     public void testFindOne() {
-        Maniple maniple = manipleDAO.findOne(this.maniple.getId());
-        compareManiple(maniple);
+        Cohort cohort = cohortDAO.findOne(this.cohort.getId());
+        compareCohort(cohort);
     }
 
     @Test
     public void testFindAll() {
-        List<Maniple> maniples = manipleDAO.findAll();
-        assertEquals(1, maniples.size());
-        for(Maniple maniple : maniples) {
-            compareManiple(maniple);
+        List<Cohort> cohorts = cohortDAO.findAll();
+        assertEquals(1, cohorts.size());
+        for(Cohort cohort : cohorts) {
+            compareCohort(cohort);
         }
     }
 
     @Test
     public void testDelete() {
-        manipleDAO.delete(this.maniple);
-        List<Maniple> maniples = manipleDAO.findAll();
-        assertTrue(maniples.isEmpty());
+        cohortDAO.delete(this.cohort);
+        List<Cohort> cohorts = cohortDAO.findAll();
+        assertTrue(cohorts.isEmpty());
 
     }
 
     @Test
     public void testDeleteById() {
-        manipleDAO.deleteById(this.maniple.getId());
-        List<Maniple> maniples = manipleDAO.findAll();
-        assertTrue(maniples.isEmpty());
+        cohortDAO.deleteById(this.cohort.getId());
+        List<Cohort> cohorts = cohortDAO.findAll();
+        assertTrue(cohorts.isEmpty());
     }
 
-    private void compareManiple(Maniple maniple) {
-        assertEquals(this.maniple.getCenturies(), maniple.getCenturies());
-        assertEquals(this.maniple.getName(), maniple.getName());
-        assertEquals(this.maniple.getMinChangeoverTime(), maniple.getMinChangeoverTime());
+    private void compareCohort(Cohort cohort) {
+        assertEquals(this.cohort.getManiples(), cohort.getManiples());
+        assertEquals(this.cohort.getName(), cohort.getName());
+        assertEquals(this.cohort.getMinChangeoverTime(), cohort.getMinChangeoverTime());
     }
 }
