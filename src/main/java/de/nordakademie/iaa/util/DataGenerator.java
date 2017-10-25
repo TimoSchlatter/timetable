@@ -27,12 +27,16 @@ public class DataGenerator {
         this.seminarService = seminarService;
     }
 
+    /**
+     * Warining: Be careful when changing this order!
+     */
     //    @PostConstruct
     public void createData() {
         createRooms();
         createDocents();
         createCourses();
         createSeminars();
+        createLectures();
     }
 
     private void createRooms() {
@@ -114,7 +118,10 @@ public class DataGenerator {
     }
 
     private void createLectures() {
-
+        courseService.listCourses().forEach(course -> {
+            lectureService.saveLecture(new Lecture(15, course, false));
+            lectureService.saveLecture(new Lecture(30, course, true));
+        });
     }
 
 }
