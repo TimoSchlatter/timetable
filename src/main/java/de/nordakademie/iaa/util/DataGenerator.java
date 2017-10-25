@@ -1,12 +1,7 @@
 package de.nordakademie.iaa.util;
 
-import de.nordakademie.iaa.model.Course;
-import de.nordakademie.iaa.model.Docent;
-import de.nordakademie.iaa.model.Room;
-import de.nordakademie.iaa.model.RoomType;
-import de.nordakademie.iaa.service.CourseService;
-import de.nordakademie.iaa.service.DocentService;
-import de.nordakademie.iaa.service.RoomService;
+import de.nordakademie.iaa.model.*;
+import de.nordakademie.iaa.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,20 +14,25 @@ public class DataGenerator {
 
     private CourseService courseService;
     private DocentService docentService;
+    private LectureService lectureService;
     private RoomService roomService;
+    private SeminarService seminarService;
 
     @Autowired
-    public DataGenerator(CourseService courseService, DocentService docentService, RoomService roomService) {
+    public DataGenerator(CourseService courseService, DocentService docentService, LectureService lectureService, RoomService roomService, SeminarService seminarService) {
         this.courseService = courseService;
         this.docentService = docentService;
+        this.lectureService = lectureService;
         this.roomService = roomService;
+        this.seminarService = seminarService;
     }
 
-//    @PostConstruct
+    //    @PostConstruct
     public void createData() {
         createRooms();
         createDocents();
         createCourses();
+        createSeminars();
     }
 
     private void createRooms() {
@@ -56,6 +56,16 @@ public class DataGenerator {
     }
 
     private void createDocents() {
+        docentService.saveDocent(new Docent("", "Uwe", "Adamczak", "", "", false, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("", "Martin", "Müller", "", "Dr.", false, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("", "Soenke", "Stange", "", "", false, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("", "Carlo ", "Düllings", "", "", false, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("", "Clemens", "Sietas", "", "", false, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("", "Anna Katharina", "Bartel", "", "", false, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("", "Andrea", "Denke", "", "Dr.", false, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("", "Michael ", "Bregulla", "", "", false, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("", "Kersten", "Steinke", "", "", false, 30, new HashSet<>()));
+
         docentService.saveDocent(new Docent("stefan.reichert@nordakademie.de", "Stefan", "Reichert", "", "", false, 30, new HashSet<>()));
         docentService.saveDocent(new Docent("stephan.anft@nordakademie.de", "Stephan ", "Anft", "", "", false, 30, new HashSet<>()));
         docentService.saveDocent(new Docent("bjoern-helge.busch@nordakademie.de", "Björn-Helge", "Busch", "+49 (0) 4121 4090-40", "", false, 30, new HashSet<>()));
@@ -91,6 +101,20 @@ public class DataGenerator {
     }
 
 
+    private void createSeminars() {
+        seminarService.saveSeminar(new Seminar(25, "Der Business Plan - Mit System zum Erfolg"));
+        seminarService.saveSeminar(new Seminar(20, "Wirksame Tools für erfolgreiches Projektmanagement"));
+        seminarService.saveSeminar(new Seminar(25, "Excel VBA für Einsteiger"));
+        seminarService.saveSeminar(new Seminar(25, "Emotionale Intelligenz"));
+        seminarService.saveSeminar(new Seminar(25, "Sourcecodeverwaltung mit Git und GitHub"));
+        seminarService.saveSeminar(new Seminar(20, "Zeit- und Selbstmanagement"));
+        seminarService.saveSeminar(new Seminar(25, "Große Dokumente in Word"));
+        seminarService.saveSeminar(new Seminar(20, "Networking Excellence"));
+        seminarService.saveSeminar(new Seminar(20, "Business-Knigge"));
+    }
 
+    private void createLectures() {
+
+    }
 
 }
