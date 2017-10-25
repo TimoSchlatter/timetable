@@ -39,5 +39,5 @@ public interface RoomService {
      */
     void deleteRoom(Long id) throws EntityNotFoundException;
 
-    public Room findRoomByBuildingAndNumber(String building, String number);
+    Room findRoomByBuildingAndNumber(String building, String number);
 }
