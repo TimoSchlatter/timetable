@@ -14,15 +14,16 @@ public class DataGenerator {
 
     private CourseService courseService;
     private DocentService docentService;
-//    private ExamService examService;
+    private ExamService examService;
     private LectureService lectureService;
     private RoomService roomService;
     private SeminarService seminarService;
 
     @Autowired
-    public DataGenerator(CourseService courseService, DocentService docentService, LectureService lectureService, RoomService roomService, SeminarService seminarService) {
+    public DataGenerator(CourseService courseService, DocentService docentService, ExamService examService, LectureService lectureService, RoomService roomService, SeminarService seminarService) {
         this.courseService = courseService;
         this.docentService = docentService;
+        this.examService = examService;
         this.lectureService = lectureService;
         this.roomService = roomService;
         this.seminarService = seminarService;
@@ -38,6 +39,7 @@ public class DataGenerator {
         createCourses();
         createSeminars();
         createLectures();
+        createExams();
     }
 
     private void createRooms() {
@@ -123,11 +125,11 @@ public class DataGenerator {
         });
     }
 
-//    private void createExams() {
-//        courseService.listCourses().forEach(course -> {
-//            examService.saveExam(new Exam(30, course));
-//        });
-//    }
+    private void createExams() {
+        courseService.listCourses().forEach(course -> {
+            examService.saveExam(new Exam(30, course));
+        });
+    }
 
 
 }
