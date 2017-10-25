@@ -17,6 +17,11 @@ public class Cohort extends Group {
 		super(name, duration);
 	}
 
+	public Cohort(String name, int minChangeoverTime, List<Maniple> maniples) {
+		super(name, minChangeoverTime);
+		this.maniples = maniples;
+	}
+
 	@Basic
 	@OneToMany
 	public List<Maniple> getManiples() {
