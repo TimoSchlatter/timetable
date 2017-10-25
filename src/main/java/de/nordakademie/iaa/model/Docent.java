@@ -27,7 +27,6 @@ public class Docent extends HasMinChangeoverTime implements Serializable{
 	private String title;
 
 	@ManyToMany
-	@Basic
 	private HashSet<Course> courses;
 
 	@Basic
