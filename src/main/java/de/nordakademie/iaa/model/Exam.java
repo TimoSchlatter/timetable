@@ -4,11 +4,11 @@ import javax.persistence.Entity;
 import java.io.Serializable;
 
 @Entity
-public class Lecture extends HasCourse implements Serializable {
+public class Exam extends HasCourse implements Serializable {
 
-    public Lecture() {}
+    public Exam() {}
 
-    public Lecture(int minChangeoverTime, Course course) {
+    public Exam(int minChangeoverTime, Course course) {
         super(minChangeoverTime, course);
     }
 }

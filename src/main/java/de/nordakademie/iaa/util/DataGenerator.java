@@ -104,7 +104,6 @@ public class DataGenerator {
         courseService.saveCourse(new Course('I', 158, "Controlling"));
     }
 
-
     private void createSeminars() {
         seminarService.saveSeminar(new Seminar(25, "Der Business Plan - Mit System zum Erfolg"));
         seminarService.saveSeminar(new Seminar(20, "Wirksame Tools für erfolgreiches Projektmanagement"));
@@ -119,9 +118,15 @@ public class DataGenerator {
 
     private void createLectures() {
         courseService.listCourses().forEach(course -> {
-            lectureService.saveLecture(new Lecture(15, course, false));
-            lectureService.saveLecture(new Lecture(30, course, true));
+            lectureService.saveLecture(new Lecture(15, course));
         });
     }
+
+//    private void createExams() {
+//        courseService.listCourses().forEach(course -> {
+//            examService.saveExam(new Exam(30, course));
+//        });
+//    }
+
 
 }
