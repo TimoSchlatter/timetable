@@ -9,59 +9,82 @@ import java.io.Serializable;
 @Entity
 public class Course extends HasId implements Serializable {
 
-	private char field;
-	private int number;
-	private String title;
+    @NaturalId
+    private char field;
 
-	public Course() {}
+    @NaturalId
+    private int number;
 
-	public Course(char field, int number, String title) {
-		this.field = field;
-		this.number = number;
-		this.title = title;
-	}
+    @Basic
+    private String title;
 
-	@NaturalId
-	public char getField() {
-		return field;
-	}
+    @Basic
+    private String shortTitle;
 
-	public void setField(char field) {
-		this.field = field;
-	}
-	@NaturalId
-	public int getNumber() {
-		return number;
-	}
+    public Course() {}
 
-	public void setNumber(int number) {
-		this.number = number;
-	}
-	@Basic
-	public String getTitle() {
-		return title;
-	}
+    public Course(char field, int number, String title) {
+        this.field = field;
+        this.number = number;
+        this.title = title;
+        this.shortTitle = title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public Course(char field, int number, String title, String shortTitle) {
+        this.field = field;
+        this.number = number;
+        this.title = title;
+        this.shortTitle = shortTitle;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+    public char getField() {
+        return field;
+    }
 
-		Course course = (Course) o;
+    public void setField(char field) {
+        this.field = field;
+    }
 
-		if (field != course.field) return false;
-		return number == course.number;
+    public int getNumber() {
+        return number;
+    }
 
-	}
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = (int) field;
-		result = 31 * result + number;
-		return result;
-	}
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getShortTitle() {
+        return shortTitle;
+    }
+
+    public void setShortTitle(String shortTitle) {
+        this.shortTitle = shortTitle;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Course course = (Course) o;
+
+        if (field != course.field) return false;
+        return number == course.number;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) field;
+        result = 31 * result + number;
+        return result;
+    }
 }

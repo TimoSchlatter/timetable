@@ -11,12 +11,26 @@ import java.util.HashSet;
 @Entity
 public class Docent extends HasMinChangeoverTime implements Serializable{
 
-	private String email;
+	@NaturalId
 	private String forename;
+
+	@NaturalId
 	private String surname;
+
+	@Basic
+	private String email;
+
+	@Basic
 	private String phoneNumber;
+
+	@Basic
 	private String title;
+
+	@ManyToMany
+	@Basic
 	private HashSet<Course> courses;
+
+	@Basic
 	private boolean isPermanentlyEmployed;
 
 	public Docent() {}
@@ -33,15 +47,6 @@ public class Docent extends HasMinChangeoverTime implements Serializable{
 		this.isPermanentlyEmployed = isPermanentlyEmployed;
 	}
 
-	@Basic
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	@NaturalId
 	public String getForename() {
 		return forename;
 	}
@@ -49,7 +54,7 @@ public class Docent extends HasMinChangeoverTime implements Serializable{
 	public void setForename(String forename) {
 		this.forename = forename;
 	}
-	@NaturalId
+
 	public String getSurname() {
 		return surname;
 	}
@@ -57,7 +62,15 @@ public class Docent extends HasMinChangeoverTime implements Serializable{
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	@Basic
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -65,27 +78,23 @@ public class Docent extends HasMinChangeoverTime implements Serializable{
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	@Basic
+
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
-
 		this.title = title;
 	}
 
-	@Basic
 	public HashSet<Course> getCourses() {
 		return courses;
 	}
 
-	@ManyToMany
-	@Basic
 	public void setCourses(HashSet<Course> courses) {
 		this.courses = courses;
 	}
-	@Basic
+
 	public boolean isPermanentlyEmployed() {
 		return isPermanentlyEmployed;
 	}
@@ -98,12 +107,9 @@ public class Docent extends HasMinChangeoverTime implements Serializable{
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-
 		Docent docent = (Docent) o;
-
 		if (forename != null ? !forename.equals(docent.forename) : docent.forename != null) return false;
 		return surname != null ? surname.equals(docent.surname) : docent.surname == null;
-
 	}
 
 	@Override
