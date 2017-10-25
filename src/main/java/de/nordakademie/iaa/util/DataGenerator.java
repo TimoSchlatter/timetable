@@ -8,7 +8,6 @@ import de.nordakademie.iaa.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.HashSet;
 
 @Component
@@ -23,7 +22,7 @@ public class DataGenerator {
         this.roomService = roomService;
     }
 
-    @PostConstruct
+
     public void createData() {
         createRooms();
     }

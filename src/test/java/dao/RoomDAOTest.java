@@ -43,7 +43,7 @@ public class RoomDAOTest {
 
     @Before
     public void setupData() {
-        room = new Room(20,"A", 42, "101", RoomType.COMPUTERROOM);
+        room = new Room(20,"X", 42, "999", RoomType.COMPUTERROOM);
         roomDAO.save(room);
     }
 
