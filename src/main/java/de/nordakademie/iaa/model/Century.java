@@ -2,7 +2,6 @@ package de.nordakademie.iaa.model;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import java.time.Duration;
 
 @Entity
 public class Century extends Group {
@@ -11,7 +10,7 @@ public class Century extends Group {
 
 	public Century() {}
 
-	public Century(String name, int numberOfStudents, Duration minChangeoverTime) {
+	public Century(String name, int numberOfStudents, int minChangeoverTime) {
         super(name, minChangeoverTime);
 		this.numberOfStudents = numberOfStudents;
     }

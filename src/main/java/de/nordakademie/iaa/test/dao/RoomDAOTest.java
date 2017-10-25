@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.Duration;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -44,7 +43,7 @@ public class RoomDAOTest {
 
     @Before
     public void setupData() {
-        room = new Room(Duration.ofMinutes(20),"A", 42, "101", RoomType.COMPUTERROOM);
+        room = new Room(20,"A", 42, "101", RoomType.COMPUTERROOM);
         roomDAO.save(room);
     }
 

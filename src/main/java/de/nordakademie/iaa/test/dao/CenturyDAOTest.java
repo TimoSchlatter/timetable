@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.Duration;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -43,7 +42,7 @@ public class CenturyDAOTest {
         
     @Before
     public void setupData() {
-        century = new Century("I14a",42, Duration.ofMinutes(20));
+        century = new Century("I14a",42, 20);
         centuryDAO.save(century);
     }
 

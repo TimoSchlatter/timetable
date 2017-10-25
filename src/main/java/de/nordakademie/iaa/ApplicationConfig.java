@@ -34,21 +34,23 @@ public class ApplicationConfig {
 
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactoryBean.setPersistenceUnitName("TIMETABLE");
-        entityManagerFactoryBean.setDataSource(getDataSource());
-        entityManagerFactoryBean.setPackagesToScan("de.nordakademie.iaa.model");
+        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactory.setPersistenceUnitName("TIMETABLE");
+        entityManagerFactory.setDataSource(getDataSource());
+        entityManagerFactory.setPackagesToScan("de.nordakademie.iaa.model");
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setDatabasePlatform("H2");
         adapter.setDatabase(H2);
-        entityManagerFactoryBean.setJpaVendorAdapter(adapter);
+        adapter.setGenerateDdl(true);
+        adapter.setShowSql(true);
+        entityManagerFactory.setJpaVendorAdapter(adapter);
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         properties.put("hibernate.show_sql", false);
         properties.put("hibernate.format_sql", true);
         properties.put("hibernate.ddl-auto", "create-drop");
-        entityManagerFactoryBean.setJpaProperties(properties);
-        return entityManagerFactoryBean;
+        entityManagerFactory.setJpaProperties(properties);
+        return entityManagerFactory;
     }
 
     @Bean(name = "transactionManager")

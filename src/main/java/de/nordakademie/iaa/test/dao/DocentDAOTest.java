@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class DocentDAOTest {
         HashSet<Course> courses = new HashSet<>();
         course = new Course('I',123,"Test Driven Development");
         courses.add(course);
-        docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, Duration.ofMinutes(20), courses);
+        docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20, courses);
         docentDAO.save(docent);
     }
 

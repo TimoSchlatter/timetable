@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.time.Duration;
 import java.util.HashSet;
 
 @Component
@@ -31,30 +30,30 @@ public class DataGenerator {
 
     private void createRooms() {
         // A building
-        roomService.saveRoom(new Room(Duration.ofMinutes(20), "A", 40, "001", RoomType.COMPUTERROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(15), "A", 40, "002", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(15), "A", 40, "003", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(15), "A", 40, "004", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(20), "A", 40, "101", RoomType.COMPUTERROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(20), "A", 25, "102", RoomType.COMPUTERROOM));
+        roomService.saveRoom(new Room(20, "A", 40, "001", RoomType.COMPUTERROOM));
+        roomService.saveRoom(new Room(15, "A", 40, "002", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(15, "A", 40, "003", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(15, "A", 40, "004", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(20, "A", 40, "101", RoomType.COMPUTERROOM));
+        roomService.saveRoom(new Room(20, "A", 25, "102", RoomType.COMPUTERROOM));
         // D building
-        roomService.saveRoom(new Room(Duration.ofMinutes(15), "D", 20, "001", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(15), "D", 20, "002", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(15), "D", 20, "003", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(15), "D", 20, "004", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(30), "D", 20, "005", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(15), "D", 20, "101", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(15), "D", 20, "102", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(15), "D", 20, "103", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(15), "D", 20, "104", RoomType.LECTUREROOM));
-        roomService.saveRoom(new Room(Duration.ofMinutes(30), "D", 20, "105", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(15, "D", 20, "001", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(15, "D", 20, "002", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(15, "D", 20, "003", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(15, "D", 20, "004", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(30, "D", 20, "005", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(15, "D", 20, "101", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(15, "D", 20, "102", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(15, "D", 20, "103", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(15, "D", 20, "104", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(30, "D", 20, "105", RoomType.LECTUREROOM));
     }
 
     private void createDocents() {
-        docentService.saveDocent(new Docent("stefan.reichert@nordakademie.de", "Stefan", "Reichert", "04074735656", "", true, Duration.ofMinutes(30), new HashSet<>()));
-        docentService.saveDocent(new Docent("uwe.neuhaus@nordakademie.de", "Uwe", "Neuhaus", "04074720656", "", true, Duration.ofMinutes(20), new HashSet<>()));
-        docentService.saveDocent(new Docent("almut.lewe@nordakademie.de", "Almut", "Lewe", "04012320656", "", false, Duration.ofMinutes(45), new HashSet<>()));
-        docentService.saveDocent(new Docent("joachim.sauer@nordakademie.de", "Joachim", "Sauer", "04018520656", "Prof. Dr.", true, Duration.ofMinutes(30), new HashSet<>()));
+        docentService.saveDocent(new Docent("stefan.reichert@nordakademie.de", "Stefan", "Reichert", "04074735656", "", true, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("uwe.neuhaus@nordakademie.de", "Uwe", "Neuhaus", "04074720656", "", true, 20, new HashSet<>()));
+        docentService.saveDocent(new Docent("almut.lewe@nordakademie.de", "Almut", "Lewe", "04012320656", "", false, 45, new HashSet<>()));
+        docentService.saveDocent(new Docent("joachim.sauer@nordakademie.de", "Joachim", "Sauer", "04018520656", "Prof. Dr.", true, 30, new HashSet<>()));
     }
 
     }

@@ -6,7 +6,6 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import java.io.Serializable;
-import java.time.Duration;
 import java.util.HashSet;
 
 @Entity
@@ -22,7 +21,7 @@ public class Docent extends HasMinChangeoverTime implements Serializable{
 
 	public Docent() {}
 
-	public Docent(String email, String forename, String surname, String phoneNumber, String title, boolean isPermanentlyEmployed, Duration minChangeoverTime, HashSet<Course> courses) {
+	public Docent(String email, String forename, String surname, String phoneNumber, String title, boolean isPermanentlyEmployed, int minChangeoverTime, HashSet<Course> courses) {
 		super(minChangeoverTime);
 		this.courses = courses;
 		this.email = email;

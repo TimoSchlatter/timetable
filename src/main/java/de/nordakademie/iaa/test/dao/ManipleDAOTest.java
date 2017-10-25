@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,10 +52,10 @@ public class ManipleDAOTest {
     @Before
     public void setupData() {
         List<Century> centuries = new ArrayList<>();
-        Century century = new Century("I14a",42,Duration.ofMinutes(20));
+        Century century = new Century("I14a",42, 20);
         centuryDAO.save(century);
         centuries.add(century);
-        maniple = new Maniple("I14", Duration.ofMinutes(20),centuries);
+        maniple = new Maniple("I14", 20,centuries);
         manipleDAO.save(maniple);
     }
 

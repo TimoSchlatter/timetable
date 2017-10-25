@@ -3,7 +3,6 @@ package de.nordakademie.iaa.model;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class Cohort extends Group {
 
 	public Cohort() {}
 
-	public Cohort(String name, Duration duration) {
+	public Cohort(String name, int duration) {
 		super(name, duration);
 	}
 
@@ -38,7 +37,7 @@ public class Cohort extends Group {
 		this.maniples = maniples;
 	}
 
-	public void addManiple(char name, Duration duration) {
+	public void addManiple(char name, int duration) {
 		maniples.add(new Maniple(name + this.getName(), duration));
 	}
 
