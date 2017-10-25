@@ -42,7 +42,7 @@ public class CenturyDAOTest {
         
     @Before
     public void setupData() {
-        century = new Century("I14a",42, 20);
+        century = new Century("I14a",20, 42);
         centuryDAO.save(century);
     }
 

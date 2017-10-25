@@ -73,7 +73,7 @@ public class EventDAOTest {
         HashSet<Docent> docents = new HashSet<>();
         docents.add(docent);
 
-        Group group = new Century("I14a",30,20);
+        Group group = new Century("I14a",20,30);
         groupDAO.save(group);
 
         LocalDate date = LocalDate.of(2017,12,24);
