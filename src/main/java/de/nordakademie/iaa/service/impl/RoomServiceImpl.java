@@ -43,4 +43,9 @@ public class RoomServiceImpl implements RoomService {
         }
         roomDAO.delete(room);
     }
+
+    @Override
+    public Room findRoomByBuildingAndNumber(String building, String number) {
+        return roomDAO.findRoomByBuildingAndNumber(building, number);
+    }
 }
