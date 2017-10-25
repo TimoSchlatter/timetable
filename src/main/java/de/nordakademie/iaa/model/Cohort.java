@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.model;
 
-import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
@@ -13,8 +12,8 @@ public class Cohort extends Group {
 
 	public Cohort() {}
 
-	public Cohort(String name, int duration) {
-		super(name, duration);
+	public Cohort(String name, int minChangeoverTime) {
+		super(name, minChangeoverTime);
 	}
 
 	public Cohort(String name, int minChangeoverTime, List<Maniple> maniples) {
@@ -22,10 +21,13 @@ public class Cohort extends Group {
 		this.maniples = maniples;
 	}
 
-	@Basic
 	@OneToMany
 	public List<Maniple> getManiples() {
 		return maniples;
+	}
+
+	public void setManiples(List<Maniple> maniples) {
+		this.maniples = maniples;
 	}
 
 	@Override
@@ -38,12 +40,8 @@ public class Cohort extends Group {
 		}
 	}
 
-	public void setManiples(List<Maniple> maniples) {
-		this.maniples = maniples;
-	}
-
-	public void addManiple(char name, int duration) {
-		maniples.add(new Maniple(name + this.getName(), duration));
+	public void addManiple(char name, int minChangeoverTime) {
+		maniples.add(new Maniple(name + this.getName(), minChangeoverTime));
 	}
 
 	public void removeManiple(Maniple maniple) {

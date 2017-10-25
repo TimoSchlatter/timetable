@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.model;
 
-import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class Maniple extends Group {
 
 	public Maniple() {}
 
-	public Maniple(String name, int minChangeoverTime) {
+	Maniple(String name, int minChangeoverTime) {
 		super(name, minChangeoverTime);
 	}
 
@@ -22,7 +21,6 @@ public class Maniple extends Group {
 		this.centuries = centuries;
     }
 
-	@Basic
 	@OneToMany
 	public List<Century> getCenturies() {
 		return centuries;
@@ -30,12 +28,7 @@ public class Maniple extends Group {
 
 	@Override
 	public int calculateNumberOfStudents() {
-		if(centuries.isEmpty()) {
-			return 0;
-		}
-		else {
-			return centuries.stream().mapToInt(Century::getNumberOfStudents).sum();
-		}
+		return !centuries.isEmpty() ? centuries.stream().mapToInt(Century::getNumberOfStudents).sum() : 0;
 	}
 
 	public void setCenturies(List<Century> centuries) {

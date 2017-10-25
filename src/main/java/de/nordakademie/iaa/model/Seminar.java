@@ -11,7 +11,7 @@ public class Seminar extends Subject implements Serializable {
 
     public Seminar() {}
 
-    public Seminar(int maxNumberOfParticipants, String title) {
+    public Seminar(String title, int maxNumberOfParticipants) {
         super(title);
         this.maxNumberOfParticipants = maxNumberOfParticipants;
     }
@@ -29,14 +29,4 @@ public class Seminar extends Subject implements Serializable {
     public void setMaxNumberOfParticipants(int maxNumberOfParticipants) {
         this.maxNumberOfParticipants = maxNumberOfParticipants;
     }
-
-    @Override
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
 }

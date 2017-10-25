@@ -11,16 +11,9 @@ import java.io.Serializable;
 @Entity
 public class Room extends HasMinChangeoverTime implements Serializable {
 
-    @NaturalId
     private String building;
-
-    @NaturalId
     private String number;
-
-    @Basic
     private int maxSeats;
-
-    @Enumerated(EnumType.STRING)
     private RoomType roomType;
 
     public Room() {}
@@ -33,6 +26,7 @@ public class Room extends HasMinChangeoverTime implements Serializable {
         this.roomType = roomType;
     }
 
+    @NaturalId
     public String getBuilding() {
         return building;
     }
@@ -41,6 +35,7 @@ public class Room extends HasMinChangeoverTime implements Serializable {
         this.building = building;
     }
 
+    @NaturalId
     public String getNumber() {
         return number;
     }
@@ -49,6 +44,7 @@ public class Room extends HasMinChangeoverTime implements Serializable {
         this.number = number;
     }
 
+    @Basic
     public int getMaxSeats() {
         return maxSeats;
     }
@@ -57,6 +53,7 @@ public class Room extends HasMinChangeoverTime implements Serializable {
         this.maxSeats = maxSeats;
     }
 
+    @Enumerated(EnumType.STRING)
     public RoomType getRoomType() {
         return roomType;
     }
@@ -69,9 +66,7 @@ public class Room extends HasMinChangeoverTime implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Room room = (Room) o;
-
         if (!building.equals(room.building)) return false;
         return number.equals(room.number);
     }

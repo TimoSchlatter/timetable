@@ -12,17 +12,17 @@ public abstract class Subject extends HasMinChangeoverTime {
 
     String title;
 
-    public Subject() {}
+    Subject() {}
 
-    public Subject(String title) {
+    Subject(String title) {
         this.title = title;
     }
 
-    public Subject(int minChangeoverTime) {
+    Subject(int minChangeoverTime) {
         super(minChangeoverTime);
     }
 
-    public Subject(int minChangeoverTime, String title) {
+    Subject(int minChangeoverTime, String title) {
         super(minChangeoverTime);
         this.title = title;
     }
@@ -40,9 +40,7 @@ public abstract class Subject extends HasMinChangeoverTime {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Subject subject = (Subject) o;
-
         return title != null ? title.equals(subject.title) : subject.title == null;
     }
 

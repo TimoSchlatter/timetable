@@ -14,6 +14,7 @@ public class DataGenerator {
 
     private CourseService courseService;
     private DocentService docentService;
+//    private ExamService examService;
     private LectureService lectureService;
     private RoomService roomService;
     private SeminarService seminarService;
@@ -28,7 +29,7 @@ public class DataGenerator {
     }
 
     /**
-     * Warining: Be careful when changing this order!
+     * Warning: Be careful when changing this order!
      */
     //    @PostConstruct
     public void createData() {
@@ -105,15 +106,15 @@ public class DataGenerator {
     }
 
     private void createSeminars() {
-        seminarService.saveSeminar(new Seminar(25, "Der Business Plan - Mit System zum Erfolg"));
-        seminarService.saveSeminar(new Seminar(20, "Wirksame Tools für erfolgreiches Projektmanagement"));
-        seminarService.saveSeminar(new Seminar(25, "Excel VBA für Einsteiger"));
-        seminarService.saveSeminar(new Seminar(25, "Emotionale Intelligenz"));
-        seminarService.saveSeminar(new Seminar(25, "Sourcecodeverwaltung mit Git und GitHub"));
-        seminarService.saveSeminar(new Seminar(20, "Zeit- und Selbstmanagement"));
-        seminarService.saveSeminar(new Seminar(25, "Große Dokumente in Word"));
-        seminarService.saveSeminar(new Seminar(20, "Networking Excellence"));
-        seminarService.saveSeminar(new Seminar(20, "Business-Knigge"));
+        seminarService.saveSeminar(new Seminar("Der Business Plan - Mit System zum Erfolg", 25));
+        seminarService.saveSeminar(new Seminar("Wirksame Tools für erfolgreiches Projektmanagement", 20));
+        seminarService.saveSeminar(new Seminar("Excel VBA für Einsteiger", 25));
+        seminarService.saveSeminar(new Seminar("Emotionale Intelligenz", 25));
+        seminarService.saveSeminar(new Seminar("Sourcecodeverwaltung mit Git und GitHub", 25));
+        seminarService.saveSeminar(new Seminar("Zeit- und Selbstmanagement", 20));
+        seminarService.saveSeminar(new Seminar("Große Dokumente in Word", 25));
+        seminarService.saveSeminar(new Seminar("Networking Excellence", 20));
+        seminarService.saveSeminar(new Seminar("Business-Knigge", 20));
     }
 
     private void createLectures() {

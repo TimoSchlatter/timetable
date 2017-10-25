@@ -9,16 +9,9 @@ import java.io.Serializable;
 @Entity
 public class Course extends HasId implements Serializable {
 
-    @NaturalId
     private char field;
-
-    @NaturalId
     private int number;
-
-    @Basic
     private String title;
-
-    @Basic
     private String shortTitle;
 
     public Course() {}
@@ -37,6 +30,7 @@ public class Course extends HasId implements Serializable {
         this.shortTitle = shortTitle;
     }
 
+    @NaturalId
     public char getField() {
         return field;
     }
@@ -45,6 +39,7 @@ public class Course extends HasId implements Serializable {
         this.field = field;
     }
 
+    @NaturalId
     public int getNumber() {
         return number;
     }
@@ -53,6 +48,7 @@ public class Course extends HasId implements Serializable {
         this.number = number;
     }
 
+    @Basic
     public String getTitle() {
         return title;
     }
@@ -61,6 +57,7 @@ public class Course extends HasId implements Serializable {
         this.title = title;
     }
 
+    @Basic
     public String getShortTitle() {
         return shortTitle;
     }

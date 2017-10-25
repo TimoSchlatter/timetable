@@ -9,112 +9,106 @@ import java.io.Serializable;
 import java.util.HashSet;
 
 @Entity
-public class Docent extends HasMinChangeoverTime implements Serializable{
+public class Docent extends HasMinChangeoverTime implements Serializable {
 
-	@NaturalId
-	private String forename;
+    private String forename;
+    private String surname;
+    private String email;
+    private String phoneNumber;
+    private String title;
+    private HashSet<Course> courses;
+    private boolean isPermanentlyEmployed;
 
-	@NaturalId
-	private String surname;
+    public Docent() {}
 
-	@Basic
-	private String email;
+    public Docent(String email, String forename, String surname, String phoneNumber, String title, boolean isPermanentlyEmployed, int minChangeoverTime, HashSet<Course> courses) {
+        super(minChangeoverTime);
+        this.courses = courses;
+        this.email = email;
+        this.forename = forename;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.title = title;
+        this.courses = courses;
+        this.isPermanentlyEmployed = isPermanentlyEmployed;
+    }
 
-	@Basic
-	private String phoneNumber;
+    @NaturalId
+    public String getForename() {
+        return forename;
+    }
 
-	@Basic
-	private String title;
+    public void setForename(String forename) {
+        this.forename = forename;
+    }
 
-	@ManyToMany
-	private HashSet<Course> courses;
+    @NaturalId
+    public String getSurname() {
+        return surname;
+    }
 
-	@Basic
-	private boolean isPermanentlyEmployed;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
-	public Docent() {}
+    @Basic
+    public String getEmail() {
+        return email;
+    }
 
-	public Docent(String email, String forename, String surname, String phoneNumber, String title, boolean isPermanentlyEmployed, int minChangeoverTime, HashSet<Course> courses) {
-		super(minChangeoverTime);
-		this.courses = courses;
-		this.email = email;
-		this.forename = forename;
-		this.surname = surname;
-		this.phoneNumber = phoneNumber;
-		this.title = title;
-		this.courses = courses;
-		this.isPermanentlyEmployed = isPermanentlyEmployed;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getForename() {
-		return forename;
-	}
+    @Basic
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public void setForename(String forename) {
-		this.forename = forename;
-	}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public String getSurname() {
-		return surname;
-	}
+    @Basic
+    public String getTitle() {
+        return title;
+    }
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    @ManyToMany
+    public HashSet<Course> getCourses() {
+        return courses;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setCourses(HashSet<Course> courses) {
+        this.courses = courses;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    @Basic
+    public boolean isPermanentlyEmployed() {
+        return isPermanentlyEmployed;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public void setPermanentlyEmployed(boolean permanentlyEmployed) {
+        isPermanentlyEmployed = permanentlyEmployed;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Docent docent = (Docent) o;
+        if (forename != null ? !forename.equals(docent.forename) : docent.forename != null) return false;
+        return surname != null ? surname.equals(docent.surname) : docent.surname == null;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public HashSet<Course> getCourses() {
-		return courses;
-	}
-
-	public void setCourses(HashSet<Course> courses) {
-		this.courses = courses;
-	}
-
-	public boolean isPermanentlyEmployed() {
-		return isPermanentlyEmployed;
-	}
-
-	public void setPermanentlyEmployed(boolean permanentlyEmployed) {
-		isPermanentlyEmployed = permanentlyEmployed;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Docent docent = (Docent) o;
-		if (forename != null ? !forename.equals(docent.forename) : docent.forename != null) return false;
-		return surname != null ? surname.equals(docent.surname) : docent.surname == null;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = forename != null ? forename.hashCode() : 0;
-		result = 31 * result + (surname != null ? surname.hashCode() : 0);
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int result = forename != null ? forename.hashCode() : 0;
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        return result;
+    }
 }
