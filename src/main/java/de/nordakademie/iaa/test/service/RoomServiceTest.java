@@ -31,19 +31,17 @@ public class RoomServiceTest {
     @Before
     public void setup() {
         Room room = new Room(20,"A",30,"123", RoomType.LECTUREROOM);
-
         Mockito.when(roomDAO.findRoomByBuildingAndNumber("A","123")).thenReturn(room);
     }
 
     @Test()
-    public void testfindRoomByBuildingAndNumber(){
+    public void testFindRoomByBuildingAndNumber(){
         roomService.findRoomByBuildingAndNumber("A","123");
     }
 
     @After
     public void verify() {
         Mockito.verify(roomDAO, VerificationModeFactory.times(1)).findRoomByBuildingAndNumber(Mockito.anyString(),Mockito.anyString());
-        // This is allowed here: using container injected mocks
         Mockito.reset(roomDAO);
     }
 
