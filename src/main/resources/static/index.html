@@ -4,16 +4,13 @@
         <meta charset="UTF-8">
         <title>AngularJS Room Management</title>
         <script type="application/javascript" src="js/angular/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
         <script type="text/javascript" src="App.js"></script>
         <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
     </head>
-    <body ng-controller="mainController">
+    <body>
+        <header ng-controller="HeaderController"></header>
         <h1>Angular Room Management</h1>
-        <ng-include src="mainController.getCurrentScreenSource()"></ng-include>
-        <ul>
-            <li ng-repeat="item in rooms">
-                {{$index}} {{item.id}} {{item.building}}
-            </li>
-        </ul>
+        <div ng-view></div>
     </body>
 </html>
