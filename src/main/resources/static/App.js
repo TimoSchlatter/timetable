@@ -27,6 +27,10 @@ var app = angular .module('roomManagement', ["ngRoute"]);
         redirectTo: "/"})
     });
 
+    app.config(['$locationProvider', function($locationProvider) {
+        $locationProvider.hashPrefix('');
+    }]);
+
     app.factory('routeNavigation', function($route, $location) {
           var routes = [];
           angular.forEach($route.routes, function (route, path) {

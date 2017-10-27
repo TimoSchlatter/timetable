@@ -1,49 +1,58 @@
 <!DOCTYPE html>
 <html ng-app="roomManagement">
-    <head lang="en">
-        <meta charset="UTF-8">
-        <title>AngularJS Room Management</title>
-        <script type="application/javascript" src="js/angular/angular.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
-        <script type="text/javascript" src="App.js"></script>
-        <script type="text/javascript" src="controller/DashboardController.js"></script>
-        <script type="text/javascript" src="controller/HeaderController.js"></script>
-        <script type="text/javascript" src="controller/RoomController.js"></script>
-        <script type="text/javascript" src="controller/LectureController.js"></script>
-        <script type="text/javascript" src="controller/LecturerController.js"></script>
-        <script type="text/javascript" src="controller/GroupController.js"></script>
-        <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
-    </head>
-    <body>
-        <header>
-            <h1>Angular Room Management</h1>
-            <div ng-controller="HeaderController">
-                <md-content class="md-padding">
-                    <md-nav-bar
-                        md-no-ink-bar="enableInkBar"
-                        md-selected-nav-item="currentNavItem"
-                        nav-bar-aria-label="navigation links">
-                        <md-nav-item md-nav-href="#dashboard">
-                            Dashboard
-                        </md-nav-item>
-                        <md-nav-item md-nav-href="#room">
-                            Raumverwaltung
-                        </md-nav-item>
-                        <md-nav-item md-nav-href="#lecturer">
-                            Dozentenverwaltung
-                        </md-nav-item>
-                        <md-nav-item md-nav-href="#lecture">
-                            Verantaltungsverwaltung
-                        </md-nav-item>
-                        <md-nav-item md-nav-href="#group">
-                            Gruppenverwaltung
-                        </md-nav-item>
-                    </md-nav-bar>
-                </md-content>
-            </div>
-        </header>
-        <div ng-view></div>
-    </body>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>AngularJS Room Management 2</title>
+    <script type="application/javascript" src="js/angular/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    <script type="text/javascript" src="App.js"></script>
+    <script type="text/javascript" src="controller/DashboardController.js"></script>
+    <script type="text/javascript" src="controller/HeaderController.js"></script>
+    <script type="text/javascript" src="controller/RoomController.js"></script>
+    <script type="text/javascript" src="controller/LectureController.js"></script>
+    <script type="text/javascript" src="controller/LecturerController.js"></script>
+    <script type="text/javascript" src="controller/GroupController.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom/customizing.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://www.nordakademie.de">NAK</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#/">Dashboard<span class="sr-only">(current)</span></a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Verwaltung<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#lecturer">Dozenten</a></li>
+                        <li><a href="#group">Gruppen</a></li>
+                        <li><a href="#room">Raum</a></li>
+                        <li><a href="#lecture">Verantaltung</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Link</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div ng-view></div>
+</body>
 </html>
