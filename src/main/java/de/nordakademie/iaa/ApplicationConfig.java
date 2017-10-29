@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -19,6 +20,7 @@ import static org.springframework.orm.jpa.vendor.Database.H2;
 @ComponentScan
 @Configuration
 @EnableAutoConfiguration
+@EnableJpaRepositories
 @EnableTransactionManagement
 public class ApplicationConfig {
 

@@ -1,6 +1,7 @@
 package dao;
 
 import de.nordakademie.iaa.ApplicationConfig;
+import de.nordakademie.iaa.dao.CourseDAO;
 import de.nordakademie.iaa.dao.DocentDAO;
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.model.Docent;
@@ -31,6 +32,7 @@ public class DocentDAOTest {
 
 
     private DocentDAO docentDAO;
+    private CourseDAO courseDAO;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -43,11 +45,18 @@ public class DocentDAOTest {
         this.docentDAO = docentDAO;
     }
 
+    @Autowired
+    public void setCourseDAO(CourseDAO courseDAO) {
+        this.courseDAO = courseDAO;
+    }
+
     @Before
     public void setupData() {
         HashSet<Course> courses = new HashSet<>();
         course = new Course('I',123,"Test Driven Development");
+        courseDAO.save(course);
         courses.add(course);
+
         docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20, courses);
         docentDAO.save(docent);
     }
