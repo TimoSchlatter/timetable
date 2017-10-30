@@ -7,23 +7,24 @@
 <body>
 <h1>Dozentenverwaltung</h1>
 
+<ng-include src="LectureController.getCurrentScreenSource()"></ng-include>
 <ul>
-    <li ng-repeat="item in lectures">
-        {{$index}} {{item.forename}} {{item.surename}} {{item.email}} {{item.phoneNumber}}
+    <li ng-repeat="item in docents" href="#">
+        {{$index}} {{item.forename}} {{item.surname}} {{item.email}} {{item.phoneNumber}} {{item.isPermanentlyEmployed}}
     </li>
 </ul>
 
-<form ng-submit="UpdateData()">
-    <p>Forename : <input type="text" name="foreName" ng-model="foreName" required /></p>
-    <p>Surename : <input type="text" name="sureName" ng-model="sureName" required /></p>
-    <p>E-Mail : <input type="email" name="eMail" ng-model="eMail" required /></p>
-    <p>Phone Number : <input type="number" name="phoneNumber" ng-model="phoneNumber" required /></p>
+<form ng-submit="updateData()">
+    <p>Forename : <input type="text" name="forename" ng-model="forename" required /></p>
+    <p>Surname : <input type="text" name="surname" ng-model="surname" required /></p>
+    <p>E-Mail : <input type="email" name="eMail" ng-model="email" required /></p>
+    <p>Phone Number : <input type="text" name="phoneNumber" ng-model="phoneNumber" required /></p>
     <p>Title : <input type="text" name= ng-model="title" required /></p>
     <p>Festanstellung :<input type="checkbox"
                       ng-model="anstellung"
                       [name="anstellung"]
-                      [ng-true-value="true"]
-                      [ng-false-value="false"]
+                      [ng-true-value=true]
+                      [ng-false-value=false]
                       [ng-change="anstellung"]></p>
     <input type="submit" value="Submit" />
     <hr />
