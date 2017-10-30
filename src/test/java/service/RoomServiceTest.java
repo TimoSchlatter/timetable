@@ -31,17 +31,17 @@ public class RoomServiceTest {
     @Before
     public void setup() {
         Room room = new Room(20,"A",30,"123", RoomType.LECTUREROOM);
-        Mockito.when(roomDAO.findRoomByBuildingAndNumber("A","123")).thenReturn(room);
+        Mockito.when(roomDAO.findByBuildingAndNumber("A","123")).thenReturn(room);
     }
 
     @Test()
     public void testFindRoomByBuildingAndNumber(){
-        roomService.findRoomByBuildingAndNumber("A","123");
+        roomService.findByBuildingAndNumber("A","123");
     }
 
     @After
     public void verify() {
-        Mockito.verify(roomDAO, VerificationModeFactory.times(1)).findRoomByBuildingAndNumber(Mockito.anyString(),Mockito.anyString());
+        Mockito.verify(roomDAO, VerificationModeFactory.times(1)).findByBuildingAndNumber(Mockito.anyString(),Mockito.anyString());
         Mockito.reset(roomDAO);
     }
 

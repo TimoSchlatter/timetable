@@ -14,8 +14,8 @@ import java.util.List;
 
 public interface RoomDAO extends JpaRepository<Room,Long>, BaseDAO<Room, Long> {
 
-    @Query("SELECT r FROM Room r WHERE r.building = :building AND r.number = :number")
-    Room findRoomByBuildingAndNumber(@Param("building")String building, @Param("number")String number);
+    //@Query("SELECT r FROM Room r WHERE r.building = :building AND r.number = :number")
+    Room findByBuildingAndNumber(String building, String number);
 
     @Query("SELECT r FROM Room r WHERE r.roomType = :type")
     List<Room> findRoomsByType(@Param("type")RoomType type);

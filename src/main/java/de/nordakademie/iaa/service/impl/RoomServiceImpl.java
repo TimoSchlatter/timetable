@@ -45,7 +45,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room findRoomByBuildingAndNumber(String building, String number) {
-        return roomDAO.findRoomByBuildingAndNumber(building, number);
+    public Room findByBuildingAndNumber(String building, String number) {
+        return roomDAO.findByBuildingAndNumber(building, number);
     }
 }

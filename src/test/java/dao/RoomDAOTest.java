@@ -81,7 +81,7 @@ public class RoomDAOTest {
 
     @Test
     public void testFindRoomByBuildingAndNumber() {
-        Room room = roomDAO.findRoomByBuildingAndNumber(this.room.getBuilding(), this.room.getNumber());
+        Room room = roomDAO.findByBuildingAndNumber(this.room.getBuilding(), this.room.getNumber());
         compareRooms(room);
     }
 
