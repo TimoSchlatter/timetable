@@ -26,6 +26,7 @@ public class ManipleServiceImpl implements ManipleService {
         manipleDAO.save(maniple);
     }
 
+    @Override
     public List<Maniple> listManiples() {
         return manipleDAO.findAll();
     }
