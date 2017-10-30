@@ -1,6 +1,6 @@
 'use strict'
 
-var app = angular .module('roomManagement', ["ngRoute"]);
+var app = angular.module('roomManagement', ["ngRoute"]);
 
     app.config(function($routeProvider){
         $routeProvider.when("/", {
@@ -31,7 +31,7 @@ var app = angular .module('roomManagement', ["ngRoute"]);
             templateUrl: "view/group.html",
             name: "Group",
             controller: "GroupController"
-        })when("/seminar", {
+        }).when("/seminar", {
             templateUrl: "view/seminar.html",
             name: "Seminar",
             controller: "SeminarController"
