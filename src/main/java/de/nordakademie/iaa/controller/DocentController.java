@@ -36,7 +36,7 @@ public class DocentController {
      *
      * @param docent The docent to save.
      */
-    @PutMapping
+    @PostMapping
     public void saveDocent(@RequestBody Docent docent) {
         docentService.saveDocent(docent);
     }

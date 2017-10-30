@@ -36,7 +36,7 @@ public class CohortController {
      *
      * @param cohort The cohort to save.
      */
-    @PutMapping
+    @PostMapping
     public void saveCohort(@RequestBody Cohort cohort) {
         cohortService.saveCohort(cohort);
     }

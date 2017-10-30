@@ -36,7 +36,7 @@ public class RoomController {
      *
      * @param room The room to save.
      */
-    @PutMapping
+    @PostMapping
     public void saveRoom(@RequestBody Room room) {
         roomService.saveRoom(room);
     }

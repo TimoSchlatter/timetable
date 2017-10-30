@@ -36,7 +36,7 @@ public class EventController {
      *
      * @param event The event to save.
      */
-    @PutMapping
+    @PostMapping
     public void saveEvent(@RequestBody Event event) {
         eventService.saveEvent(event);
     }
