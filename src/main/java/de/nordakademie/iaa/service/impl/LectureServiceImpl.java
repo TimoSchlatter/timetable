@@ -26,6 +26,7 @@ public class LectureServiceImpl implements LectureService {
         lectureDAO.save(lecture);
     }
 
+    @Override
     public List<Lecture> listLectures() {
         return lectureDAO.findAll();
     }

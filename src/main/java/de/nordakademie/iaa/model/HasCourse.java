@@ -4,11 +4,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class HasCourse extends Subject {
+abstract class HasCourse extends Subject {
 
     private Course course;
 
     HasCourse() {}
+
+    HasCourse(Course course) {
+        this.course = course;
+        this.title = course.getTitle();
+    }
 
     HasCourse(int minChangeoverTime, Course course) {
         super(minChangeoverTime);
