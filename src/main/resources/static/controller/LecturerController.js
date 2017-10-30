@@ -5,7 +5,6 @@ app.controller('LecturerController', function($scope , $http) {
     $http.get('http://localhost:49999/docents').
     then(function(response) {
         $scope.docents = response.data;
-        console.log(response.data)
     });
 
     $scope.deleteData = function() {
@@ -31,9 +30,6 @@ app.controller('LecturerController', function($scope , $http) {
             "title": $scope.title,
             "isPermanentlyEmployed": true
         };
-        console.log(data);
-        var json = angular.toJson(data);
-        console.log(json);
 
         $http.post('http://localhost:49999/docents', data)
             .then(function (data) {

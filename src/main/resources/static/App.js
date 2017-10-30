@@ -19,10 +19,22 @@ var app = angular .module('roomManagement', ["ngRoute"]);
             templateUrl: "view/lecture.html",
             name: "Lecture",
             controller: "LectureController"
+        }).when("/course", {
+            templateUrl: "view/course.html",
+            name: "Course",
+            controller: "CourseController"
+        }).when("/exam", {
+            templateUrl: "view/exam.html",
+            name: "Exam",
+            controller: "ExamController"
         }).when("/group", {
             templateUrl: "view/group.html",
             name: "Group",
             controller: "GroupController"
+        })when("/seminar", {
+            templateUrl: "view/seminar.html",
+            name: "Seminar",
+            controller: "SeminarController"
         }).otherwise({
         redirectTo: "/"})
     });
