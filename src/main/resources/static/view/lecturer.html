@@ -10,9 +10,15 @@
 <ng-include src="LectureController.getCurrentScreenSource()"></ng-include>
 <ul>
     <li ng-repeat="item in docents" href="#">
-        {{$index}} {{item.forename}} {{item.surname}} {{item.email}} {{item.phoneNumber}} {{item.isPermanentlyEmployed}}
+        {{$index}} {{item.id}} {{item.forename}} {{item.surname}} {{item.email}} {{item.phoneNumber}} {{item.isPermanentlyEmployed}}
     </li>
 </ul>
+
+<form ng-submit="deleteData()">
+    <p>ID : <input type="text" name="id" ng-model="id" required /></p>
+    <input type="submit" value="Submit"/>
+</form>
+
 
 <form ng-submit="createData()">
     <p>Forename : <input type="text" name="forename" ng-model="forename" required /></p>

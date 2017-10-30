@@ -8,6 +8,20 @@ app.controller('LecturerController', function($scope , $http) {
         console.log(response.data)
     });
 
+    $scope.deleteData = function() {
+        var url = 'http://localhost:49999/docents/' + $scope.id;
+        $http.delete(url)
+            .then(function (data) {
+                $scope.ServerResponse = data;
+            })
+            .then(function (data, status, header, config) {
+                $scope.ServerResponse =  htmlDecode("Data: " + data +
+                    "\n\n\n\nstatus: " + status +
+                    "\n\n\n\nheaders: " + header +
+                    "\n\n\n\nconfig: " + config);
+            });
+    }
+
     $scope.createData = function() {
         var data = {
             "forename": $scope.forename,
