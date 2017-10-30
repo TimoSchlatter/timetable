@@ -41,23 +41,16 @@ public class RoomServiceTest {
     }
 
     @Test
-    public void testLoadRoom() {
-        final Long id = 123L;
-        roomService.loadRoom(id);
-        Mockito.verify(roomDAO, times(1)).findOne(id);
-    }
-
-    @Test
     public void testListRooms() {
         roomService.listRooms();
         Mockito.verify(roomDAO, times(1)).findAll();
     }
 
     @Test
-    public void testFindByBuildingAndNumber() {
-        Mockito.when(roomDAO.findByBuildingAndNumber(building, number)).thenReturn(room);
-        roomService.findByBuildingAndNumber(building, number);
-        Mockito.verify(roomDAO, times(1)).findByBuildingAndNumber(building, number);
+    public void testLoadRoom() {
+        final Long id = 123L;
+        roomService.loadRoom(id);
+        Mockito.verify(roomDAO, times(1)).findOne(id);
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -74,6 +67,13 @@ public class RoomServiceTest {
         roomService.deleteRoom(id);
         Mockito.verify(roomDAO, times(1)).findOne(id);
         Mockito.verify(roomDAO, times(1)).delete(room);
+    }
+
+    @Test
+    public void testFindByBuildingAndNumber() {
+        Mockito.when(roomDAO.findByBuildingAndNumber(building, number)).thenReturn(room);
+        roomService.findByBuildingAndNumber(building, number);
+        Mockito.verify(roomDAO, times(1)).findByBuildingAndNumber(building, number);
     }
 
     @After
