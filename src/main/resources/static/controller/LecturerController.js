@@ -22,7 +22,7 @@ app.controller('LecturerController', function($scope , $http) {
     }
 
     $scope.createData = function() {
-        var data = {
+        var lecturerData = {
             "forename": $scope.forename,
             "surname": $scope.surname,
             "email": $scope.email,
@@ -31,7 +31,7 @@ app.controller('LecturerController', function($scope , $http) {
             "isPermanentlyEmployed": true
         };
 
-        $http.post('http://localhost:49999/docents', data)
+        $http.post('http://localhost:49999/docents', lecturerData)
             .then(function (data) {
                 $scope.ServerResponse = data;
             })
@@ -44,7 +44,7 @@ app.controller('LecturerController', function($scope , $http) {
     }
 
     $scope.updateData = function (){
-        var data = {
+        var lecturerData = {
             "forename": $scope.forename,
             "surname": $scope.surname,
             "email": $scope.email,
@@ -53,7 +53,7 @@ app.controller('LecturerController', function($scope , $http) {
             "isPermanentlyEmployed": true
         };
 
-        $http.put('http://localhost:49999/docents', data)
+        $http.put('http://localhost:49999/docents', lecturerData)
             .then(function (data) {
                 $scope.ServerResponse = data;
             })

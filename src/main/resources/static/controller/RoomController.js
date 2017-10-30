@@ -22,14 +22,14 @@ app.controller('RoomController', function($scope , $http) {
     }
 
     $scope.createData = function() {
-        var data = {
+        var roomData = {
             "building": $scope.building,
             "number": $scope.number,
             "maxSeats": $scope.maxSeats,
             "roomType": $scope.roomType
         };
 
-        $http.post('http://localhost:49999/rooms', data)
+        $http.post('http://localhost:49999/rooms', roomData)
             .then(function (data) {
                 $scope.ServerResponse = data;
             })
@@ -42,14 +42,14 @@ app.controller('RoomController', function($scope , $http) {
     }
 
     $scope.updateData = function (){
-        var data = {
+        var roomData = {
             "building": $scope.building,
             "number": $scope.number,
             "maxSeats": $scope.maxSeats,
             "roomType": $scope.roomType
         };
 
-        $http.put('http://localhost:49999/rooms', data)
+        $http.put('http://localhost:49999/rooms', roomData)
             .then(function (data) {
                 $scope.ServerResponse = data;
             })
