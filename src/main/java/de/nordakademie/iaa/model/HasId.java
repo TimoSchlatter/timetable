@@ -11,7 +11,7 @@ public abstract class HasId {
 	private Long id;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	public Long getId() {
 		return this.id;
 	}

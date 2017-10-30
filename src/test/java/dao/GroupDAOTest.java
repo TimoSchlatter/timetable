@@ -1,6 +1,6 @@
 package dao;
 
-import de.nordakademie.iaa.ApplicationConfig;
+import de.nordakademie.iaa.Application;
 import de.nordakademie.iaa.dao.GroupDAO;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.model.Group;
@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
  * Created by arvid on 25.10.17.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { ApplicationConfig.class})
+@ContextConfiguration(classes = { Application.class})
 @Transactional
 public class GroupDAOTest {
 
