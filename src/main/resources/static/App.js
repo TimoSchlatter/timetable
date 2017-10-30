@@ -27,10 +27,18 @@ var app = angular.module('roomManagement', ["ngRoute"]);
             templateUrl: "view/exam.html",
             name: "Exam",
             controller: "ExamController"
-        }).when("/group", {
-            templateUrl: "view/group.html",
-            name: "Group",
-            controller: "GroupController"
+        }).when("/kohorte", {
+            templateUrl: "view/kohorte.html",
+            name: "Kohorte",
+            controller: "KohorteController"
+        }).when("/manipel", {
+            templateUrl: "view/manipel.html",
+            name: "Manipel",
+            controller: "ManipelController"
+        }).when("/zenturie", {
+            templateUrl: "view/zenturie.html",
+            name: "Zenturie",
+            controller: "ZenturieController"
         }).when("/seminar", {
             templateUrl: "view/seminar.html",
             name: "Seminar",
