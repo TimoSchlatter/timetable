@@ -23,15 +23,12 @@
                     <td>{{item.email}}</td>
                     <td>{{item.phoneNumber}}</td>
                     <td>
-                        <div class="btn btn-primary btn-xs"ng-show=item.permanentlyEmployed>
-                            <span class="fa fa-check"></span>
-                        </div>
-                        <div class="btn btn-primary btn-xs"ng-show=!item.permanentlyEmployed>
-                            <span class="fa fa-times"></span>
-                        </div>
+                        <span ng-show="item.permanentlyEmployed" class="fa fa-check-square-o"></span>
+                        <span ng-hide="item.permanentlyEmployed" class="fa fa-times"></span>
                         {{item.permanentlyEmployed?'Ja':'Nein'}}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
+                                ng-click="grid.appScope.vm.editRow(grid, row)"
                                 data-title="Edit"
                                 data-toggle="modal"
                                 data-target="#editModal">
