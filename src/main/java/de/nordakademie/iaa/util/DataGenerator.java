@@ -6,23 +6,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+
 @Component
 @Transactional
 public class DataGenerator {
 
+    private CenturyService centuryService;
+    private CohortService cohortService;
     private CourseService courseService;
     private DocentService docentService;
     private ExamService examService;
     private LectureService lectureService;
+    private ManipleService manipleService;
     private RoomService roomService;
     private SeminarService seminarService;
 
     @Autowired
-    public DataGenerator(CourseService courseService, DocentService docentService, ExamService examService, LectureService lectureService, RoomService roomService, SeminarService seminarService) {
+    public DataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService, DocentService docentService, ExamService examService, LectureService lectureService, ManipleService manipleService, RoomService roomService, SeminarService seminarService) {
+        this.centuryService = centuryService;
+        this.cohortService = cohortService;
         this.courseService = courseService;
         this.docentService = docentService;
         this.examService = examService;
         this.lectureService = lectureService;
+        this.manipleService = manipleService;
         this.roomService = roomService;
         this.seminarService = seminarService;
     }
@@ -38,6 +46,7 @@ public class DataGenerator {
         createSeminars();
         createLectures();
         createExams();
+//        createGroups();
     }
 
     private void createRooms() {
@@ -125,5 +134,22 @@ public class DataGenerator {
         courseService.listCourses().forEach(course -> examService.saveExam(new Exam(30, course)));
     }
 
+    private void createGroups() {
+        Century centuryI14a = new Century("a", 35);
+        Century centuryI14b = new Century("b", 30);
+        Century centuryW14a = new Century("a", 40);
+        Century centuryW14b = new Century("b", 35);
+        Arrays.asList(centuryI14a, centuryI14b, centuryW14a, centuryI14b).forEach(centuryService::saveCentury);
+
+        Maniple manipleI = new Maniple("I");
+        Maniple manipleW = new Maniple("W");
+        manipleI.setCenturies(Arrays.asList(centuryI14a, centuryI14b));
+        manipleW.setCenturies(Arrays.asList(centuryW14a, centuryW14b));
+        Arrays.asList(manipleI, manipleW).forEach(manipleService::saveManiple);
+
+        Cohort cohort14 = new Cohort("14");
+        cohort14.setManiples(Arrays.asList(manipleI, manipleW));
+        cohortService.saveCohort(cohort14);
+    }
 
 }
