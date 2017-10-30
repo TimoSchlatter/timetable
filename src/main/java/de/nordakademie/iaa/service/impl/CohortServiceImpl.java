@@ -26,6 +26,7 @@ public class CohortServiceImpl implements CohortService {
         cohortDAO.save(cohort);
     }
 
+    @Override
     public List<Cohort> listCohorts() {
         return cohortDAO.findAll();
     }
