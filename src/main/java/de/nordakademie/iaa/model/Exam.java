@@ -8,6 +8,10 @@ public class Exam extends HasCourse implements Serializable {
 
     public Exam() {}
 
+    public Exam(Course course) {
+        super(course);
+    }
+
     public Exam(int minChangeoverTime, Course course) {
         super(minChangeoverTime, course);
     }

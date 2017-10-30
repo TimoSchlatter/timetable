@@ -26,6 +26,7 @@ public class ExamServiceImpl implements ExamService {
         examDAO.save(exam);
     }
 
+    @Override
     public List<Exam> listExams() {
         return examDAO.findAll();
     }
