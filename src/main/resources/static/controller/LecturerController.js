@@ -28,7 +28,8 @@ app.controller('LecturerController', function($scope , $http) {
             "email": $scope.email,
             "phoneNumber": $scope.phoneNumber,
             "title": $scope.title,
-            "isPermanentlyEmployed": true
+            "isPermanentlyEmployed": true,
+            "minChangeoverTime": $scope.minChangeoverTime
         };
 
         $http.post('http://localhost:49999/docents', lecturerData)
@@ -50,7 +51,8 @@ app.controller('LecturerController', function($scope , $http) {
             "email": $scope.email,
             "phoneNumber": $scope.phoneNumber,
             "title": $scope.title,
-            "isPermanentlyEmployed": true
+            "isPermanentlyEmployed": true,
+            "minChangeoverTime": $scope.minChangeoverTime
         };
 
         $http.put('http://localhost:49999/docents', lecturerData)
