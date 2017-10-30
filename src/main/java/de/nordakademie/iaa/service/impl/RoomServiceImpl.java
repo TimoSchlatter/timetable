@@ -26,6 +26,7 @@ public class RoomServiceImpl implements RoomService {
         roomDAO.save(room);
     }
 
+    @Override
     public List<Room> listRooms() {
         return roomDAO.findAll();
     }
