@@ -5,13 +5,81 @@
     <title>Timetable</title>
 </head>
 <body>
-    <h1>Dashboard</h1>
-    <ng-include src="DashboardController.getCurrentScreenSource()"></ng-include>
-    <ul>
-        <li ng-repeat="item in rooms">
-            {{$index}} {{item.id}} {{item.building}}
-        </li>
-    </ul>
+<ng-include src="DashboardController.getCurrentScreenSource()"></ng-include>
+
+
+<div class="row">
+    <div class="col-md-4 col-lg-3 sidebar">
+        <div class="list-group">
+            <a ng-repeat="item in rooms" href="#"
+               class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">{{item.number}}
+                <span class="badge badge-primary badge-pill">{{item.maxSeats}}</span></a>
+        </div>
+    </div>
+    <div class="col-md-8 col-lg-9 offset-md-4 offset-lg-3 pt-3">
+        <h1>Dashboard</h1>
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="inputTitel">Title</label>
+                    <input type="text"
+                           class="form-control"
+                           id="inputTitel"
+                           placeholder="Title">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputSurname">Surname</label>
+                    <input type="text"
+                           class="form-control"
+                           id="inputSurname"
+                           placeholder="Surname">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputForename">Forename</label>
+                    <input type="text"
+                           class="form-control"
+                           id="inputForename"
+                           placeholder="Forename">
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputEmail">Email</label>
+                    <input type="email"
+                           class="form-control"
+                           id="inputEmail"
+                           placeholder="forename.surname@nordakademie.de">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPhone">Phone number</label>
+                    <input type="tel"
+                           class="form-control"
+                           id="inputPhone"
+                           placeholder="+49 4121 40900">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox"> Mark if the person is permanently employed
+                    </label>
+                </div>
+            </div>
+            <button type="button" class="btn btn-labeled btn-danger">
+                <span class="btn-label"><i class="fa fa-times"></i></span>Cancel
+            </button>
+            <button type="button" class="btn btn-labeled btn-info">
+                <span class="btn-label"><i class="fa fa-plus"></i></span>Add
+            </button>
+            <button type="button" class="btn btn-labeled btn-success">
+                <span class="btn-label"><i class="fa fa-check"></i></span>Save
+            </button>
+        </form>
+    </div>
+</div>
+
 
 </body>
 </html>

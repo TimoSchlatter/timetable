@@ -1,1 +1,28 @@
-body { padding-top: 50px; }
+body { padding-top: 56px; }
+
+
+
+@media (min-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 56px;
+        bottom: 0;
+        /* left: 0; */
+        z-index: 1000;
+        padding-left: 0;
+        padding-right: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        /* border-right: 1px solid #eee; */
+    }
+}
+
+.pt-3 h1 {
+    margin-bottom: 20px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eee;
+}
+
+.btn-label {position: relative;left: -12px;display: inline-block;padding: 6px 12px;background: rgba(0,0,0,0.15);border-radius: 3px 0 0 3px;}
+.btn-labeled {padding-top: 0;padding-bottom: 0;}
+.btn { margin-bottom:10px; }
