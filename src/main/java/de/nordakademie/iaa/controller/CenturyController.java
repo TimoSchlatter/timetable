@@ -36,7 +36,7 @@ public class CenturyController {
      *
      * @param century The century to save.
      */
-    @PutMapping
+    @PostMapping
     public void saveCentury(@RequestBody Century century) {
         centuryService.saveCentury(century);
     }

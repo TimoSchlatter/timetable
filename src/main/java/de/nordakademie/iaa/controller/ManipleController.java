@@ -36,7 +36,7 @@ public class ManipleController {
      *
      * @param maniple The maniple to save.
      */
-    @PutMapping
+    @PostMapping
     public void saveManiple(@RequestBody Maniple maniple) {
         manipleService.saveManiple(maniple);
     }

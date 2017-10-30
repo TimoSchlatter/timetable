@@ -36,7 +36,7 @@ public class CourseController {
      *
      * @param course The course to save.
      */
-    @PutMapping
+    @PostMapping
     public void saveCourse(@RequestBody Course course) {
         courseService.saveCourse(course);
     }

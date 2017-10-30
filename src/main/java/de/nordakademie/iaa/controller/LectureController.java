@@ -36,7 +36,7 @@ public class LectureController {
      *
      * @param lecture The lecture to save.
      */
-    @PutMapping
+    @PostMapping
     public void saveLecture(@RequestBody Lecture lecture) {
         lectureService.saveLecture(lecture);
     }

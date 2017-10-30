@@ -36,7 +36,7 @@ public class ExamController {
      *
      * @param exam The exam to save.
      */
-    @PutMapping
+    @PostMapping
     public void saveExam(@RequestBody Exam exam) {
         examService.saveExam(exam);
     }

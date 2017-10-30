@@ -36,7 +36,7 @@ public class SeminarController {
      *
      * @param seminar The seminar to save.
      */
-    @PutMapping
+    @PostMapping
     public void saveLecture(@RequestBody Lecture seminar) {
         seminarService.saveLecture(seminar);
     }
