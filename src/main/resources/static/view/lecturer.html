@@ -6,5 +6,28 @@
 </head>
 <body>
 <h1>Dozentenverwaltung</h1>
+
+<ul>
+    <li ng-repeat="item in lectures">
+        {{$index}} {{item.forename}} {{item.surename}} {{item.email}} {{item.phoneNumber}}
+    </li>
+</ul>
+
+<form ng-submit="UpdateData()">
+    <p>Forename : <input type="text" name="foreName" ng-model="foreName" required /></p>
+    <p>Surename : <input type="text" name="sureName" ng-model="sureName" required /></p>
+    <p>E-Mail : <input type="email" name="eMail" ng-model="eMail" required /></p>
+    <p>Phone Number : <input type="number" name="phoneNumber" ng-model="phoneNumber" required /></p>
+    <p>Title : <input type="text" name= ng-model="title" required /></p>
+    <p>Festanstellung :<input type="checkbox"
+                      ng-model="anstellung"
+                      [name="anstellung"]
+                      [ng-true-value="true"]
+                      [ng-false-value="false"]
+                      [ng-change="anstellung"]></p>
+    <input type="submit" value="Submit" />
+    <hr />
+    {{ ServerResponse }}
+</form>
 </body>
 </html>
