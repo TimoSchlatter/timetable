@@ -26,6 +26,7 @@ public class DocentServiceImpl implements DocentService {
         docentDAO.save(docent);
     }
 
+    @Override
     public List<Docent> listDocents() {
         return docentDAO.findAll();
     }

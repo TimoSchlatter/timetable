@@ -26,6 +26,7 @@ public class CourseServiceImpl implements CourseService {
         courseDAO.save(course);
     }
 
+    @Override
     public List<Course> listCourses() {
         return courseDAO.findAll();
     }
