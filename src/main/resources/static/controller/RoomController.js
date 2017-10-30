@@ -9,6 +9,7 @@ app.controller('RoomController', function($scope , $http) {
 
     $scope.deleteData = function() {
         var url = 'http://localhost:49999/rooms/' + $scope.id;
+        console.log($scope.index);
         $http.delete(url)
             .then(function (data) {
                 $scope.ServerResponse = data;

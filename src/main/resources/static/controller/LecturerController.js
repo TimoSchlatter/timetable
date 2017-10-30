@@ -7,8 +7,8 @@ app.controller('LecturerController', function($scope , $http) {
         $scope.docents = response.data;
     });
 
-    $scope.deleteData = function() {
-        var url = 'http://localhost:49999/docents/' + $scope.id;
+    $scope.deleteData = function(id) {
+        var url = 'http://localhost:49999/docents/' + id;
         $http.delete(url)
             .then(function (data) {
                 $scope.ServerResponse = data;
