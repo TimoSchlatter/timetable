@@ -26,6 +26,7 @@ public class SeminarServiceImpl implements SeminarService {
         seminarDAO.save(seminar);
     }
 
+    @Override
     public List<Seminar> listSeminars() {
         return seminarDAO.findAll();
     }
