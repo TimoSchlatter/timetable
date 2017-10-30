@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-
 @Component
 @Transactional
 public class DataGenerator {
@@ -63,30 +61,30 @@ public class DataGenerator {
     }
 
     private void createDocents() {
-        docentService.saveDocent(new Docent("", "Uwe", "Adamczak", "", "", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("", "Martin", "Müller", "", "Dr.", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("", "Soenke", "Stange", "", "", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("", "Carlo ", "Düllings", "", "", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("", "Clemens", "Sietas", "", "", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("", "Anna Katharina", "Bartel", "", "", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("", "Andrea", "Denke", "", "Dr.", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("", "Michael ", "Bregulla", "", "", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("", "Kersten", "Steinke", "", "", false, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("", "Uwe", "Adamczak", "", "", false, 30));
+        docentService.saveDocent(new Docent("", "Martin", "Müller", "", "Dr.", false, 30));
+        docentService.saveDocent(new Docent("", "Soenke", "Stange", "", "", false, 30));
+        docentService.saveDocent(new Docent("", "Carlo ", "Düllings", "", "", false, 30));
+        docentService.saveDocent(new Docent("", "Clemens", "Sietas", "", "", false, 30));
+        docentService.saveDocent(new Docent("", "Anna Katharina", "Bartel", "", "", false, 30));
+        docentService.saveDocent(new Docent("", "Andrea", "Denke", "", "Dr.", false, 30));
+        docentService.saveDocent(new Docent("", "Michael ", "Bregulla", "", "", false, 30));
+        docentService.saveDocent(new Docent("", "Kersten", "Steinke", "", "", false, 30));
 
-        docentService.saveDocent(new Docent("stefan.reichert@nordakademie.de", "Stefan", "Reichert", "", "", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("stephan.anft@nordakademie.de", "Stephan ", "Anft", "", "", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("bjoern-helge.busch@nordakademie.de", "Björn-Helge", "Busch", "+49 (0) 4121 4090-40", "", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("ludolph@goldex.de", "Fred", "Ludolph", "+49 (0) 4121 4090-40", "", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("andrew.small@nordakademie.de", "Andrew", "Small", "+49 (0) 4121 4090-40", "M.A. (TESOL)", false, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("stover@nordakademie.de", "Jason", "Stover", "+49 (0) 4121 4090-40", "Diplom-Theologe", false, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("stefan.reichert@nordakademie.de", "Stefan", "Reichert", "", "", false, 30));
+        docentService.saveDocent(new Docent("stephan.anft@nordakademie.de", "Stephan ", "Anft", "", "", false, 30));
+        docentService.saveDocent(new Docent("bjoern-helge.busch@nordakademie.de", "Björn-Helge", "Busch", "+49 (0) 4121 4090-40", "", false, 30));
+        docentService.saveDocent(new Docent("ludolph@goldex.de", "Fred", "Ludolph", "+49 (0) 4121 4090-40", "", false, 30));
+        docentService.saveDocent(new Docent("andrew.small@nordakademie.de", "Andrew", "Small", "+49 (0) 4121 4090-40", "M.A. (TESOL)", false, 30));
+        docentService.saveDocent(new Docent("stover@nordakademie.de", "Jason", "Stover", "+49 (0) 4121 4090-40", "Diplom-Theologe", false, 30));
 
-        docentService.saveDocent(new Docent("uwe.neuhaus@nordakademie.de", "Uwe", "Neuhaus", "04121 4090-543", "", true, 20, new HashSet<>()));
-        docentService.saveDocent(new Docent("joachim.sauer@nordakademie.de", "Joachim", "Sauer", "04121 4090-441", "Prof. Dr.", true, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("hinrich.schroeder@nordakademie.de", "Hinrich", "Schröder", "04018520656", "Prof. Dr.", true, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("michael.skall@nordakademie.de", "Michael", "Skall", "04121 4090-449", "Prof. Dr.", true, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("f.zimmermann@nordakademie.de", "Frank", "Zimmermann", "04121 4090-447", "Prof. Dr.", true, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("matthias.finck@nordakademie.de", "Matthias", "Finck", "04121 4090-445", "Prof. Dr.", true, 30, new HashSet<>()));
-        docentService.saveDocent(new Docent("frank.fuerstenberg@nordakademie.de", "Frank", "Fürstenberg", "+49 4121 4090-422", "Prof. Dr.-Ing.", true, 30, new HashSet<>()));
+        docentService.saveDocent(new Docent("uwe.neuhaus@nordakademie.de", "Uwe", "Neuhaus", "04121 4090-543", "", true, 20));
+        docentService.saveDocent(new Docent("joachim.sauer@nordakademie.de", "Joachim", "Sauer", "04121 4090-441", "Prof. Dr.", true, 30));
+        docentService.saveDocent(new Docent("hinrich.schroeder@nordakademie.de", "Hinrich", "Schröder", "04018520656", "Prof. Dr.", true, 30));
+        docentService.saveDocent(new Docent("michael.skall@nordakademie.de", "Michael", "Skall", "04121 4090-449", "Prof. Dr.", true, 30));
+        docentService.saveDocent(new Docent("f.zimmermann@nordakademie.de", "Frank", "Zimmermann", "04121 4090-447", "Prof. Dr.", true, 30));
+        docentService.saveDocent(new Docent("matthias.finck@nordakademie.de", "Matthias", "Finck", "04121 4090-445", "Prof. Dr.", true, 30));
+        docentService.saveDocent(new Docent("frank.fuerstenberg@nordakademie.de", "Frank", "Fürstenberg", "+49 4121 4090-422", "Prof. Dr.-Ing.", true, 30));
     }
 
     private void createCourses() {
@@ -120,15 +118,11 @@ public class DataGenerator {
     }
 
     private void createLectures() {
-        courseService.listCourses().forEach(course -> {
-            lectureService.saveLecture(new Lecture(15, course));
-        });
+        courseService.listCourses().forEach(course -> lectureService.saveLecture(new Lecture(15, course)));
     }
 
     private void createExams() {
-        courseService.listCourses().forEach(course -> {
-            examService.saveExam(new Exam(30, course));
-        });
+        courseService.listCourses().forEach(course -> examService.saveExam(new Exam(30, course)));
     }
 
 

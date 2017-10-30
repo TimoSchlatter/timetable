@@ -1,9 +1,7 @@
 package dao;
 
 import de.nordakademie.iaa.ApplicationConfig;
-import de.nordakademie.iaa.dao.CourseDAO;
 import de.nordakademie.iaa.dao.DocentDAO;
-import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.model.Docent;
 import org.junit.After;
 import org.junit.Before;
@@ -16,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -32,32 +29,20 @@ public class DocentDAOTest {
 
 
     private DocentDAO docentDAO;
-    private CourseDAO courseDAO;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     private Docent docent;
-    private Course course;
 
     @Autowired
     public void setDocentDAO(DocentDAO docentDAO) {
         this.docentDAO = docentDAO;
     }
 
-    @Autowired
-    public void setCourseDAO(CourseDAO courseDAO) {
-        this.courseDAO = courseDAO;
-    }
-
     @Before
     public void setupData() {
-        HashSet<Course> courses = new HashSet<>();
-        course = new Course('I',123,"Test Driven Development");
-        courseDAO.save(course);
-        courses.add(course);
-
-        docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20, courses);
+        docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20);
         docentDAO.save(docent);
     }
 
@@ -103,15 +88,6 @@ public class DocentDAOTest {
     }
 
     @Test
-    public void testFindDocentsByCourse() {
-        List<Docent> docents = docentDAO.findByCourse(course);
-        assertEquals(1, docents.size());
-        for (Docent docent : docents) {
-            compareDocents(docent);
-        }
-    }
-
-    @Test
     public void testFindDocentsByEmploymentState() {
         List<Docent> docents = docentDAO.findByPermanentlyEmployed(true);
         assertEquals(1, docents.size());
@@ -122,7 +98,6 @@ public class DocentDAOTest {
 
     private void compareDocents(Docent docent) {
         assertEquals(this.docent.getMinChangeoverTime(), docent.getMinChangeoverTime());
-        assertEquals(this.docent.getCourses(), docent.getCourses());
         assertEquals(this.docent.getEmail(), docent.getEmail());
         assertEquals(this.docent.getForename(), docent.getForename());
         assertEquals(this.docent.getSurname(), docent.getSurname());

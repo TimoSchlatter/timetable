@@ -74,10 +74,8 @@ public class EventDAOTest {
 
     @Before
     public void setupData() {
-        HashSet<Course> courses = new HashSet<>();
         Course course = new Course('I',123,"Test Driven Development");
         courseDAO.save(course);
-        courses.add(course);
 
         Lecture lecture = new Lecture(5,course);
         lectureDAO.save(lecture);
@@ -89,7 +87,7 @@ public class EventDAOTest {
         LocalTime startTime = LocalTime.of(20,0);
         LocalTime endTime = LocalTime.of(22,30);
 
-        Docent docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20, courses);
+        Docent docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20);
         docentDAO.save(docent);
         HashSet<Docent> docents = new HashSet<>();
         docents.add(docent);

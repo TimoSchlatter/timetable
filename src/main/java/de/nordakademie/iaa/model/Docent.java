@@ -4,9 +4,7 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 public class Docent extends HasMinChangeoverTime implements Serializable {
@@ -16,20 +14,17 @@ public class Docent extends HasMinChangeoverTime implements Serializable {
     private String email;
     private String phoneNumber;
     private String title;
-    private Set<Course> courses;
     private boolean isPermanentlyEmployed;
 
     public Docent() {}
 
-    public Docent(String email, String forename, String surname, String phoneNumber, String title, boolean isPermanentlyEmployed, int minChangeoverTime, Set<Course> courses) {
+    public Docent(String email, String forename, String surname, String phoneNumber, String title, boolean isPermanentlyEmployed, int minChangeoverTime) {
         super(minChangeoverTime);
-        this.courses = courses;
         this.email = email;
         this.forename = forename;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
         this.title = title;
-        this.courses = courses;
         this.isPermanentlyEmployed = isPermanentlyEmployed;
     }
 
@@ -76,15 +71,6 @@ public class Docent extends HasMinChangeoverTime implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    @ManyToMany
-    public Set<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
     }
 
     @Basic
