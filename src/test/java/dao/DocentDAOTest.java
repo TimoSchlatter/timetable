@@ -98,13 +98,13 @@ public class DocentDAOTest {
 
     @Test
     public void testFindDocentByName() {
-        Docent docent = docentDAO.findDocentByName("John","Doe");
+        Docent docent = docentDAO.findByForenameAndSurname("John","Doe");
         compareDocents(docent);
     }
 
     @Test
     public void testFindDocentsByCourse() {
-        List<Docent> docents = docentDAO.findDocentsByCourse(course);
+        List<Docent> docents = docentDAO.findByCourse(course);
         assertEquals(1, docents.size());
         for (Docent docent : docents) {
             compareDocents(docent);
@@ -113,7 +113,7 @@ public class DocentDAOTest {
 
     @Test
     public void testFindDocentsByEmploymentState() {
-        List<Docent> docents = docentDAO.findDocentsByEmploymentState(true);
+        List<Docent> docents = docentDAO.findByPermanentlyEmployed(true);
         assertEquals(1, docents.size());
         for (Docent docent : docents) {
             compareDocents(docent);

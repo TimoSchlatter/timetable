@@ -13,13 +13,11 @@ import java.util.List;
  */
 public interface DocentDAO extends JpaRepository<Docent,Long>, BaseDAO<Docent, Long> {
 
-    @Query("SELECT d FROM Docent d WHERE d.forename = :forename AND d.surname = :surname")
-    Docent findDocentByName(@Param("forename")String forename, @Param("surname")String surname);
+    Docent findByForenameAndSurname(String forename, String surname);
 
     //TODO: Kompliziertere Query noch zu implementieren
     @Query("Select d FROM Docent d")
-    List<Docent> findDocentsByCourse(@Param("course")Course course);
+    List<Docent> findByCourse(@Param("course")Course course);
 
-    @Query("SELECT d FROM Docent d WHERE d.permanentlyEmployed = :permanentlyEmployed")
-    List<Docent> findDocentsByEmploymentState(@Param("permanentlyEmployed")boolean isPermanentlyEmployed);
+    List<Docent> findByPermanentlyEmployed(boolean isPermanentlyEmployed);
 }

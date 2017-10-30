@@ -84,7 +84,7 @@ public class CourseDAOTest
 
     @Test
     public void testFindCourseByFieldAndNumber() {
-        Course course = courseDAO.findCourseByFieldAndNumber(this.course.getField(), this.course.getNumber());
+        Course course = courseDAO.findByFieldAndNumber(this.course.getField(), this.course.getNumber());
         compareCourses(course);
     }
 

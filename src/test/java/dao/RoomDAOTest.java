@@ -87,7 +87,7 @@ public class RoomDAOTest {
 
     @Test
     public void testFindRoomsByType() {
-        List<Room> rooms = roomDAO.findRoomsByType(this.room.getRoomType());
+        List<Room> rooms = roomDAO.findByRoomType(this.room.getRoomType());
         assertEquals(1, rooms.size());
         rooms.forEach(this::compareRooms);
     }
