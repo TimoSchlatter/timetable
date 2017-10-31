@@ -21,8 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import static java.lang.Math.toIntExact;
 import static org.hamcrest.Matchers.is;
@@ -56,9 +55,7 @@ public class RoomControllerTest {
 
     @Test
     public void testListRooms() throws Exception {
-        List<Room> rooms = new ArrayList<>();
-        rooms.add(room);
-        when(this.roomService.listRooms()).thenReturn(rooms);
+        when(this.roomService.listRooms()).thenReturn(Arrays.asList(room));
         mockMvc.perform(get("/rooms"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].id", is(toIntExact(room.getId()))))
