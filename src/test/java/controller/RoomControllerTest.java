@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.RoomController;
 import de.nordakademie.iaa.model.Room;
@@ -19,18 +20,19 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import static java.lang.Math.toIntExact;
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,16 +57,17 @@ public class RoomControllerTest {
 
     @Test
     public void testListRooms() throws Exception {
-        when(this.roomService.listRooms()).thenReturn(Arrays.asList(room));
-        mockMvc.perform(get("/rooms"))
+        ObjectMapper objectMapper = new ObjectMapper();
+        JacksonTester.initFields(this, objectMapper);
+        List<Room> rooms = new ArrayList<>(Arrays.asList(room));
+        when(this.roomService.listRooms()).thenReturn(rooms);
+        MvcResult mvcResult = mockMvc.perform(get("/rooms"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id", is(toIntExact(room.getId()))))
-                .andExpect(jsonPath("$.[0].minChangeoverTime", is(room.getMinChangeoverTime())))
-                .andExpect(jsonPath("$.[0].building", is(room.getBuilding())))
-                .andExpect(jsonPath("$.[0].maxSeats", is(room.getMaxSeats())))
-                .andExpect(jsonPath("$.[0].number", is(room.getNumber())))
-                .andExpect(jsonPath("$.[0].roomType", is(room.getRoomType().toString())));
+                .andReturn();
         verify(this.roomService, times(1)).listRooms();
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<Room> roomsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Room>>() {});
+        assertEquals(rooms, roomsResponse);
     }
 
     @Test
