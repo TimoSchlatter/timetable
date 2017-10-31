@@ -7,6 +7,7 @@ import de.nordakademie.iaa.service.CohortService;
 import de.nordakademie.iaa.service.ManipleService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +44,13 @@ public class CohortController {
      * @param cohort The cohort to save.
      */
     @PostMapping
-    public void saveCohort(@RequestBody Cohort cohort) {
-        cohortService.saveCohort(cohort);
+    public ResponseEntity saveCohort(@RequestBody Cohort cohort) {
+        try {
+            cohortService.saveCohort(cohort);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     /**
@@ -55,11 +61,15 @@ public class CohortController {
      */
     @PostMapping
     @RequestMapping("/{id}/addManiple")
-    public void addManiple(@PathVariable Long id, @RequestBody Maniple maniple) {
+    public ResponseEntity addManiple(@PathVariable Long id, @RequestBody Maniple maniple) {
         Cohort cohort = cohortService.loadCohort(id);
-        maniple.setName(maniple.getName() + cohort.getName());
-        manipleService.saveManiple(maniple);
-        cohort.addManiple(maniple);
+        if (cohort != null) {
+            maniple.setName(maniple.getName() + cohort.getName());
+            manipleService.saveManiple(maniple);
+            cohort.addManiple(maniple);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     /**
