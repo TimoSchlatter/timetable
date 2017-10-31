@@ -45,7 +45,6 @@ public class RoomControllerTest {
     private RoomService roomService;
 
     private JacksonTester<Room> jacksonTester;
-    private List<Room> rooms = new ArrayList<>();
     private Room room = new Room(20, "T", 42, "999", RoomType.COMPUTERROOM);
     private MockMvc mockMvc;
 
@@ -57,6 +56,7 @@ public class RoomControllerTest {
 
     @Test
     public void testListRooms() throws Exception {
+        List<Room> rooms = new ArrayList<>();
         rooms.add(room);
         when(this.roomService.listRooms()).thenReturn(rooms);
         mockMvc.perform(get("/rooms"))
