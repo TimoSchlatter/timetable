@@ -26,7 +26,9 @@ import java.util.List;
 
 import static java.lang.Math.toIntExact;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -56,7 +58,7 @@ public class RoomControllerTest {
     @Test
     public void testListRooms() throws Exception {
         rooms.add(room);
-        Mockito.when(this.roomService.listRooms()).thenReturn(rooms);
+        when(this.roomService.listRooms()).thenReturn(rooms);
         mockMvc.perform(get("/rooms"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].id", is(toIntExact(room.getId()))))
@@ -65,7 +67,7 @@ public class RoomControllerTest {
                 .andExpect(jsonPath("$.[0].maxSeats", is(room.getMaxSeats())))
                 .andExpect(jsonPath("$.[0].number", is(room.getNumber())))
                 .andExpect(jsonPath("$.[0].roomType", is(room.getRoomType().toString())));
-        Mockito.verify(this.roomService, times(1)).listRooms();
+        verify(this.roomService, times(1)).listRooms();
     }
 
     @Test
@@ -74,17 +76,23 @@ public class RoomControllerTest {
         mockMvc.perform(post("/rooms").content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-        Mockito.verify(this.roomService, times(1)).saveRoom(room);
+                .andExpect(status().isCreated());
+        verify(this.roomService, times(1)).saveRoom(room);
+        doThrow(new RuntimeException()).when(roomService).saveRoom(any());
+        mockMvc.perform(post("/rooms").content(jacksonTester.write(room).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(this.roomService, times(2)).saveRoom(room);
     }
 
     @Test
     public void testDeleteRoom() throws Exception {
         mockMvc.perform(delete("/rooms/" + room.getId())).andExpect(status().isOk());
-        Mockito.verify(this.roomService, times(1)).deleteRoom(room.getId());
-        Mockito.doThrow(new EntityNotFoundException()).when(roomService).deleteRoom(anyLong());
+        verify(this.roomService, times(1)).deleteRoom(room.getId());
+        doThrow(new EntityNotFoundException()).when(roomService).deleteRoom(anyLong());
         mockMvc.perform(delete("/rooms/" + room.getId())).andExpect(status().isNotFound());
-        Mockito.verify(this.roomService, times(2)).deleteRoom(room.getId());
+        verify(this.roomService, times(2)).deleteRoom(room.getId());
     }
 
     @After
@@ -97,7 +105,7 @@ public class RoomControllerTest {
 
         @Bean
         public RoomService roomService() {
-            return Mockito.mock(RoomService.class);
+            return mock(RoomService.class);
         }
 
         @Bean
