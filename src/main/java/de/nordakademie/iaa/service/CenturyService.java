@@ -20,7 +20,7 @@ public interface CenturyService {
      *
      * @return a list of Century entities. If no century was found an empty list is returned.
      */
-    List<Century> listCenturys();
+    List<Century> listCenturies();
 
     /**
      * Returns the century identified by the given id.

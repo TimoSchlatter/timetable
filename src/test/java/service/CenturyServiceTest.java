@@ -41,7 +41,7 @@ public class CenturyServiceTest {
 
     @Test
     public void testListCenturys() {
-        centuryService.listCenturys();
+        centuryService.listCenturies();
         Mockito.verify(centuryDAO, times(1)).findAll();
     }
 

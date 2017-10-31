@@ -29,8 +29,8 @@ public class CenturyController {
      * @return the list of centuries.
      */
     @GetMapping
-    public List<Century> listCenturys() {
-        return centuryService.listCenturys();
+    public List<Century> listCenturies() {
+        return centuryService.listCenturies();
     }
 
     /**
