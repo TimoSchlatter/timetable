@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.CourseController;
 import de.nordakademie.iaa.model.Course;
@@ -18,18 +19,19 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import static java.lang.Math.toIntExact;
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -54,14 +56,17 @@ public class CourseControllerTest {
 
     @Test
     public void testListCourses() throws Exception {
-        when(this.courseService.listCourses()).thenReturn(Arrays.asList(course));
-        mockMvc.perform(get("/courses"))
+        ObjectMapper objectMapper = new ObjectMapper();
+        JacksonTester.initFields(this, objectMapper);
+        List<Course> courses = new ArrayList<>(Arrays.asList(course));
+        when(this.courseService.listCourses()).thenReturn(courses);
+        MvcResult mvcResult = mockMvc.perform(get("/courses"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id", is(toIntExact(course.getId()))))
-                .andExpect(jsonPath("$.[0].field", is(((Character.toString(course.getField()))))))
-                .andExpect(jsonPath("$.[0].number", is(course.getNumber())))
-                .andExpect(jsonPath("$.[0].title", is(course.getTitle())));
+                .andReturn();
         verify(this.courseService, times(1)).listCourses();
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<Course> coursesResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Course>>() {});
+        assertEquals(courses, coursesResponse);
     }
 
     @Test

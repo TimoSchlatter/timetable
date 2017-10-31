@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.SeminarController;
 import de.nordakademie.iaa.model.Seminar;
@@ -18,18 +19,19 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import static java.lang.Math.toIntExact;
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,7 +45,7 @@ public class SeminarControllerTest {
     private SeminarService seminarService;
 
     private JacksonTester<Seminar> jacksonTester;
-    private Seminar seminar = new Seminar(20,"Concurrency Java für BWLer", 42);
+    private Seminar seminar = new Seminar(20, "Concurrency Java für BWLer", 42);
     private MockMvc mockMvc;
 
     @Before
@@ -54,14 +56,17 @@ public class SeminarControllerTest {
 
     @Test
     public void testListSeminars() throws Exception {
-        when(this.seminarService.listSeminars()).thenReturn(Arrays.asList(seminar));
-        mockMvc.perform(get("/seminars"))
+        ObjectMapper objectMapper = new ObjectMapper();
+        JacksonTester.initFields(this, objectMapper);
+        List<Seminar> seminars = new ArrayList<>(Arrays.asList(seminar));
+        when(this.seminarService.listSeminars()).thenReturn(seminars);
+        MvcResult mvcResult = mockMvc.perform(get("/seminars"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id", is(toIntExact(seminar.getId()))))
-                .andExpect(jsonPath("$.[0].minChangeoverTime", is(seminar.getMinChangeoverTime())))
-                .andExpect(jsonPath("$.[0].title", is(seminar.getTitle())))
-                .andExpect(jsonPath("$.[0].maxNumberOfParticipants", is(seminar.getMaxNumberOfParticipants())));
+                .andReturn();
         verify(this.seminarService, times(1)).listSeminars();
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<Seminar> seminarsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Seminar>>() {});
+        assertEquals(seminars, seminarsResponse);
     }
 
     @Test

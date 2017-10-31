@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.DocentController;
 import de.nordakademie.iaa.model.Docent;
@@ -18,18 +19,19 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import static java.lang.Math.toIntExact;
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -54,18 +56,17 @@ public class DocentControllerTest {
 
     @Test
     public void testListDocents() throws Exception {
-        when(this.docentService.listDocents()).thenReturn(Arrays.asList(docent));
-        mockMvc.perform(get("/docents"))
+        ObjectMapper objectMapper = new ObjectMapper();
+        JacksonTester.initFields(this, objectMapper);
+        List<Docent> docents = new ArrayList<>(Arrays.asList(docent));
+        when(this.docentService.listDocents()).thenReturn(docents);
+        MvcResult mvcResult = mockMvc.perform(get("/docents"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id", is(toIntExact(docent.getId()))))
-                .andExpect(jsonPath("$.[0].minChangeoverTime", is(docent.getMinChangeoverTime())))
-                .andExpect(jsonPath("$.[0].email", is(docent.getEmail())))
-                .andExpect(jsonPath("$.[0].forename", is(docent.getForename())))
-                .andExpect(jsonPath("$.[0].surname", is(docent.getSurname())))
-                .andExpect(jsonPath("$.[0].phoneNumber", is(docent.getPhoneNumber())))
-                .andExpect(jsonPath("$.[0].title", is(docent.getTitle())))
-                .andExpect(jsonPath("$.[0].permanentlyEmployed", is(docent.isPermanentlyEmployed())));
+                .andReturn();
         verify(this.docentService, times(1)).listDocents();
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<Docent> docentsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Docent>>() {});
+        assertEquals(docents, docentsResponse);
     }
 
     @Test

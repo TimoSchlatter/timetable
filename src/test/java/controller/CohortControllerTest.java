@@ -1,7 +1,9 @@
 package controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.CohortController;
+import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.model.Cohort;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CohortService;
@@ -21,20 +23,20 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static java.lang.Math.toIntExact;
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,6 +57,7 @@ public class CohortControllerTest {
     private List<Cohort> cohorts = new ArrayList<>();
     private Cohort cohort = new Cohort("14", 30);
     private Maniple maniple = new Maniple("I", 30);
+    private Century century = new Century("a", 30);
     private MockMvc mockMvc;
 
     @Before
@@ -62,19 +65,25 @@ public class CohortControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(cohortController).build();
         cohort.setId(1L);
         maniple.setId(2L);
+        century.setId(3L);
     }
 
     // TODO: Manipel und Zenturie zur Kohorte hinzufügen und alles testen
     @Test
     public void testListCohorts() throws Exception {
-        cohorts.add(cohort);
-        when(cohortService.listCohorts()).thenReturn(cohorts);
-        mockMvc.perform(get("/cohorts"))
+        maniple.addCentury(century);
+        cohort.addManiple(maniple);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JacksonTester.initFields(this, objectMapper);
+        List<Cohort> cohorts = new ArrayList<>(Arrays.asList(cohort));
+        when(this.cohortService.listCohorts()).thenReturn(cohorts);
+        MvcResult mvcResult = mockMvc.perform(get("/cohorts"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id", is(toIntExact(cohort.getId()))))
-                .andExpect(jsonPath("$.[0].minChangeoverTime", is(cohort.getMinChangeoverTime())))
-                .andExpect(jsonPath("$.[0].name", is(cohort.getName())));
-        verify(cohortService, times(1)).listCohorts();
+                .andReturn();
+        verify(this.cohortService, times(1)).listCohorts();
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<Cohort> cohortsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Cohort>>() {});
+        assertEquals(cohorts, cohortsResponse);
     }
 
     @Test

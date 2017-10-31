@@ -1,5 +1,7 @@
 package controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.CenturyController;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.service.CenturyService;
@@ -10,23 +12,25 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import static java.lang.Math.toIntExact;
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -49,15 +53,18 @@ public class CenturyControllerTest {
     }
 
     @Test
-    public void testListCenturys() throws Exception {
-        when(centuryService.listCenturies()).thenReturn(Arrays.asList(century));
-        mockMvc.perform(get("/centuries"))
+    public void testListCenturies() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JacksonTester.initFields(this, objectMapper);
+        List<Century> centuries = new ArrayList<>(Arrays.asList(century));
+        when(this.centuryService.listCenturies()).thenReturn(centuries);
+        MvcResult mvcResult = mockMvc.perform(get("/centuries"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id", is(toIntExact(century.getId()))))
-                .andExpect(jsonPath("$.[0].minChangeoverTime", is(century.getMinChangeoverTime())))
-                .andExpect(jsonPath("$.[0].name", is(century.getName())))
-                .andExpect(jsonPath("$.[0].numberOfStudents", is(century.getNumberOfStudents())));
-        verify(centuryService, times(1)).listCenturies();
+                .andReturn();
+        verify(this.centuryService, times(1)).listCenturies();
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<Century> centuriesResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Century>>() {});
+        assertEquals(centuries, centuriesResponse);
     }
 
     @Test

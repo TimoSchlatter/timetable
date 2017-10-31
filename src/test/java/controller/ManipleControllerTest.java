@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.ManipleController;
 import de.nordakademie.iaa.model.Century;
@@ -21,19 +22,20 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import static java.lang.Math.toIntExact;
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -62,16 +64,20 @@ public class ManipleControllerTest {
         century.setId(2L);
     }
 
-    // TODO: Zenturie zur Kohorte hinzufügen und alles testen
     @Test
     public void testListManiples() throws Exception {
-        when(manipleService.listManiples()).thenReturn(Arrays.asList(maniple));
-        mockMvc.perform(get("/maniples"))
+        ObjectMapper objectMapper = new ObjectMapper();
+        JacksonTester.initFields(this, objectMapper);
+        maniple.addCentury(century);
+        List<Maniple> maniples = new ArrayList<>(Arrays.asList(maniple));
+        when(this.manipleService.listManiples()).thenReturn(maniples);
+        MvcResult mvcResult = mockMvc.perform(get("/maniples"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id", is(toIntExact(maniple.getId()))))
-                .andExpect(jsonPath("$.[0].minChangeoverTime", is(maniple.getMinChangeoverTime())))
-                .andExpect(jsonPath("$.[0].name", is(maniple.getName())));
-        verify(manipleService, times(1)).listManiples();
+                .andReturn();
+        verify(this.manipleService, times(1)).listManiples();
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<Maniple> maniplesResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Maniple>>() {});
+        assertEquals(maniples, maniplesResponse);
     }
 
     @Test
