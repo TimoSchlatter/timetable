@@ -2,7 +2,9 @@ package de.nordakademie.iaa.controller;
 
 
 import de.nordakademie.iaa.model.Cohort;
+import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CohortService;
+import de.nordakademie.iaa.service.ManipleService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,12 @@ import java.util.List;
 public class CohortController {
 
     private CohortService cohortService;
+    private ManipleService manipleService;
 
     @Autowired
-    public CohortController(CohortService cohortService) {
+    public CohortController(CohortService cohortService, ManipleService manipleService) {
         this.cohortService = cohortService;
+        this.manipleService = manipleService;
     }
 
     /**
@@ -39,6 +43,21 @@ public class CohortController {
     @PostMapping
     public void saveCohort(@RequestBody Cohort cohort) {
         cohortService.saveCohort(cohort);
+    }
+
+    /**
+     * Saves the given maniple (either by creating a new one or updating an existing).
+     * Adds the given maniple to the referenced cohort.
+     *
+     * @param maniple The century to save.
+     */
+    @PostMapping
+    @RequestMapping("/{id}/addManiple")
+    public void addManiple(@PathVariable Long id, @RequestBody Maniple maniple) {
+        Cohort cohort = cohortService.loadCohort(id);
+        maniple.setName(maniple.getName() + cohort.getName());
+        manipleService.saveManiple(maniple);
+        cohort.addManiple(maniple);
     }
 
     /**

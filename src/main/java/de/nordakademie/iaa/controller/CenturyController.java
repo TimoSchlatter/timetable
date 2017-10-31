@@ -32,16 +32,6 @@ public class CenturyController {
     }
 
     /**
-     * Saves the given century (either by creating a new one or updating an existing).
-     *
-     * @param century The century to save.
-     */
-    @PostMapping
-    public void saveCentury(@RequestBody Century century) {
-        centuryService.saveCentury(century);
-    }
-
-    /**
      * Deletes the century with given id.
      *
      * @param id The id of the century to be deleted.

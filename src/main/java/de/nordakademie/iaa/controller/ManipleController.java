@@ -1,24 +1,30 @@
 package de.nordakademie.iaa.controller;
 
 
+import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.model.Maniple;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.CenturyService;
 import de.nordakademie.iaa.service.ManipleService;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/maniples")
+@Transactional
 public class ManipleController {
 
     private ManipleService manipleService;
+    private CenturyService centuryService;
 
     @Autowired
-    public ManipleController(ManipleService manipleService) {
+    public ManipleController(ManipleService manipleService, CenturyService centuryService) {
         this.manipleService = manipleService;
+        this.centuryService = centuryService;
     }
 
     /**
@@ -32,13 +38,18 @@ public class ManipleController {
     }
 
     /**
-     * Saves the given maniple (either by creating a new one or updating an existing).
+     * Saves the given century (either by creating a new one or updating an existing).
+     * Adds the given century to the referenced maniple.
      *
-     * @param maniple The maniple to save.
+     * @param century The century to save.
      */
     @PostMapping
-    public void saveManiple(@RequestBody Maniple maniple) {
-        manipleService.saveManiple(maniple);
+    @RequestMapping("/{id}/addCentury")
+    public void addCentury(@PathVariable Long id, @RequestBody Century century) {
+        Maniple maniple = manipleService.loadManiple(id);
+        century.setName(maniple.getName() + century.getName());
+        centuryService.saveCentury(century);
+        maniple.addCentury(century);
     }
 
     /**
