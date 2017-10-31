@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Transactional
 @RestController
 @RequestMapping("/maniples")
-@Transactional
 public class ManipleController {
 
     private ManipleService manipleService;
