@@ -34,7 +34,7 @@
                                 data-target="#editModal">
                             <span class="fa fa-pencil"></span>
                         </button>
-                        <button ng-click="currentId(item.id)"
+                        <button ng-click=currentId(item.id)
                                 class="btn btn-danger btn-xs"
                                 data-title="Delete"
                                 data-toggle="modal"
@@ -62,7 +62,7 @@
             <div class="modal-body">Möchten Sie den ausgewählten Dozenten aus der Verwaltung entfernen?</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Abbrechen</button>
-                <button class="btn btn-danger" type="button" ng-submit="deleteData($scope.id)" data-dismiss="modal">Löschen</button>
+                <button class="btn btn-danger" type="button" ng-click="deleteData()" data-dismiss="modal">Löschen</button>
             </div>
         </div>
     </div>
