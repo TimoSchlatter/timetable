@@ -20,8 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import static java.lang.Math.toIntExact;
 import static org.hamcrest.Matchers.is;
@@ -44,7 +43,6 @@ public class DocentControllerTest {
     private DocentService docentService;
 
     private JacksonTester<Docent> jacksonTester;
-    private List<Docent> docents = new ArrayList<>();
     private Docent docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20);
     private MockMvc mockMvc;
 
@@ -56,8 +54,7 @@ public class DocentControllerTest {
 
     @Test
     public void testListDocents() throws Exception {
-        docents.add(docent);
-        when(this.docentService.listDocents()).thenReturn(docents);
+        when(this.docentService.listDocents()).thenReturn(Arrays.asList(docent));
         mockMvc.perform(get("/docents"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].id", is(toIntExact(docent.getId()))))
