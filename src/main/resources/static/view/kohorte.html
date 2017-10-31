@@ -1,13 +1,19 @@
 <div class="card mb-3">
     <div class="card-header">
-        <i class="fa fa-users"></i> Kohorten</div>
+        <button class="btn btn-success btn-xs"
+                data-title="Delete"
+                data-toggle="modal"
+                data-target="#deleteModal">
+            <span class="fa fa-plus"></span>
+        </button>
+        <i class="fa fa-sitemap"></i> Kohorten
+    </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="kohorteTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
                     <th>Bezeichnung</th>
-                    <th>Manipel</th>
                     <th>Wechselzeit</th>
                     <th>Aktion</th>
                 </tr>
@@ -16,7 +22,6 @@
                 <tr ng-repeat="item in kohorte">
                     <td>{{item.name}}</td>
                     <td>{{item.minChangeoverTime}}</td>
-                    <td>{{item.manipel}}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
                                 ng-click="grid.appScope.vm.editRow(grid, row)"

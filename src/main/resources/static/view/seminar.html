@@ -1,10 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Seminar</title>
-</head>
-<body>
+<div class="card mb-3">
+    <div class="card-header">
+        <button class="btn btn-success btn-xs"
+                data-title="Delete"
+                data-toggle="modal"
+                data-target="#deleteModal">
+            <span class="fa fa-plus"></span>
+        </button>
+        <i class="fa fa-calendar"></i> Seminare
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="lecturerTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Titel</th>
+                    <th>Wechselzeiten</th>
+                    <th>Max. Teilnehmeranzahl</th>
+                    <th>Aktion</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Tinder für Informatiker</td>
+                    <td>45 min</td>
+                    <td>20</td>
+                    <td>
+                        <button class="btn btn-primary btn-xs"
+                                ng-click="grid.appScope.vm.editRow(grid, row)"
+                                data-title="Edit"
+                                data-toggle="modal"
+                                data-target="#editModal">
+                            <span class="fa fa-pencil"></span>
+                        </button>
+                        <button ng-click="deleteModal(item.id)"
+                                class="btn btn-danger btn-xs">
+                            <span class="fa fa-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>
+<!-- Delete Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Löschen</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Möchten Sie den ausgewählten Dozenten aus der Verwaltung entfernen?</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Abbrechen</button>
+                <button class="btn btn-danger" type="button" ng-submit="deleteData($index)" data-dismiss="modal">Löschen</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-</body>
-</html>
+
+
+<!-- Page level plugin JavaScript-->
+<script src="../vendor/datatables/jquery.dataTables.js"></script>
+<script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
+<!-- Custom scripts for this page-->
+<script src="../vendor/sb-admin/js/sb-admin-datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#lecturerTable').DataTable( {
+            "language": {
+                "sEmptyTable":      "Keine Daten in der Tabelle vorhanden",
+                "sInfo":            "_START_ bis _END_ von _TOTAL_ Einträgen",
+                "sInfoEmpty":       "0 bis 0 von 0 Einträgen",
+                "sInfoFiltered":    "(gefiltert von _MAX_ Einträgen)",
+                "sInfoPostFix":     "",
+                "sInfoThousands":   ".",
+                "sLengthMenu":      "_MENU_ Einträge anzeigen",
+                "sLoadingRecords":  "Wird geladen...",
+                "sProcessing":      "Bitte warten...",
+                "sSearch":          "Suchen:",
+                "sZeroRecords":     "Keine Einträge vorhanden.",
+                "oPaginate": {
+                    "sFirst":       "Erste",
+                    "sPrevious":    "Zurück",
+                    "sNext":        "Nächste",
+                    "sLast":        "Letzte"
+                },
+            }
+        } );
+    } );
+</script>
+

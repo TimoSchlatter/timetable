@@ -1,6 +1,13 @@
 <div class="card mb-3">
     <div class="card-header">
-        <i class="fa fa-users"></i> Dozenten</div>
+        <button class="btn btn-success btn-xs"
+                data-title="Delete"
+                data-toggle="modal"
+                data-target="#deleteModal">
+            <span class="fa fa-plus"></span>
+        </button>
+        <i class="fa fa-users"></i> Dozenten
+    </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="lecturerTable" width="100%" cellspacing="0">
@@ -100,23 +107,6 @@
         } );
     } );
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
