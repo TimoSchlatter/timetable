@@ -21,7 +21,9 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="http://www.nordakademie.de">Nordakademie</a>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+            aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -32,39 +34,58 @@
                     <span class="nav-link-text">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dozenten">
                 <a class="nav-link" href="#lecturer">
                     <i class="fa fa-fw fa-users"></i>
                     <span class="nav-link-text">Dozenten</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gruppen">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti"
+                   data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-sitemap"></i>
                     <span class="nav-link-text">Gruppen</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseMulti">
                     <li>
-                        <a href="#">Kohorte</a>
+                        <a href="#/kohorte">Kohorte</a>
                     </li>
                     <li>
-                        <a href="#">Maniple</a>
+                        <a href="#/manipel">Maniple</a>
                     </li>
                     <li>
-                        <a href="#">Zenturie</a>
+                        <a href="#/zenturie">Zenturie</a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Räume">
                 <a class="nav-link" href="#room">
                     <i class="fa fa-fw fa-building"></i>
                     <span class="nav-link-text">Räume</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Veranstaltungen">
                 <a class="nav-link" href="#lecture">
                     <i class="fa fa-fw fa-calendar"></i>
                     <span class="nav-link-text">Veranstaltungen</span>
+                </a>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Kurse">
+                <a class="nav-link" href="#course">
+                    <i class="fa fa-fw fa-calendar"></i>
+                    <span class="nav-link-text">Kurse</span>
+                </a>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Prüfungen">
+                <a class="nav-link" href="#exam">
+                    <i class="fa fa-fw fa-calendar"></i>
+                    <span class="nav-link-text">Prüfungen</span>
+                </a>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Seminare">
+                <a class="nav-link" href="#seminar">
+                    <i class="fa fa-fw fa-calendar"></i>
+                    <span class="nav-link-text">Seminare</span>
                 </a>
             </li>
         </ul>
@@ -77,7 +98,8 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-fw fa-envelope"></i>
                     <span class="d-lg-none">Messages
               <span class="badge badge-pill badge-primary">12 New</span>
@@ -92,26 +114,34 @@
                     <a class="dropdown-item" href="#">
                         <strong>David Miller</strong>
                         <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">Hey there! This new version of SB Admin is pretty awesome! These messages clip off when they reach the end of the box so they don't overflow over to the sides!</div>
+                        <div class="dropdown-message small">Hey there! This new version of SB Admin is pretty awesome!
+                            These messages clip off when they reach the end of the box so they don't overflow over to
+                            the sides!
+                        </div>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">
                         <strong>Jane Smith</strong>
                         <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">I was wondering if you could meet for an appointment at 3:00 instead of 4:00. Thanks!</div>
+                        <div class="dropdown-message small">I was wondering if you could meet for an appointment at 3:00
+                            instead of 4:00. Thanks!
+                        </div>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">
                         <strong>John Doe</strong>
                         <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">I've sent the final files over to you for review. When you're able to sign off of them let me know and we can discuss distribution.</div>
+                        <div class="dropdown-message small">I've sent the final files over to you for review. When
+                            you're able to sign off of them let me know and we can discuss distribution.
+                        </div>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item small" href="#">View all messages</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-fw fa-bell"></i>
                     <span class="d-lg-none">Alerts
               <span class="badge badge-pill badge-warning">6 New</span>
@@ -129,7 +159,9 @@
                   <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
               </span>
                         <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+                        <div class="dropdown-message small">This is an automated server response message. All systems
+                            are online.
+                        </div>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">
@@ -138,7 +170,9 @@
                   <i class="fa fa-long-arrow-down fa-fw"></i>Status Update</strong>
               </span>
                         <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+                        <div class="dropdown-message small">This is an automated server response message. All systems
+                            are online.
+                        </div>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">
@@ -147,7 +181,9 @@
                   <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
               </span>
                         <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+                        <div class="dropdown-message small">This is an automated server response message. All systems
+                            are online.
+                        </div>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item small" href="#">View all alerts</a>
@@ -197,7 +233,8 @@
         <i class="fa fa-angle-up"></i>
     </a>
     <!-- Logout Modal-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -239,78 +276,4 @@
     <script src="vendor/sb-admin/js/sb-admin.min.js"></script>
 </div>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-<!--
-<!DOCTYPE html>
-<html ng-app="roomManagement">
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>AngularJS Room Management 2</title>
-    <script type="application/javascript" src="js/angular/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
-    <script type="text/javascript" src="App.js"></script>
-    <script type="text/javascript" src="controller/DashboardController.js"></script>
-    <script type="text/javascript" src="controller/HeaderController.js"></script>
-    <script type="text/javascript" src="controller/RoomController.js"></script>
-    <script type="text/javascript" src="controller/LectureController.js"></script>
-    <script type="text/javascript" src="controller/LecturerController.js"></script>
-    &lt;!&ndash; Bootstrap core CSS &ndash;&gt;
-    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="css/custom/customizing.css" rel="stylesheet">
-    <script type="text/javascript" src="js/jquery/jquery-3.2.1.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-</head>
-<body>
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="http://www.nordakademie.de">NAK</a>
-    <button class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse"
-         id="navbarNavDropdown">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link"
-                   href="#/">Dashboard</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle"
-                   id="navbarDropdownMenuLink"
-                   data-toggle="dropdown"
-                   aria-haspopup="true"
-                   aria-expanded="false">Verwaltung</a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#lecturer">Dozenten</a>
-                    <a class="dropdown-item" href="#group">Gruppen</a>
-                    <a class="dropdown-item" href="#room">Raum</a>
-                    <a class="dropdown-item" href="">Verantaltung</a>
-                </div>
-            </li>
-        </ul>
-    </div>
-</nav>
-<div ng-view></div>
-</body>
-</html-->>
