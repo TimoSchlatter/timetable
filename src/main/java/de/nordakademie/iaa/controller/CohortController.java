@@ -54,6 +54,22 @@ public class CohortController {
     }
 
     /**
+     * Deletes the cohort with given id.
+     *
+     * @param id The id of the cohort to be deleted.
+     */
+    @DeleteMapping
+    @RequestMapping("/{id}")
+    public ResponseEntity deleteCohort(@PathVariable Long id) {
+        try {
+            cohortService.deleteCohort(id);
+            return ResponseEntity.ok(null);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
      * Saves the given maniple (either by creating a new one or updating an existing).
      * Adds the given maniple to the referenced cohort.
      *
@@ -71,21 +87,4 @@ public class CohortController {
         }
         return ResponseEntity.notFound().build();
     }
-
-    /**
-     * Deletes the cohort with given id.
-     *
-     * @param id The id of the cohort to be deleted.
-     */
-    @DeleteMapping
-    @RequestMapping("/{id}")
-    public ResponseEntity deleteCohort(@PathVariable Long id) {
-        try {
-            cohortService.deleteCohort(id);
-            return ResponseEntity.ok(null);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 }

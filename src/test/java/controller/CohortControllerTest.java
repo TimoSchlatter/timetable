@@ -85,6 +85,12 @@ public class CohortControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
         verify(cohortService, times(1)).saveCohort(cohort);
+        doThrow(new RuntimeException()).when(cohortService).saveCohort(any());
+        mockMvc.perform(post("/cohorts").content(jacksonCohortTester.write(cohort).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(cohortService, times(2)).saveCohort(cohort);
     }
 
     @Test
