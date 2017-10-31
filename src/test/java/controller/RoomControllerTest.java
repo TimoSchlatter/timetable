@@ -98,7 +98,7 @@ public class RoomControllerTest {
     }
 
     @Configuration
-    static class LoginControllerTestConfiguration {
+    static class TestConfiguration {
 
         @Bean
         public RoomService roomService() {

@@ -99,7 +99,7 @@ public class DocentControllerTest {
     }
 
     @Configuration
-    static class LoginControllerTestConfiguration {
+    static class TestConfiguration {
 
         @Bean
         public DocentService docentService() {

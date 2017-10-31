@@ -138,7 +138,7 @@ public class CohortControllerTest {
     }
 
     @Configuration
-    static class LoginControllerTestConfiguration {
+    static class TestConfiguration {
 
         @Bean
         public CohortService cohortService() {
