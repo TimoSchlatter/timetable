@@ -7,6 +7,7 @@ import de.nordakademie.iaa.service.CenturyService;
 import de.nordakademie.iaa.service.ManipleService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -38,21 +39,6 @@ public class ManipleController {
     }
 
     /**
-     * Saves the given century (either by creating a new one or updating an existing).
-     * Adds the given century to the referenced maniple.
-     *
-     * @param century The century to save.
-     */
-    @PostMapping
-    @RequestMapping("/{id}/addCentury")
-    public void addCentury(@PathVariable Long id, @RequestBody Century century) {
-        Maniple maniple = manipleService.loadManiple(id);
-        century.setName(maniple.getName() + century.getName());
-        centuryService.saveCentury(century);
-        maniple.addCentury(century);
-    }
-
-    /**
      * Deletes the maniple with given id.
      *
      * @param id The id of the maniple to be deleted.
@@ -66,6 +52,25 @@ public class ManipleController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    /**
+     * Saves the given century (either by creating a new one or updating an existing).
+     * Adds the given century to the referenced maniple.
+     *
+     * @param century The century to save.
+     */
+    @PostMapping
+    @RequestMapping("/{id}/addCentury")
+    public ResponseEntity addCentury(@PathVariable Long id, @RequestBody Century century) {
+        Maniple maniple = manipleService.loadManiple(id);
+        if (maniple != null) {
+            century.setName(maniple.getName() + century.getName());
+            centuryService.saveCentury(century);
+            maniple.addCentury(century);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }
