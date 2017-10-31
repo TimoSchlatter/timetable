@@ -27,7 +27,7 @@ public class CenturyServiceImpl implements CenturyService {
     }
 
     @Override
-    public List<Century> listCenturys() {
+    public List<Century> listCenturies() {
         return centuryDAO.findAll();
     }
 
