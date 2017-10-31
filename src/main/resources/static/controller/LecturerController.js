@@ -1,11 +1,15 @@
 'use strict'
 
-app.controller('LecturerController', function($scope , $http, $mdDialog) {
+app.controller('LecturerController', function($scope , $http) {
 
     $http.get('http://localhost:49999/docents').
     then(function(response) {
         $scope.docents = response.data;
     });
+
+    $scope.currentId = function (itemId) {
+        $scope.id = itemId;
+    }
 
 
     $scope.deleteData = function(id) {
