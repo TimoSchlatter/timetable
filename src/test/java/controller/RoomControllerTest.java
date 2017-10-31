@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.toIntExact;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -49,6 +50,7 @@ public class RoomControllerTest {
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(this.roomController).build();
+        room.setId(42L);
     }
 
     @Test
@@ -57,6 +59,7 @@ public class RoomControllerTest {
         Mockito.when(this.roomService.listRooms()).thenReturn(rooms);
         mockMvc.perform(get("/rooms"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].id", is(toIntExact(room.getId()))))
                 .andExpect(jsonPath("$.[0].minChangeoverTime", is(room.getMinChangeoverTime())))
                 .andExpect(jsonPath("$.[0].building", is(room.getBuilding())))
                 .andExpect(jsonPath("$.[0].maxSeats", is(room.getMaxSeats())))
@@ -77,7 +80,6 @@ public class RoomControllerTest {
 
     @Test
     public void testDeleteRoom() throws Exception {
-        room.setId(42L);
         mockMvc.perform(delete("/rooms/" + room.getId())).andExpect(status().isOk());
         Mockito.verify(this.roomService, times(1)).deleteRoom(room.getId());
         Mockito.doThrow(new EntityNotFoundException()).when(roomService).deleteRoom(anyLong());
