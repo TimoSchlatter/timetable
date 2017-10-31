@@ -5,6 +5,7 @@ import de.nordakademie.iaa.model.Exam;
 import de.nordakademie.iaa.service.ExamService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +40,13 @@ public class ExamController {
      * @param exam The exam to save.
      */
     @PostMapping
-    public void saveExam(@RequestBody Exam exam) {
-        examService.saveExam(exam);
+    public ResponseEntity saveExam(@RequestBody Exam exam) {
+        try {
+            examService.saveExam(exam);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     /**

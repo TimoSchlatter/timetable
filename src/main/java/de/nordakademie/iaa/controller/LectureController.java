@@ -5,6 +5,7 @@ import de.nordakademie.iaa.model.Lecture;
 import de.nordakademie.iaa.service.LectureService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +40,13 @@ public class LectureController {
      * @param lecture The lecture to save.
      */
     @PostMapping
-    public void saveLecture(@RequestBody Lecture lecture) {
-        lectureService.saveLecture(lecture);
+    public ResponseEntity saveLecture(@RequestBody Lecture lecture) {
+        try {
+            lectureService.saveLecture(lecture);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     /**

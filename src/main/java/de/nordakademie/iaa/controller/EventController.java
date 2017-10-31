@@ -5,6 +5,7 @@ import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +40,14 @@ public class EventController {
      * @param event The event to save.
      */
     @PostMapping
-    public void saveEvent(@RequestBody Event event) {
-        eventService.saveEvent(event);
+    public ResponseEntity saveEvent(@RequestBody Event event) {
+
+        try {
+            saveEvent(event);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     /**

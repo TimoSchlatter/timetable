@@ -2,9 +2,10 @@ package de.nordakademie.iaa.controller;
 
 
 import de.nordakademie.iaa.model.Room;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.RoomService;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +40,13 @@ public class RoomController {
      * @param room The room to save.
      */
     @PostMapping
-    public void saveRoom(@RequestBody Room room) {
-        roomService.saveRoom(room);
+    public ResponseEntity saveRoom(@RequestBody Room room) {
+        try {
+            roomService.saveRoom(room);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     /**
