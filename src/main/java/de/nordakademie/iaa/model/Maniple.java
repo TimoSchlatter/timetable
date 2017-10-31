@@ -39,8 +39,8 @@ public class Maniple extends Group {
 		this.centuries = centuries;
 	}
 
-	public void addCentury(char name, int numberOfStudents, int minChangeoverTime) {
-		centuries.add(new Century(this.getName() + name, numberOfStudents, minChangeoverTime));
+	public void addCentury(Century century) {
+		centuries.add(century);
 	}
 
 	public void removeCentury(Century century) {

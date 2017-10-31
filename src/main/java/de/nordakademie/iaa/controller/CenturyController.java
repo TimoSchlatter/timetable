@@ -6,10 +6,12 @@ import de.nordakademie.iaa.service.CenturyService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Transactional
 @RestController
 @RequestMapping("/centuries")
 public class CenturyController {
@@ -29,16 +31,6 @@ public class CenturyController {
     @GetMapping
     public List<Century> listCenturys() {
         return centuryService.listCenturys();
-    }
-
-    /**
-     * Saves the given century (either by creating a new one or updating an existing).
-     *
-     * @param century The century to save.
-     */
-    @PostMapping
-    public void saveCentury(@RequestBody Century century) {
-        centuryService.saveCentury(century);
     }
 
     /**

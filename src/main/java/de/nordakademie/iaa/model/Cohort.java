@@ -43,8 +43,8 @@ public class Cohort extends Group {
         }
     }
 
-    public void addManiple(char name, int minChangeoverTime) {
-        maniples.add(new Maniple(name + this.getName(), minChangeoverTime));
+    public void addManiple(Maniple maniple) {
+        maniples.add(maniple);
     }
 
     public void removeManiple(Maniple maniple) {

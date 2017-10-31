@@ -1,34 +1,35 @@
 <div class="card mb-3">
     <div class="card-header">
-        <i class="fa fa-users"></i>Räume</div>
+        <i class="fa fa-building"></i> Räume</div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="roomTable" width="100%" cellspacing="0">
+            <table datatable="ng" class="table table-bordered" id="roomTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
                     <th>Gebäude</th>
                     <th>Nummer</th>
-                    <th>Maximale Sitzanzahl</th>
+                    <th>Sitzplätze</th>
                     <th>Raumart</th>
+                    <th>Aktion</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in rooms">
                     <td>{{item.building}}</td>
                     <td>{{item.number}}</td>
-                    <td>{{item.maxSeats}}</td>
+                    <td>{{item.maxSeats}} Sitzplätze</td>
                     <td>{{item.roomType}}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
                                 data-title="Edit"
                                 data-toggle="modal"
-                                data-target="#edit">
+                                data-target="#editModal">
                             <span class="fa fa-pencil"></span>
                         </button>
                         <button class="btn btn-danger btn-xs"
                                 data-title="Delete"
                                 data-toggle="modal"
-                                data-target="#delete">
+                                data-target="#deleteModal">
                             <span class="fa fa-trash"></span>
                         </button>
                     </td>
@@ -40,14 +41,12 @@
     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
 
-
-
 <!-- Page level plugin JavaScript-->
-<script src="../vendor/datatables/jquery.dataTables.js"></script>
-<script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
+<script src="../vendor/datatables/jquery.dataTables.js" defer></script>
+<script src="../vendor/datatables/dataTables.bootstrap4.js" defer></script>
 <!-- Custom scripts for this page-->
-<script src="../vendor/sb-admin/js/sb-admin-datatables.min.js"></script>
-<script type="text/javascript">
+<script src="../vendor/sb-admin/js/sb-admin-datatables.min.js" defer></script>
+<script type="text/javascript" defer>
     $(document).ready(function() {
         $('#roomTable').DataTable( {
             "language": {
