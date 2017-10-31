@@ -1,5 +1,6 @@
 package de.nordakademie.iaa.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Cohort extends Group {
         this.maniples = maniples;
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     public List<Maniple> getManiples() {
         return maniples;
     }

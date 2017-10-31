@@ -46,7 +46,7 @@ public class DataGenerator {
         createSeminars();
         createLectures();
         createExams();
-//        createGroups();
+        createGroups();
     }
 
     private void createRooms() {
@@ -135,21 +135,21 @@ public class DataGenerator {
     }
 
     private void createGroups() {
-        Century centuryI14a = new Century("a", 35);
-        Century centuryI14b = new Century("b", 30);
-        Century centuryW14a = new Century("a", 40);
-        Century centuryW14b = new Century("b", 35);
+        Century centuryI14a = new Century("I14a", 35);
+        Century centuryI14b = new Century("I14b", 30);
+        Century centuryW14a = new Century("W14a", 40);
+        Century centuryW14b = new Century("W14b", 35);
         Arrays.asList(centuryI14a, centuryI14b, centuryW14a, centuryI14b).forEach(centuryService::saveCentury);
 
-        Maniple manipleI = new Maniple("I");
-        Maniple manipleW = new Maniple("W");
+        Maniple manipleI = new Maniple("I14");
+        Maniple manipleW = new Maniple("W14");
+        Arrays.asList(manipleI, manipleW).forEach(manipleService::saveManiple);
         manipleI.setCenturies(Arrays.asList(centuryI14a, centuryI14b));
         manipleW.setCenturies(Arrays.asList(centuryW14a, centuryW14b));
-        Arrays.asList(manipleI, manipleW).forEach(manipleService::saveManiple);
 
         Cohort cohort14 = new Cohort("14");
-        cohort14.setManiples(Arrays.asList(manipleI, manipleW));
         cohortService.saveCohort(cohort14);
+        cohort14.setManiples(Arrays.asList(manipleI, manipleW));
     }
 
 }
