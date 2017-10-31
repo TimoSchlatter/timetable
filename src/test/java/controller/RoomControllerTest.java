@@ -7,6 +7,7 @@ import de.nordakademie.iaa.model.RoomType;
 import de.nordakademie.iaa.service.RoomService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -36,21 +37,24 @@ public class RoomControllerTest {
 
     @Autowired
     private RoomController roomController;
+
     @Autowired
     private RoomService roomService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
     private JacksonTester<Room> jacksonTester;
-
     private List<Room> rooms = new ArrayList<>();
-    private Room room = new Room(20, "T", 42, "999",RoomType.COMPUTERROOM);
+    private Room room = new Room(20, "T", 42, "999", RoomType.COMPUTERROOM);
+    private MockMvc mockMvc;
+
+    @Before
+    public void setup() {
+        mockMvc = MockMvcBuilders.standaloneSetup(this.roomController).build();
+    }
 
     @Test
     public void testListRooms() throws Exception {
         rooms.add(room);
         Mockito.when(this.roomService.listRooms()).thenReturn(rooms);
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(this.roomController).build();
         mockMvc.perform(get("/rooms"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].minChangeoverTime", is(room.getMinChangeoverTime())))
@@ -63,8 +67,7 @@ public class RoomControllerTest {
 
     @Test
     public void testSaveRoom() throws Exception {
-        jacksonTester.initFields(this, objectMapper);
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(this.roomController).build();
+        JacksonTester.initFields(this, new ObjectMapper());
         mockMvc.perform(post("/rooms").content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -75,12 +78,11 @@ public class RoomControllerTest {
     @Test
     public void testDeleteRoom() throws Exception {
         room.setId(42L);
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(this.roomController).build();
-        mockMvc.perform(delete("/rooms/" + room.getId().toString())).andExpect(status().isOk());;
+        mockMvc.perform(delete("/rooms/" + room.getId())).andExpect(status().isOk());
         Mockito.verify(this.roomService, times(1)).deleteRoom(room.getId());
-
         Mockito.doThrow(new EntityNotFoundException()).when(roomService).deleteRoom(anyLong());
-        mockMvc.perform(delete("/rooms/" + room.getId().toString())).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/rooms/" + room.getId())).andExpect(status().isNotFound());
+        Mockito.verify(this.roomService, times(2)).deleteRoom(room.getId());
     }
 
     @After
