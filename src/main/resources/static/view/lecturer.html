@@ -1,3 +1,4 @@
+<!--Table-->
 <div class="card mb-3">
     <div class="card-header">
         <button class="btn btn-success btn-xs"
@@ -20,6 +21,7 @@
                     <th>Email</th>
                     <th>Telefonnummer</th>
                     <th>Festanstellung</th>
+                    <th>Wechselzeit</th>
                     <th>Aktion</th>
                 </tr>
                 </thead>
@@ -35,6 +37,7 @@
                         <span ng-hide="item.permanentlyEmployed" class="fa fa-times"></span>
                         {{item.permanentlyEmployed?'Ja':'Nein'}}
                     </td>
+                    <td>{{item.minChangeoverTime}}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
                                 ng-click="editLecturer(item)"
@@ -121,7 +124,7 @@
                                    name="email"
                                    ng-model="email"
                                    id="inputEmail"
-                                   placeholder="vorname.surname@nordakademie.de" required>
+                                   placeholder="vorname.nachname@nordakademie.de" required>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputPhone">Telefonnummer</label>
@@ -136,16 +139,19 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputChangeOverTime">Wechselzeit</label>
-                            <input type="number"
-                                   class="form-control"
-                                   ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
-                                   name="changeOverTime"
-                                   ng-model="ChangeoverTime"
-                                   id="inputChangeOverTime"
-                                   min="0"
-                                   max="120"
-                                   step="1"
-                                   placeholder="0"/>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
+                                       name="changeOverTime"
+                                       ng-model="inputChangeOverTime"
+                                       id="inputChangeOverTime"
+                                       min="0"
+                                       max="120"
+                                       step="1"
+                                       placeholder="0"/>
+                                <span class="input-group-addon">Minuten</span>
+                            </div>
                         </div>
                     </div>
                         <div class="form-group">

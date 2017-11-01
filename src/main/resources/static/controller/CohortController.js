@@ -1,6 +1,6 @@
 'use strict'
 
-app.controller('KohorteController', function($scope , $http) {
+app.controller('CohortController', function($scope , $http) {
 
     $http.get('http://localhost:49999/cohorts').
     then(function(response) {

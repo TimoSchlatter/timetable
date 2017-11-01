@@ -1,9 +1,10 @@
+<!--Table-->
 <div class="card mb-3">
     <div class="card-header">
         <button class="btn btn-success btn-xs"
                 data-title="Delete"
                 data-toggle="modal"
-                data-target="#deleteModal">
+                data-target="#addEditModal">
             <span class="fa fa-plus"></span>
         </button>
         <i class="fa fa-sitemap"></i> Zenturie</div>
@@ -16,8 +17,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="selectKohorte">Vorauswahl der Manipel:</label>
-                <select class="form-control" id="selectKohorte">
+                <label for="selectManipel">Vorauswahl der Manipel:</label>
+                <select class="form-control" id="selectManipel">
                     <option ng-repeat="item in maniple">{{item.name}}</option>
                 </select>
             </div>
@@ -27,6 +28,7 @@
                 <thead>
                 <tr>
                     <th>Bezeichnung</th>
+                    <th>Anz. Studenten</th>
                     <th>Wechselzeit</th>
                     <th>Aktion</th>
                 </tr>
@@ -34,6 +36,7 @@
                 <tbody>
                 <tr ng-repeat="item in century">
                     <td>{{item.name}}</td>
+                    <td>{{item.numberOfStudents}}</td>
                     <td>{{item.minChangeoverTime}}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
@@ -58,7 +61,7 @@
     </div>
     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
-<!-- Delete Modal-->
+<!--Delete Modal-->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -72,6 +75,87 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Abbrechen</button>
                 <button class="btn btn-danger" type="button" ng-click="deleteData()" data-dismiss="modal">Löschen</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Add/Edit Modal-->
+<div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content card mx-auto mt-5">
+            <div class="card-header">Hinzufügen / Updaten</div>
+            <div class="card-body">
+                <form name="modal">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="inputTitel">Bezeichnung</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="inputTitel"
+                                   placeholder="z.B. a"
+                                   maxlength="1">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="modalSelectCohort">Kohorte</label>
+                            <select class="form-control" id="modalSelectCohort">
+                                <option>12</option>
+                                <option>13</option>
+                                <option>14</option>
+                                <option>15</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="modalSelectManiple">Manipel</label>
+                            <select class="form-control" id="modalSelectManiple">
+                                <option>A</option>
+                                <option>B</option>
+                                <option>I</option>
+                                <option>W</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputChangeOverTime">Anz. Studenten</label>
+                            <input type="number"
+                                   class="form-control"
+                                   ng-class="{ 'is-invalid': !modal.students.$valid}"
+                                   name="students"
+                                   ng-model="inputStudents"
+                                   id="inputStudents"
+                                   min="1"
+                                   max="100"
+                                   step="1"
+                                   placeholder="30"/>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputChangeOverTime">Wechselzeit</label>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
+                                       name="changeOverTime"
+                                       ng-model="inputChangeOverTime"
+                                       id="inputChangeOverTime"
+                                       min="0"
+                                       max="120"
+                                       step="1"
+                                       placeholder="0"/>
+                                <span class="input-group-addon">Minuten</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

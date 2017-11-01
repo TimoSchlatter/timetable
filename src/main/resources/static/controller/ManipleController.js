@@ -1,6 +1,6 @@
 'use strict'
 
-app.controller('ManipelController', function($scope , $http) {
+app.controller('ManipleController', function($scope , $http) {
 
     $http.get('http://localhost:49999/maniples').
     then(function(response) {
