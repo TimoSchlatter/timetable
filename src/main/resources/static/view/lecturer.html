@@ -1,4 +1,3 @@
-<!--Table-->
 <div class="card mb-3">
     <div class="card-header">
         <button class="btn btn-success btn-xs"
@@ -46,7 +45,7 @@
                                 data-target="#addEditModal">
                             <span class="fa fa-pencil"></span>
                         </button>
-                        <button ng-click=setCurrentItemId(item.id)
+                        <button ng-click="setCurrentLecturerId(item.id)"
                                 class="btn btn-danger btn-xs"
                                 data-title="Delete"
                                 data-toggle="modal"
@@ -139,19 +138,16 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputChangeOverTime">Wechselzeit</label>
-                            <div class="input-group">
-                                <input type="number"
-                                       class="form-control"
-                                       ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
-                                       name="changeOverTime"
-                                       ng-model="inputChangeOverTime"
-                                       id="inputChangeOverTime"
-                                       min="0"
-                                       max="120"
-                                       step="1"
-                                       placeholder="0"/>
-                                <span class="input-group-addon">Minuten</span>
-                            </div>
+                            <input type="number"
+                                   class="form-control"
+                                   ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
+                                   name="changeOverTime"
+                                   ng-model="minChangeoverTime"
+                                   id="inputChangeOverTime"
+                                   min="0"
+                                   max="120"
+                                   step="1"
+                                   placeholder="0"/>
                         </div>
                     </div>
                         <div class="form-group">
@@ -166,7 +162,7 @@
                             </div>
                         </div>
                     <div class="pull-right">
-                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal" ng-click="setCurrentItemId(-1)">
+                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal" ng-click="setCurrentLecturerId(-1)">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
                         <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()" ng-hide="actualModal" data-dismiss="modal">
@@ -213,37 +209,3 @@
         });
     });
 </script>
-
-
-<ng-include src="LectureController.getCurrentScreenSource()"></ng-include>
-<ul>
-    <li ng-repeat="item in docents" href="#">
-        {{$index}} {{item.id}} {{item.forename}} {{item.surname}} {{item.email}} {{item.phoneNumber}}
-        {{item.permanentlyEmployed}}
-    </li>
-</ul>
-
-<form ng-submit="deleteData()">
-    <p>ID : <input type="text" name="id" ng-model="id" required/></p>
-    <input type="submit" value="Submit"/>
-</form>
-
-
-<form ng-submit="createData()">
-    <p>Forename : <input type="text" name="forename" ng-model="forename" required/></p>
-    <p>Surname : <input type="text" name="surname" ng-model="surname" required/></p>
-    <p>E-Mail : <input type="email" name="eMail" ng-model="email" required/></p>
-    <p>Phone Number : <input type="text" name="phoneNumber" ng-model="phoneNumber" required/></p>
-    <p>Title : <input type="text" name=ng-model="title" required/></p>
-    <p>Festanstellung :<input type="checkbox"
-                              ng-model="anstellung"
-                              [name="anstellung" ]
-                              [ng-true-value=true]
-                              [ng-false-value=false]
-                              [ng-change="anstellung" ]></p>
-    <input type="submit" value="Submit"/>
-    <hr/>
-    {{ ServerResponse }}
-</form>
-</body>
-</html>
