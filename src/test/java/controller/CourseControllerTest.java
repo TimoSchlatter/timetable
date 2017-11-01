@@ -45,7 +45,7 @@ public class CourseControllerTest {
     private CourseService courseService;
 
     private JacksonTester<Course> jacksonTester;
-    private Course course = new Course('X', 232, "Test Driven Development");
+    private Course course = new Course("X", 232, "Test Driven Development");
     private MockMvc mockMvc;
 
     @Before

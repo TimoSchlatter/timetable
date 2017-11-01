@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CourseDAO extends JpaRepository<Course,Long>, BaseDAO<Course, Long> {
 
-    Course findByFieldAndNumber(char field, int number);
+    Course findByFieldAndNumber(String field, int number);
 }

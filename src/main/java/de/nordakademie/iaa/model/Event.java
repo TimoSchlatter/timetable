@@ -13,7 +13,6 @@ import java.util.Set;
 @Entity
 public class Event extends HasId implements Serializable {
 
-    // private HashSet<Docent> docents;
     private Group group;
     private LocalDate date;
     private LocalTime startTime;
@@ -24,7 +23,7 @@ public class Event extends HasId implements Serializable {
 
     public Event() {}
 
-    public Event(Set<Room> rooms,Set<Docent> docents, Group group, LocalDate date, LocalTime startTime, LocalTime endTime, Subject subject) {
+    public Event(Set<Room> rooms, Set<Docent> docents, Group group, LocalDate date, LocalTime startTime, LocalTime endTime, Subject subject) {
         this.rooms = rooms;
         this.docents = docents;
         this.group = group;

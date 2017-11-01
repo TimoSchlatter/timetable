@@ -10,7 +10,7 @@ import static org.junit.Assert.assertNull;
 
 public class HasCourseTest {
 
-    private final Course course = new Course('I', 151, "Test-Vorlesung", "TV");
+    private final Course course = new Course("I", 151, "Test-Vorlesung", "TV");
 
     @Test
     public void testGetTitle() {

@@ -46,7 +46,7 @@ public class LectureControllerTest {
     private LectureService lectureService;
 
     private JacksonTester<Lecture> jacksonTester;
-    private Course course = new Course('I', 154, "Modul");
+    private Course course = new Course("I", 154, "Modul");
     private Lecture lecture = new Lecture(20, course);
     private MockMvc mockMvc;
 
