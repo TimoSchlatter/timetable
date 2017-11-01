@@ -12,10 +12,7 @@
             <div class="form-group">
                 <label for="selectKohorte">Vorauswahl der Kohorte:</label>
                 <select class="form-control" id="selectKohorte">
-                    <option>12</option>
-                    <option>13</option>
-                    <option>14</option>
-                    <option>15</option>
+                    <option ng-repeat="item in maniple">{{item.name}}</option>
                 </select>
             </div>
         </form>

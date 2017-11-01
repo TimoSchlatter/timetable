@@ -3,14 +3,17 @@
 app.controller('LecturerController', function($scope , $http) {
 
     $scope.ph_numbr = /^(\+?(\d{1}|\d{2}|\d{3})[- ]?)?\d{3}[- ]?\d{3}[- ]?\d{4}$/;
+    $scope.updateId = 0;
 
     $http.get('http://localhost:49999/docents').
     then(function(response) {
         $scope.docents = response.data;
     });
 
-    $scope.currentId = function (itemId) {
+    $scope.setCurrentItemId = function (itemId) {
         $scope.itemId = itemId;
+        $scope.actualModal = ($scope.itemId == -1);
+        $scope.apply();
     }
 
 
@@ -26,6 +29,7 @@ app.controller('LecturerController', function($scope , $http) {
                     "\n\n\n\nheaders: " + header +
                     "\n\n\n\nconfig: " + config);
             });
+        this.setCurrentItemId(-1);
     }
 
     $scope.createData = function() {
@@ -35,7 +39,7 @@ app.controller('LecturerController', function($scope , $http) {
             "email": $scope.email,
             "phoneNumber": $scope.phoneNumber,
             "title": $scope.title,
-            "isPermanentlyEmployed": true,
+            "permanentlyEmployed": $scope.anstellung,
             "minChangeoverTime": $scope.minChangeoverTime
         };
 
@@ -71,7 +75,8 @@ app.controller('LecturerController', function($scope , $http) {
                     "\n\n\n\nstatus: " + status +
                     "\n\n\n\nheaders: " + header +
                     "\n\n\n\nconfig: " + config);
-            });
+        });
+        this.setCurrentItemId(-1);
     }
 
 })

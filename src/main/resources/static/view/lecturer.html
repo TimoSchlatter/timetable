@@ -1,6 +1,7 @@
 <div class="card mb-3">
     <div class="card-header">
         <button class="btn btn-success btn-xs"
+                ng-click="setCurrentItemId(-1)"
                 data-title="Delete"
                 data-toggle="modal"
                 data-target="#addEditModal">
@@ -36,13 +37,13 @@
                     </td>
                     <td>
                         <button class="btn btn-primary btn-xs"
-                                ng-click="grid.appScope.vm.editRow(grid, row)"
+                                ng-click="setCurrentItemId(item.id)"
                                 data-title="Edit"
                                 data-toggle="modal"
-                                data-target="#editModal">
+                                data-target="#addEditModal">
                             <span class="fa fa-pencil"></span>
                         </button>
-                        <button ng-click=currentId(item.id)
+                        <button ng-click=setCurrentItemId(item.id)
                                 class="btn btn-danger btn-xs"
                                 data-title="Delete"
                                 data-toggle="modal"
@@ -91,6 +92,7 @@
                             <input type="text"
                                    class="form-control"
                                    id="inputTitel"
+                                   ng-model="title"
                                    placeholder="Title">
                         </div>
                         <div class="form-group col-md-4">
@@ -98,6 +100,7 @@
                             <input type="text"
                                    class="form-control"
                                    id="inputForename"
+                                   ng-model="forename"
                                    placeholder="Vorname">
                         </div>
                         <div class="form-group col-md-6">
@@ -105,6 +108,7 @@
                             <input type="text"
                                    class="form-control"
                                    id="inputSurname"
+                                   ng-model="surname"
                                    placeholder="Nachname">
                         </div>
                     </div>
@@ -115,7 +119,7 @@
                                    class="form-control"
                                    ng-class="{ 'is-invalid': modal.email.$error.email}"
                                    name="email"
-                                   ng-model="inputEmail"
+                                   ng-model="email"
                                    id="inputEmail"
                                    placeholder="vorname.surname@nordakademie.de" required>
                         </div>
@@ -126,7 +130,7 @@
                                    class="form-control"
                                    ng-class="{ 'is-invalid': !modal.phone.$valid}"
                                    name="phone"
-                                   ng-model="inputPhone"
+                                   ng-model="phoneNumber"
                                    id="inputPhone"
                                    placeholder="+49 4121 40900">
                         </div>
@@ -136,7 +140,7 @@
                                    class="form-control"
                                    ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
                                    name="changeOverTime"
-                                   ng-model="inputChangeOverTime"
+                                   ng-model="ChangeoverTime"
                                    id="inputChangeOverTime"
                                    min="0"
                                    max="120"
@@ -147,18 +151,22 @@
                         <div class="form-group">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox"> Dozent ist Vollzeit tätig
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           ng-model="anstellung"
+                                           name="anstellung">
+                                    Dozent ist Vollzeit tätig
                                 </label>
                             </div>
                         </div>
                     <div class="pull-right">
-                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
+                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal" ng-click="setCurrentItemId(-1)">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" data-dismiss="modal">
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()" ng-hide="actualModal" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" data-dismiss="modal">
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="createData()" ng-show="actualModal" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
                     </div>
