@@ -23,7 +23,7 @@
                 <tr ng-repeat="item in exams">
                     <td>{{item.title}}</td>
                     <td>{{item.minChangeoverTime}}</td>
-                    <td>{{item.course}}</td>
+                    <td>{{item.course.field}}{{item.course.number}}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
                                 ng-click="grid.appScope.vm.editRow(grid, row)"

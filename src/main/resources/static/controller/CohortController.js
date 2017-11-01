@@ -4,7 +4,7 @@ app.controller('KohorteController', function($scope , $http) {
 
     $http.get('http://localhost:49999/cohorts').
     then(function(response) {
-        $scope.docents = response.data;
+        $scope.cohorts = response.data;
     });
 
     $scope.currentId = function (itemId) {

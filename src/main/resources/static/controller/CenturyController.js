@@ -4,10 +4,15 @@ app.controller('CenturyController', function($scope , $http) {
 
     $http.get('http://localhost:49999/centuries').
     then(function(response) {
-        $scope.manipel = response.data;
+        $scope.century = response.data;
     });
 
-    $http.get('http://localhost:49999/centuries').
+    $http.get('http://localhost:49999/maniples').
+    then(function(response) {
+        $scope.maniple = response.data;
+    });
+
+    $http.get('http://localhost:49999/cohorts').
     then(function(response) {
         $scope.cohorts = response.data;
     });

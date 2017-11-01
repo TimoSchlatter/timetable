@@ -8,7 +8,7 @@ app.controller('LecturerController', function($scope , $http) {
     });
 
     $scope.currentId = function (itemId) {
-        $scope.id = itemId;
+        $scope.itemId = itemId;
     }
 
 

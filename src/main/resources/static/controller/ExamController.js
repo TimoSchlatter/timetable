@@ -13,7 +13,7 @@ app.controller('ExamController', function($scope , $http) {
     });
 
     $scope.currentId = function (itemId) {
-        $scope.currentId = itemId;
+        $scope.itemId = itemId;
     }
 
     $scope.deleteData = function() {
