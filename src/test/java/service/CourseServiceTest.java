@@ -29,7 +29,7 @@ public class CourseServiceTest {
     @Autowired
     private CourseDAO courseDAO;
 
-    private final char field = 'I';
+    private final String field = "I";
     private final int number = 101;
     private final String title = "Test Driven Development";
     private final String shortTitle = "TDD";

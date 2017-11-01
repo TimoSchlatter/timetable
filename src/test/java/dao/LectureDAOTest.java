@@ -51,7 +51,7 @@ public class LectureDAOTest {
 
     @Before
     public void setupData() {
-        Course course = new Course('I', 123, "Test Driven Development");
+        Course course = new Course("I", 123, "Test Driven Development");
         courseDAO.save(course);
         lecture = new Lecture(20, course);
         lectureDAO.save(lecture);

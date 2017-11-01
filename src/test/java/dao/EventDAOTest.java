@@ -74,7 +74,7 @@ public class EventDAOTest {
 
     @Before
     public void setupData() {
-        Course course = new Course('I',123,"Test Driven Development");
+        Course course = new Course("I",123,"Test Driven Development");
         courseDAO.save(course);
 
         Lecture lecture = new Lecture(5,course);

@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Component
@@ -17,6 +20,7 @@ public class DataGenerator {
     private CohortService cohortService;
     private CourseService courseService;
     private DocentService docentService;
+    private EventService eventService;
     private ExamService examService;
     private LectureService lectureService;
     private ManipleService manipleService;
@@ -24,11 +28,12 @@ public class DataGenerator {
     private SeminarService seminarService;
 
     @Autowired
-    public DataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService, DocentService docentService, ExamService examService, LectureService lectureService, ManipleService manipleService, RoomService roomService, SeminarService seminarService) {
+    public DataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService, DocentService docentService, EventService eventService, ExamService examService, LectureService lectureService, ManipleService manipleService, RoomService roomService, SeminarService seminarService) {
         this.centuryService = centuryService;
         this.cohortService = cohortService;
         this.courseService = courseService;
         this.docentService = docentService;
+        this.eventService = eventService;
         this.examService = examService;
         this.lectureService = lectureService;
         this.manipleService = manipleService;
@@ -48,6 +53,7 @@ public class DataGenerator {
         createLectures();
         createExams();
         createGroups();
+        createEvents();
     }
 
     private void createRooms() {
@@ -106,21 +112,21 @@ public class DataGenerator {
     }
 
     private void createCourses() {
-        courseService.saveCourse(new Course('I', 103, "Technische Grundlagen der Informatik 1", "TGdI 1"));
-        courseService.saveCourse(new Course('I', 104, "Technische Grundlagen der Informatik 2", "TGdI 2"));
-        courseService.saveCourse(new Course('I', 107, "Algorithmen und Datenstrukturen", "AlgoDat"));
-        courseService.saveCourse(new Course('I', 128, "Englisch 1"));
-        courseService.saveCourse(new Course('I', 129, "Englisch 2"));
-        courseService.saveCourse(new Course('I', 115, "Betriebswirtschaftliche Anwendungen", "Betr. Anw."));
-        courseService.saveCourse(new Course('I', 143, "Praxis der Softwareentwicklung", "PdSe"));
-        courseService.saveCourse(new Course('I', 148, "Internet Anwendungsarchitekturen", "IAA"));
-        courseService.saveCourse(new Course('I', 149, "Geschäftsprozessmodellierung und Qualitätsmanagement", "GPM und QM"));
-        courseService.saveCourse(new Course('I', 150, "Seminar: Ausgewählte Kapitel der Wirtschaftsinformatik", "AKdW"));
-        courseService.saveCourse(new Course('I', 151, "Softwaretechnik"));
-        courseService.saveCourse(new Course('I', 154, "Allgemeine Volkswirtschaftslehre", "AVWL"));
-        courseService.saveCourse(new Course('I', 155, "Allgemeine Betriebswirtschaftslehre", "ABWL"));
-        courseService.saveCourse(new Course('I', 157, "Logistik / Operations Management", "Log./ OM"));
-        courseService.saveCourse(new Course('I', 158, "Controlling"));
+        courseService.saveCourse(new Course("I", 103, "Technische Grundlagen der Informatik 1", "TGdI 1"));
+        courseService.saveCourse(new Course("I", 104, "Technische Grundlagen der Informatik 2", "TGdI 2"));
+        courseService.saveCourse(new Course("I", 107, "Algorithmen und Datenstrukturen", "AlgoDat"));
+        courseService.saveCourse(new Course("I", 128, "Englisch 1"));
+        courseService.saveCourse(new Course("I", 129, "Englisch 2"));
+        courseService.saveCourse(new Course("I", 115, "Betriebswirtschaftliche Anwendungen", "Betr. Anw."));
+        courseService.saveCourse(new Course("I", 143, "Praxis der Softwareentwicklung", "PdSe"));
+        courseService.saveCourse(new Course("I", 148, "Internet Anwendungsarchitekturen", "IAA"));
+        courseService.saveCourse(new Course("I", 149, "Geschäftsprozessmodellierung und Qualitätsmanagement", "GPM und QM"));
+        courseService.saveCourse(new Course("I", 150, "Seminar: Ausgewählte Kapitel der Wirtschaftsinformatik", "AKdW"));
+        courseService.saveCourse(new Course("I", 151, "Softwaretechnik"));
+        courseService.saveCourse(new Course("I", 154, "Allgemeine Volkswirtschaftslehre", "AVWL"));
+        courseService.saveCourse(new Course("I", 155, "Allgemeine Betriebswirtschaftslehre", "ABWL"));
+        courseService.saveCourse(new Course("I", 157, "Logistik / Operations Management", "Log./ OM"));
+        courseService.saveCourse(new Course("I", 158, "Controlling"));
     }
 
     private void createSeminars() {
@@ -183,5 +189,21 @@ public class DataGenerator {
                 cohort.addManiple(maniple);
             });
         }
+    }
+
+    private void createEvents() {
+        Set<Room> eventRooms = new HashSet<>(Arrays.asList(roomService.findByBuildingAndNumber("A", "001")));
+        List<Docent> docents = docentService.listDocents();
+        Set<Docent> eventDocents = new HashSet<>();
+        docents.stream().filter(docent -> docent.getForename().contains("Uwe")).findFirst().ifPresent(eventDocents::add);
+        docents.stream().filter(docent -> docent.getForename().contains("Joachim")).findFirst().ifPresent(eventDocents::add);
+        Group eventGroup = centuryService.listCenturies().stream().filter(century -> century.getName().equals("I14a")).findFirst().get();
+        LocalDate date = LocalDate.of(2017, Month.DECEMBER, 12);
+        LocalTime startTime = LocalTime.of(9, 15);
+        LocalTime endTime = LocalTime.of(11, 30);
+        Course course = courseService.listCourses().stream().filter(c -> c.getField().equals("I") && c.getNumber() == 104).findFirst().get();
+        Subject eventSubject = lectureService.listLectures().stream().filter(lecture -> lecture.getCourse().equals(course)).findFirst().get();
+        Event event = new Event(eventRooms, eventDocents, eventGroup, date, startTime, endTime, eventSubject);
+        eventService.saveEvent(event);
     }
 }
