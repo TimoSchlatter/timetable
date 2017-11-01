@@ -7,8 +7,12 @@ app.controller('RoomController', function($scope , $http) {
         $scope.rooms = response.data;
     });
 
+    $scope.currentId = function (itemId) {
+        $scope.itemId = itemId;
+    }
+
     $scope.deleteData = function() {
-        var url = 'http://localhost:49999/rooms/' + $scope.id;
+        var url = 'http://localhost:49999/rooms/' + $scope.itemId;
         console.log($scope.index);
         $http.delete(url)
             .then(function (data) {

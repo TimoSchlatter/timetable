@@ -17,7 +17,7 @@ app.controller('ExamController', function($scope , $http) {
     }
 
     $scope.deleteData = function() {
-        var url = 'http://localhost:49999/exams/' + $scope.id;
+        var url = 'http://localhost:49999/exams/' + $scope.itemId;
         $http.delete(url)
             .then(function (data) {
                 $scope.ServerResponse = data;

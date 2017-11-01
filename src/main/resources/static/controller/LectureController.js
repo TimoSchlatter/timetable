@@ -12,8 +12,12 @@ app.controller('LectureController', function($scope , $http) {
         $scope.courses = response.data;
     });
 
+    $scope.currentId = function (itemId) {
+        $scope.itemId = itemId;
+    }
+
     $scope.deleteData = function() {
-        var url = 'http://localhost:49999/lectures/' + $scope.id;
+        var url = 'http://localhost:49999/lectures/' + $scope.itemId;
         $http.delete(url)
             .then(function (data) {
                 $scope.ServerResponse = data;

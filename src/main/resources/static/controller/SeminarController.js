@@ -7,8 +7,12 @@ app.controller('SeminarController', function($scope , $http) {
         $scope.seminars = response.data;
     });
 
+    $scope.currentId = function (itemId) {
+        $scope.itemId = itemId;
+    }
+
     $scope.deleteData = function() {
-        var url = 'http://localhost:49999/seminars/' + $scope.id;
+        var url = 'http://localhost:49999/seminars/' + $scope.itemId;
         console.log($scope.index);
         $http.delete(url)
             .then(function (data) {

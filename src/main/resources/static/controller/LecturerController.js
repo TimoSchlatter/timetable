@@ -13,7 +13,7 @@ app.controller('LecturerController', function($scope , $http) {
 
 
     $scope.deleteData = function() {
-        var url = 'http://localhost:49999/docents/' + $scope.id;
+        var url = 'http://localhost:49999/docents/' + $scope.itemId;
         $http.delete(url)
             .then(function (data) {
                 $scope.ServerResponse = data;

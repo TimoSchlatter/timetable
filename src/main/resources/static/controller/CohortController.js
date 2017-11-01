@@ -7,8 +7,12 @@ app.controller('KohorteController', function($scope , $http) {
         $scope.docents = response.data;
     });
 
+    $scope.currentId = function (itemId) {
+        $scope.itemId = itemId;
+    }
+
     $scope.deleteData = function() {
-        var url = 'http://localhost:49999/cohorts/' + $scope.id;
+        var url = 'http://localhost:49999/cohorts/' + $scope.itemId;
         $http.delete(url)
             .then(function (data) {
                 $scope.ServerResponse = data;

@@ -12,8 +12,12 @@ app.controller('CenturyController', function($scope , $http) {
         $scope.cohorts = response.data;
     });
 
+    $scope.currentId = function (itemId) {
+        $scope.itemId = itemId;
+    }
+
     $scope.deleteData = function() {
-        var url = 'http://localhost:49999/centuries/' + $scope.id;
+        var url = 'http://localhost:49999/centuries/' + $scope.itemId;
         $http.delete(url)
             .then(function (data) {
                 $scope.ServerResponse = data;
