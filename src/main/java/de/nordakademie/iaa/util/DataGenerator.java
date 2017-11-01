@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 @Transactional
@@ -56,6 +57,14 @@ public class DataGenerator {
         roomService.saveRoom(new Room(15, "A", 40, "004", RoomType.LECTUREROOM));
         roomService.saveRoom(new Room(20, "A", 40, "101", RoomType.COMPUTERROOM));
         roomService.saveRoom(new Room(20, "A", 25, "102", RoomType.COMPUTERROOM));
+
+        roomService.saveRoom(new Room(20, "C", 30, "001", RoomType.LABORATORY));
+        roomService.saveRoom(new Room(20, "C", 35, "002", RoomType.LABORATORY));
+        roomService.saveRoom(new Room(15, "C", 40, "003", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(15, "C", 40, "004", RoomType.LECTUREROOM));
+        roomService.saveRoom(new Room(20, "C", 35, "101", RoomType.COMPUTERROOM));
+        roomService.saveRoom(new Room(20, "C", 25, "102", RoomType.COMPUTERROOM));
+        roomService.saveRoom(new Room(15, "C", 40, "103", RoomType.LECTUREROOM));
 
         roomService.saveRoom(new Room(15, "D", 20, "001", RoomType.LECTUREROOM));
         roomService.saveRoom(new Room(15, "D", 20, "002", RoomType.LECTUREROOM));
@@ -135,21 +144,44 @@ public class DataGenerator {
     }
 
     private void createGroups() {
-        Century centuryI14a = new Century("I14a", 35);
-        Century centuryI14b = new Century("I14b", 30);
-        Century centuryW14a = new Century("W14a", 40);
-        Century centuryW14b = new Century("W14b", 35);
-        Arrays.asList(centuryI14a, centuryI14b, centuryW14a, centuryI14b).forEach(centuryService::saveCentury);
+//        Century centuryA14a = new Century("A14a", 26);
+//        Century centuryA14b = new Century("A14b", 27);
+//        Century centuryI14a = new Century("I14a", 35);
+//        Century centuryI14b = new Century("I14b", 30);
+//        Century centuryI14c = new Century("I14c", 30);
+//        Century centuryW14a = new Century("W14a", 40);
+//        Century centuryW14b = new Century("W14b", 35);
+//        Century centuryW14c = new Century("W14c", 35);
+//        Arrays.asList(centuryA14a, centuryA14b, centuryI14a, centuryI14b, centuryI14c, centuryW14a, centuryW14b,
+//                centuryW14c).forEach(centuryService::saveCentury);
+//
+//        Maniple manipleA14 = new Maniple("A14");
+//        Maniple manipleI14 = new Maniple("I14");
+//        Maniple manipleW14 = new Maniple("W14");
+//        Arrays.asList(manipleA14, manipleI14, manipleW14).forEach(manipleService::saveManiple);
+//        manipleA14.setCenturies(Arrays.asList(centuryA14a, centuryA14b));
+//        manipleI14.setCenturies(Arrays.asList(centuryI14a, centuryI14b, centuryI14c));
+//        manipleW14.setCenturies(Arrays.asList(centuryW14a, centuryW14b, centuryW14c));
+//
+//        Cohort cohort14 = new Cohort("14");
+//        cohortService.saveCohort(cohort14);
+//        cohort14.setManiples(Arrays.asList(manipleA14, manipleI14, manipleW14));
 
-        Maniple manipleI = new Maniple("I14");
-        Maniple manipleW = new Maniple("W14");
-        Arrays.asList(manipleI, manipleW).forEach(manipleService::saveManiple);
-        manipleI.setCenturies(Arrays.asList(centuryI14a, centuryI14b));
-        manipleW.setCenturies(Arrays.asList(centuryW14a, centuryW14b));
-
-        Cohort cohort14 = new Cohort("14");
-        cohortService.saveCohort(cohort14);
-        cohort14.setManiples(Arrays.asList(manipleI, manipleW));
+        for (int i = 14; i < 18; i++) {
+            String[] centuryNames = new String[]{"a", "b", "c", "d"};
+            Cohort cohort = new Cohort(Integer.toString(i), 30);
+            cohortService.saveCohort(cohort);
+            Arrays.asList("A" + i, "B" + i, "I" + i, "W" + i).forEach(manipleName -> {
+                Maniple maniple = new Maniple(manipleName, 30);
+                manipleService.saveManiple(maniple);
+                ThreadLocalRandom random = ThreadLocalRandom.current();
+                for (int centuryNumber = 0; centuryNumber < random.nextInt(2, centuryNames.length+1); centuryNumber++){
+                    Century century = new Century(manipleName + centuryNames[centuryNumber], 15, random.nextInt(25, 36));
+                    centuryService.saveCentury(century);
+                    maniple.addCentury(century);
+                }
+                cohort.addManiple(maniple);
+            });
+        }
     }
-
 }
