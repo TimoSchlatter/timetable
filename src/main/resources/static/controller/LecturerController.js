@@ -3,17 +3,38 @@
 app.controller('LecturerController', function($scope , $http) {
 
     $scope.ph_numbr = /^(\+?(\d{1}|\d{2}|\d{3})[- ]?)?\d{3}[- ]?\d{3}[- ]?\d{4}$/;
-    $scope.updateId = 0;
 
     $http.get('http://localhost:49999/docents').
     then(function(response) {
         $scope.docents = response.data;
     });
 
+    $scope.addLecturer = function () {
+        this.setCurrentItemId(-1);
+        $scope.forename = '';
+        $scope.surname = '';
+        $scope.email = '';
+        $scope.phone_Number = '';
+        $scope.title = '';
+        $scope.isPermanentlyEmployed = ''
+        $scope.minChangeoverTime = '';
+    }
+
+    $scope.editLecturer = function (item) {
+        this.setCurrentItemId(item.id)
+        $scope.forename = item.forename;
+        $scope.surname = item.surname;
+        $scope.email = item.email;
+        $scope.phone_Number = item.phoneNumber;
+        $scope.title = item.title;
+        $scope.isPermanentlyEmployed = item.permanentlyEmployed;
+        $scope.minChangeoverTime = item.minChangeoverTime;
+
+    }
+
     $scope.setCurrentItemId = function (itemId) {
         $scope.itemId = itemId;
         $scope.actualModal = ($scope.itemId == -1);
-        $scope.apply();
     }
 
 
@@ -39,7 +60,7 @@ app.controller('LecturerController', function($scope , $http) {
             "email": $scope.email,
             "phoneNumber": $scope.phoneNumber,
             "title": $scope.title,
-            "permanentlyEmployed": $scope.anstellung,
+            "permanentlyEmployed": $scope.isPermanentlyEmployed,
             "minChangeoverTime": $scope.minChangeoverTime
         };
 
@@ -62,7 +83,7 @@ app.controller('LecturerController', function($scope , $http) {
             "email": $scope.email,
             "phoneNumber": $scope.phoneNumber,
             "title": $scope.title,
-            "isPermanentlyEmployed": true,
+            "PermanentlyEmployed": $scope.isPermanentlyEmployed,
             "minChangeoverTime": $scope.minChangeoverTime
         };
 
