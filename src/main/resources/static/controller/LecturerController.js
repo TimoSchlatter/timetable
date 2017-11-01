@@ -2,6 +2,8 @@
 
 app.controller('LecturerController', function($scope , $http) {
 
+    $scope.ph_numbr = /^(\+?(\d{1}|\d{2}|\d{3})[- ]?)?\d{3}[- ]?\d{3}[- ]?\d{4}$/;
+
     $http.get('http://localhost:49999/docents').
     then(function(response) {
         $scope.docents = response.data;

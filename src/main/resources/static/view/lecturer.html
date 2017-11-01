@@ -3,7 +3,7 @@
         <button class="btn btn-success btn-xs"
                 data-title="Delete"
                 data-toggle="modal"
-                data-target="#deleteModal">
+                data-target="#addEditModal">
             <span class="fa fa-plus"></span>
         </button>
         <i class="fa fa-users"></i> Dozenten
@@ -32,7 +32,8 @@
                     <td>
                         <span ng-show="item.permanentlyEmployed" class="fa fa-check-square-o"></span>
                         <span ng-hide="item.permanentlyEmployed" class="fa fa-times"></span>
-                        {{item.permanentlyEmployed?'Ja':'Nein'}}</td>
+                        {{item.permanentlyEmployed?'Ja':'Nein'}}
+                    </td>
                     <td>
                         <button class="btn btn-primary btn-xs"
                                 ng-click="grid.appScope.vm.editRow(grid, row)"
@@ -57,7 +58,8 @@
     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
 <!-- Delete Modal-->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -69,12 +71,102 @@
             <div class="modal-body">Möchten Sie den ausgewählten Dozenten aus der Verwaltung entfernen?</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Abbrechen</button>
-                <button class="btn btn-danger" type="button" ng-click="deleteData()" data-dismiss="modal">Löschen</button>
+                <button class="btn btn-danger" type="button" ng-click="deleteData()" data-dismiss="modal">Löschen
+                </button>
             </div>
         </div>
     </div>
 </div>
-
+<!-- Add/Edit Modal-->
+<div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content card mx-auto mt-5">
+            <div class="card-header">Hinzufügen / Updaten</div>
+            <div class="card-body">
+                <form name="modal">
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="inputTitel">Title</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="inputTitel"
+                                   placeholder="Title">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputForename">Vorname</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="inputForename"
+                                   placeholder="Vorname">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputSurname">Nachname</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="inputSurname"
+                                   placeholder="Nachname">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail">Email</label>
+                            <input type="email"
+                                   class="form-control"
+                                   ng-class="{ 'is-invalid': modal.email.$error.email}"
+                                   name="email"
+                                   ng-model="inputEmail"
+                                   id="inputEmail"
+                                   placeholder="vorname.surname@nordakademie.de" required>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputPhone">Telefonnummer</label>
+                            <input type="number"
+                                   ng-pattern="ph_numbr"
+                                   class="form-control"
+                                   ng-class="{ 'is-invalid': !modal.phone.$valid}"
+                                   name="phone"
+                                   ng-model="inputPhone"
+                                   id="inputPhone"
+                                   placeholder="+49 4121 40900">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputChangeOverTime">Wechselzeit</label>
+                            <input type="number"
+                                   class="form-control"
+                                   ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
+                                   name="changeOverTime"
+                                   ng-model="inputChangeOverTime"
+                                   id="inputChangeOverTime"
+                                   min="0"
+                                   max="120"
+                                   step="1"
+                                   placeholder="0"/>
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox"> Dozent ist Vollzeit tätig
+                                </label>
+                            </div>
+                        </div>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Page level plugin JavaScript-->
@@ -83,72 +175,60 @@
 <!-- Custom scripts for this page-->
 <script src="../vendor/sb-admin/js/sb-admin-datatables.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#lecturerTable').DataTable( {
+    $(document).ready(function () {
+        $('#lecturerTable').DataTable({
             "language": {
-                "sEmptyTable":      "Keine Daten in der Tabelle vorhanden",
-                "sInfo":            "_START_ bis _END_ von _TOTAL_ Einträgen",
-                "sInfoEmpty":       "0 bis 0 von 0 Einträgen",
-                "sInfoFiltered":    "(gefiltert von _MAX_ Einträgen)",
-                "sInfoPostFix":     "",
-                "sInfoThousands":   ".",
-                "sLengthMenu":      "_MENU_ Einträge anzeigen",
-                "sLoadingRecords":  "Wird geladen...",
-                "sProcessing":      "Bitte warten...",
-                "sSearch":          "Suchen:",
-                "sZeroRecords":     "Keine Einträge vorhanden.",
+                "sEmptyTable": "Keine Daten in der Tabelle vorhanden",
+                "sInfo": "_START_ bis _END_ von _TOTAL_ Einträgen",
+                "sInfoEmpty": "0 bis 0 von 0 Einträgen",
+                "sInfoFiltered": "(gefiltert von _MAX_ Einträgen)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "_MENU_ Einträge anzeigen",
+                "sLoadingRecords": "Wird geladen...",
+                "sProcessing": "Bitte warten...",
+                "sSearch": "Suchen:",
+                "sZeroRecords": "Keine Einträge vorhanden.",
                 "oPaginate": {
-                    "sFirst":       "Erste",
-                    "sPrevious":    "Zurück",
-                    "sNext":        "Nächste",
-                    "sLast":        "Letzte"
+                    "sFirst": "Erste",
+                    "sPrevious": "Zurück",
+                    "sNext": "Nächste",
+                    "sLast": "Letzte"
                 },
             }
-        } );
-    } );
+        });
+    });
 </script>
 
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dozentenverwaltung</title>
-</head>
-<body>
-<h1>Dozentenverwaltung</h1>
 
 <ng-include src="LectureController.getCurrentScreenSource()"></ng-include>
 <ul>
     <li ng-repeat="item in docents" href="#">
-        {{$index}} {{item.id}} {{item.forename}} {{item.surname}} {{item.email}} {{item.phoneNumber}} {{item.permanentlyEmployed}}
+        {{$index}} {{item.id}} {{item.forename}} {{item.surname}} {{item.email}} {{item.phoneNumber}}
+        {{item.permanentlyEmployed}}
     </li>
 </ul>
 
 <form ng-submit="deleteData()">
-    <p>ID : <input type="text" name="id" ng-model="id" required /></p>
+    <p>ID : <input type="text" name="id" ng-model="id" required/></p>
     <input type="submit" value="Submit"/>
 </form>
 
 
 <form ng-submit="createData()">
-    <p>Forename : <input type="text" name="forename" ng-model="forename" required /></p>
-    <p>Surname : <input type="text" name="surname" ng-model="surname" required /></p>
-    <p>E-Mail : <input type="email" name="eMail" ng-model="email" required /></p>
-    <p>Phone Number : <input type="text" name="phoneNumber" ng-model="phoneNumber" required /></p>
-    <p>Title : <input type="text" name= ng-model="title" required /></p>
+    <p>Forename : <input type="text" name="forename" ng-model="forename" required/></p>
+    <p>Surname : <input type="text" name="surname" ng-model="surname" required/></p>
+    <p>E-Mail : <input type="email" name="eMail" ng-model="email" required/></p>
+    <p>Phone Number : <input type="text" name="phoneNumber" ng-model="phoneNumber" required/></p>
+    <p>Title : <input type="text" name=ng-model="title" required/></p>
     <p>Festanstellung :<input type="checkbox"
-                      ng-model="anstellung"
-                      [name="anstellung"]
-                      [ng-true-value=true]
-                      [ng-false-value=false]
-                      [ng-change="anstellung"]></p>
-    <input type="submit" value="Submit" />
-    <hr />
+                              ng-model="anstellung"
+                              [name="anstellung" ]
+                              [ng-true-value=true]
+                              [ng-false-value=false]
+                              [ng-change="anstellung" ]></p>
+    <input type="submit" value="Submit"/>
+    <hr/>
     {{ ServerResponse }}
 </form>
 </body>
