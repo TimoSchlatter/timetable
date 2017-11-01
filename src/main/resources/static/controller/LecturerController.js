@@ -5,7 +5,7 @@ app.controller('LecturerController', function($scope , $http) {
     // language=JSRegexp
     $scope.ph_numbr = /^(\+?(\d{1}|\d{2}|\d{3})[- ]?)?\d{3}[- ]?\d{3}[- ]?\d{4}$/;
 
-    var url = 'http://localhost:49999/docents'
+    var url = 'http://localhost:49999/docents/';
 
     $http.get(url).
     then(function(response) {
@@ -14,12 +14,12 @@ app.controller('LecturerController', function($scope , $http) {
 
     $scope.addLecturer = function () {
         var item = {};
-        this.setCurrentLecturerId(-1);
+        this.setSelectedLecturerId(-1);
         this.setLecturer(item);
     };
 
     $scope.editLecturer = function (item) {
-        this.setCurrentLecturerId(item.id);
+        this.setSelectedLecturerId(item.id);
         this.setLecturer(item);
     };
 
@@ -45,13 +45,14 @@ app.controller('LecturerController', function($scope , $http) {
         };
     };
 
-    $scope.setCurrentLecturerId = function (lecturerId) {
+    $scope.setSelectedLecturerId = function (lecturerId) {
         $scope.actualModal = (lecturerId === -1);
     };
 
     $scope.createData = function() {
         $http.post(url, $scope.getCurrentLecturerJson())
             .then(function successCallback(data) {
+                window.location.reload();
                 console.log(data);
             }, function errorCallback(data, status, header, config) {
                 console.log(data, status, header, config);
@@ -61,20 +62,22 @@ app.controller('LecturerController', function($scope , $http) {
     $scope.updateData = function (){
         $http.put(url, this.getCurrentLecturerJson())
             .then(function successCallback(data) {
+                window.location.reload();
                 console.log(data);
             }, function errorCallback(data, status, header, config) {
                 console.log(data, status, header, config);
         });
-        this.setCurrentLecturerId(-1);
+        this.setSelectedLecturerId(-1);
     };
 
     $scope.deleteData = function() {
         $http.delete(url + $scope.lecturerId)
             .then(function successCallback(data) {
+                window.location.reload();
                 console.log(data);
             }, function errorCallback(data, status, header, config) {
                 console.log(data, status, header, config);
             });
-        this.setCurrentLecturerId(-1);
+        this.setSelectedLecturerId(-1);
     };
 });
