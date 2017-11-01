@@ -50,7 +50,7 @@ public class DocentControllerTest {
 
     @Before
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(this.docentController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(docentController).build();
         docent.setId(42L);
     }
 
@@ -59,11 +59,11 @@ public class DocentControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
         List<Docent> docents = new ArrayList<>(Arrays.asList(docent));
-        when(this.docentService.listDocents()).thenReturn(docents);
+        when(docentService.listDocents()).thenReturn(docents);
         MvcResult mvcResult = mockMvc.perform(get("/docents"))
                 .andExpect(status().isOk())
                 .andReturn();
-        verify(this.docentService, times(1)).listDocents();
+        verify(docentService, times(1)).listDocents();
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Docent> docentsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Docent>>() {});
         assertEquals(docents, docentsResponse);
@@ -76,22 +76,47 @@ public class DocentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
-        verify(this.docentService, times(1)).saveDocent(docent);
+        verify(docentService, times(1)).saveDocent(docent);
         doThrow(new RuntimeException()).when(docentService).saveDocent(any());
         mockMvc.perform(post("/docents").content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(this.docentService, times(2)).saveDocent(docent);
+        verify(docentService, times(2)).saveDocent(docent);
+    }
+
+    @Test
+    public void testUpdateDocent() throws Exception {
+        JacksonTester.initFields(this, new ObjectMapper());
+        when(docentService.loadDocent(docent.getId())).thenReturn(docent);
+        mockMvc.perform(put("/docents").content(jacksonTester.write(docent).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(docentService, times(1)).saveDocent(docent);
+
+        doThrow(new RuntimeException()).when(docentService).saveDocent(any());
+        mockMvc.perform(put("/docents").content(jacksonTester.write(docent).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(docentService, times(2)).saveDocent(docent);
+
+        when(docentService.loadDocent(docent.getId())).thenReturn(null);
+        mockMvc.perform(put("/docents").content(jacksonTester.write(docent).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(docentService, times(2)).saveDocent(docent);
     }
 
     @Test
     public void testDeleteDocent() throws Exception {
         mockMvc.perform(delete("/docents/" + docent.getId())).andExpect(status().isOk());
-        verify(this.docentService, times(1)).deleteDocent(docent.getId());
+        verify(docentService, times(1)).deleteDocent(docent.getId());
         doThrow(new EntityNotFoundException()).when(docentService).deleteDocent(anyLong());
         mockMvc.perform(delete("/docents/" + docent.getId())).andExpect(status().isNotFound());
-        verify(this.docentService, times(2)).deleteDocent(docent.getId());
+        verify(docentService, times(2)).deleteDocent(docent.getId());
     }
 
     @After

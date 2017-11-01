@@ -50,6 +50,24 @@ public class DocentController {
     }
 
     /**
+     * Updates the given docent.
+     *
+     * @param docent The docent to update.
+     */
+    @PutMapping
+    public ResponseEntity updateDocent(@RequestBody Docent docent) {
+        try {
+            if (docentService.loadDocent(docent.getId()) != null) {
+                docentService.saveDocent(docent);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    /**
      * Deletes the docent with given id.
      *
      * @param id The id of the docent to be deleted.
