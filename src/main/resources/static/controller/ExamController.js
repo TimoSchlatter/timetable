@@ -4,13 +4,17 @@ app.controller('ExamController', function($scope , $http) {
 
     $http.get('http://localhost:49999/exams').
     then(function(response) {
-        $scope.rooms = response.data;
+        $scope.exams = response.data;
     });
 
     $http.get('http://localhost:49999/courses').
     then(function(response) {
         $scope.courses = response.data;
     });
+
+    $scope.currentId = function (itemId) {
+        $scope.currentId = itemId;
+    }
 
     $scope.deleteData = function() {
         var url = 'http://localhost:49999/exams/' + $scope.id;

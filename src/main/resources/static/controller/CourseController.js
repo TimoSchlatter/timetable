@@ -1,11 +1,15 @@
 'use strict'
 
-app.controller('CoursesController', function($scope , $http) {
+app.controller('CourseController', function($scope , $http) {
 
     $http.get('http://localhost:49999/courses').
     then(function(response) {
-        $scope.docents = response.data;
+        $scope.courses = response.data;
     });
+
+    $scope.currentId = function (itemId) {
+        $scope.id = itemId;
+    }
 
     $scope.deleteData = function() {
         var url = 'http://localhost:49999/courses/' + $scope.id;
