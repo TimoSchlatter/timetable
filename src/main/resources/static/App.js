@@ -11,10 +11,10 @@ var app = angular.module('roomManagement', ["ngRoute"]);
             templateUrl: "view/room.html",
             name: "RoomView",
             controller: "RoomController"
-        }).when("/lecturer", {
-            templateUrl: "view/lecturer.html",
-            name: "Lecturer",
-            controller: "LecturerController"
+        }).when("/docent", {
+            templateUrl: "view/docent.html",
+            name: "Docent",
+            controller: "DocentController"
         }).when("/lecture", {
             templateUrl: "view/lecture.html",
             name: "Lecture",

@@ -1,7 +1,7 @@
 <div class="card mb-3">
     <div class="card-header">
         <button class="btn btn-success btn-xs"
-                ng-click="addLecturer()"
+                ng-click="setSelectedDocent({})"
                 data-title="Delete"
                 data-toggle="modal"
                 data-target="#addEditModal">
@@ -11,7 +11,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="lecturerTable" width="100%" cellspacing="0">
+            <table class="table table-bordered" id="docentTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
                     <th>Titel</th>
@@ -25,27 +25,27 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in docents">
-                    <td>{{item.title}}</td>
-                    <td>{{item.forename}}</td>
-                    <td>{{item.surname}}</td>
-                    <td>{{item.email}}</td>
-                    <td>{{item.phoneNumber}}</td>
+                <tr ng-repeat="docent in docents">
+                    <td>{{docent.title}}</td>
+                    <td>{{docent.forename}}</td>
+                    <td>{{docent.surname}}</td>
+                    <td>{{docent.email}}</td>
+                    <td>{{docent.phoneNumber}}</td>
                     <td>
-                        <span ng-show="item.permanentlyEmployed" class="fa fa-check-square-o"></span>
-                        <span ng-hide="item.permanentlyEmployed" class="fa fa-times"></span>
-                        {{item.permanentlyEmployed?'Ja':'Nein'}}
+                        <span ng-show="docent.permanentlyEmployed" class="fa fa-check-square-o"></span>
+                        <span ng-hide="docent.permanentlyEmployed" class="fa fa-times"></span>
+                        {{docent.permanentlyEmployed?'Ja':'Nein'}}
                     </td>
-                    <td>{{item.minChangeoverTime}}</td>
+                    <td>{{docent.minChangeoverTime}}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
-                                ng-click="editLecturer(item)"
+                                ng-click="setSelectedDocent(docent)"
                                 data-title="Edit"
                                 data-toggle="modal"
                                 data-target="#addEditModal">
                             <span class="fa fa-pencil"></span>
                         </button>
-                        <button ng-click="setSelectedLecturerId(item.id)"
+                        <button ng-click="setSelectedDocent(docent)"
                                 class="btn btn-danger btn-xs"
                                 data-title="Delete"
                                 data-toggle="modal"
@@ -94,7 +94,7 @@
                             <input type="text"
                                    class="form-control"
                                    id="inputTitel"
-                                   ng-model="title"
+                                   ng-model="docent.title"
                                    placeholder="Title">
                         </div>
                         <div class="form-group col-md-4">
@@ -102,7 +102,7 @@
                             <input type="text"
                                    class="form-control"
                                    id="inputForename"
-                                   ng-model="forename"
+                                   ng-model="docent.forename"
                                    placeholder="Vorname">
                         </div>
                         <div class="form-group col-md-6">
@@ -110,7 +110,7 @@
                             <input type="text"
                                    class="form-control"
                                    id="inputSurname"
-                                   ng-model="surname"
+                                   ng-model="docent.surname"
                                    placeholder="Nachname">
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                                    class="form-control"
                                    ng-class="{ 'is-invalid': modal.email.$error.email}"
                                    name="email"
-                                   ng-model="email"
+                                   ng-model="docent.email"
                                    id="inputEmail"
                                    placeholder="vorname.nachname@nordakademie.de" required>
                         </div>
@@ -132,7 +132,7 @@
                                    class="form-control"
                                    ng-class="{ 'is-invalid': !modal.phone.$valid}"
                                    name="phone"
-                                   ng-model="phoneNumber"
+                                   ng-model="docent.phoneNumber"
                                    id="inputPhone"
                                    placeholder="+49 4121 40900">
                         </div>
@@ -142,7 +142,7 @@
                                    class="form-control"
                                    ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
                                    name="changeOverTime"
-                                   ng-model="minChangeoverTime"
+                                   ng-model="docent.minChangeoverTime"
                                    id="inputChangeOverTime"
                                    min="0"
                                    max="120"
@@ -155,20 +155,22 @@
                                 <label class="form-check-label">
                                     <input class="form-check-input"
                                            type="checkbox"
-                                           ng-model="isPermanentlyEmployed"
+                                           ng-model="docent.isPermanentlyEmployed"
                                            name="anstellung">
                                     Dozent ist Vollzeit tätig
                                 </label>
                             </div>
                         </div>
                     <div class="pull-right">
-                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal" ng-click="setSelectedLecturerId(-1)">
+                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()" ng-hide="actualModal" data-dismiss="modal">
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()"
+                                ng-show="docent.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="createData()" ng-show="actualModal" data-dismiss="modal">
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="createData()"
+                                ng-hide="docent.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
                     </div>
@@ -186,7 +188,7 @@
 <script src="../vendor/sb-admin/js/sb-admin-datatables.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#lecturerTable').DataTable({
+        $('#docentTable').DataTable({
             "language": {
                 "sEmptyTable": "Keine Daten in der Tabelle vorhanden",
                 "sInfo": "_START_ bis _END_ von _TOTAL_ Einträgen",
