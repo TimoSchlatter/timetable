@@ -87,23 +87,24 @@ public class DocentControllerTest {
 
     @Test
     public void testUpdateDocent() throws Exception {
+        final String url = "/docents/" + docent.getId();
         JacksonTester.initFields(this, new ObjectMapper());
         when(docentService.loadDocent(docent.getId())).thenReturn(docent);
-        mockMvc.perform(put("/docents").content(jacksonTester.write(docent).getJson())
+        mockMvc.perform(put(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(docentService, times(1)).saveDocent(docent);
 
         doThrow(new RuntimeException()).when(docentService).saveDocent(any());
-        mockMvc.perform(put("/docents").content(jacksonTester.write(docent).getJson())
+        mockMvc.perform(put(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(docentService, times(2)).saveDocent(docent);
 
         when(docentService.loadDocent(docent.getId())).thenReturn(null);
-        mockMvc.perform(put("/docents").content(jacksonTester.write(docent).getJson())
+        mockMvc.perform(put(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -121,7 +122,7 @@ public class DocentControllerTest {
 
     @After
     public void reset() {
-        Mockito.reset();
+        Mockito.reset(docentService);
     }
 
     @Configuration

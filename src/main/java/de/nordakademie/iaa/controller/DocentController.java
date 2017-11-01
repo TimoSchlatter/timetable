@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 @Transactional
 @RestController
 @RequestMapping("/docents")
@@ -54,10 +56,10 @@ public class DocentController {
      *
      * @param docent The docent to update.
      */
-    @PutMapping
-    public ResponseEntity updateDocent(@RequestBody Docent docent) {
+    @RequestMapping(value = "/{id}", method = PUT)
+    public ResponseEntity updateDocent(@PathVariable Long id, @RequestBody Docent docent) {
         try {
-            if (docentService.loadDocent(docent.getId()) != null) {
+            if (docentService.loadDocent(id) != null) {
                 docentService.saveDocent(docent);
                 return ResponseEntity.ok().build();
             }
@@ -72,8 +74,7 @@ public class DocentController {
      *
      * @param id The id of the docent to be deleted.
      */
-    @DeleteMapping
-    @RequestMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteDocent(@PathVariable Long id) {
         try {
             docentService.deleteDocent(id);
