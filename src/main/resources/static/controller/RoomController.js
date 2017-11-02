@@ -16,7 +16,6 @@ app.controller('RoomController', function ($scope, $http) {
 
     $scope.setSelectedRoom = function (room) {
         $scope.room = angular.copy(room);
-        console.log($scope.room.id);
     };
 
     $scope.createData = function () {

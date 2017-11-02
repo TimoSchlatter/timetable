@@ -94,11 +94,11 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputNumber">Nummer</label>
-                            <input type="tel"
+                            <input type="number"
                                    class="form-control"
                                    ng-class="{ 'is-invalid': !modal.title.$valid}"
-                                   name="title"
-                                   ng-model="cohort.name"
+                                   name="number"
+                                   ng-model="room.number"
                                    id="inputNumber"
                                    minlength="3"
                                    step="1"
@@ -110,7 +110,7 @@
                             <input type="number"
                                    class="form-control"
                                    ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
-                                   name="changeOverTime"
+                                   name="maxSeats"
                                    ng-model="room.maxSeats"
                                    id="inputMaxSeats"
                                    min="0"
@@ -120,7 +120,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="modalSelectKohorte">Raumtyp</label>
-                            <select class="form-control" id="modalSelectKohorte">
+                            <select class="form-control" id="modalSelectKohorte" ng-model="room.roomType">
                                 <option>COMPUTERROOM</option>
                                 <option>LABORATORY</option>
                                 <option>LECTUREROOM</option>
@@ -133,7 +133,7 @@
                                        class="form-control"
                                        ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
                                        name="changeOverTime"
-                                       ng-model="docent.minChangeoverTime"
+                                       ng-model="room.minChangeoverTime"
                                        id="inputChangeOverTime"
                                        min="0"
                                        max="120"
