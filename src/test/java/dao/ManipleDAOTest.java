@@ -94,6 +94,12 @@ public class ManipleDAOTest {
         assertTrue(maniples.isEmpty());
     }
 
+    @Test
+    public void findByName() {
+        Maniple maniple = manipleDAO.findByName(this.maniple.getName());
+        compareManiple(maniple);
+    }
+
     private void compareManiple(Maniple maniple) {
         assertEquals(this.maniple.getCenturies(), maniple.getCenturies());
         assertEquals(this.maniple.getName(), maniple.getName());

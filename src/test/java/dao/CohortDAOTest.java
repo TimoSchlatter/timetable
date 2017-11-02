@@ -106,6 +106,12 @@ public class CohortDAOTest {
         assertTrue(cohorts.isEmpty());
     }
 
+    @Test
+    public void findByName() {
+        Cohort cohort = cohortDAO.findByName(this.cohort.getName());
+        compareCohort(cohort);
+    }
+
     private void compareCohort(Cohort cohort) {
         assertEquals(this.cohort.getManiples(), cohort.getManiples());
         assertEquals(this.cohort.getName(), cohort.getName());

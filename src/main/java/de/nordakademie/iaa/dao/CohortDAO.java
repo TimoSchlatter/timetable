@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by arvid on 20.10.17.
  */
 public interface CohortDAO extends JpaRepository<Cohort, Long>, BaseDAO<Cohort, Long> {
+
+    Cohort findByName(String name);
 }

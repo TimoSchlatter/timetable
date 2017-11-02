@@ -81,6 +81,12 @@ public class CenturyDAOTest {
         assertTrue(centurys.isEmpty());
     }
 
+    @Test
+    public void findByName() {
+        Century century = centuryDAO.findByName(this.century.getName());
+        compareCentury(century);
+    }
+
     private void compareCentury(Century century) {
         assertEquals(this.century.getNumberOfStudents(), century.getNumberOfStudents());
         assertEquals(this.century.getName(), century.getName());
