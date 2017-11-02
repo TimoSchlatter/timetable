@@ -59,7 +59,7 @@ public class SubjectControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(subjectController).build();
         subject.setId(subjectId);
-        seminar.setId(subjectId+1);
+        seminar.setId(subjectId + 1);
     }
 
     @Test
@@ -74,33 +74,32 @@ public class SubjectControllerTest {
                 .andReturn();
         verify(subjectService, times(1)).listSubjects();
         String jsonResponse = mvcResult.getResponse().getContentAsString();
-        List<Subject> subjectsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Subject>>(){});
+        List<Subject> subjectsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Subject>>() {
+        });
         assertEquals(subjects, subjectsResponse);
     }
 
     @Test
     public void testSaveSubject() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping applicability, JsonTypeInfo.As includeAs)
-        objectMapper.enableDefaultTyping();
-        JacksonTester.initFields(this, objectMapper);
+        JacksonTester.initFields(this, new ObjectMapper());
+        final String url = "/subjects";
         // Subject already existing
         when(subjectService.loadSubject(subjectId)).thenReturn(subject);
-        mockMvc.perform(post("/subjects").content(jacksonTester.write(subject).getJson())
+        mockMvc.perform(post(url).content(jacksonTester.write(subject).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(subjectService, times(0)).saveSubject(subject);
         // Subject not yet existing
         when(subjectService.loadSubject(subjectId)).thenReturn(null);
-        mockMvc.perform(post("/subjects").content(jacksonTester.write(subject).getJson())
+        mockMvc.perform(post(url).content(jacksonTester.write(subject).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
         verify(subjectService, times(1)).saveSubject(subject);
         // Subject not yet existing & saving failed
         doThrow(new RuntimeException()).when(subjectService).saveSubject(any());
-        mockMvc.perform(post("/subjects").content(jacksonTester.write(subject).getJson())
+        mockMvc.perform(post(url).content(jacksonTester.write(subject).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -136,11 +135,12 @@ public class SubjectControllerTest {
 
     @Test
     public void testDeleteSubject() throws Exception {
-        mockMvc.perform(delete("/subjects/" + subject.getId())).andExpect(status().isOk());
-        verify(subjectService, times(1)).deleteSubject(subject.getId());
+        final String url = "/subjects/" + subjectId;
+        mockMvc.perform(delete(url)).andExpect(status().isOk());
+        verify(subjectService, times(1)).deleteSubject(subjectId);
         doThrow(new EntityNotFoundException()).when(subjectService).deleteSubject(anyLong());
-        mockMvc.perform(delete("/subjects/" + subject.getId())).andExpect(status().isNotFound());
-        verify(subjectService, times(2)).deleteSubject(subject.getId());
+        mockMvc.perform(delete(url)).andExpect(status().isNotFound());
+        verify(subjectService, times(2)).deleteSubject(subjectId);
     }
 
     @After
