@@ -1,36 +1,31 @@
 package de.nordakademie.iaa.model;
 
-import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import java.io.Serializable;
 
 @Entity
-public class Course extends HasId implements Serializable {
+public class Course extends Module implements Serializable {
 
     private String field;
     private int number;
-    private String title;
-    private String shortTitle;
+
 
     public Course() {}
 
+    public Course(String title, String shortTitle, String field, int number) {
+        super(title, shortTitle);
+        this.field = field;
+        this.number = number;
+    }
+
     public Course(String field, int number, String title) {
+        super(title, title);
         this.field = field;
         this.number = number;
-        this.title = title;
-        this.shortTitle = title;
     }
 
-    public Course(String field, int number, String title, String shortTitle) {
-        this.field = field;
-        this.number = number;
-        this.title = title;
-        this.shortTitle = shortTitle;
-    }
-
-    @NaturalId
+    @Basic
     public String getField() {
         return field;
     }
@@ -39,31 +34,13 @@ public class Course extends HasId implements Serializable {
         this.field = field;
     }
 
-    @NaturalId
+    @Basic
     public int getNumber() {
         return number;
     }
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    @Basic
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Basic
-    public String getShortTitle() {
-        return shortTitle;
-    }
-
-    public void setShortTitle(String shortTitle) {
-        this.shortTitle = shortTitle;
     }
 
     @Override
