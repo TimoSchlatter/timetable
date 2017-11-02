@@ -44,4 +44,9 @@ public class DocentServiceImpl implements DocentService {
         }
         docentDAO.delete(docent);
     }
+
+    @Override
+    public Docent findByForenameAndSurname(String forename, String surname) {
+        return docentDAO.findByForenameAndSurname(forename, surname);
+    }
 }

@@ -75,14 +75,14 @@ public class DocentControllerTest {
     public void testSaveDocent() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
         // Docent already existing
-        when(docentService.loadDocent(docentId)).thenReturn(docent);
+        when(docentService.findByForenameAndSurname(anyString(), anyString())).thenReturn(docent);
         mockMvc.perform(post("/docents").content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(docentService, times(0)).saveDocent(docent);
         // Docent not yet existing
-        when(docentService.loadDocent(docentId)).thenReturn(null);
+        when(docentService.findByForenameAndSurname(anyString(), anyString())).thenReturn(null);
         mockMvc.perform(post("/docents").content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
