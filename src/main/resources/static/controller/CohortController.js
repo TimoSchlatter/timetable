@@ -19,7 +19,7 @@ app.controller('CohortController', function ($scope, $http) {
     };
 
     $scope.createData = function () {
-        $http.post(cohortsUrl, JSON.stringify(this.docent))
+        $http.post(cohortsUrl, JSON.stringify(this.cohort))
             .then(function successCallback(data) {
                 console.log(data);
                 getData();

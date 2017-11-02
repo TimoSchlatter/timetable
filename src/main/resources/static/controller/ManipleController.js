@@ -29,7 +29,7 @@ app.controller('ManipleController', function ($scope, $http) {
     };
 
     $scope.createData = function () {
-        $http.post(maniplesUrl, JSON.stringify(this.maniple))
+        $http.post(cohortsUrl + this.cohort.id + '/addManiple', JSON.stringify(this.maniple))
             .then(function successCallback(data) {
                 console.log(data);
                 getData();
@@ -49,7 +49,7 @@ app.controller('ManipleController', function ($scope, $http) {
     };
 
     $scope.deleteData = function () {
-        $http.delete(maniplesUrl + this.maniple.id)
+        $http.delete(cohortsUrl + this.cohort.id + '/deleteManiple/' +  this.maniple.id)
             .then(function successCallback(data) {
                 console.log(data);
                 getData();
