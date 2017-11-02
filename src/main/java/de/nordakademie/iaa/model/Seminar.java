@@ -10,13 +10,13 @@ public class Seminar extends Module implements Serializable {
 
     public Seminar() {}
 
-    public Seminar(String title, String shortTitle, SeminarType seminarType) {
-        super(title, shortTitle);
+    public Seminar(String title, SeminarType seminarType) {
+        super(title);
         this.seminarType = seminarType;
     }
 
-    public Seminar(String title, SeminarType seminarType) {
-        super(title, title);
+    public Seminar(String title, String shortTitle, SeminarType seminarType) {
+        super(title, shortTitle);
         this.seminarType = seminarType;
     }
 

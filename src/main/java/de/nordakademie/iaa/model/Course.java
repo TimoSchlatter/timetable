@@ -10,17 +10,16 @@ public class Course extends Module implements Serializable {
     private String field;
     private int number;
 
-
     public Course() {}
 
-    public Course(String title, String shortTitle, String field, int number) {
-        super(title, shortTitle);
+    public Course(String field, int number, String title) {
+        super(title);
         this.field = field;
         this.number = number;
     }
 
-    public Course(String field, int number, String title) {
-        super(title, title);
+    public Course(String title, String shortTitle, String field, int number) {
+        super(title, shortTitle);
         this.field = field;
         this.number = number;
     }
