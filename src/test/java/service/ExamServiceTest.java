@@ -30,7 +30,7 @@ public class ExamServiceTest {
     @Autowired
     private ExamDAO examDAO;
 
-    private final Course course = new Course('I', 154, "Kurs");
+    private final Course course = new Course("I", 154, "Kurs");
     private final Exam exam = new Exam(course);
 
     @Test

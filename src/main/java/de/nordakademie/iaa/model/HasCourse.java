@@ -11,14 +11,13 @@ abstract class HasCourse extends Subject {
     HasCourse() {}
 
     HasCourse(Course course) {
+        super(course.getTitle());
         this.course = course;
-        this.title = course.getTitle();
     }
 
     HasCourse(int minChangeoverTime, Course course) {
-        super(minChangeoverTime);
+        super(minChangeoverTime, course.getTitle());
         this.course = course;
-        this.title = course.getTitle();
     }
 
     @ManyToOne
@@ -28,6 +27,5 @@ abstract class HasCourse extends Subject {
 
     public void setCourse(Course course) {
         this.course = course;
-        title = course.getTitle();
     }
 }

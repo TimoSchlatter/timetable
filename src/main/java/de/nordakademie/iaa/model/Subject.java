@@ -18,10 +18,6 @@ public abstract class Subject extends HasMinChangeoverTime {
         this.title = title;
     }
 
-    Subject(int minChangeoverTime) {
-        super(minChangeoverTime);
-    }
-
     Subject(int minChangeoverTime, String title) {
         super(minChangeoverTime);
         this.title = title;

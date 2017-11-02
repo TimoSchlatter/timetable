@@ -9,21 +9,21 @@ import java.io.Serializable;
 @Entity
 public class Course extends HasId implements Serializable {
 
-    private char field;
+    private String field;
     private int number;
     private String title;
     private String shortTitle;
 
     public Course() {}
 
-    public Course(char field, int number, String title) {
+    public Course(String field, int number, String title) {
         this.field = field;
         this.number = number;
         this.title = title;
         this.shortTitle = title;
     }
 
-    public Course(char field, int number, String title, String shortTitle) {
+    public Course(String field, int number, String title, String shortTitle) {
         this.field = field;
         this.number = number;
         this.title = title;
@@ -31,11 +31,11 @@ public class Course extends HasId implements Serializable {
     }
 
     @NaturalId
-    public char getField() {
+    public String getField() {
         return field;
     }
 
-    public void setField(char field) {
+    public void setField(String field) {
         this.field = field;
     }
 
@@ -71,13 +71,13 @@ public class Course extends HasId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        if (field != course.field) return false;
-        return number == course.number;
+        if (number != course.number) return false;
+        return field != null ? field.equals(course.field) : course.field == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) field;
+        int result = field != null ? field.hashCode() : 0;
         result = 31 * result + number;
         return result;
     }

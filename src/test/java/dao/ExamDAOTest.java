@@ -51,7 +51,7 @@ public class ExamDAOTest {
 
     @Before
     public void setupData() {
-        Course course = new Course('X', 123, "Testen");
+        Course course = new Course("X", 123, "Testen");
         exam = new Exam(30, course);
         courseDAO.save(course);
         exam = new Exam(20, course);
