@@ -34,9 +34,8 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -81,6 +80,32 @@ public class ManipleControllerTest {
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Maniple> maniplesResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Maniple>>() {});
         assertEquals(maniples, maniplesResponse);
+    }
+
+    @Test
+    public void testUpdateManiple() throws Exception {
+        final String url = "/maniples/" + manipleId;
+        JacksonTester.initFields(this, new ObjectMapper());
+        when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
+        mockMvc.perform(put(url).content(jacksonManipleTester.write(maniple).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(manipleService, times(1)).saveManiple(maniple);
+
+        doThrow(new RuntimeException()).when(manipleService).saveManiple(any());
+        mockMvc.perform(put(url).content(jacksonManipleTester.write(maniple).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(manipleService, times(2)).saveManiple(maniple);
+
+        when(manipleService.loadManiple(manipleId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonManipleTester.write(maniple).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(manipleService, times(2)).saveManiple(maniple);
     }
 
     @Test

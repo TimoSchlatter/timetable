@@ -48,13 +48,14 @@ public class ExamControllerTest {
     private JacksonTester<Exam> jacksonTester;
     private Course course = new Course("I", 154, "Modul");
     private Exam exam = new Exam(20, course);
+    private final Long examId = 1L;
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(this.examController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(examController).build();
         exam.setId(1L);
-        course.setId(2L);
+        course.setId(examId+1);
     }
 
     @Test
@@ -62,11 +63,11 @@ public class ExamControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
         List<Exam> exams = new ArrayList<>(Arrays.asList(exam));
-        when(this.examService.listExams()).thenReturn(exams);
+        when(examService.listExams()).thenReturn(exams);
         MvcResult mvcResult = mockMvc.perform(get("/exams"))
                 .andExpect(status().isOk())
                 .andReturn();
-        verify(this.examService, times(1)).listExams();
+        verify(examService, times(1)).listExams();
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Exam> examsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Exam>>() {});
         assertEquals(exams, examsResponse);
@@ -79,22 +80,48 @@ public class ExamControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
-        verify(this.examService, times(1)).saveExam(exam);
+        verify(examService, times(1)).saveExam(exam);
         doThrow(new RuntimeException()).when(examService).saveExam(any());
         mockMvc.perform(post("/exams").content(jacksonTester.write(exam).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(this.examService, times(2)).saveExam(exam);
+        verify(examService, times(2)).saveExam(exam);
     }
 
     @Test
+    public void testUpdateExam() throws Exception {
+        final String url = "/exams/" + examId;
+        JacksonTester.initFields(this, new ObjectMapper());
+        when(examService.loadExam(examId)).thenReturn(exam);
+        mockMvc.perform(put(url).content(jacksonTester.write(exam).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(examService, times(1)).saveExam(exam);
+
+        doThrow(new RuntimeException()).when(examService).saveExam(any());
+        mockMvc.perform(put(url).content(jacksonTester.write(exam).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(examService, times(2)).saveExam(exam);
+
+        when(examService.loadExam(examId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonTester.write(exam).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(examService, times(2)).saveExam(exam);
+    }
+    
+    @Test
     public void testDeleteExam() throws Exception {
-        mockMvc.perform(delete("/exams/" + exam.getId())).andExpect(status().isOk());
-        verify(this.examService, times(1)).deleteExam(exam.getId());
+        mockMvc.perform(delete("/exams/" + examId)).andExpect(status().isOk());
+        verify(examService, times(1)).deleteExam(examId);
         doThrow(new EntityNotFoundException()).when(examService).deleteExam(anyLong());
-        mockMvc.perform(delete("/exams/" + exam.getId())).andExpect(status().isNotFound());
-        verify(this.examService, times(2)).deleteExam(exam.getId());
+        mockMvc.perform(delete("/exams/" + examId)).andExpect(status().isNotFound());
+        verify(examService, times(2)).deleteExam(examId);
     }
 
     @After

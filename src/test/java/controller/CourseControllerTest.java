@@ -46,12 +46,13 @@ public class CourseControllerTest {
 
     private JacksonTester<Course> jacksonTester;
     private final Course course = new Course("X", 232, "Test Driven Development");
+    private final Long courseId = 1L;
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(courseController).build();
-        course.setId(42L);
+        course.setId(courseId);
     }
 
     @Test
@@ -82,6 +83,32 @@ public class CourseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+        verify(courseService, times(2)).saveCourse(course);
+    }
+
+    @Test
+    public void testUpdateCourse() throws Exception {
+        final String url = "/courses/" + courseId;
+        JacksonTester.initFields(this, new ObjectMapper());
+        when(courseService.loadCourse(courseId)).thenReturn(course);
+        mockMvc.perform(put(url).content(jacksonTester.write(course).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(courseService, times(1)).saveCourse(course);
+
+        doThrow(new RuntimeException()).when(courseService).saveCourse(any());
+        mockMvc.perform(put(url).content(jacksonTester.write(course).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(courseService, times(2)).saveCourse(course);
+
+        when(courseService.loadCourse(courseId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonTester.write(course).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
         verify(courseService, times(2)).saveCourse(course);
     }
 

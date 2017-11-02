@@ -47,12 +47,13 @@ public class RoomControllerTest {
 
     private JacksonTester<Room> jacksonTester;
     private Room room = new Room(20, "T", 42, "999", RoomType.COMPUTERROOM);
+    private final Long roomId = 1L;
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(this.roomController).build();
-        room.setId(42L);
+        room.setId(roomId);
     }
 
     @Test
@@ -84,6 +85,32 @@ public class RoomControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(this.roomService, times(2)).saveRoom(room);
+    }
+
+    @Test
+    public void testUpdateRoom() throws Exception {
+        final String url = "/rooms/" + roomId;
+        JacksonTester.initFields(this, new ObjectMapper());
+        when(roomService.loadRoom(roomId)).thenReturn(room);
+        mockMvc.perform(put(url).content(jacksonTester.write(room).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(roomService, times(1)).saveRoom(room);
+
+        doThrow(new RuntimeException()).when(roomService).saveRoom(any());
+        mockMvc.perform(put(url).content(jacksonTester.write(room).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(roomService, times(2)).saveRoom(room);
+
+        when(roomService.loadRoom(roomId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonTester.write(room).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(roomService, times(2)).saveRoom(room);
     }
 
     @Test

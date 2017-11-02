@@ -37,7 +37,7 @@ public class EventController {
     }
 
     /**
-     * Saves the given event (either by creating a new one or updating an existing).
+     * Saves the given event.
      *
      * @param event The event to save.
      */

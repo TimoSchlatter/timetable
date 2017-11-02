@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Transactional
 @RestController
@@ -37,7 +38,7 @@ public class ExamController {
     }
 
     /**
-     * Saves the given exam (either by creating a new one or updating an existing).
+     * Saves the given exam.
      *
      * @param exam The exam to save.
      */
@@ -51,6 +52,24 @@ public class ExamController {
         }
     }
 
+    /**
+     * Updates the given exam.
+     *
+     * @param exam The exam to update.
+     */
+    @RequestMapping(value = "/{id}", method = PUT)
+    public ResponseEntity updateExam(@PathVariable Long id, @RequestBody Exam exam) {
+        try {
+            if (examService.loadExam(id) != null) {
+                examService.saveExam(exam);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
     /**
      * Deletes the exam with given id.
      *

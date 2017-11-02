@@ -4,12 +4,13 @@ package de.nordakademie.iaa.controller;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.service.CenturyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Transactional
 @RestController
@@ -33,4 +34,21 @@ public class CenturyController {
         return centuryService.listCenturies();
     }
 
+    /**
+     * Updates the given century.
+     *
+     * @param century The century to update.
+     */
+    @RequestMapping(value = "/{id}", method = PUT)
+    public ResponseEntity updateCentury(@PathVariable Long id, @RequestBody Century century) {
+        try {
+            if (centuryService.loadCentury(id) != null) {
+                centuryService.saveCentury(century);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

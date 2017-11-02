@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Transactional
 @RestController
@@ -37,7 +38,7 @@ public class SeminarController {
     }
 
     /**
-     * Saves the given seminar (either by creating a new one or updating an existing).
+     * Saves the given seminar.
      *
      * @param seminar The seminar to save.
      */
@@ -46,6 +47,24 @@ public class SeminarController {
         try {
             seminarService.saveSeminar(seminar);
             return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    /**
+     * Updates the given seminar.
+     *
+     * @param seminar The seminar to update.
+     */
+    @RequestMapping(value = "/{id}", method = PUT)
+    public ResponseEntity updateSeminar(@PathVariable Long id, @RequestBody Seminar seminar) {
+        try {
+            if (seminarService.loadSeminar(id) != null) {
+                seminarService.saveSeminar(seminar);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Transactional
 @RestController
@@ -42,7 +41,25 @@ public class ManipleController {
     }
 
     /**
-     * Saves the given century (either by creating a new one or updating an existing).
+     * Updates the given maniple.
+     *
+     * @param maniple The maniple to update.
+     */
+    @RequestMapping(value = "/{id}", method = PUT)
+    public ResponseEntity updateManiple(@PathVariable Long id, @RequestBody Maniple maniple) {
+        try {
+            if (manipleService.loadManiple(id) != null) {
+                manipleService.saveManiple(maniple);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
+    /**
+     * Saves the given century.
      * Adds the given century to the referenced maniple.
      *
      * @param century The century to save.

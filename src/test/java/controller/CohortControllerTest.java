@@ -76,11 +76,11 @@ public class CohortControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
         List<Cohort> cohorts = new ArrayList<>(Arrays.asList(cohort));
-        when(this.cohortService.listCohorts()).thenReturn(cohorts);
+        when(cohortService.listCohorts()).thenReturn(cohorts);
         MvcResult mvcResult = mockMvc.perform(get("/cohorts"))
                 .andExpect(status().isOk())
                 .andReturn();
-        verify(this.cohortService, times(1)).listCohorts();
+        verify(cohortService, times(1)).listCohorts();
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Cohort> cohortsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Cohort>>() {});
         assertEquals(cohorts, cohortsResponse);
@@ -99,6 +99,32 @@ public class CohortControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+        verify(cohortService, times(2)).saveCohort(cohort);
+    }
+
+    @Test
+    public void testUpdateCohort() throws Exception {
+        final String url = "/cohorts/" + cohortId;
+        JacksonTester.initFields(this, new ObjectMapper());
+        when(cohortService.loadCohort(cohortId)).thenReturn(cohort);
+        mockMvc.perform(put(url).content(jacksonCohortTester.write(cohort).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(cohortService, times(1)).saveCohort(cohort);
+
+        doThrow(new RuntimeException()).when(cohortService).saveCohort(any());
+        mockMvc.perform(put(url).content(jacksonCohortTester.write(cohort).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(cohortService, times(2)).saveCohort(cohort);
+
+        when(cohortService.loadCohort(cohortId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonCohortTester.write(cohort).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
         verify(cohortService, times(2)).saveCohort(cohort);
     }
 

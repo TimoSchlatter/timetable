@@ -46,12 +46,13 @@ public class SeminarControllerTest {
 
     private JacksonTester<Seminar> jacksonTester;
     private Seminar seminar = new Seminar(20, "Concurrency Java für BWLer", 42);
+    private final Long seminarId = 1L;
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(this.seminarController).build();
-        seminar.setId(42L);
+        mockMvc = MockMvcBuilders.standaloneSetup(seminarController).build();
+        seminar.setId(seminarId);
     }
 
     @Test
@@ -59,11 +60,11 @@ public class SeminarControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
         List<Seminar> seminars = new ArrayList<>(Arrays.asList(seminar));
-        when(this.seminarService.listSeminars()).thenReturn(seminars);
+        when(seminarService.listSeminars()).thenReturn(seminars);
         MvcResult mvcResult = mockMvc.perform(get("/seminars"))
                 .andExpect(status().isOk())
                 .andReturn();
-        verify(this.seminarService, times(1)).listSeminars();
+        verify(seminarService, times(1)).listSeminars();
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Seminar> seminarsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Seminar>>() {});
         assertEquals(seminars, seminarsResponse);
@@ -76,22 +77,48 @@ public class SeminarControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
-        verify(this.seminarService, times(1)).saveSeminar(seminar);
+        verify(seminarService, times(1)).saveSeminar(seminar);
         doThrow(new RuntimeException()).when(seminarService).saveSeminar(any());
         mockMvc.perform(post("/seminars").content(jacksonTester.write(seminar).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(this.seminarService, times(2)).saveSeminar(seminar);
+        verify(seminarService, times(2)).saveSeminar(seminar);
+    }
+
+    @Test
+    public void testUpdateSeminar() throws Exception {
+        final String url = "/seminars/" + seminarId;
+        JacksonTester.initFields(this, new ObjectMapper());
+        when(seminarService.loadSeminar(seminarId)).thenReturn(seminar);
+        mockMvc.perform(put(url).content(jacksonTester.write(seminar).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(seminarService, times(1)).saveSeminar(seminar);
+
+        doThrow(new RuntimeException()).when(seminarService).saveSeminar(any());
+        mockMvc.perform(put(url).content(jacksonTester.write(seminar).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(seminarService, times(2)).saveSeminar(seminar);
+
+        when(seminarService.loadSeminar(seminarId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonTester.write(seminar).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(seminarService, times(2)).saveSeminar(seminar);
     }
 
     @Test
     public void testDeleteSeminar() throws Exception {
         mockMvc.perform(delete("/seminars/" + seminar.getId())).andExpect(status().isOk());
-        verify(this.seminarService, times(1)).deleteSeminar(seminar.getId());
+        verify(seminarService, times(1)).deleteSeminar(seminar.getId());
         doThrow(new EntityNotFoundException()).when(seminarService).deleteSeminar(anyLong());
         mockMvc.perform(delete("/seminars/" + seminar.getId())).andExpect(status().isNotFound());
-        verify(this.seminarService, times(2)).deleteSeminar(seminar.getId());
+        verify(seminarService, times(2)).deleteSeminar(seminar.getId());
     }
 
     @After

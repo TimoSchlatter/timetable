@@ -37,7 +37,7 @@ public class DocentController {
     }
 
     /**
-     * Saves the given docent (either by creating a new one or updating an existing).
+     * Saves the given docent.
      *
      * @param docent The docent to save.
      */

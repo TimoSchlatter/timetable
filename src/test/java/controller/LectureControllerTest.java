@@ -48,13 +48,14 @@ public class LectureControllerTest {
     private JacksonTester<Lecture> jacksonTester;
     private Course course = new Course("I", 154, "Modul");
     private Lecture lecture = new Lecture(20, course);
+    private final Long lectureId = 1L;
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(this.lectureController).build();
-        lecture.setId(1L);
-        course.setId(2L);
+        lecture.setId(lectureId);
+        course.setId(lectureId+1);
     }
 
     @Test
@@ -86,6 +87,32 @@ public class LectureControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(this.lectureService, times(2)).saveLecture(lecture);
+    }
+
+    @Test
+    public void testUpdateLecture() throws Exception {
+        final String url = "/lectures/" + lectureId;
+        JacksonTester.initFields(this, new ObjectMapper());
+        when(lectureService.loadLecture(lectureId)).thenReturn(lecture);
+        mockMvc.perform(put(url).content(jacksonTester.write(lecture).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(lectureService, times(1)).saveLecture(lecture);
+
+        doThrow(new RuntimeException()).when(lectureService).saveLecture(any());
+        mockMvc.perform(put(url).content(jacksonTester.write(lecture).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(lectureService, times(2)).saveLecture(lecture);
+
+        when(lectureService.loadLecture(lectureId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonTester.write(lecture).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(lectureService, times(2)).saveLecture(lecture);
     }
 
     @Test

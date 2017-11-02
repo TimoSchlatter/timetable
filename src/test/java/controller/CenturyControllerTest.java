@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +29,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -40,13 +42,15 @@ public class CenturyControllerTest {
     @Autowired
     private CenturyService centuryService;
 
+    private JacksonTester<Century> jacksonTester;
     private Century century = new Century("I14", 30);
+    private final Long centuryId = 1L;
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(centuryController).build();
-        century.setId(1L);
+        century.setId(centuryId);
     }
 
     @Test
@@ -54,14 +58,40 @@ public class CenturyControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
         List<Century> centuries = new ArrayList<>(Arrays.asList(century));
-        when(this.centuryService.listCenturies()).thenReturn(centuries);
+        when(centuryService.listCenturies()).thenReturn(centuries);
         MvcResult mvcResult = mockMvc.perform(get("/centuries"))
                 .andExpect(status().isOk())
                 .andReturn();
-        verify(this.centuryService, times(1)).listCenturies();
+        verify(centuryService, times(1)).listCenturies();
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Century> centuriesResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Century>>() {});
         assertEquals(centuries, centuriesResponse);
+    }
+
+    @Test
+    public void testUpdateCentury() throws Exception {
+        final String url = "/centuries/" + centuryId;
+        JacksonTester.initFields(this, new ObjectMapper());
+        when(centuryService.loadCentury(centuryId)).thenReturn(century);
+        mockMvc.perform(put(url).content(jacksonTester.write(century).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(centuryService, times(1)).saveCentury(century);
+
+        doThrow(new RuntimeException()).when(centuryService).saveCentury(any());
+        mockMvc.perform(put(url).content(jacksonTester.write(century).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(centuryService, times(2)).saveCentury(century);
+
+        when(centuryService.loadCentury(centuryId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonTester.write(century).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(centuryService, times(2)).saveCentury(century);
     }
 
     @After

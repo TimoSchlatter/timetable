@@ -41,7 +41,7 @@ public class CohortController {
     }
 
     /**
-     * Saves the given cohort (either by creating a new one or updating an existing).
+     * Saves the given cohort.
      *
      * @param cohort The cohort to save.
      */
@@ -50,6 +50,24 @@ public class CohortController {
         try {
             cohortService.saveCohort(cohort);
             return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    /**
+     * Updates the given cohort.
+     *
+     * @param cohort The cohort to update.
+     */
+    @RequestMapping(value = "/{id}", method = PUT)
+    public ResponseEntity updateCohort(@PathVariable Long id, @RequestBody Cohort cohort) {
+        try {
+            if (cohortService.loadCohort(id) != null) {
+                cohortService.saveCohort(cohort);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -71,7 +89,7 @@ public class CohortController {
     }
 
     /**
-     * Saves the given maniple (either by creating a new one or updating an existing).
+     * Saves the given maniple.
      * Adds the given maniple to the referenced cohort.
      *
      * @param maniple The century to save.
@@ -87,7 +105,6 @@ public class CohortController {
         }
         return ResponseEntity.notFound().build();
     }
-
 
     /**
      * Deletes the maniple with the given id.

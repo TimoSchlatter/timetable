@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Transactional
 @RestController
@@ -37,7 +38,7 @@ public class CourseController {
     }
 
     /**
-     * Saves the given course (either by creating a new one or updating an existing).
+     * Saves the given course.
      *
      * @param course The course to save.
      */
@@ -47,6 +48,24 @@ public class CourseController {
         try {
             courseService.saveCourse(course);
             return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    /**
+     * Updates the given course.
+     *
+     * @param course The course to update.
+     */
+    @RequestMapping(value = "/{id}", method = PUT)
+    public ResponseEntity updateCourse(@PathVariable Long id, @RequestBody Course course) {
+        try {
+            if (courseService.loadCourse(id) != null) {
+                courseService.saveCourse(course);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
