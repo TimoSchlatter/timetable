@@ -6,10 +6,11 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import java.io.Serializable;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Module extends HasId {
+public abstract class Module extends HasId implements Serializable {
     private String title;
     private String shortTitle;
 

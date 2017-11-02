@@ -4,9 +4,10 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 @Entity
-public class Subject extends HasMinChangeoverTime {
+public class Subject extends HasMinChangeoverTime implements Serializable {
 
     private SubjectType subjectType;
     private Module module;
