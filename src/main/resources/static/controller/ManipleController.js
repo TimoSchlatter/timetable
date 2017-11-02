@@ -24,6 +24,10 @@ app.controller('ManipleController', function ($scope, $http) {
         $scope.maniple = angular.copy(maniple);
     };
 
+    $scope.setSelectedCohort = function () {
+        $scope.maniples = angular.copy($scope.cohort);
+    };
+
     $scope.createData = function () {
         $http.post(maniplesUrl, JSON.stringify(this.maniple))
             .then(function successCallback(data) {

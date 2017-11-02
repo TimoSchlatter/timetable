@@ -14,9 +14,8 @@
         <form>
             <div class="form-group">
                 <label for="selectKohorte">Vorauswahl der Kohorte:</label>
-                <select class="form-control" id="selectKohorte">
-                    <
-                    <option ng-repeat="cohort in cohorts">{{cohort.name}}</option>
+                <select class="form-control" id="selectKohorte" ng-options="cohort as cohort.name for cohort in cohorts" ng-model="cohort" ng-change="setSelectedCohort()">
+
                 </select>
             </div>
         </form>
@@ -30,7 +29,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="maniple in maniples">
+                <tr ng-repeat="maniple in cohort.maniples">
                     <td>{{maniple.name}}</td>
                     <td>{{maniple.minChangeoverTime}}</td>
                     <td>
