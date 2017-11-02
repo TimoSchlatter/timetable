@@ -1,67 +1,51 @@
-'use strict'
+'use strict';
 
-app.controller('SeminarController', function($scope , $http) {
+app.controller('SeminarController', function ($scope, $http) {
 
-    $http.get('http://localhost:49999/seminars').
-    then(function(response) {
-        $scope.seminars = response.data;
-    });
+    var seminarUrl = 'http://localhost:49999/seminars/';
 
-    $scope.currentId = function (itemId) {
-        $scope.itemId = itemId;
-    }
+    var getData = function () {
+        $http.get(seminarUrl).then(function successCallback(response) {
+            $scope.seminars = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+    };
 
-    $scope.deleteData = function() {
-        var url = 'http://localhost:49999/seminars/' + $scope.itemId;
-        console.log($scope.index);
-        $http.delete(url)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    getData();
+
+    $scope.setSelectedDocent = function (seminar) {
+        $scope.seminar = angular.copy(seminar);
+        console.log($scope.seminar.id);
+    };
+
+    $scope.createData = function () {
+        $http.post(seminarUrl, JSON.stringify(this.seminar))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.createData = function() {
-        var seminarData = {
-            "title": $scope.title,
-            "maxNumberOfParticipants": $scope.maxNumberOfParticipants,
-            "minChangeoverTime": $scope.minChangeoverTime
-        };
-
-        $http.post('http://localhost:49999/seminars', seminarData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.updateData = function () {
+        $http.put(seminarUrl + this.seminar.id, JSON.stringify(this.seminar))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.updateData = function (){
-        var seminarData = {
-            "title": $scope.title,
-            "maxNumberOfParticipants": $scope.maxNumberOfParticipants,
-            "minChangeoverTime": $scope.minChangeoverTime
-        };
-
-        $http.put('http://localhost:49999/seminars', seminarData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.deleteData = function () {
+        $http.delete(seminarUrl + this.seminar.id)
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
-
-})
+    };
+});

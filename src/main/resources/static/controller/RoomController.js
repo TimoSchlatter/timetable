@@ -1,69 +1,51 @@
-'use strict'
+'use strict';
 
-app.controller('RoomController', function($scope , $http) {
+app.controller('RoomController', function ($scope, $http) {
 
-    $http.get('http://localhost:49999/rooms').
-    then(function(response) {
-        $scope.rooms = response.data;
-    });
+    var roomsUrl = 'http://localhost:49999/rooms/';
 
-    $scope.currentId = function (itemId) {
-        $scope.itemId = itemId;
-    }
+    var getData = function () {
+        $http.get(roomsUrl).then(function successCallback(response) {
+            $scope.rooms = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+    };
 
-    $scope.deleteData = function() {
-        var url = 'http://localhost:49999/rooms/' + $scope.itemId;
-        console.log($scope.index);
-        $http.delete(url)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    getData();
+
+    $scope.setSelectedRoom = function (room) {
+        $scope.room = angular.copy(room);
+        console.log($scope.room.id);
+    };
+
+    $scope.createData = function () {
+        $http.post(roomsUrl, JSON.stringify(this.room))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.createData = function() {
-        var roomData = {
-            "building": $scope.building,
-            "number": $scope.number,
-            "maxSeats": $scope.maxSeats,
-            "roomType": $scope.roomType
-        };
-
-        $http.post('http://localhost:49999/rooms', roomData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.updateData = function () {
+        $http.put(roomsUrl + this.room.id, JSON.stringify(this.room))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.updateData = function (){
-        var roomData = {
-            "building": $scope.building,
-            "number": $scope.number,
-            "maxSeats": $scope.maxSeats,
-            "roomType": $scope.roomType
-        };
-
-        $http.put('http://localhost:49999/rooms', roomData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.deleteData = function () {
+        $http.delete(roomsUrl + this.room.id)
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
-
-})
+    };
+});

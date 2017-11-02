@@ -19,6 +19,7 @@ app.controller('DocentController', function ($scope, $http) {
 
     $scope.setSelectedDocent = function (docent) {
         $scope.docent = angular.copy(docent);
+        console.log($scope.docent.id);
     };
 
     $scope.createData = function () {

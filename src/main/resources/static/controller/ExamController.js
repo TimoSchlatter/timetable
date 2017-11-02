@@ -1,69 +1,51 @@
-'use strict'
+'use strict';
 
-app.controller('ExamController', function($scope , $http) {
+app.controller('DocentController', function ($scope, $http) {
 
-    $http.get('http://localhost:49999/exams').
-    then(function(response) {
-        $scope.exams = response.data;
-    });
+    var examsUrl = 'http://localhost:49999/exams/';
 
-    $http.get('http://localhost:49999/courses').
-    then(function(response) {
-        $scope.courses = response.data;
-    });
+    var getData = function () {
+        $http.get(examsUrl).then(function successCallback(response) {
+            $scope.exams = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+    };
 
-    $scope.currentId = function (itemId) {
-        $scope.itemId = itemId;
-    }
+    getData();
 
-    $scope.deleteData = function() {
-        var url = 'http://localhost:49999/exams/' + $scope.itemId;
-        $http.delete(url)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.setSelectedDocent = function (exam) {
+        $scope.exam = angular.copy(exam);
+        console.log($scope.exam.id);
+    };
+
+    $scope.createData = function () {
+        $http.post(examsUrl, JSON.stringify(this.exam))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.createData = function() {
-        var examData = {
-            "course": $scope.course,
-            "minChangeoverTime": $scope.minChangeoverTime
-        };
-
-        $http.post('http://localhost:49999/exams', examData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.updateData = function () {
+        $http.put(examsUrl + this.exam.id, JSON.stringify(this.exam))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.updateData = function (){
-        var examData = {
-            "course": $scope.course,
-            "minChangeoverTime": $scope.minChangeoverTime
-        };
-
-        $http.put('http://localhost:49999/exams', examData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.deleteData = function () {
+        $http.delete(examsUrl + this.exam.id)
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
-
-})
+    };
+});

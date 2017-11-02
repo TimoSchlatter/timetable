@@ -1,68 +1,51 @@
-'use strict'
+'use strict';
 
-app.controller('CourseController', function($scope , $http) {
+app.controller('CourseController', function ($scope, $http) {
 
-    $http.get('http://localhost:49999/courses').
-    then(function(response) {
-        $scope.courses = response.data;
-    });
+    var coursesUrl = 'http://localhost:49999/courses/';
 
-    $scope.currentId = function (itemId) {
-        $scope.itemId = itemId;
-    }
+    var getData = function () {
+        $http.get(coursesUrl).then(function successCallback(response) {
+            $scope.rooms = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+    };
 
-    $scope.deleteData = function() {
-        var url = 'http://localhost:49999/courses/' + $scope.itemId;
-        $http.delete(url)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    getData();
+
+    $scope.setSelectedCourse = function (course) {
+        $scope.course = angular.copy(course);
+        console.log($scope.course.id);
+    };
+
+    $scope.createData = function () {
+        $http.post(coursesUrl, JSON.stringify(this.course))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.createData = function() {
-        var courseData = {
-            "field": $scope.field,
-            "number": $scope.number,
-            "title": $scope.title,
-            "shortTitle": $scope.shortTitle
-        };
-
-        $http.post('http://localhost:49999/courses', courseData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.updateData = function () {
+        $http.put(coursesUrl + this.course.id, JSON.stringify(this.course))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.updateData = function (){
-        var courseData = {
-            "field": $scope.field,
-            "number": $scope.number,
-            "title": $scope.title,
-            "shortTitle": $scope.shortTitle
-        };
-
-        $http.put('http://localhost:49999/courses', courseData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.deleteData = function () {
+        $http.delete(coursesUrl + this.course.id)
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
-
-})
+    };
+});
