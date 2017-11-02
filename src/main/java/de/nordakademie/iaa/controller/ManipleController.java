@@ -42,21 +42,6 @@ public class ManipleController {
     }
 
     /**
-     * Deletes the maniple with given id.
-     *
-     * @param id The id of the maniple to be deleted.
-     */
-    @RequestMapping(value = "/{id}", method = DELETE)
-    public ResponseEntity deleteManiple(@PathVariable Long id) {
-        try {
-            manipleService.deleteManiple(id);
-            return ResponseEntity.ok(null);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    /**
      * Saves the given century (either by creating a new one or updating an existing).
      * Adds the given century to the referenced maniple.
      *
@@ -74,4 +59,25 @@ public class ManipleController {
         return ResponseEntity.notFound().build();
     }
 
+    /**
+     * Deletes the maniple with the given id.
+     *
+     * @param manipleId The id of the cohort, to which the maniple belongs.
+     * @param centuryId The id of the maniple to delete.
+     */
+    @RequestMapping(value = "/{manipleId}/deleteCentury/{centuryId}", method = DELETE)
+    public ResponseEntity removeManiple(@PathVariable Long manipleId, @PathVariable Long centuryId) {
+        Maniple maniple = manipleService.loadManiple(manipleId);
+        Century century = centuryService.loadCentury(centuryId);
+        if (maniple != null && century != null) {
+            try {
+                maniple.removeCentury(century);
+                centuryService.deleteCentury(century.getId());
+                return ResponseEntity.ok(null);
+            } catch (EntityNotFoundException e) {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

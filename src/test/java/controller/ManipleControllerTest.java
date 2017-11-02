@@ -7,7 +7,6 @@ import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CenturyService;
 import de.nordakademie.iaa.service.ManipleService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +34,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,13 +56,15 @@ public class ManipleControllerTest {
     private JacksonTester<Century> jacksonCenturyTester;
     private Maniple maniple = new Maniple("I14", 30);
     private Century century = new Century("a", 30);
+    private final Long manipleId = 1L;
+    private final Long centuryId = manipleId+1;
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(manipleController).build();
-        maniple.setId(1L);
-        century.setId(2L);
+        maniple.setId(manipleId);
+        century.setId(centuryId);
     }
 
     @Test
@@ -78,15 +81,6 @@ public class ManipleControllerTest {
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Maniple> maniplesResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Maniple>>() {});
         assertEquals(maniples, maniplesResponse);
-    }
-
-    @Test
-    public void testDeleteManiple() throws Exception {
-        mockMvc.perform(delete("/maniples/" + maniple.getId())).andExpect(status().isOk());
-        verify(manipleService, times(1)).deleteManiple(maniple.getId());
-        doThrow(new EntityNotFoundException()).when(manipleService).deleteManiple(anyLong());
-        mockMvc.perform(delete("/maniples/" + maniple.getId())).andExpect(status().isNotFound());
-        verify(manipleService, times(2)).deleteManiple(maniple.getId());
     }
 
     @Test
@@ -118,6 +112,46 @@ public class ManipleControllerTest {
         verify(centuryService, times(0)).saveCentury(any());
     }
 
+    @Test
+    public void testRemoveManipleFromCohort() throws Exception {
+        when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
+        when(centuryService.loadCentury(centuryId)).thenReturn(century);
+        mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isOk());
+        verify(manipleService, times(1)).loadManiple(manipleId);
+        verify(centuryService, times(1)).loadCentury(centuryId);
+        verify(centuryService, times(1)).deleteCentury(any());
+    }
+
+    @Test
+    public void testRemoveManipleFromNonExistingCohort() throws Exception {
+        when(manipleService.loadManiple(anyLong())).thenReturn(null);
+        when(centuryService.loadCentury(centuryId)).thenReturn(century);
+        mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isNotFound());
+        verify(manipleService, times(1)).loadManiple(manipleId);
+        verify(centuryService, times(1)).loadCentury(centuryId);
+        verify(centuryService, times(0)).deleteCentury(any());
+    }
+
+    @Test
+    public void testRemoveNonExistingManipleFromCohort() throws Exception {
+        when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
+        when(centuryService.loadCentury(centuryId)).thenReturn(null);
+        mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isNotFound());
+        verify(manipleService, times(1)).loadManiple(manipleId);
+        verify(centuryService, times(1)).loadCentury(centuryId);
+        verify(centuryService, times(0)).deleteCentury(any());
+    }
+
+    @Test
+    public void testRemoveNonExistingManipleFromNonExistingCohort() throws Exception {
+        when(manipleService.loadManiple(manipleId)).thenReturn(null);
+        when(centuryService.loadCentury(centuryId)).thenReturn(null);
+        mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isNotFound());
+        verify(manipleService, times(1)).loadManiple(manipleId);
+        verify(centuryService, times(1)).loadCentury(centuryId);
+        verify(centuryService, times(0)).deleteCentury(any());
+    }
+    
     @After
     public void reset() {
         Mockito.reset(manipleService);
