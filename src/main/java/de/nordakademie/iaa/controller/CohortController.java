@@ -87,4 +87,27 @@ public class CohortController {
         }
         return ResponseEntity.notFound().build();
     }
+
+
+    /**
+     * Deletes the maniple with the given id.
+     *
+     * @param cohortId The id of the cohort, to which the maniple belongs.
+     * @param manipleId The id of the maniple to delete.
+     */
+    @RequestMapping(value = "/{cohortId}/deleteManiple/{manipleId}", method = DELETE)
+    public ResponseEntity removeManiple(@PathVariable Long cohortId, @PathVariable Long manipleId) {
+        Cohort cohort = cohortService.loadCohort(cohortId);
+        Maniple maniple = manipleService.loadManiple(manipleId);
+        if (cohort != null && maniple != null) {
+            try {
+                cohort.removeManiple(maniple);
+                manipleService.deleteManiple(maniple.getId());
+                return ResponseEntity.ok(null);
+            } catch (EntityNotFoundException e) {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

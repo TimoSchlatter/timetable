@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.CenturyController;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.service.CenturyService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,10 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -65,15 +62,6 @@ public class CenturyControllerTest {
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Century> centuriesResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Century>>() {});
         assertEquals(centuries, centuriesResponse);
-    }
-
-    @Test
-    public void testDeleteCentury() throws Exception {
-        mockMvc.perform(delete("/centuries/" + century.getId())).andExpect(status().isOk());
-        verify(centuryService, times(1)).deleteCentury(century.getId());
-        doThrow(new EntityNotFoundException()).when(centuryService).deleteCentury(anyLong());
-        mockMvc.perform(delete("/centuries/" + century.getId())).andExpect(status().isNotFound());
-        verify(centuryService, times(2)).deleteCentury(century.getId());
     }
 
     @After
