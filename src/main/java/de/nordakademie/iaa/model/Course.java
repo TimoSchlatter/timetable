@@ -12,7 +12,7 @@ public class Course extends Module implements Serializable {
 
     public Course() {}
 
-    public Course(String field, int number, String title) {
+    public Course(String title, String field, int number) {
         super(title);
         this.field = field;
         this.number = number;
