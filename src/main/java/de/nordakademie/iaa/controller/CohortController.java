@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 @Transactional
 @RestController
 @RequestMapping("/cohorts")
@@ -58,8 +60,7 @@ public class CohortController {
      *
      * @param id The id of the cohort to be deleted.
      */
-    @DeleteMapping
-    @RequestMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteCohort(@PathVariable Long id) {
         try {
             cohortService.deleteCohort(id);
@@ -75,8 +76,7 @@ public class CohortController {
      *
      * @param maniple The century to save.
      */
-    @PostMapping
-    @RequestMapping("/{id}/addManiple")
+    @RequestMapping(value = "/{id}/addManiple", method = POST)
     public ResponseEntity addManiple(@PathVariable Long id, @RequestBody Maniple maniple) {
         Cohort cohort = cohortService.loadCohort(id);
         if (cohort != null) {
