@@ -73,7 +73,7 @@ public class EventDAOTest {
     }
     @Before
     public void setupData() {
-        Course course = new Course("I", 123, "Wuerfel Tricks");
+        Course course = new Course("Wuerfel Tricks","I", 123);
         courseDAO.save(course);
 
         Subject subject = new Subject(20, SubjectType.EXAM, course);

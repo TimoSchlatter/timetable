@@ -51,7 +51,7 @@ public class SubjectDAOTest {
 
     @Before
     public void setupData() {
-        Course course = new Course("I",123,"Treppensteigen III");
+        Course course = new Course("Treppensteigen III","I",123);
         courseDAO.save(course);
         subject = new Subject(20, SubjectType.LECTURE, course);
         subjectDAO.save(subject);
