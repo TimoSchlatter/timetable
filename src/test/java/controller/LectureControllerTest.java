@@ -99,7 +99,7 @@ public class LectureControllerTest {
 
     @After
     public void reset() {
-        Mockito.reset();
+        Mockito.reset(lectureService);
     }
 
     @Configuration

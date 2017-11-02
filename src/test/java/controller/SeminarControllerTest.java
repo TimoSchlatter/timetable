@@ -96,7 +96,7 @@ public class SeminarControllerTest {
 
     @After
     public void reset() {
-        Mockito.reset();
+        Mockito.reset(seminarService);
     }
 
     @Configuration

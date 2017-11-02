@@ -97,7 +97,7 @@ public class RoomControllerTest {
 
     @After
     public void reset() {
-        Mockito.reset();
+        Mockito.reset(roomService);
     }
 
     @Configuration

@@ -99,7 +99,7 @@ public class ExamControllerTest {
 
     @After
     public void reset() {
-        Mockito.reset();
+        Mockito.reset(examService);
     }
 
     @Configuration
