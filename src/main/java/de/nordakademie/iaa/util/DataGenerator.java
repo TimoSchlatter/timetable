@@ -23,9 +23,10 @@ public class DataGenerator {
     private ManipleService manipleService;
     private RoomService roomService;
     private SeminarService seminarService;
+    private SubjectService subjectService;
 
     @Autowired
-    public DataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService, DocentService docentService, EventService eventService, ManipleService manipleService, RoomService roomService, SeminarService seminarService) {
+    public DataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService, DocentService docentService, EventService eventService, ManipleService manipleService, RoomService roomService, SeminarService seminarService, SubjectService subjectService) {
         this.centuryService = centuryService;
         this.cohortService = cohortService;
         this.courseService = courseService;
@@ -34,6 +35,7 @@ public class DataGenerator {
         this.manipleService = manipleService;
         this.roomService = roomService;
         this.seminarService = seminarService;
+        this.subjectService = subjectService;
     }
 
     /**
@@ -45,10 +47,9 @@ public class DataGenerator {
         createDocents();
         createCourses();
         createSeminars();
-//        createLectures();
-//        createExams();
         createGroups();
-//        createEvents();
+        createSubjects();
+        createEvents();
     }
 
     private void createRooms() {
@@ -140,13 +141,12 @@ public class DataGenerator {
         seminarService.saveSeminar(new Seminar("Zeit- und Selbstmanagement", SONSTIGES));
     }
 
-//    private void createLectures() {
-//        courseService.listCourses().forEach(course -> lectureService.saveLecture(new Lecture(15, course)));
-//    }
-//
-//    private void createExams() {
-//        courseService.listCourses().forEach(course -> examService.saveExam(new Exam(30, course)));
-//    }
+    private void createSubjects() {
+        courseService.listCourses().forEach(course -> subjectService.saveSubject(new Subject(15, SubjectType.LECTURE, course)));
+        courseService.listCourses().forEach(course -> subjectService.saveSubject(new Subject(30, SubjectType.EXAM, course)));
+        seminarService.listSeminars().forEach(seminar -> subjectService.saveSubject(new Subject(20, SubjectType.SEMINAR, seminar)));
+    }
+
 
     private void createGroups() {
         for (int i = 14; i < 18; i++) {
@@ -157,7 +157,7 @@ public class DataGenerator {
                 Maniple maniple = new Maniple(manipleName, 30);
                 manipleService.saveManiple(maniple);
                 ThreadLocalRandom random = ThreadLocalRandom.current();
-                for (int centuryNumber = 0; centuryNumber < random.nextInt(2, centuryNames.length+1); centuryNumber++){
+                for (int centuryNumber = 0; centuryNumber < random.nextInt(2, centuryNames.length + 1); centuryNumber++) {
                     Century century = new Century(manipleName + centuryNames[centuryNumber], 15, random.nextInt(25, 36));
                     centuryService.saveCentury(century);
                     maniple.addCentury(century);
