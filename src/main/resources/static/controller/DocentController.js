@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 app.controller('DocentController', function ($scope, $http) {
 
@@ -18,7 +18,7 @@ app.controller('DocentController', function ($scope, $http) {
     getData();
 
     $scope.setSelectedDocent = function (docent) {
-        $scope.docent = docent;
+        $scope.docent = angular.copy(docent);
     };
 
     $scope.createData = function () {
@@ -32,7 +32,7 @@ app.controller('DocentController', function ($scope, $http) {
     };
 
     $scope.updateData = function () {
-        $http.put(url, JSON.stringify(this.docent))
+        $http.put(url + this.docent.id, JSON.stringify(this.docent))
             .then(function successCallback(data) {
                 console.log(data);
                 getData();

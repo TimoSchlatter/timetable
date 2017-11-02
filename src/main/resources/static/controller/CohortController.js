@@ -1,64 +1,51 @@
-'use strict'
+'use strict';
 
-app.controller('CohortController', function($scope , $http) {
+app.controller('CohortController', function ($scope, $http) {
 
-    $http.get('http://localhost:49999/cohorts').
-    then(function(response) {
-        $scope.cohorts = response.data;
-    });
+    var url = 'http://localhost:49999/cohorts/';
 
-    $scope.currentId = function (itemId) {
-        $scope.itemId = itemId;
-    }
+    var getData = function () {
+        $http.get(url).then(function successCallback(response) {
+            $scope.cohorts = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+    };
 
-    $scope.deleteData = function() {
-        var url = 'http://localhost:49999/cohorts/' + $scope.itemId;
-        $http.delete(url)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    getData();
+
+    $scope.setSelectedCohort = function (cohort) {
+        $scope.cohort = angular.copy(cohort);
+    };
+
+    $scope.createData = function () {
+        $http.put(url + this.cohort.id, JSON.stringify(this.docent))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.createData = function() {
-        var cohortData = {
-            "name": $scope.name,
-            "minChangeoverTime": $scope.minChangeoverTime
-        };
-
-        $http.post('http://localhost:49999/cohorts', cohortData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.updateData = function () {
+        $http.put(url, JSON.stringify(this.cohort))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.updateData = function (){
-        var cohortData = {
-            "name": $scope.name,
-            "minChangeoverTime": $scope.minChangeoverTime
-        };
-
-        $http.put('http://localhost:49999/cohorts', cohortData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.deleteData = function () {
+        $http.delete(url + this.cohort.id)
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
 
-})
+    };
+});

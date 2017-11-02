@@ -1,3 +1,4 @@
+<!-- Table-->
 <div class="card mb-3">
     <div class="card-header">
         <button class="btn btn-success btn-xs"
@@ -61,41 +62,42 @@
     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
 <!-- Delete Modal-->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Löschen</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Möchten Sie den ausgewählten Dozenten aus der Verwaltung entfernen?</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Abbrechen</button>
-                <button class="btn btn-danger" type="button" ng-click="deleteData()" data-dismiss="modal">Löschen
-                </button>
+        <div class="modal-content card mx-auto mt-5">
+            <div class="card-header">Löschen</div>
+            <div class="card-body">
+                <form name="modal">
+                    <div class="form-group">Möchten Sie den ausgewählten Dozenten aus der Verwaltung entfernen?</div>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteData()"
+                                ng-show="docent.id" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-trash"></i></span>Löschen
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
 <!-- Add/Edit Modal-->
-<div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content card mx-auto mt-5">
-            <div class="card-header">Hinzufügen / Updaten</div>
+            <div class="card-header">{{docent.id ? 'Aktualisieren' : 'Hinzufügen'}}</div>
             <div class="card-body">
                 <form name="modal">
                     <div class="form-row">
                         <div class="form-group col-md-2">
-                            <label for="inputTitel">Title</label>
+                            <label for="inputTitle">Titel</label>
                             <input type="text"
                                    class="form-control"
-                                   id="inputTitel"
+                                   id="inputTitle"
                                    ng-model="docent.title"
-                                   placeholder="Title">
+                                   placeholder="Titel">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="inputForename">Vorname</label>
@@ -150,17 +152,17 @@
                                    placeholder="0"/>
                         </div>
                     </div>
-                        <div class="form-group">
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input"
-                                           type="checkbox"
-                                           ng-model="docent.isPermanentlyEmployed"
-                                           name="anstellung">
-                                    Dozent ist Vollzeit tätig
-                                </label>
-                            </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       ng-model="docent.isPermanentlyEmployed"
+                                       name="anstellung">
+                                Dozent ist festangestellt
+                            </label>
                         </div>
+                    </div>
                     <div class="pull-right">
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
