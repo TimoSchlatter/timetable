@@ -46,7 +46,7 @@ public class CourseControllerTest {
     private CourseService courseService;
 
     private JacksonTester<Course> jacksonTester;
-    private final Course course = new Course("X", 232, "Test Driven Development");
+    private final Course course = new Course("Test Driven Development", "X", 232);
     private final Long courseId = 1L;
     private MockMvc mockMvc;
 
