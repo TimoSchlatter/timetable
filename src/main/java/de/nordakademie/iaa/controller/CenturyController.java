@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 @Transactional
 @RestController
 @RequestMapping("/centuries")
@@ -38,8 +40,7 @@ public class CenturyController {
      *
      * @param id The id of the century to be deleted.
      */
-    @DeleteMapping
-    @RequestMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteCentury(@PathVariable Long id) {
         try {
             centuryService.deleteCentury(id);

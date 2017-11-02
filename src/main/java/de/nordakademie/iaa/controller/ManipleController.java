@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 @Transactional
 @RestController
 @RequestMapping("/maniples")
@@ -43,8 +46,7 @@ public class ManipleController {
      *
      * @param id The id of the maniple to be deleted.
      */
-    @DeleteMapping
-    @RequestMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteManiple(@PathVariable Long id) {
         try {
             manipleService.deleteManiple(id);
@@ -60,8 +62,7 @@ public class ManipleController {
      *
      * @param century The century to save.
      */
-    @PostMapping
-    @RequestMapping("/{id}/addCentury")
+    @RequestMapping(value = "/{id}/addCentury", method = POST)
     public ResponseEntity addCentury(@PathVariable Long id, @RequestBody Century century) {
         Maniple maniple = manipleService.loadManiple(id);
         if (maniple != null) {

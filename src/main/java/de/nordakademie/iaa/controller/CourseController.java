@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 @Transactional
 @RestController
 @RequestMapping("/courses")
@@ -55,8 +57,7 @@ public class CourseController {
      *
      * @param id The id of the course to be deleted.
      */
-    @DeleteMapping
-    @RequestMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteCourse(@PathVariable Long id) {
         try {
             courseService.deleteCourse(id);

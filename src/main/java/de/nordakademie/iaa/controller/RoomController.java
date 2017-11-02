@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 @Transactional
 @RestController
 @RequestMapping("/rooms")
@@ -54,8 +56,7 @@ public class RoomController {
      *
      * @param id The id of the room to be deleted.
      */
-    @DeleteMapping
-    @RequestMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteRoom(@PathVariable Long id) {
         try {
             roomService.deleteRoom(id);

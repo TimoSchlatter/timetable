@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+
 @Transactional
 @RestController
 @RequestMapping("/events")
@@ -55,8 +57,7 @@ public class EventController {
      *
      * @param id The id of the event to be deleted.
      */
-    @DeleteMapping
-    @RequestMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteEvent(@PathVariable Long id) {
         try {
             eventService.deleteEvent(id);
