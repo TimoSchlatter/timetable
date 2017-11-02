@@ -1,6 +1,8 @@
 package de.nordakademie.iaa.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.io.Serializable;
 
 @Entity
@@ -19,7 +21,7 @@ public class Seminar extends Module implements Serializable {
         super(title, shortTitle);
         this.seminarType = seminarType;
     }
-
+    @Enumerated(EnumType.STRING)
     public SeminarType getSeminarType() {
         return seminarType;
     }
