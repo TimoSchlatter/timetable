@@ -74,23 +74,24 @@ public class DocentControllerTest {
     @Test
     public void testSaveDocent() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
+        String url = "/docents";
         // Docent already existing
         when(docentService.findByForenameAndSurname(anyString(), anyString())).thenReturn(docent);
-        mockMvc.perform(post("/docents").content(jacksonTester.write(docent).getJson())
+        mockMvc.perform(post(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(docentService, times(0)).saveDocent(docent);
         // Docent not yet existing
         when(docentService.findByForenameAndSurname(anyString(), anyString())).thenReturn(null);
-        mockMvc.perform(post("/docents").content(jacksonTester.write(docent).getJson())
+        mockMvc.perform(post(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
         verify(docentService, times(1)).saveDocent(docent);
         // Docent not yet existing & saving failed
         doThrow(new RuntimeException()).when(docentService).saveDocent(any());
-        mockMvc.perform(post("/docents").content(jacksonTester.write(docent).getJson())
+        mockMvc.perform(post(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -126,11 +127,12 @@ public class DocentControllerTest {
 
     @Test
     public void testDeleteDocent() throws Exception {
-        mockMvc.perform(delete("/docents/" + docent.getId())).andExpect(status().isOk());
-        verify(docentService, times(1)).deleteDocent(docent.getId());
+        String url = "/docents/" + docentId;
+        mockMvc.perform(delete(url)).andExpect(status().isOk());
+        verify(docentService, times(1)).deleteDocent(docentId);
         doThrow(new EntityNotFoundException()).when(docentService).deleteDocent(anyLong());
-        mockMvc.perform(delete("/docents/" + docent.getId())).andExpect(status().isNotFound());
-        verify(docentService, times(2)).deleteDocent(docent.getId());
+        mockMvc.perform(delete(url)).andExpect(status().isNotFound());
+        verify(docentService, times(2)).deleteDocent(docentId);
     }
 
     @After
