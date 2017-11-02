@@ -1,5 +1,7 @@
 package de.nordakademie.iaa.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Basic;
@@ -8,8 +10,17 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import java.io.Serializable;
 
+import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @Type(value = Course.class, name = "course"),
+        @Type(value = Seminar.class, name = "seminar")})
 public abstract class Module extends HasId implements Serializable {
     private String title;
     private String shortTitle;

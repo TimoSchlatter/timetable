@@ -38,4 +38,20 @@ public class Subject extends HasMinChangeoverTime implements Serializable {
     public void setModule(Module module) {
         this.module = module;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Subject subject = (Subject) o;
+        if (subjectType != subject.subjectType) return false;
+        return module != null ? module.equals(subject.module) : subject.module == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = subjectType != null ? subjectType.hashCode() : 0;
+        result = 31 * result + (module != null ? module.hashCode() : 0);
+        return result;
+    }
 }
