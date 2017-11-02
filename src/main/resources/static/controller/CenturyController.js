@@ -1,80 +1,62 @@
-'use strict'
+'use strict';
 
-app.controller('CenturyController', function($scope , $http) {
+app.controller('CenturyController', function ($scope, $http) {
 
-    $http.get('http://localhost:49999/centuries').
-    then(function(response) {
-        $scope.century = response.data;
-    });
+    var cohortsUrl = 'http://localhost:49999/cohorts/';
+    var maniplesUrl = 'http://localhost:49999/maniples/';
+    var centuriesUrl = 'http://localhost:49999/centuries/';
 
-    $http.get('http://localhost:49999/maniples').
-    then(function(response) {
-        $scope.maniple = response.data;
-    });
+    var getData = function () {
+        $http.get(cohortsUrl).then(function successCallback(response) {
+            $scope.cohorts = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+        $http.get(maniplesUrl).then(function successCallback(response) {
+            $scope.maniples = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+        $http.get(centuriesUrl).then(function successCallback(response) {
+            $scope.centuries = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+    };
 
-    $http.get('http://localhost:49999/cohorts').
-    then(function(response) {
-        $scope.cohorts = response.data;
-    });
+    getData();
 
-    $scope.currentId = function (itemId) {
-        $scope.itemId = itemId;
-    }
+    $scope.setSelectedCentury = function (century) {
+        $scope.century = angular.copy(century);
+    };
 
-    $scope.deleteData = function() {
-        var url = 'http://localhost:49999/centuries/' + $scope.itemId;
-        $http.delete(url)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.createData = function () {
+        $http.post(maniplesUrl + manipleId + '/addCentury', JSON.stringify(this.century))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.createData = function(manipleId) {
-        var centuryData = {
-            "name": $scope.name,
-            "numberOfStudents": $scope.numberOfStudents,
-            "minChangeoverTime": $scope.minChangeoverTime
-        };
-
-        var url = 'http://localhost:49999/maniples/' + manipleId + '/addCentury';
-
-
-        $http.post(url, centuryData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.updateData = function () {
+        $http.put(maniplesUrl + this.century.id, JSON.stringify(this.century))
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
+    };
 
-    $scope.updateData = function (){
-        var centuryData = {
-            "name": $scope.name,
-            "numberOfStudents": $scope.numberOfStudents,
-            "minChangeoverTime": $scope.minChangeoverTime
-        };
-
-
-        $http.put('http://localhost:49999/maniples', centuryData)
-            .then(function (data) {
-                $scope.ServerResponse = data;
-            })
-            .then(function (data, status, header, config) {
-                $scope.ServerResponse =  htmlDecode("Data: " + data +
-                    "\n\n\n\nstatus: " + status +
-                    "\n\n\n\nheaders: " + header +
-                    "\n\n\n\nconfig: " + config);
+    $scope.deleteData = function () {
+        $http.delete(centuriesUrl + this.century.id)
+            .then(function successCallback(data) {
+                console.log(data);
+                getData();
+            }, function errorCallback(data, status, header, config) {
+                console.log(data, status, header, config);
             });
-    }
-
-})
+    };
+});

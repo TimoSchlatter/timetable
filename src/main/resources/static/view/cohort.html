@@ -2,6 +2,7 @@
 <div class="card mb-3">
     <div class="card-header">
         <button class="btn btn-success btn-xs"
+                ng-click="setSelectedCohort({})"
                 data-title="Delete"
                 data-toggle="modal"
                 data-target="#addEditModal">
@@ -11,7 +12,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="kohorteTable" width="100%" cellspacing="0">
+            <table class="table table-bordered" id="cohortTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
                     <th>Bezeichnung</th>
@@ -133,7 +134,7 @@
 <script src="../vendor/sb-admin/js/sb-admin-datatables.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#kohorteTable').DataTable({
+        $('#cohortTable').DataTable({
             "language": {
                 "sEmptyTable": "Keine Daten in der Tabelle vorhanden",
                 "sInfo": "_START_ bis _END_ von _TOTAL_ Einträgen",
