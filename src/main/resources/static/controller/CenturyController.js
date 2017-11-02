@@ -12,16 +12,6 @@ app.controller('CenturyController', function ($scope, $http) {
         }, function errorCallback(response) {
             console.log(response.statusText);
         });
-        $http.get(maniplesUrl).then(function successCallback(response) {
-            $scope.maniples = response.data;
-        }, function errorCallback(response) {
-            console.log(response.statusText);
-        });
-        $http.get(centuriesUrl).then(function successCallback(response) {
-            $scope.centuries = response.data;
-        }, function errorCallback(response) {
-            console.log(response.statusText);
-        });
     };
 
     getData();
@@ -30,8 +20,16 @@ app.controller('CenturyController', function ($scope, $http) {
         $scope.century = angular.copy(century);
     };
 
+    $scope.setSelectedManiple = function () {
+        $scope.centuries = angular.copy($scope.maniple);
+    };
+
+    $scope.setSelectedCohort = function () {
+        $scope.maniples = angular.copy($scope.cohort);
+    };
+
     $scope.createData = function () {
-        $http.post(maniplesUrl + manipleId + '/addCentury', JSON.stringify(this.century))
+        $http.post(maniplesUrl + this.maniple.id + '/addCentury', JSON.stringify(this.century))
             .then(function successCallback(data) {
                 console.log(data);
                 getData();
@@ -41,7 +39,7 @@ app.controller('CenturyController', function ($scope, $http) {
     };
 
     $scope.updateData = function () {
-        $http.put(maniplesUrl + this.century.id, JSON.stringify(this.century))
+        $http.put(centuriesUrl + this.century.id, JSON.stringify(this.century))
             .then(function successCallback(data) {
                 console.log(data);
                 getData();
@@ -51,7 +49,7 @@ app.controller('CenturyController', function ($scope, $http) {
     };
 
     $scope.deleteData = function () {
-        $http.delete(centuriesUrl + this.century.id)
+        $http.delete(maniplesUrl + this.maniple.id + '/deleteCentury/' + this.century.id)
             .then(function successCallback(data) {
                 console.log(data);
                 getData();

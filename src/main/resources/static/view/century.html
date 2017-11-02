@@ -13,14 +13,12 @@
         <form>
             <div class="form-group">
                 <label for="selectKohorte">Vorauswahl der Kohorte:</label>
-                <select class="form-control" id="selectKohorte">
-                    <option ng-repeat="cohort in cohorts">{{cohort.name}}</option>
+                <select class="form-control" id="selectKohorte" ng-options="cohort as cohort.name for cohort in cohorts" ng-model="cohort" ng-change="setSelectedCohort()">
                 </select>
             </div>
             <div class="form-group">
                 <label for="selectManipel">Vorauswahl der Manipel:</label>
-                <select class="form-control" id="selectManipel">
-                    <option ng-repeat="maniple in maniples">{{maniple.name}}</option>
+                <select class="form-control" id="selectManipel" ng-options="maniple as maniple.name for maniple in maniples.maniples" ng-Model="maniple" ng-change="setSelectedManiple()">
                 </select>
             </div>
         </form>
@@ -35,7 +33,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="century in centuries">
+                <tr ng-repeat="century in centuries.centuries">
                     <td>{{century.name}}</td>
                     <td>{{century.numberOfStudents}}</td>
                     <td>{{century.minChangeoverTime}}</td>
@@ -103,14 +101,12 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label for="modalSelectCohort">Kohorte</label>
-                            <select class="form-control" id="modalSelectCohort">
-                                <option ng-repeat="cohort in cohorts">{{cohort.name}}</option>
+                            <select class="form-control" id="modalSelectCohort" ng-options="cohort as cohort.name for cohort in cohorts" ng-model="cohort" ng-change="setSelectedCohort()">
                             </select>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="modalSelectManiple">Manipel</label>
-                            <select class="form-control" id="modalSelectManiple">
-                                <option ng-repeat="maniple in maniples">{{maniple.name}}</option>
+                            <select class="form-control" id="modalSelectManiple" ng-options="maniple as maniple.name for maniple in maniples.maniples" ng-Model="maniple" ng-change="setSelectedManiple()">
                             </select>
                         </div>
                         <div class="form-group col-md-2">
