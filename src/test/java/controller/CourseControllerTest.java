@@ -45,12 +45,12 @@ public class CourseControllerTest {
     private CourseService courseService;
 
     private JacksonTester<Course> jacksonTester;
-    private Course course = new Course("X", 232, "Test Driven Development");
+    private final Course course = new Course("X", 232, "Test Driven Development");
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(this.courseController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(courseController).build();
         course.setId(42L);
     }
 
@@ -59,11 +59,11 @@ public class CourseControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
         List<Course> courses = new ArrayList<>(Arrays.asList(course));
-        when(this.courseService.listCourses()).thenReturn(courses);
+        when(courseService.listCourses()).thenReturn(courses);
         MvcResult mvcResult = mockMvc.perform(get("/courses"))
                 .andExpect(status().isOk())
                 .andReturn();
-        verify(this.courseService, times(1)).listCourses();
+        verify(courseService, times(1)).listCourses();
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Course> coursesResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Course>>() {});
         assertEquals(courses, coursesResponse);
@@ -76,27 +76,27 @@ public class CourseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
-        verify(this.courseService, times(1)).saveCourse(course);
+        verify(courseService, times(1)).saveCourse(course);
         doThrow(new RuntimeException()).when(courseService).saveCourse(any());
         mockMvc.perform(post("/courses").content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(this.courseService, times(2)).saveCourse(course);
+        verify(courseService, times(2)).saveCourse(course);
     }
 
     @Test
     public void testDeleteCourse() throws Exception {
         mockMvc.perform(delete("/courses/" + course.getId())).andExpect(status().isOk());
-        verify(this.courseService, times(1)).deleteCourse(course.getId());
+        verify(courseService, times(1)).deleteCourse(course.getId());
         doThrow(new EntityNotFoundException()).when(courseService).deleteCourse(anyLong());
         mockMvc.perform(delete("/courses/" + course.getId())).andExpect(status().isNotFound());
-        verify(this.courseService, times(2)).deleteCourse(course.getId());
+        verify(courseService, times(2)).deleteCourse(course.getId());
     }
 
     @After
     public void reset() {
-        Mockito.reset();
+        Mockito.reset(courseService);
     }
 
     @Configuration

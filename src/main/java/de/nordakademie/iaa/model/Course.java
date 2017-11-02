@@ -71,13 +71,13 @@ public class Course extends HasId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        if (field != course.field) return false;
-        return number == course.number;
+        if (number != course.number) return false;
+        return field != null ? field.equals(course.field) : course.field == null;
     }
 
     @Override
     public int hashCode() {
-        int result = field.hashCode();
+        int result = field != null ? field.hashCode() : 0;
         result = 31 * result + number;
         return result;
     }
