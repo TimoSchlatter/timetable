@@ -83,6 +83,12 @@ public class SeminarDAOTest {
         assertTrue(seminars.isEmpty());
     }
 
+    @Test
+    public void testFindByTitle() {
+        Seminar seminar = seminarDAO.findByTitle(this.seminar.getTitle());
+        compareSeminars(seminar);
+    }
+
     private void compareSeminars(Seminar seminar) {
         assertEquals(this.seminar.getSeminarType(), seminar.getSeminarType());
         assertEquals(this.seminar.getTitle(), seminar.getTitle());

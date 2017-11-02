@@ -88,6 +88,12 @@ public class CourseDAOTest
         compareCourses(course);
     }
 
+    @Test
+    public void testFindByTitle() {
+        Course course = courseDAO.findByTitle(this.course.getTitle());
+        compareCourses(course);
+    }
+
     private void compareCourses(Course course) {
         assertEquals(this.course.getField(), course.getField());
         assertEquals(this.course.getNumber(), course.getNumber());
