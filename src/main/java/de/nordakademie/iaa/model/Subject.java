@@ -3,45 +3,31 @@ package de.nordakademie.iaa.model;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Subject extends HasMinChangeoverTime {
+public class Subject extends HasMinChangeoverTime {
 
-    String title;
+    private SubjectType subjectType;
+
+//    private Module module;
 
     Subject() {}
 
-    Subject(String title) {
-        this.title = title;
-    }
-
-    Subject(int minChangeoverTime, String title) {
-        super(minChangeoverTime);
-        this.title = title;
-    }
-
     @NaturalId
-    public String getTitle() {
-        return title;
+    public SubjectType getSubjectType() {
+        return subjectType;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSubjectType(SubjectType subjectType) {
+        this.subjectType = subjectType;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Subject subject = (Subject) o;
-        return title != null ? title.equals(subject.title) : subject.title == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return title != null ? title.hashCode() : 0;
-    }
+//    @NaturalId
+//    public Module getModule() {
+//        return module;
+//    }
+//
+//    public void setModule(Module module) {
+//        this.module = module;
+//    }
 }

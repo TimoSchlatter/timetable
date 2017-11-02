@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Month;
-import java.util.*;
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Component
@@ -21,21 +18,17 @@ public class DataGenerator {
     private CourseService courseService;
     private DocentService docentService;
     private EventService eventService;
-    private ExamService examService;
-    private LectureService lectureService;
     private ManipleService manipleService;
     private RoomService roomService;
     private SeminarService seminarService;
 
     @Autowired
-    public DataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService, DocentService docentService, EventService eventService, ExamService examService, LectureService lectureService, ManipleService manipleService, RoomService roomService, SeminarService seminarService) {
+    public DataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService, DocentService docentService, EventService eventService, ManipleService manipleService, RoomService roomService, SeminarService seminarService) {
         this.centuryService = centuryService;
         this.cohortService = cohortService;
         this.courseService = courseService;
         this.docentService = docentService;
         this.eventService = eventService;
-        this.examService = examService;
-        this.lectureService = lectureService;
         this.manipleService = manipleService;
         this.roomService = roomService;
         this.seminarService = seminarService;
@@ -50,10 +43,10 @@ public class DataGenerator {
         createDocents();
         createCourses();
         createSeminars();
-        createLectures();
-        createExams();
+//        createLectures();
+//        createExams();
         createGroups();
-        createEvents();
+//        createEvents();
     }
 
     private void createRooms() {
@@ -141,13 +134,13 @@ public class DataGenerator {
         seminarService.saveSeminar(new Seminar("Business-Knigge", 20));
     }
 
-    private void createLectures() {
-        courseService.listCourses().forEach(course -> lectureService.saveLecture(new Lecture(15, course)));
-    }
-
-    private void createExams() {
-        courseService.listCourses().forEach(course -> examService.saveExam(new Exam(30, course)));
-    }
+//    private void createLectures() {
+//        courseService.listCourses().forEach(course -> lectureService.saveLecture(new Lecture(15, course)));
+//    }
+//
+//    private void createExams() {
+//        courseService.listCourses().forEach(course -> examService.saveExam(new Exam(30, course)));
+//    }
 
     private void createGroups() {
 //        Century centuryA14a = new Century("A14a", 26);
@@ -191,19 +184,19 @@ public class DataGenerator {
         }
     }
 
-    private void createEvents() {
-        Set<Room> eventRooms = new HashSet<>(Arrays.asList(roomService.findByBuildingAndNumber("A", "001")));
-        List<Docent> docents = docentService.listDocents();
-        Set<Docent> eventDocents = new HashSet<>();
-        docents.stream().filter(docent -> docent.getForename().contains("Uwe")).findFirst().ifPresent(eventDocents::add);
-        docents.stream().filter(docent -> docent.getForename().contains("Joachim")).findFirst().ifPresent(eventDocents::add);
-        Group eventGroup = centuryService.listCenturies().stream().filter(century -> century.getName().equals("I14a")).findFirst().get();
-        LocalDate date = LocalDate.of(2017, Month.DECEMBER, 12);
-        LocalTime startTime = LocalTime.of(9, 15);
-        LocalTime endTime = LocalTime.of(11, 30);
-        Course course = courseService.listCourses().stream().filter(c -> c.getField().equals("I") && c.getNumber() == 104).findFirst().get();
-        Subject eventSubject = lectureService.listLectures().stream().filter(lecture -> lecture.getCourse().equals(course)).findFirst().get();
-        Event event = new Event(eventRooms, eventDocents, eventGroup, date, startTime, endTime, eventSubject);
-        eventService.saveEvent(event);
-    }
+//    private void createEvents() {
+//        Set<Room> eventRooms = new HashSet<>(Arrays.asList(roomService.findByBuildingAndNumber("A", "001")));
+//        List<Docent> docents = docentService.listDocents();
+//        Set<Docent> eventDocents = new HashSet<>();
+//        docents.stream().filter(docent -> docent.getForename().contains("Uwe")).findFirst().ifPresent(eventDocents::add);
+//        docents.stream().filter(docent -> docent.getForename().contains("Joachim")).findFirst().ifPresent(eventDocents::add);
+//        Group eventGroup = centuryService.listCenturies().stream().filter(century -> century.getName().equals("I14a")).findFirst().get();
+//        LocalDate date = LocalDate.of(2017, Month.DECEMBER, 12);
+//        LocalTime startTime = LocalTime.of(9, 15);
+//        LocalTime endTime = LocalTime.of(11, 30);
+//        Course course = courseService.listCourses().stream().filter(c -> c.getField().equals("I") && c.getNumber() == 104).findFirst().get();
+//        Subject eventSubject = lectureService.listLectures().stream().filter(lecture -> lecture.getCourse().equals(course)).findFirst().get();
+//        Event event = new Event(eventRooms, eventDocents, eventGroup, date, startTime, endTime, eventSubject);
+//        eventService.saveEvent(event);
+//    }
 }
