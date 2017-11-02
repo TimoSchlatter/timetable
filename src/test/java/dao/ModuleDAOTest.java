@@ -44,7 +44,7 @@ public class ModuleDAOTest {
 
     @Before
     public void setupData() {
-        module = new Course("R", 234, "Rudern ohne Paddel");
+        module = new Course("Rudern ohne Paddel", "R",234 );
         moduleDAO.save(module);
     }
 
