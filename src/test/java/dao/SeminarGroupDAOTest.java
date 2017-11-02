@@ -82,6 +82,12 @@ public class SeminarGroupDAOTest {
         assertTrue(seminarGroups.isEmpty());
     }
 
+    @Test
+    public void findByName() {
+        SeminarGroup seminarGroup = seminarGroupDAO.findByName(this.seminarGroup.getName());
+        compareSeminarGroups(seminarGroup);
+    }
+
     private void compareSeminarGroups(SeminarGroup seminarGroup) {
         assertEquals(this.seminarGroup.getMaximumNumberOfStudents(), seminarGroup.getMaximumNumberOfStudents());
         assertEquals(this.seminarGroup.getMinChangeoverTime(), seminarGroup.getMinChangeoverTime());

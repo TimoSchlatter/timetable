@@ -96,6 +96,12 @@ public class SubjectDAOTest {
         subjects.forEach(this::compareSubjects);
     }
 
+    @Test
+    public void testFindBySubjectTypeAndModule() {
+        Subject subject = subjectDAO.findBySubjectTypeAndModule(this.subject.getSubjectType(), this.subject.getModule());
+        compareSubjects(subject);
+    }
+
     private void compareSubjects(Subject subject) {
         assertEquals(this.subject.getModule(), subject.getModule());
         assertEquals(this.subject.getMinChangeoverTime(), subject.getMinChangeoverTime());

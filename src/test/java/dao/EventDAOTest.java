@@ -135,6 +135,12 @@ public class EventDAOTest {
         assertTrue(events.isEmpty());
     }
 
+    @Test
+    public void testFindByDateAndStartTimeAndEndTimeAndGroup() {
+        Event event = eventDAO.findByDateAndStartTimeAndEndTimeAndGroup(this.event.getDate(),this.event.getStartTime(), this.event.getEndTime(), this.event.getGroup());
+        compareEvent(event);
+    }
+
     private void compareEvent(Event event) {
         assertEquals(this.event.getDate(), event.getDate());
         assertEquals(this.event.getDocents(), event.getDocents());
