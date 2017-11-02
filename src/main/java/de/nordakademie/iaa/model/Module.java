@@ -42,4 +42,17 @@ public abstract class Module extends HasId {
     public void setShortTitle(String shortTitle) {
         this.shortTitle = shortTitle;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Module module = (Module) o;
+        return title != null ? title.equals(module.title) : module.title == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return title != null ? title.hashCode() : 0;
+    }
 }

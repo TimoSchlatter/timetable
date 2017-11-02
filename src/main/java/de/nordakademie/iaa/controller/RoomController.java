@@ -45,8 +45,11 @@ public class RoomController {
     @PostMapping
     public ResponseEntity saveRoom(@RequestBody Room room) {
         try {
-            roomService.saveRoom(room);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            if (roomService.loadRoom(room.getId()) == null) {
+                roomService.saveRoom(room);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

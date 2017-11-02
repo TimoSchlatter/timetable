@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -73,11 +74,21 @@ public class CourseControllerTest {
     @Test
     public void testSaveCourse() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
+        // Course already existing
+        when(courseService.loadCourse(courseId)).thenReturn(course);
         mockMvc.perform(post("/courses").content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                .andExpect(status().isBadRequest());
+        verify(courseService, times(0)).saveCourse(course);
+        // Course not yet existing
+        when(courseService.loadCourse(courseId)).thenReturn(null);
+        mockMvc.perform(post("/courses").content(jacksonTester.write(course).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.CREATED.value()));
         verify(courseService, times(1)).saveCourse(course);
+        // Course not yet existing & saving failed
         doThrow(new RuntimeException()).when(courseService).saveCourse(any());
         mockMvc.perform(post("/courses").content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -90,25 +101,26 @@ public class CourseControllerTest {
     public void testUpdateCourse() throws Exception {
         final String url = "/courses/" + courseId;
         JacksonTester.initFields(this, new ObjectMapper());
+        // Course not existing
+        when(courseService.loadCourse(courseId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonTester.write(course).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(courseService, times(0)).saveCourse(course);
+        // Course existing
         when(courseService.loadCourse(courseId)).thenReturn(course);
         mockMvc.perform(put(url).content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(courseService, times(1)).saveCourse(course);
-
+        // Course existing & updating failed
         doThrow(new RuntimeException()).when(courseService).saveCourse(any());
         mockMvc.perform(put(url).content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(courseService, times(2)).saveCourse(course);
-
-        when(courseService.loadCourse(courseId)).thenReturn(null);
-        mockMvc.perform(put(url).content(jacksonTester.write(course).getJson())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
         verify(courseService, times(2)).saveCourse(course);
     }
 

@@ -48,8 +48,11 @@ public class CohortController {
     @PostMapping
     public ResponseEntity saveCohort(@RequestBody Cohort cohort) {
         try {
-            cohortService.saveCohort(cohort);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            if (cohortService.loadCohort(cohort.getId()) == null) {
+                cohortService.saveCohort(cohort);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

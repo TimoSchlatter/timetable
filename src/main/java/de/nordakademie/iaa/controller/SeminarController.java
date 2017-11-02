@@ -45,8 +45,11 @@ public class SeminarController {
     @PostMapping
     public ResponseEntity saveSeminar(@RequestBody Seminar seminar) {
         try {
-            seminarService.saveSeminar(seminar);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            if (seminarService.loadSeminar(seminar.getId()) == null) {
+                seminarService.saveSeminar(seminar);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

@@ -44,8 +44,11 @@ public class DocentController {
     @PostMapping
     public ResponseEntity saveDocent(@RequestBody Docent docent) {
         try {
-            docentService.saveDocent(docent);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            if (docentService.loadDocent(docent.getId()) == null) {
+                docentService.saveDocent(docent);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

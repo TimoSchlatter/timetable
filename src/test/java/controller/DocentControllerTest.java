@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -46,12 +47,13 @@ public class DocentControllerTest {
 
     private JacksonTester<Docent> jacksonTester;
     private Docent docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20);
+    private final Long docentId = 1L;
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(docentController).build();
-        docent.setId(42L);
+        docent.setId(docentId);
     }
 
     @Test
@@ -72,11 +74,21 @@ public class DocentControllerTest {
     @Test
     public void testSaveDocent() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
+        // Docent already existing
+        when(docentService.loadDocent(docentId)).thenReturn(docent);
         mockMvc.perform(post("/docents").content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                .andExpect(status().isBadRequest());
+        verify(docentService, times(0)).saveDocent(docent);
+        // Docent not yet existing
+        when(docentService.loadDocent(docentId)).thenReturn(null);
+        mockMvc.perform(post("/docents").content(jacksonTester.write(docent).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.CREATED.value()));
         verify(docentService, times(1)).saveDocent(docent);
+        // Docent not yet existing & saving failed
         doThrow(new RuntimeException()).when(docentService).saveDocent(any());
         mockMvc.perform(post("/docents").content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -87,27 +99,28 @@ public class DocentControllerTest {
 
     @Test
     public void testUpdateDocent() throws Exception {
-        final String url = "/docents/" + docent.getId();
+        final String url = "/docents/" + docentId;
         JacksonTester.initFields(this, new ObjectMapper());
-        when(docentService.loadDocent(docent.getId())).thenReturn(docent);
+        // Docent not existing
+        when(docentService.loadDocent(docentId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonTester.write(docent).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(docentService, times(0)).saveDocent(docent);
+        // Docent existing
+        when(docentService.loadDocent(docentId)).thenReturn(docent);
         mockMvc.perform(put(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(docentService, times(1)).saveDocent(docent);
-
+        // Docent existing & updating failed
         doThrow(new RuntimeException()).when(docentService).saveDocent(any());
         mockMvc.perform(put(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(docentService, times(2)).saveDocent(docent);
-
-        when(docentService.loadDocent(docent.getId())).thenReturn(null);
-        mockMvc.perform(put(url).content(jacksonTester.write(docent).getJson())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
         verify(docentService, times(2)).saveDocent(docent);
     }
 

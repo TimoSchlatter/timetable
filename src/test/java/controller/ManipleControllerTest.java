@@ -86,25 +86,26 @@ public class ManipleControllerTest {
     public void testUpdateManiple() throws Exception {
         final String url = "/maniples/" + manipleId;
         JacksonTester.initFields(this, new ObjectMapper());
+        // Maniple not existing
+        when(manipleService.loadManiple(manipleId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonManipleTester.write(maniple).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(manipleService, times(0)).saveManiple(maniple);
+        // Maniple existing
         when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
         mockMvc.perform(put(url).content(jacksonManipleTester.write(maniple).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(manipleService, times(1)).saveManiple(maniple);
-
+        // Maniple existing & updating failed
         doThrow(new RuntimeException()).when(manipleService).saveManiple(any());
         mockMvc.perform(put(url).content(jacksonManipleTester.write(maniple).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(manipleService, times(2)).saveManiple(maniple);
-
-        when(manipleService.loadManiple(manipleId)).thenReturn(null);
-        mockMvc.perform(put(url).content(jacksonManipleTester.write(maniple).getJson())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
         verify(manipleService, times(2)).saveManiple(maniple);
     }
 

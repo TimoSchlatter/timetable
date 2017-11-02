@@ -44,10 +44,12 @@ public class CourseController {
      */
     @PostMapping
     public ResponseEntity saveCourse(@RequestBody Course course) {
-
         try {
-            courseService.saveCourse(course);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            if (courseService.loadCourse(course.getId()) == null) {
+                courseService.saveCourse(course);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

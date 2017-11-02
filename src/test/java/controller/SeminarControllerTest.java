@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.SeminarController;
 import de.nordakademie.iaa.model.Seminar;
+import de.nordakademie.iaa.model.SeminarType;
 import de.nordakademie.iaa.service.SeminarService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.junit.After;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -28,7 +30,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -45,7 +46,7 @@ public class SeminarControllerTest {
     private SeminarService seminarService;
 
     private JacksonTester<Seminar> jacksonTester;
-    private Seminar seminar = new Seminar(20, "Concurrency Java für BWLer", 42);
+    private Seminar seminar = new Seminar("Test-Seminar", SeminarType.SONSTIGES);
     private final Long seminarId = 1L;
     private MockMvc mockMvc;
 
@@ -73,11 +74,21 @@ public class SeminarControllerTest {
     @Test
     public void testSaveSeminar() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
+        // Seminar already existing
+        when(seminarService.loadSeminar(seminarId)).thenReturn(seminar);
         mockMvc.perform(post("/seminars").content(jacksonTester.write(seminar).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                .andExpect(status().isBadRequest());
+        verify(seminarService, times(0)).saveSeminar(seminar);
+        // Seminar not yet existing
+        when(seminarService.loadSeminar(seminarId)).thenReturn(null);
+        mockMvc.perform(post("/seminars").content(jacksonTester.write(seminar).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.CREATED.value()));
         verify(seminarService, times(1)).saveSeminar(seminar);
+        // Seminar not yet existing & saving failed
         doThrow(new RuntimeException()).when(seminarService).saveSeminar(any());
         mockMvc.perform(post("/seminars").content(jacksonTester.write(seminar).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -90,25 +101,26 @@ public class SeminarControllerTest {
     public void testUpdateSeminar() throws Exception {
         final String url = "/seminars/" + seminarId;
         JacksonTester.initFields(this, new ObjectMapper());
+        // Seminar not existing
+        when(seminarService.loadSeminar(seminarId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonTester.write(seminar).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(seminarService, times(0)).saveSeminar(seminar);
+        // Seminar existing
         when(seminarService.loadSeminar(seminarId)).thenReturn(seminar);
         mockMvc.perform(put(url).content(jacksonTester.write(seminar).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(seminarService, times(1)).saveSeminar(seminar);
-
+        // Seminar existing & updating failed
         doThrow(new RuntimeException()).when(seminarService).saveSeminar(any());
         mockMvc.perform(put(url).content(jacksonTester.write(seminar).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(seminarService, times(2)).saveSeminar(seminar);
-
-        when(seminarService.loadSeminar(seminarId)).thenReturn(null);
-        mockMvc.perform(put(url).content(jacksonTester.write(seminar).getJson())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
         verify(seminarService, times(2)).saveSeminar(seminar);
     }
 

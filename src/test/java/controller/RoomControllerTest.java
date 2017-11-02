@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -74,42 +75,53 @@ public class RoomControllerTest {
     @Test
     public void testSaveRoom() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
+        // Room already existing
+        when(roomService.loadRoom(roomId)).thenReturn(room);
         mockMvc.perform(post("/rooms").content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
-        verify(this.roomService, times(1)).saveRoom(room);
+                .andExpect(status().isBadRequest());
+        verify(roomService, times(0)).saveRoom(room);
+        // Room not yet existing
+        when(roomService.loadRoom(roomId)).thenReturn(null);
+        mockMvc.perform(post("/rooms").content(jacksonTester.write(room).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.CREATED.value()));
+        verify(roomService, times(1)).saveRoom(room);
+        // Room not yet existing & saving failed
         doThrow(new RuntimeException()).when(roomService).saveRoom(any());
         mockMvc.perform(post("/rooms").content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(this.roomService, times(2)).saveRoom(room);
+        verify(roomService, times(2)).saveRoom(room);
     }
 
     @Test
     public void testUpdateRoom() throws Exception {
         final String url = "/rooms/" + roomId;
         JacksonTester.initFields(this, new ObjectMapper());
+        // Room not existing
+        when(roomService.loadRoom(roomId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonTester.write(room).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(roomService, times(0)).saveRoom(room);
+        // Room existing
         when(roomService.loadRoom(roomId)).thenReturn(room);
         mockMvc.perform(put(url).content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(roomService, times(1)).saveRoom(room);
-
+        // Room existing & updating failed
         doThrow(new RuntimeException()).when(roomService).saveRoom(any());
         mockMvc.perform(put(url).content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(roomService, times(2)).saveRoom(room);
-
-        when(roomService.loadRoom(roomId)).thenReturn(null);
-        mockMvc.perform(put(url).content(jacksonTester.write(room).getJson())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
         verify(roomService, times(2)).saveRoom(room);
     }
 
