@@ -3,6 +3,7 @@ package service;
 
 import de.nordakademie.iaa.dao.SeminarDAO;
 import de.nordakademie.iaa.model.Seminar;
+import de.nordakademie.iaa.model.SeminarType;
 import de.nordakademie.iaa.service.SeminarService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.impl.SeminarServiceImpl;
@@ -30,8 +31,8 @@ public class SeminarServiceTest {
     private SeminarDAO seminarDAO;
 
     private final String title = "Seminar";
-    private final int maxNumberOfParticipants = 20;
-    private final Seminar seminar = new Seminar(title, maxNumberOfParticipants);
+    private final SeminarType seminarType = SeminarType.ETHIK_SOZIALES;
+    private final Seminar seminar = new Seminar(title, seminarType);
 
     @Test
     public void testSaveSeminar() {

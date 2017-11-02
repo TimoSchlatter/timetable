@@ -33,8 +33,8 @@ public class EventDAOTest {
     private EventDAO eventDAO;
     private GroupDAO groupDAO;
     private DocentDAO docentDAO;
-    private LectureDAO lectureDAO;
     private RoomDAO roomDAO;
+    private SubjectDAO subjectDAO;
     private CourseDAO courseDAO;
 
     @PersistenceContext
@@ -58,27 +58,26 @@ public class EventDAOTest {
     }
 
     @Autowired
-    public void setLectureDAO(LectureDAO lectureDAO) {
-        this.lectureDAO = lectureDAO;
+    public void setRoomDAO(RoomDAO roomDAO) {
+        this.roomDAO = roomDAO;
     }
 
     @Autowired
-    public void setRoomDAO(RoomDAO roomDAO) {
-        this.roomDAO = roomDAO;
+    public void setSubjectDAO(SubjectDAO subjectDAO) {
+        this.subjectDAO = subjectDAO;
     }
 
     @Autowired
     public void setCourseDAO(CourseDAO courseDAO) {
         this.courseDAO = courseDAO;
     }
-
     @Before
     public void setupData() {
-        Course course = new Course("I",123,"Test Driven Development");
+        Course course = new Course("I", 123, "Wuerfel Tricks");
         courseDAO.save(course);
 
-        Lecture lecture = new Lecture(5,course);
-        lectureDAO.save(lecture);
+        Subject subject = new Subject(20, SubjectType.EXAM, course);
+        subjectDAO.save(subject);
 
         Group group = new Century("I14a",20,30);
         groupDAO.save(group);
@@ -97,7 +96,7 @@ public class EventDAOTest {
         HashSet<Room> rooms = new HashSet<>();
         rooms.add(room);
 
-        event = new Event(rooms, docents, group, date, startTime, endTime, lecture);
+        event = new Event(rooms, docents, group, date, startTime, endTime, subject);
         eventDAO.save(event);
     }
 

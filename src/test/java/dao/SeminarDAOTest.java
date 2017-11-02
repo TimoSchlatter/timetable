@@ -3,6 +3,7 @@ package dao;
 import de.nordakademie.iaa.Application;
 import de.nordakademie.iaa.dao.SeminarDAO;
 import de.nordakademie.iaa.model.Seminar;
+import de.nordakademie.iaa.model.SeminarType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +44,7 @@ public class SeminarDAOTest {
 
     @Before
     public void setupData() {
-        seminar = new Seminar(20, "TDD", 30);
+        seminar = new Seminar("Richtig lesen", SeminarType.SCHLUESSELQUALIFIKATION);
         seminarDAO.save(seminar);
     }
 
@@ -83,8 +84,8 @@ public class SeminarDAOTest {
     }
 
     private void compareSeminars(Seminar seminar) {
-        assertEquals(this.seminar.getMinChangeoverTime(), seminar.getMinChangeoverTime());
+        assertEquals(this.seminar.getSeminarType(), seminar.getSeminarType());
         assertEquals(this.seminar.getTitle(), seminar.getTitle());
-        assertEquals(this.seminar.getMaxNumberOfParticipants(), seminar.getMaxNumberOfParticipants());
+        assertEquals(this.seminar.getShortTitle(), seminar.getShortTitle());
     }
 }

@@ -3,15 +3,21 @@ package de.nordakademie.iaa.model;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Subject extends HasMinChangeoverTime {
 
     private SubjectType subjectType;
-
-//    private Module module;
+    private Module module;
 
     Subject() {}
+
+    public Subject(int minChangeoverTime, SubjectType subjectType, Module module) {
+        super(minChangeoverTime);
+        this.subjectType = subjectType;
+        this.module = module;
+    }
 
     @NaturalId
     public SubjectType getSubjectType() {
@@ -22,12 +28,13 @@ public class Subject extends HasMinChangeoverTime {
         this.subjectType = subjectType;
     }
 
-//    @NaturalId
-//    public Module getModule() {
-//        return module;
-//    }
-//
-//    public void setModule(Module module) {
-//        this.module = module;
-//    }
+    @NaturalId
+    @ManyToOne
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
+    }
 }
