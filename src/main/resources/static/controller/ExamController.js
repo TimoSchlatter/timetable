@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('DocentController', function ($scope, $http) {
+app.controller('ExamController', function ($scope, $http) {
 
     var examsUrl = 'http://localhost:49999/exams/';
 

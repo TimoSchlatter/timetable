@@ -140,16 +140,19 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputChangeOverTime">Wechselzeit</label>
-                            <input type="number"
-                                   class="form-control"
-                                   ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
-                                   name="changeOverTime"
-                                   ng-model="docent.minChangeoverTime"
-                                   id="inputChangeOverTime"
-                                   min="0"
-                                   max="120"
-                                   step="1"
-                                   placeholder="0"/>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
+                                       name="changeOverTime"
+                                       ng-model="docent.minChangeoverTime"
+                                       id="inputChangeOverTime"
+                                       min="0"
+                                       max="120"
+                                       step="1"
+                                       placeholder="0"/>
+                                <span class="input-group-addon">Minuten</span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
