@@ -33,7 +33,7 @@ public class CourseServiceTest {
     private final int number = 101;
     private final String title = "Test Driven Development";
     private final String shortTitle = "TDD";
-    private final Course course = new Course("I",123,"Nervige Tests");
+    private final Course course = new Course("Nervige Tests", "I", 123);
 
     @Test
     public void testSaveCourse() {

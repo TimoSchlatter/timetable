@@ -167,7 +167,7 @@ public class DataGenerator {
         }
     }
 
-//    private void createEvents() {
+    private void createEvents() {
 //        Set<Room> eventRooms = new HashSet<>(Arrays.asList(roomService.findByBuildingAndNumber("A", "001")));
 //        List<Docent> docents = docentService.listDocents();
 //        Set<Docent> eventDocents = new HashSet<>();
@@ -181,5 +181,5 @@ public class DataGenerator {
 //        Subject eventSubject = lectureService.listLectures().stream().filter(lecture -> lecture.getCourse().equals(course)).findFirst().get();
 //        Event event = new Event(eventRooms, eventDocents, eventGroup, date, startTime, endTime, eventSubject);
 //        eventService.saveEvent(event);
-//    }
+    }
 }
