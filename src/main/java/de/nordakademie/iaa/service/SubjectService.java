@@ -1,6 +1,8 @@
 package de.nordakademie.iaa.service;
 
+import de.nordakademie.iaa.model.Module;
 import de.nordakademie.iaa.model.Subject;
+import de.nordakademie.iaa.model.SubjectType;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 
 import java.util.List;
@@ -38,4 +40,19 @@ public interface SubjectService {
      * @throws EntityNotFoundException if no subject could be found for the given id.
      */
     void deleteSubject(Long id) throws EntityNotFoundException;
+
+    /**
+     * Retrieves a subject by its subjectType and module.
+     * @param subjectType the identifier.
+     * @param module the identifier.
+     * @return the found subject or null if no subject was found with given identifiers.
+     */
+    Subject findBySubjectTypeAndModule(SubjectType subjectType, Module module);
+
+    /**
+     * Retrieves a subject by its subjectType.
+     * @param subjectType the identifier.
+     * @return the found subject or null if no subject was found with given identifier.
+     */
+    List<Subject> findBySubjectType(SubjectType subjectType);
 }

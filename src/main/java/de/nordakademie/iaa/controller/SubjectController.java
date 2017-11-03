@@ -45,7 +45,7 @@ public class SubjectController {
     @PostMapping
     public ResponseEntity saveSubject(@RequestBody Subject subject) {
         try {
-            if (subjectService.loadSubject(subject.getId()) == null) {
+            if (subjectService.findBySubjectTypeAndModule(subject.getSubjectType(), subject.getModule()) == null) {
                 subjectService.saveSubject(subject);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }

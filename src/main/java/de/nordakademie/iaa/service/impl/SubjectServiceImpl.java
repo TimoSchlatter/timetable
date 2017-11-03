@@ -1,7 +1,9 @@
 package de.nordakademie.iaa.service.impl;
 
 import de.nordakademie.iaa.dao.SubjectDAO;
+import de.nordakademie.iaa.model.Module;
 import de.nordakademie.iaa.model.Subject;
+import de.nordakademie.iaa.model.SubjectType;
 import de.nordakademie.iaa.service.SubjectService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +45,15 @@ public class SubjectServiceImpl implements SubjectService {
             throw new EntityNotFoundException();
         }
         subjectDAO.delete(subject);
+    }
+
+    @Override
+    public Subject findBySubjectTypeAndModule(SubjectType subjectType, Module module) {
+        return subjectDAO.findBySubjectTypeAndModule(subjectType, module);
+    }
+
+    @Override
+    public List<Subject> findBySubjectType(SubjectType subjectType) {
+        return subjectDAO.findBySubjectType(subjectType);
     }
 }

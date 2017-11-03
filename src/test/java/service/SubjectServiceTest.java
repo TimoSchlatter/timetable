@@ -3,6 +3,7 @@ package service;
 
 import de.nordakademie.iaa.dao.SubjectDAO;
 import de.nordakademie.iaa.model.Course;
+import de.nordakademie.iaa.model.Module;
 import de.nordakademie.iaa.model.Subject;
 import de.nordakademie.iaa.model.SubjectType;
 import de.nordakademie.iaa.service.SubjectService;
@@ -19,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,8 +33,9 @@ public class SubjectServiceTest {
     @Autowired
     private SubjectDAO subjectDAO;
 
-    private final Course course = new Course("Test-Modul", "Q", 121);
-    private final Subject subject = new Subject(20, SubjectType.LECTURE, course);
+    private final Module module = new Course("Test-Modul", "Q", 121);
+    private final SubjectType subjectType = SubjectType.LECTURE;
+    private final Subject subject = new Subject(20, subjectType, module);
 
     @Test
     public void testSaveSubject() {
@@ -67,6 +70,18 @@ public class SubjectServiceTest {
         subjectService.deleteSubject(id);
         Mockito.verify(subjectDAO, times(1)).findOne(id);
         Mockito.verify(subjectDAO, times(1)).delete(subject);
+    }
+
+    @Test
+    public void testFindBySubjectTypeAndModule() {
+        subjectService.findBySubjectTypeAndModule(subjectType, module);
+        verify(subjectDAO, times(1)).findBySubjectTypeAndModule(subjectType, module);
+    }
+
+    @Test
+    public void testFindBySubjectType() {
+        subjectService.findBySubjectType(subjectType);
+        verify(subjectDAO, times(1)).findBySubjectType(subjectType);
     }
 
     @After

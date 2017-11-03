@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import de.nordakademie.iaa.controller.SubjectController;
-import de.nordakademie.iaa.model.Seminar;
-import de.nordakademie.iaa.model.SeminarType;
-import de.nordakademie.iaa.model.Subject;
-import de.nordakademie.iaa.model.SubjectType;
+import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.SubjectService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.junit.After;
@@ -50,8 +47,9 @@ public class SubjectControllerTest {
     private SubjectService subjectService;
 
     private JacksonTester<Subject> jacksonTester;
-    private Seminar seminar = new Seminar("Test-Seminar", SeminarType.SONSTIGES);
-    private Subject subject = new Subject(20, SubjectType.SEMINAR, seminar);
+    private final Module module = new Seminar("Test-Seminar", SeminarType.SONSTIGES);
+    private final SubjectType subjectType = SubjectType.SEMINAR;
+    private final Subject subject = new Subject(20, subjectType, module);
     private final Long subjectId = 1L;
     private MockMvc mockMvc;
 
@@ -59,7 +57,7 @@ public class SubjectControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(subjectController).build();
         subject.setId(subjectId);
-        seminar.setId(subjectId + 1);
+        module.setId(subjectId + 1);
     }
 
     @Test
@@ -82,16 +80,16 @@ public class SubjectControllerTest {
     @Test
     public void testSaveSubject() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
-        final String url = "/subjects";
+        String url = "/subjects";
         // Subject already existing
-        when(subjectService.loadSubject(subjectId)).thenReturn(subject);
+        when(subjectService.findBySubjectTypeAndModule(subjectType, module)).thenReturn(subject);
         mockMvc.perform(post(url).content(jacksonTester.write(subject).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(subjectService, times(0)).saveSubject(subject);
         // Subject not yet existing
-        when(subjectService.loadSubject(subjectId)).thenReturn(null);
+        when(subjectService.findBySubjectTypeAndModule(subjectType, module)).thenReturn(null);
         mockMvc.perform(post(url).content(jacksonTester.write(subject).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
