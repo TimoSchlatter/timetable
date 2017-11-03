@@ -29,6 +29,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.isIn;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyLong;
@@ -55,6 +57,7 @@ public class ManipleControllerTest {
     private JacksonTester<Century> jacksonCenturyTester;
     private Maniple maniple = new Maniple("I14", 30);
     private Century century = new Century("a", 30);
+    private final String newCenturyName = maniple.getName() + century.getName();
     private final Long manipleId = 1L;
     private final Long centuryId = manipleId+1;
     private MockMvc mockMvc;
@@ -110,31 +113,49 @@ public class ManipleControllerTest {
     }
 
     @Test
-    public void testAddCenturyForExistingManiple() throws Exception {
-        when(manipleService.loadManiple(maniple.getId())).thenReturn(maniple);
+    public void testAddNonExistingCenturyToExistingManiple() throws Exception {
+        when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
+        when(centuryService.findByName(newCenturyName)).thenReturn(null);
         JacksonTester.initFields(this, new ObjectMapper());
-        mockMvc.perform(post("/maniples/" + maniple.getId() + "/addCentury")
+        mockMvc.perform(post("/maniples/" + manipleId + "/addCentury")
                 .content(jacksonCenturyTester.write(century).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
-        verify(manipleService, times(1)).loadManiple(maniple.getId());
-        century.setName(maniple.getName() + century.getName());
+        verify(manipleService, times(1)).loadManiple(manipleId);
+        verify(centuryService, times(1)).findByName(newCenturyName);
+        century.setName(newCenturyName);
         verify(centuryService, times(1)).saveCentury(century);
         assertThat(maniple.getCenturies(), contains(century));
     }
 
     @Test
-    public void testAddCenturyForNonExistingManiple() throws Exception {
-        final Long id = 1L;
+    public void testAddExistingCenturyToExistingManiple() throws Exception {
+        when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
+        when(centuryService.findByName(newCenturyName)).thenReturn(century);
+        JacksonTester.initFields(this, new ObjectMapper());
+        mockMvc.perform(post("/maniples/" + manipleId + "/addCentury")
+                .content(jacksonCenturyTester.write(century).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(manipleService, times(1)).loadManiple(manipleId);
+        verify(centuryService, times(1)).findByName(newCenturyName);
+        verify(centuryService, times(0)).saveCentury(any());
+        assertThat(century, not(isIn(maniple.getCenturies())));
+    }
+
+    @Test
+    public void testAddCenturyToNonExistingManiple() throws Exception {
         when(manipleService.loadManiple(anyLong())).thenReturn(null);
         JacksonTester.initFields(this, new ObjectMapper());
-        mockMvc.perform(post("/maniples/" + id + "/addCentury")
+        mockMvc.perform(post("/maniples/" + manipleId + "/addCentury")
                 .content(jacksonCenturyTester.write(century).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-        verify(manipleService, times(1)).loadManiple(id);
+        verify(manipleService, times(1)).loadManiple(manipleId);
+        verify(centuryService, times(0)).findByName(anyString());
         verify(centuryService, times(0)).saveCentury(any());
     }
 

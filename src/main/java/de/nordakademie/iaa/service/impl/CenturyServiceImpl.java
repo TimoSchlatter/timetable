@@ -44,4 +44,9 @@ public class CenturyServiceImpl implements CenturyService {
         }
         centuryDAO.delete(century);
     }
+
+    @Override
+    public Century findByName(String name) {
+        return centuryDAO.findByName(name);
+    }
 }

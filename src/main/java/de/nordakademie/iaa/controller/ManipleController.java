@@ -68,10 +68,14 @@ public class ManipleController {
     public ResponseEntity addCentury(@PathVariable Long id, @RequestBody Century century) {
         Maniple maniple = manipleService.loadManiple(id);
         if (maniple != null) {
-            century.setName(maniple.getName() + century.getName());
-            centuryService.saveCentury(century);
-            maniple.addCentury(century);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            String newCenturyName = maniple.getName() + century.getName();
+            if (centuryService.findByName(newCenturyName) == null) {
+                century.setName(newCenturyName);
+                centuryService.saveCentury(century);
+                maniple.addCentury(century);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.notFound().build();
     }

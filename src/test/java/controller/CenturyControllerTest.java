@@ -72,25 +72,26 @@ public class CenturyControllerTest {
     public void testUpdateCentury() throws Exception {
         final String url = "/centuries/" + centuryId;
         JacksonTester.initFields(this, new ObjectMapper());
+        // Century not existing
+        when(centuryService.loadCentury(centuryId)).thenReturn(null);
+        mockMvc.perform(put(url).content(jacksonTester.write(century).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(centuryService, times(0)).saveCentury(century);
+        // Century existing
         when(centuryService.loadCentury(centuryId)).thenReturn(century);
         mockMvc.perform(put(url).content(jacksonTester.write(century).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(centuryService, times(1)).saveCentury(century);
-
+        // Century existing & updating failed
         doThrow(new RuntimeException()).when(centuryService).saveCentury(any());
         mockMvc.perform(put(url).content(jacksonTester.write(century).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(centuryService, times(2)).saveCentury(century);
-
-        when(centuryService.loadCentury(centuryId)).thenReturn(null);
-        mockMvc.perform(put(url).content(jacksonTester.write(century).getJson())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
         verify(centuryService, times(2)).saveCentury(century);
     }
 
