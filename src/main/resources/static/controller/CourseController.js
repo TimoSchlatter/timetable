@@ -6,7 +6,7 @@ app.controller('CourseController', function ($scope, $http) {
 
     var getData = function () {
         $http.get(coursesUrl).then(function successCallback(response) {
-            $scope.rooms = response.data;
+            $scope.courses = response.data;
         }, function errorCallback(response) {
             console.log(response.statusText);
         });
