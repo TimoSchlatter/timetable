@@ -44,4 +44,9 @@ public class SeminarServiceImpl implements SeminarService {
         }
         seminarDAO.delete(seminar);
     }
+
+    @Override
+    public Seminar findByTitle(String title) {
+        return seminarDAO.findByTitle(title);
+    }
 }

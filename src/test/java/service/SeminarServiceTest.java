@@ -18,6 +18,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,36 +40,42 @@ public class SeminarServiceTest {
     @Test
     public void testSaveSeminar() {
         seminarService.saveSeminar(seminar);
-        Mockito.verify(seminarDAO, times(1)).save(seminar);
+        verify(seminarDAO, times(1)).save(seminar);
     }
 
     @Test
     public void testListSeminars() {
         seminarService.listSeminars();
-        Mockito.verify(seminarDAO, times(1)).findAll();
+        verify(seminarDAO, times(1)).findAll();
     }
 
     @Test
     public void testLoadSeminar() {
         final Long id = 123L;
         seminarService.loadSeminar(id);
-        Mockito.verify(seminarDAO, times(1)).findOne(id);
+        verify(seminarDAO, times(1)).findOne(id);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void testDeleteNonExistingSeminar() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(seminarDAO.findOne(anyLong())).thenReturn(null);
+        when(seminarDAO.findOne(anyLong())).thenReturn(null);
         seminarService.deleteSeminar(id);
     }
 
     @Test
     public void testDeleteExistingSeminar() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(seminarDAO.findOne(anyLong())).thenReturn(seminar);
+        when(seminarDAO.findOne(anyLong())).thenReturn(seminar);
         seminarService.deleteSeminar(id);
-        Mockito.verify(seminarDAO, times(1)).findOne(id);
-        Mockito.verify(seminarDAO, times(1)).delete(seminar);
+        verify(seminarDAO, times(1)).findOne(id);
+        verify(seminarDAO, times(1)).delete(seminar);
+    }
+
+    @Test
+    public void testFindByTitle() {
+        seminarService.findByTitle(title);
+        verify(seminarDAO, times(1)).findByTitle(title);
     }
 
     @After
@@ -84,7 +93,7 @@ public class SeminarServiceTest {
 
         @Bean
         public SeminarDAO seminarDAO() {
-            return Mockito.mock(SeminarDAO.class);
+            return mock(SeminarDAO.class);
         }
     }
 }

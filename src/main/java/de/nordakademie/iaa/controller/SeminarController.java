@@ -45,7 +45,7 @@ public class SeminarController {
     @PostMapping
     public ResponseEntity saveSeminar(@RequestBody Seminar seminar) {
         try {
-            if (seminarService.loadSeminar(seminar.getId()) == null) {
+            if (seminarService.findByTitle(seminar.getTitle()) == null) {
                 seminarService.saveSeminar(seminar);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }

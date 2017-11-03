@@ -39,4 +39,10 @@ public interface SeminarService {
      */
     void deleteSeminar(Long id) throws EntityNotFoundException;
 
+    /**
+     * Retrieves a seminar by its title.
+     * @param title the identifier.
+     * @return the found seminar or null if no seminar was found with given identifier.
+     */
+    Seminar findByTitle(String title);
 }

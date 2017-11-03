@@ -46,7 +46,8 @@ public class SeminarControllerTest {
     private SeminarService seminarService;
 
     private JacksonTester<Seminar> jacksonTester;
-    private Seminar seminar = new Seminar("Test-Seminar", SeminarType.SONSTIGES);
+    private final String title = "Test-Seminar";
+    private Seminar seminar = new Seminar(title, SeminarType.SONSTIGES);
     private final Long seminarId = 1L;
     private MockMvc mockMvc;
 
@@ -74,23 +75,24 @@ public class SeminarControllerTest {
     @Test
     public void testSaveSeminar() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
+        String url = "/seminars";
         // Seminar already existing
-        when(seminarService.loadSeminar(seminarId)).thenReturn(seminar);
-        mockMvc.perform(post("/seminars").content(jacksonTester.write(seminar).getJson())
+        when(seminarService.findByTitle(title)).thenReturn(seminar);
+        mockMvc.perform(post(url).content(jacksonTester.write(seminar).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(seminarService, times(0)).saveSeminar(seminar);
         // Seminar not yet existing
-        when(seminarService.loadSeminar(seminarId)).thenReturn(null);
-        mockMvc.perform(post("/seminars").content(jacksonTester.write(seminar).getJson())
+        when(seminarService.findByTitle(title)).thenReturn(null);
+        mockMvc.perform(post(url).content(jacksonTester.write(seminar).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
         verify(seminarService, times(1)).saveSeminar(seminar);
         // Seminar not yet existing & saving failed
         doThrow(new RuntimeException()).when(seminarService).saveSeminar(any());
-        mockMvc.perform(post("/seminars").content(jacksonTester.write(seminar).getJson())
+        mockMvc.perform(post(url).content(jacksonTester.write(seminar).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
