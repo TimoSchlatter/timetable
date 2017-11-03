@@ -1,6 +1,6 @@
 'use strict'
 
-var app = angular.module('roomManagement', ["ngRoute"]);
+var app = angular.module('roomManagement', ["ngRoute", 'ui.calendar']);
 
     app.config(function($routeProvider){
         $routeProvider.when("/", {
