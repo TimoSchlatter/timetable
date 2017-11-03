@@ -35,10 +35,10 @@ var app = angular.module('roomManagement', ["ngRoute", 'ui.calendar']);
             templateUrl: "view/event.html",
             name: "Events",
             controller: "EventController"
-        }).when("/eventtypes", {
-            templateUrl: "view/eventtype.html",
-            name: "EventTypes",
-            controller: "EventTypeController"
+        }).when("/subjects", {
+            templateUrl: "view/subject.html",
+            name: "Subjects",
+            controller: "SubjectController"
         }).when("/seminars", {
             templateUrl: "view/seminar.html",
             name: "Seminars",
