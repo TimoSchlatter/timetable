@@ -2,12 +2,15 @@ package de.nordakademie.iaa.service.impl;
 
 import de.nordakademie.iaa.dao.EventDAO;
 import de.nordakademie.iaa.model.Event;
+import de.nordakademie.iaa.model.Group;
 import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -43,5 +46,10 @@ public class EventServiceImpl implements EventService {
             throw new EntityNotFoundException();
         }
         eventDAO.delete(event);
+    }
+
+    @Override
+    public Event findByDateAndStartTimeAndEndTimeAndGroup(LocalDate date, LocalTime startTime, LocalTime endTime, Group group) {
+        return eventDAO.findByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group);
     }
 }

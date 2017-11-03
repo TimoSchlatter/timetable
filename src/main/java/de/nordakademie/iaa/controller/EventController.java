@@ -2,8 +2,8 @@ package de.nordakademie.iaa.controller;
 
 
 import de.nordakademie.iaa.model.Event;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.EventService;
+import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Transactional
 @RestController
@@ -43,10 +44,30 @@ public class EventController {
      */
     @PostMapping
     public ResponseEntity saveEvent(@RequestBody Event event) {
-
         try {
-            saveEvent(event);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            if (eventService.findByDateAndStartTimeAndEndTimeAndGroup(event.getDate(), event.getStartTime(), event.getEndTime(), event.getGroup()) == null) {
+                eventService.saveEvent(event);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    /**
+     * Updates the given event.
+     *
+     * @param event The event to update.
+     */
+    @RequestMapping(value = "/{id}", method = PUT)
+    public ResponseEntity updateEvent(@PathVariable Long id, @RequestBody Event event) {
+        try {
+            if (eventService.loadEvent(id) != null) {
+                eventService.saveEvent(event);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -66,5 +87,4 @@ public class EventController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

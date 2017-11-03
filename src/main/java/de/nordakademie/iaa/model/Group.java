@@ -1,5 +1,7 @@
 package de.nordakademie.iaa.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Entity;
@@ -11,6 +13,14 @@ import java.io.Serializable;
 @Entity
 @Table(name = "group_table")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Cohort.class, name = "cohort"),
+        @JsonSubTypes.Type(value = Maniple.class, name = "maniple"),
+        @JsonSubTypes.Type(value = Century.class, name = "century")})
 public abstract class Group extends HasMinChangeoverTime implements Serializable {
 
     private String name;
