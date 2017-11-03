@@ -37,7 +37,7 @@ public class Docent extends HasMinChangeoverTime implements Serializable {
         this.forename = forename;
     }
 
-    @NaturalId
+    @NaturalId(mutable = true)
     public String getSurname() {
         return surname;
     }
