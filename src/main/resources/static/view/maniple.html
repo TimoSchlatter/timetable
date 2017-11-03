@@ -13,8 +13,11 @@
     <div class="card-body">
         <form>
             <div class="form-group">
-                <label for="selectKohorte">Vorauswahl der Kohorte:</label>
-                <select class="form-control" id="selectKohorte" ng-options="cohort as cohort.name for cohort in cohorts"  ng-model="cohort" ng-change="setSelectedCohort()">
+                <label for="selectedCohort">Vorauswahl der Kohorte:</label>
+                <select class="form-control"
+                        id="selectedCohort"
+                        ng-options="cohort.name for cohort in cohortsAdvanced"
+                        ng-model="selectedCohort">
                 </select>
             </div>
         </form>
@@ -28,7 +31,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="maniple in cohort.maniples">
+                <tr ng-repeat="maniple in selectedCohort.maniples">
                     <td>{{maniple.name}}</td>
                     <td>{{maniple.minChangeoverTime}}</td>
                     <td>
@@ -94,11 +97,11 @@
                                    maxlength="1">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="modalSelectKohorte">Kohorte</label>
-                            <select class="form-control" id="modalSelectKohorte"
+                            <label for="modalSelectedCohort">Kohorte</label>
+                            <select class="form-control"
+                                    id="modalSelectedCohort"
                                     ng-options="cohort.name for cohort in cohorts"
-                                    ng-model="cohort"
-                                    ng-change="setSelectedCohort()">
+                                    ng-model="modalSelectedCohort">
                             </select>
                         </div>
                         <div class="form-group col-md-3">
