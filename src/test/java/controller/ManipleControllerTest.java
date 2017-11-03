@@ -53,14 +53,14 @@ public class ManipleControllerTest {
     @Autowired
     private CenturyService centuryService;
 
+    private MockMvc mockMvc;
     private JacksonTester<Maniple> jacksonManipleTester;
     private JacksonTester<Century> jacksonCenturyTester;
-    private Maniple maniple = new Maniple("I14", 30);
-    private Century century = new Century("a", 30);
+    private final Maniple maniple = new Maniple("I14", 30);
+    private final Century century = new Century("a", 30);
     private final String newCenturyName = maniple.getName() + century.getName();
     private final Long manipleId = 1L;
     private final Long centuryId = manipleId+1;
-    private MockMvc mockMvc;
 
     @Before
     public void setup() {

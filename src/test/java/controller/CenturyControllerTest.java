@@ -42,10 +42,10 @@ public class CenturyControllerTest {
     @Autowired
     private CenturyService centuryService;
 
-    private JacksonTester<Century> jacksonTester;
-    private Century century = new Century("I14", 30);
-    private final Long centuryId = 1L;
     private MockMvc mockMvc;
+    private JacksonTester<Century> jacksonTester;
+    private final Century century = new Century("I14", 30);
+    private final Long centuryId = 1L;
 
     @Before
     public void setup() {

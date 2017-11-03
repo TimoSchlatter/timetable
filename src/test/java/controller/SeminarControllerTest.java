@@ -45,11 +45,11 @@ public class SeminarControllerTest {
     @Autowired
     private SeminarService seminarService;
 
+    private MockMvc mockMvc;
     private JacksonTester<Seminar> jacksonTester;
     private final String title = "Test-Seminar";
-    private Seminar seminar = new Seminar(title, SeminarType.SONSTIGES);
+    private final Seminar seminar = new Seminar(title, SeminarType.SONSTIGES);
     private final Long seminarId = 1L;
-    private MockMvc mockMvc;
 
     @Before
     public void setup() {

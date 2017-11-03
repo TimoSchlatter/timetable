@@ -46,12 +46,12 @@ public class RoomControllerTest {
     @Autowired
     private RoomService roomService;
 
+    private MockMvc mockMvc;
     private JacksonTester<Room> jacksonTester;
     private final String building = "T";
     private final String number = "999";
-    private Room room = new Room(20, building, 42, number, RoomType.COMPUTERROOM);
+    private final Room room = new Room(20, building, 42, number, RoomType.COMPUTERROOM);
     private final Long roomId = 1L;
-    private MockMvc mockMvc;
 
     @Before
     public void setup() {

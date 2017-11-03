@@ -45,10 +45,10 @@ public class DocentControllerTest {
     @Autowired
     private DocentService docentService;
 
-    private JacksonTester<Docent> jacksonTester;
-    private Docent docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20);
-    private final Long docentId = 1L;
     private MockMvc mockMvc;
+    private JacksonTester<Docent> jacksonTester;
+    private final Docent docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20);
+    private final Long docentId = 1L;
 
     @Before
     public void setup() {

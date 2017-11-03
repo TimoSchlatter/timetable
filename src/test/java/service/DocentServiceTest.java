@@ -37,7 +37,7 @@ public class DocentServiceTest {
     private final String email = "test@docent.com";
     private final String phoneNumber = "0123123123";
     private final String title = "Dr.Dr.";
-    private int minChangeoverTime = 20;
+    private final int minChangeoverTime = 20;
     private final boolean isPermanentlyEmployed = true;
     private final Docent docent = new Docent(email, forename, surname, phoneNumber, title, isPermanentlyEmployed, minChangeoverTime);
 

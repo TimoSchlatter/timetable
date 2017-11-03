@@ -54,15 +54,15 @@ public class CohortControllerTest {
     @Autowired
     private ManipleService manipleService;
 
+    private MockMvc mockMvc;
     private JacksonTester<Cohort> jacksonCohortTester;
     private JacksonTester<Maniple> jacksonManipleTester;
-    private Cohort cohort = new Cohort("14", 30);
-    private Maniple maniple = new Maniple("I", 30);
-    private Century century = new Century("a", 30);
+    private final Cohort cohort = new Cohort("14", 30);
+    private final Maniple maniple = new Maniple("I", 30);
+    private final Century century = new Century("a", 30);
     private final String newManipleName = maniple.getName() + cohort.getName();
     private final Long cohortId = 1L;
     private final Long manipleId = cohortId+1;
-    private MockMvc mockMvc;
 
     @Before
     public void setup() {

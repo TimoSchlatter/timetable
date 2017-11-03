@@ -45,10 +45,10 @@ public class CourseControllerTest {
     @Autowired
     private CourseService courseService;
 
+    private MockMvc mockMvc;
     private JacksonTester<Course> jacksonTester;
     private final Course course = new Course("Test Driven Development", "X", 232);
     private final Long courseId = 1L;
-    private MockMvc mockMvc;
 
     @Before
     public void setup() {

@@ -46,12 +46,12 @@ public class SubjectControllerTest {
     @Autowired
     private SubjectService subjectService;
 
+    private MockMvc mockMvc;
     private JacksonTester<Subject> jacksonTester;
     private final Module module = new Seminar("Test-Seminar", SeminarType.SONSTIGES);
     private final SubjectType subjectType = SubjectType.SEMINAR;
     private final Subject subject = new Subject(20, subjectType, module);
     private final Long subjectId = 1L;
-    private MockMvc mockMvc;
 
     @Before
     public void setup() {
