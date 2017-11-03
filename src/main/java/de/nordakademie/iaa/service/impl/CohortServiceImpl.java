@@ -44,4 +44,9 @@ public class CohortServiceImpl implements CohortService {
         }
         cohortDAO.delete(cohort);
     }
+
+    @Override
+    public Cohort findByName(String name) {
+        return cohortDAO.findByName(name);
+    }
 }

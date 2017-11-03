@@ -48,7 +48,7 @@ public class CohortController {
     @PostMapping
     public ResponseEntity saveCohort(@RequestBody Cohort cohort) {
         try {
-            if (cohortService.loadCohort(cohort.getId()) == null) {
+            if (cohortService.findByName(cohort.getName()) == null) {
                 cohortService.saveCohort(cohort);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }

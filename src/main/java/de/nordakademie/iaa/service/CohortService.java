@@ -37,4 +37,11 @@ public interface CohortService {
      * @throws EntityNotFoundException if no cohort could be found for the given id.
      */
     void deleteCohort(Long id) throws EntityNotFoundException;
+
+    /**
+     * Retrieves a cohort by its name.
+     * @param name the identifier.
+     * @return the found cohort or null if no cohort was found with given identifier.
+     */
+    Cohort findByName(String name);
 }
