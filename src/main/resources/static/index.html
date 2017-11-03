@@ -66,12 +66,12 @@
                 </ul>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Module">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseEvent"
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseModule"
                    data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-graduation-cap"></i>
                     <span class="nav-link-text">Module</span>
                 </a>
-                <ul class="sidenav-second-level collapse" id="collapseEvent">
+                <ul class="sidenav-second-level collapse" id="collapseModule">
                     <li>
                         <a href="#/courses">Kurse</a>
                     </li>
@@ -80,17 +80,20 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Kurse">
-                <a class="nav-link" href="#/events">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Veranstaltungen">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseEvent"
+                   data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-calendar"></i>
                     <span class="nav-link-text">Veranstaltungen</span>
                 </a>
-            </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Kurse">
-                <a class="nav-link" href="#/eventtypes">
-                    <i class="fa fa-fw fa-th-list"></i>
-                    <span class="nav-link-text">Veranstaltungstypen</span>
-                </a>
+                <ul class="sidenav-second-level collapse" id="collapseEvent">
+                    <li>
+                        <a href="#/events">Planung</a>
+                    </li>
+                    <li>
+                        <a href="#/eventtypes">Typen</a>
+                    </li>
+                </ul>
             </li>
         </ul>
         <ul class="navbar-nav sidenav-toggler">
