@@ -36,8 +36,13 @@ public interface DocentService {
      * @param id The identifier.
      * @throws EntityNotFoundException if no docent could be found for the given id.
      */
-
     void deleteDocent(Long id) throws EntityNotFoundException;
 
+    /**
+     * Retrieves a docent by its field and number.
+     * @param forename the identifier.
+     * @param surname the identifier.
+     * @return the found docent or null if no docent was found with given identifiers.
+     */
     Docent findByForenameAndSurname(String forename, String surname);
 }
