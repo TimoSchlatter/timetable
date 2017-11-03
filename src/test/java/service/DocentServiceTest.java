@@ -17,6 +17,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,40 +44,40 @@ public class DocentServiceTest {
     @Test
     public void testSaveDocent() {
         docentService.saveDocent(docent);
-        Mockito.verify(docentDAO, times(1)).save(docent);
+        verify(docentDAO, times(1)).save(docent);
     }
 
     @Test
     public void testListDocents() {
         docentService.listDocents();
-        Mockito.verify(docentDAO, times(1)).findAll();
+        verify(docentDAO, times(1)).findAll();
     }
 
     @Test
     public void testLoadDocent() {
         final Long id = 123L;
         docentService.loadDocent(id);
-        Mockito.verify(docentDAO, times(1)).findOne(id);
+        verify(docentDAO, times(1)).findOne(id);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void testDeleteNonExistingDocent() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(docentDAO.findOne(anyLong())).thenReturn(null);
+        when(docentDAO.findOne(anyLong())).thenReturn(null);
         docentService.deleteDocent(id);
     }
 
     @Test
     public void testDeleteExistingDocent() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(docentDAO.findOne(anyLong())).thenReturn(docent);
+        when(docentDAO.findOne(anyLong())).thenReturn(docent);
         docentService.deleteDocent(id);
-        Mockito.verify(docentDAO, times(1)).findOne(id);
-        Mockito.verify(docentDAO, times(1)).delete(docent);
+        verify(docentDAO, times(1)).findOne(id);
+        verify(docentDAO, times(1)).delete(docent);
     }
 
     @After
-    public void clear() {
+    public void reset() {
         Mockito.reset(docentDAO);
     }
 
@@ -88,7 +91,7 @@ public class DocentServiceTest {
 
         @Bean
         public DocentDAO docentDAO() {
-            return Mockito.mock(DocentDAO.class);
+            return mock(DocentDAO.class);
         }
     }
 }

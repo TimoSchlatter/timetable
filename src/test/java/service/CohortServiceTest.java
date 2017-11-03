@@ -17,7 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,36 +37,36 @@ public class CohortServiceTest {
     @Test
     public void testSaveCohort() {
         cohortService.saveCohort(cohort);
-        Mockito.verify(cohortDAO, times(1)).save(cohort);
+        verify(cohortDAO, times(1)).save(cohort);
     }
 
     @Test
     public void testListCohorts() {
         cohortService.listCohorts();
-        Mockito.verify(cohortDAO, times(1)).findAll();
+        verify(cohortDAO, times(1)).findAll();
     }
 
     @Test
     public void testLoadCohort() {
         final Long id = 123L;
         cohortService.loadCohort(id);
-        Mockito.verify(cohortDAO, times(1)).findOne(id);
+        verify(cohortDAO, times(1)).findOne(id);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void testDeleteNonExistingCohort() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(cohortDAO.findOne(anyLong())).thenReturn(null);
+        when(cohortDAO.findOne(anyLong())).thenReturn(null);
         cohortService.deleteCohort(id);
     }
 
     @Test
     public void testDeleteExistingCohort() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(cohortDAO.findOne(anyLong())).thenReturn(cohort);
+        when(cohortDAO.findOne(anyLong())).thenReturn(cohort);
         cohortService.deleteCohort(id);
-        Mockito.verify(cohortDAO, times(1)).findOne(id);
-        Mockito.verify(cohortDAO, times(1)).delete(cohort);
+        verify(cohortDAO, times(1)).findOne(id);
+        verify(cohortDAO, times(1)).delete(cohort);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class CohortServiceTest {
     }
 
     @After
-    public void clear() {
+    public void reset() {
         Mockito.reset(cohortDAO);
     }
 
@@ -90,7 +90,7 @@ public class CohortServiceTest {
 
         @Bean
         public CohortDAO cohortDAO() {
-            return Mockito.mock(CohortDAO.class);
+            return mock(CohortDAO.class);
         }
     }
 }

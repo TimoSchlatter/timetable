@@ -9,6 +9,7 @@ import de.nordakademie.iaa.service.impl.CenturyServiceImpl;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -73,8 +74,8 @@ public class CenturyServiceTest {
     }
 
     @After
-    public void clear() {
-        reset(centuryDAO);
+    public void reset() {
+        Mockito.reset(centuryDAO);
     }
 
     @Configuration

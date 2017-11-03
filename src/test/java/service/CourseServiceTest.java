@@ -17,7 +17,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,41 +36,41 @@ public class CourseServiceTest {
     private final int number = 101;
     private final String title = "Test Driven Development";
     private final String shortTitle = "TDD";
-    private final Course course = new Course("Nervige Tests", "I", 123);
+    private final Course course = new Course(title, shortTitle, field, number);
 
     @Test
     public void testSaveCourse() {
         courseService.saveCourse(course);
-        Mockito.verify(courseDAO, times(1)).save(course);
+        verify(courseDAO, times(1)).save(course);
     }
 
     @Test
     public void testListCourses() {
         courseService.listCourses();
-        Mockito.verify(courseDAO, times(1)).findAll();
+        verify(courseDAO, times(1)).findAll();
     }
 
     @Test
     public void testLoadCourse() {
         final Long id = 123L;
         courseService.loadCourse(id);
-        Mockito.verify(courseDAO, times(1)).findOne(id);
+        verify(courseDAO, times(1)).findOne(id);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void testDeleteNonExistingCourse() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(courseDAO.findOne(anyLong())).thenReturn(null);
+        when(courseDAO.findOne(anyLong())).thenReturn(null);
         courseService.deleteCourse(id);
     }
 
     @Test
     public void testDeleteExistingCourse() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(courseDAO.findOne(anyLong())).thenReturn(course);
+        when(courseDAO.findOne(anyLong())).thenReturn(course);
         courseService.deleteCourse(id);
-        Mockito.verify(courseDAO, times(1)).findOne(id);
-        Mockito.verify(courseDAO, times(1)).delete(course);
+        verify(courseDAO, times(1)).findOne(id);
+        verify(courseDAO, times(1)).delete(course);
     }
 
     @Test
@@ -98,7 +100,7 @@ public class CourseServiceTest {
 
         @Bean
         public CourseDAO courseDAO() {
-            return Mockito.mock(CourseDAO.class);
+            return mock(CourseDAO.class);
         }
     }
 }
