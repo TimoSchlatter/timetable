@@ -47,7 +47,9 @@ public class RoomControllerTest {
     private RoomService roomService;
 
     private JacksonTester<Room> jacksonTester;
-    private Room room = new Room(20, "T", 42, "999", RoomType.COMPUTERROOM);
+    private final String building = "T";
+    private final String number = "999";
+    private Room room = new Room(20, building, 42, number, RoomType.COMPUTERROOM);
     private final Long roomId = 1L;
     private MockMvc mockMvc;
 
@@ -75,23 +77,24 @@ public class RoomControllerTest {
     @Test
     public void testSaveRoom() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
+        String url = "/rooms";
         // Room already existing
-        when(roomService.loadRoom(roomId)).thenReturn(room);
-        mockMvc.perform(post("/rooms").content(jacksonTester.write(room).getJson())
+        when(roomService.findByBuildingAndNumber(building, number)).thenReturn(room);
+        mockMvc.perform(post(url).content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(roomService, times(0)).saveRoom(room);
         // Room not yet existing
-        when(roomService.loadRoom(roomId)).thenReturn(null);
-        mockMvc.perform(post("/rooms").content(jacksonTester.write(room).getJson())
+        when(roomService.findByBuildingAndNumber(building, number)).thenReturn(null);
+        mockMvc.perform(post(url).content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
         verify(roomService, times(1)).saveRoom(room);
         // Room not yet existing & saving failed
         doThrow(new RuntimeException()).when(roomService).saveRoom(any());
-        mockMvc.perform(post("/rooms").content(jacksonTester.write(room).getJson())
+        mockMvc.perform(post(url).content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());

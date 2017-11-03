@@ -45,7 +45,7 @@ public class RoomController {
     @PostMapping
     public ResponseEntity saveRoom(@RequestBody Room room) {
         try {
-            if (roomService.loadRoom(room.getId()) == null) {
+            if (roomService.findByBuildingAndNumber(room.getBuilding(), room.getNumber()) == null) {
                 roomService.saveRoom(room);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }

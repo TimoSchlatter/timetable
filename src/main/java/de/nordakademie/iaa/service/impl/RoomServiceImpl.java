@@ -2,6 +2,7 @@ package de.nordakademie.iaa.service.impl;
 
 import de.nordakademie.iaa.dao.RoomDAO;
 import de.nordakademie.iaa.model.Room;
+import de.nordakademie.iaa.model.RoomType;
 import de.nordakademie.iaa.service.RoomService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,10 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room findByBuildingAndNumber(String building, String number) {
         return roomDAO.findByBuildingAndNumber(building, number);
+    }
+
+    @Override
+    public List<Room> findByRoomType(RoomType roomType) {
+        return roomDAO.findByRoomType(roomType);
     }
 }

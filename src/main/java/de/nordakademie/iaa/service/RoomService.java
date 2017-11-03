@@ -1,6 +1,7 @@
 package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Room;
+import de.nordakademie.iaa.model.RoomType;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 
 import java.util.List;
@@ -39,5 +40,18 @@ public interface RoomService {
      */
     void deleteRoom(Long id) throws EntityNotFoundException;
 
+    /**
+     * Retrieves a room by its field and number.
+     * @param building the identifier.
+     * @param number the identifier.
+     * @return the found room or null if no room was found with given identifiers.
+     */
     Room findByBuildingAndNumber(String building, String number);
+
+    /**
+     * Retrieves a room by its roomType.
+     * @param roomType the identifier.
+     * @return the found room or null if no room was found with given identifier.
+     */
+    List<Room> findByRoomType(RoomType roomType);
 }

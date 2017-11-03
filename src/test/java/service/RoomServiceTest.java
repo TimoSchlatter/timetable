@@ -18,6 +18,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,52 +35,59 @@ public class RoomServiceTest {
 
     private final String building = "A";
     private final String number = "123";
-    private final Room room = new Room(20, building, 30, number, RoomType.LECTUREROOM);
+    private final RoomType roomType = RoomType.LECTUREROOM;
+    private final Room room = new Room(20, building, 30, number, roomType);
 
     @Test
     public void testSaveRoom() {
         roomService.saveRoom(room);
-        Mockito.verify(roomDAO, times(1)).save(room);
+        verify(roomDAO, times(1)).save(room);
     }
 
     @Test
     public void testListRooms() {
         roomService.listRooms();
-        Mockito.verify(roomDAO, times(1)).findAll();
+        verify(roomDAO, times(1)).findAll();
     }
 
     @Test
     public void testLoadRoom() {
         final Long id = 123L;
         roomService.loadRoom(id);
-        Mockito.verify(roomDAO, times(1)).findOne(id);
+        verify(roomDAO, times(1)).findOne(id);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void testDeleteNonExistingRoom() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(roomDAO.findOne(anyLong())).thenReturn(null);
+        when(roomDAO.findOne(anyLong())).thenReturn(null);
         roomService.deleteRoom(id);
     }
 
     @Test
     public void testDeleteExistingRoom() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(roomDAO.findOne(anyLong())).thenReturn(room);
+        when(roomDAO.findOne(anyLong())).thenReturn(room);
         roomService.deleteRoom(id);
-        Mockito.verify(roomDAO, times(1)).findOne(id);
-        Mockito.verify(roomDAO, times(1)).delete(room);
+        verify(roomDAO, times(1)).findOne(id);
+        verify(roomDAO, times(1)).delete(room);
     }
 
     @Test
     public void testFindByBuildingAndNumber() {
-        Mockito.when(roomDAO.findByBuildingAndNumber(building, number)).thenReturn(room);
+        when(roomDAO.findByBuildingAndNumber(building, number)).thenReturn(room);
         roomService.findByBuildingAndNumber(building, number);
-        Mockito.verify(roomDAO, times(1)).findByBuildingAndNumber(building, number);
+        verify(roomDAO, times(1)).findByBuildingAndNumber(building, number);
+    }
+
+    @Test
+    public void testFindByRoomType() {
+        roomService.findByRoomType(roomType);
+        verify(roomDAO, times(1)).findByRoomType(roomType);
     }
 
     @After
-    public void clear() {
+    public void reset() {
         Mockito.reset(roomDAO);
     }
 
@@ -91,7 +101,7 @@ public class RoomServiceTest {
 
         @Bean
         public RoomDAO roomDAO() {
-            return Mockito.mock(RoomDAO.class);
+            return mock(RoomDAO.class);
         }
     }
 }
