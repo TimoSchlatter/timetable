@@ -95,7 +95,10 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="modalSelectKohorte">Kohorte</label>
-                            <select class="form-control" id="modalSelectKohorte" ng-options="cohort as cohort.name for cohort in cohorts" ng-model="cohort"  ng-change="setSelectedCohort()">
+                            <select class="form-control" id="modalSelectKohorte"
+                                    ng-options="cohort.name for cohort in cohorts"
+                                    ng-model="cohort"
+                                    ng-change="setSelectedCohort()">
                             </select>
                         </div>
                         <div class="form-group col-md-3">

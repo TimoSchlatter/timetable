@@ -10,7 +10,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="lecturerTable" width="100%" cellspacing="0">
+            <table class="table table-bordered" id="lectureTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
                     <th>Titel</th>
@@ -67,7 +67,6 @@
 </div>
 
 
-
 <!-- Page level plugin JavaScript-->
 <script src="../vendor/datatables/jquery.dataTables.js"></script>
 <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
@@ -75,7 +74,7 @@
 <script src="../vendor/sb-admin/js/sb-admin-datatables.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#lecturerTable').DataTable( {
+        $('#lectureTable').DataTable({
             "language": {
                 "sEmptyTable":      "Keine Daten in der Tabelle vorhanden",
                 "sInfo":            "_START_ bis _END_ von _TOTAL_ Einträgen",
