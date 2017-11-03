@@ -12,7 +12,7 @@ app.controller('ManipleController', function ($scope, $http) {
         angular.forEach($scope.cohortsAdvanced, function (cohort) {
             allManiples = allManiples.concat(cohort.maniples);
         });
-        $scope.cohortsAdvanced.push({name: "Alle", maniples: allManiples});
+        $scope.cohortsAdvanced.unshift({name: "Alle", maniples: allManiples});
     };
 
     var setModalSelectedValues = function (id) {
@@ -29,7 +29,7 @@ app.controller('ManipleController', function ($scope, $http) {
         $http.get(cohortsUrl).then(function successCallback(response) {
             $scope.cohorts = response.data;
             collectAllManiple();
-            $scope.selectedCohort = $scope.cohortsAdvanced[$scope.cohortsAdvanced.length - 1];
+            $scope.selectedCohort = $scope.cohortsAdvanced[0];
         }, function errorCallback(response) {
             console.log(response.statusText);
         });

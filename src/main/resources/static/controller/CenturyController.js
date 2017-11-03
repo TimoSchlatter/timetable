@@ -15,10 +15,10 @@ app.controller('CenturyController', function ($scope, $http) {
             angular.forEach(cohort.maniples, function (maniple) {
                 cohortCenturies = cohortCenturies.concat(maniple.centuries);
             });
-            cohort.maniples.push({name: "Alle", centuries: cohortCenturies});
+            cohort.maniples.unshift({name: "Alle", centuries: cohortCenturies});
             allCenturies = allCenturies.concat(cohortCenturies);
         });
-        $scope.cohortsAdvanced.push({name: "Alle", maniples: [{name: "Alle", centuries: allCenturies}]});
+        $scope.cohortsAdvanced.unshift({name: "Alle", maniples: [{name: "Alle", centuries: allCenturies}]});
     };
 
     var setModalSelectedValues = function (id) {
@@ -48,9 +48,9 @@ app.controller('CenturyController', function ($scope, $http) {
 
     $scope.setSelectedValues = function () {
         if (!$scope.selectedCohort) {
-            $scope.selectedCohort = $scope.cohortsAdvanced[$scope.cohortsAdvanced.length - 1];
+            $scope.selectedCohort = $scope.cohortsAdvanced[0];
         }
-        $scope.selectedManiple = $scope.selectedCohort.maniples[$scope.selectedCohort.maniples.length - 1];
+        $scope.selectedManiple = $scope.selectedCohort.maniples[0];
     };
 
     $scope.setSelectedCentury = function (century) {
