@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>SB Admin - Start Bootstrap Template</title>
+    <title>Nordakademie - Studenplan</title>
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom fonts for this template-->
@@ -36,9 +36,15 @@
                 </a>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dozenten">
-                <a class="nav-link" href="#/docent">
+                <a class="nav-link" href="#/docents">
                     <i class="fa fa-fw fa-users"></i>
                     <span class="nav-link-text">Dozenten</span>
+                </a>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Räume">
+                <a class="nav-link" href="#/rooms">
+                    <i class="fa fa-fw fa-institution"></i>
+                    <span class="nav-link-text">Räume</span>
                 </a>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gruppen">
@@ -49,44 +55,41 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseGroup">
                     <li>
-                        <a href="#/cohort">Kohorte</a>
+                        <a href="#/cohorts">Kohorten</a>
                     </li>
                     <li>
-                        <a href="#/maniple">Manipel</a>
+                        <a href="#/maniples">Manipel</a>
                     </li>
                     <li>
-                        <a href="#/century">Zenturie</a>
+                        <a href="#/centuries">Zenturien</a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Räume">
-                <a class="nav-link" href="#/room">
-                    <i class="fa fa-fw fa-building"></i>
-                    <span class="nav-link-text">Räume</span>
-                </a>
-            </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Veranstaltungen">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Module">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseEvent"
                    data-parent="#exampleAccordion">
-                    <i class="fa fa-fw fa-calendar"></i>
-                    <span class="nav-link-text">Veranstaltungen</span>
+                    <i class="fa fa-fw fa-graduation-cap"></i>
+                    <span class="nav-link-text">Module</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseEvent">
                     <li>
-                        <a href="#/exam">Prüfungen</a>
+                        <a href="#/courses">Kurse</a>
                     </li>
                     <li>
-                        <a href="#/seminar">Seminare</a>
-                    </li>
-                    <li>
-                        <a href="#/lecture">Vorlesungen</a>
+                        <a href="#/seminars">Seminare</a>
                     </li>
                 </ul>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Kurse">
-                <a class="nav-link" href="#/course">
-                    <i class="fa fa-fw fa-graduation-cap"></i>
-                    <span class="nav-link-text">Kurse</span>
+                <a class="nav-link" href="#/events">
+                    <i class="fa fa-fw fa-calendar"></i>
+                    <span class="nav-link-text">Veranstaltungen</span>
+                </a>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Kurse">
+                <a class="nav-link" href="#/eventtypes">
+                    <i class="fa fa-fw fa-th-list"></i>
+                    <span class="nav-link-text">Veranstaltungstypen</span>
                 </a>
             </li>
         </ul>
@@ -254,12 +257,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
     <script type="text/javascript" src="App.js"></script>
     <script type="text/javascript" src="controller/DashboardController.js"></script>
-    <script type="text/javascript" src="controller/HeaderController.js"></script>
+    <script type="text/javascript" src="controller/EventController.js"></script>
+    <script type="text/javascript" src="controller/EventTypeController.js"></script>
     <script type="text/javascript" src="controller/RoomController.js"></script>
-    <script type="text/javascript" src="controller/LectureController.js"></script>
     <script type="text/javascript" src="controller/DocentController.js"></script>
     <script type="text/javascript" src="controller/SeminarController.js"></script>
-    <script type="text/javascript" src="controller/ExamController.js"></script>
     <script type="text/javascript" src="controller/CourseController.js"></script>
     <script type="text/javascript" src="controller/CohortController.js"></script>
     <script type="text/javascript" src="controller/CenturyController.js"></script>

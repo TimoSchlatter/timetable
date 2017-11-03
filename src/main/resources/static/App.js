@@ -7,41 +7,41 @@ var app = angular.module('roomManagement', ["ngRoute"]);
             templateUrl: "view/dashboard.html",
             name: "Dashboard",
             controller: "DashboardController"
-        }).when("/room", {
+        }).when("/rooms", {
             templateUrl: "view/room.html",
-            name: "RoomView",
+            name: "Rooms",
             controller: "RoomController"
-        }).when("/docent", {
+        }).when("/docents", {
             templateUrl: "view/docent.html",
-            name: "Docent",
+            name: "Docents",
             controller: "DocentController"
-        }).when("/lecture", {
-            templateUrl: "view/lecture.html",
-            name: "Lecture",
-            controller: "LectureController"
-        }).when("/course", {
+        }).when("/courses", {
             templateUrl: "view/course.html",
-            name: "Course",
+            name: "Courses",
             controller: "CourseController"
-        }).when("/exam", {
-            templateUrl: "view/exam.html",
-            name: "Exam",
-            controller: "ExamController"
-        }).when("/cohort", {
+        }).when("/cohorts", {
             templateUrl: "view/cohort.html",
-            name: "Kohorte",
+            name: "Cohorts",
             controller: "CohortController"
-        }).when("/maniple", {
+        }).when("/maniples", {
             templateUrl: "view/maniple.html",
-            name: "Manipel",
+            name: "Maniples",
             controller: "ManipleController"
-        }).when("/century", {
+        }).when("/centuries", {
             templateUrl: "view/century.html",
-            name: "Zenturie",
+            name: "Centuries",
             controller: "CenturyController"
-        }).when("/seminar", {
+        }).when("/events", {
+            templateUrl: "view/event.html",
+            name: "Events",
+            controller: "EventController"
+        }).when("/eventtypes", {
+            templateUrl: "view/eventtype.html",
+            name: "EventTypes",
+            controller: "EventTypeController"
+        }).when("/seminars", {
             templateUrl: "view/seminar.html",
-            name: "Seminar",
+            name: "Seminars",
             controller: "SeminarController"
         }).otherwise({
         redirectTo: "/"})
