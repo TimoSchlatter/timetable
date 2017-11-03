@@ -44,4 +44,14 @@ public class CourseServiceImpl implements CourseService {
         }
         courseDAO.delete(course);
     }
+
+    @Override
+    public Course findByTitle(String title) {
+        return courseDAO.findByTitle(title);
+    }
+
+    @Override
+    public Course findByFieldAndNumber(String field, int number) {
+        return courseDAO.findByFieldAndNumber(field, number);
+    }
 }

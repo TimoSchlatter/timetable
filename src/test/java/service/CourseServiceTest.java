@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -68,6 +69,18 @@ public class CourseServiceTest {
         courseService.deleteCourse(id);
         Mockito.verify(courseDAO, times(1)).findOne(id);
         Mockito.verify(courseDAO, times(1)).delete(course);
+    }
+
+    @Test
+    public void testFindByTitle() {
+        courseService.findByTitle(title);
+        verify(courseDAO, times(1)).findByTitle(title);
+    }
+
+    @Test
+    public void testFindByFieldAndNumber() {
+        courseService.findByFieldAndNumber(field, number);
+        verify(courseDAO, times(1)).findByFieldAndNumber(field, number);
     }
 
     @After

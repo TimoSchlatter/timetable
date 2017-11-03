@@ -74,23 +74,24 @@ public class CourseControllerTest {
     @Test
     public void testSaveCourse() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
+        String url = "/courses";
         // Course already existing
-        when(courseService.loadCourse(courseId)).thenReturn(course);
-        mockMvc.perform(post("/courses").content(jacksonTester.write(course).getJson())
+        when(courseService.findByTitle(course.getTitle())).thenReturn(course);
+        mockMvc.perform(post(url).content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(courseService, times(0)).saveCourse(course);
         // Course not yet existing
-        when(courseService.loadCourse(courseId)).thenReturn(null);
-        mockMvc.perform(post("/courses").content(jacksonTester.write(course).getJson())
+        when(courseService.findByTitle(course.getTitle())).thenReturn(null);
+        mockMvc.perform(post(url).content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
         verify(courseService, times(1)).saveCourse(course);
         // Course not yet existing & saving failed
         doThrow(new RuntimeException()).when(courseService).saveCourse(any());
-        mockMvc.perform(post("/courses").content(jacksonTester.write(course).getJson())
+        mockMvc.perform(post(url).content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());

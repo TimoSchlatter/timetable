@@ -37,4 +37,20 @@ public interface CourseService {
      * @throws EntityNotFoundException if no course could be found for the given id.
      */
     void deleteCourse(Long id) throws EntityNotFoundException;
+
+
+    /**
+     * Retrieves a course by its title.
+     * @param title the identifier.
+     * @return the found course or null if no course was found with given identifier.
+     */
+    Course findByTitle(String title);
+
+    /**
+     * Retrieves a course by its field and number.
+     * @param field the identifier.
+     * @param number the identifier.
+     * @return the found course or null if no course was found with given identifiers.
+     */
+    Course findByFieldAndNumber(String field, int number);
 }

@@ -45,7 +45,7 @@ public class CourseController {
     @PostMapping
     public ResponseEntity saveCourse(@RequestBody Course course) {
         try {
-            if (courseService.loadCourse(course.getId()) == null) {
+            if (courseService.findByTitle(course.getTitle()) == null) {
                 courseService.saveCourse(course);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
