@@ -76,6 +76,12 @@ public class DocentServiceTest {
         verify(docentDAO, times(1)).delete(docent);
     }
 
+    @Test
+    public void testFindByForenameAndSurname() {
+        docentService.findByForenameAndSurname(forename, surname);
+        verify(docentDAO, times(1)).findByForenameAndSurname(forename, surname);
+    }
+
     @After
     public void reset() {
         Mockito.reset(docentDAO);
