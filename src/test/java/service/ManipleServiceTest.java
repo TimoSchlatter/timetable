@@ -17,6 +17,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,36 +37,42 @@ public class ManipleServiceTest {
     @Test
     public void testSaveManiple() {
         manipleService.saveManiple(maniple);
-        Mockito.verify(manipleDAO, times(1)).save(maniple);
+        verify(manipleDAO, times(1)).save(maniple);
     }
 
     @Test
     public void testListManiples() {
         manipleService.listManiples();
-        Mockito.verify(manipleDAO, times(1)).findAll();
+        verify(manipleDAO, times(1)).findAll();
     }
 
     @Test
     public void testLoadManiple() {
         final Long id = 123L;
         manipleService.loadManiple(id);
-        Mockito.verify(manipleDAO, times(1)).findOne(id);
+        verify(manipleDAO, times(1)).findOne(id);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void testDeleteNonExistingManiple() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(manipleDAO.findOne(anyLong())).thenReturn(null);
+        when(manipleDAO.findOne(anyLong())).thenReturn(null);
         manipleService.deleteManiple(id);
     }
 
     @Test
     public void testDeleteExistingManiple() throws EntityNotFoundException {
         final Long id = 123L;
-        Mockito.when(manipleDAO.findOne(anyLong())).thenReturn(maniple);
+        when(manipleDAO.findOne(anyLong())).thenReturn(maniple);
         manipleService.deleteManiple(id);
-        Mockito.verify(manipleDAO, times(1)).findOne(id);
-        Mockito.verify(manipleDAO, times(1)).delete(maniple);
+        verify(manipleDAO, times(1)).findOne(id);
+        verify(manipleDAO, times(1)).delete(maniple);
+    }
+
+    @Test
+    public void testFindByName() {
+        manipleService.findByName(name);
+        verify(manipleDAO, times(1)).findByName(name);
     }
 
     @After

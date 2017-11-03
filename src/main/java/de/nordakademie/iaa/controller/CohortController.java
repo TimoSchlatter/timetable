@@ -101,10 +101,14 @@ public class CohortController {
     public ResponseEntity addManiple(@PathVariable Long id, @RequestBody Maniple maniple) {
         Cohort cohort = cohortService.loadCohort(id);
         if (cohort != null) {
-            maniple.setName(maniple.getName() + cohort.getName());
-            manipleService.saveManiple(maniple);
-            cohort.addManiple(maniple);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            String newCenturyName = maniple.getName() + cohort.getName();
+            if (manipleService.findByName(newCenturyName) == null) {
+                maniple.setName(newCenturyName);
+                manipleService.saveManiple(maniple);
+                cohort.addManiple(maniple);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.notFound().build();
     }

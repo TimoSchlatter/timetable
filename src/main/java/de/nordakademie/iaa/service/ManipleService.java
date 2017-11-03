@@ -37,4 +37,11 @@ public interface ManipleService {
      * @throws EntityNotFoundException if no maniple could be found for the given id.
      */
     void deleteManiple(Long id) throws EntityNotFoundException;
+
+    /**
+     * Retrieves a maniple by its name.
+     * @param name the identifier.
+     * @return the found maniple or null if no maniple was found with given identifier.
+     */
+    Maniple findByName(String name);
 }

@@ -44,4 +44,9 @@ public class ManipleServiceImpl implements ManipleService {
         }
         manipleDAO.delete(maniple);
     }
+
+    @Override
+    public Maniple findByName(String name) {
+        return manipleDAO.findByName(name);
+    }
 }
