@@ -34,7 +34,7 @@ public class SeminarServiceTest {
     private SeminarDAO seminarDAO;
 
     private final String title = "Seminar";
-    private final SeminarType seminarType = SeminarType.ETHIK_SOZIALES;
+    private final SeminarType seminarType = SeminarType.ETHICS_SOCIAL;
     private final Seminar seminar = new Seminar(title, seminarType);
 
     @Test

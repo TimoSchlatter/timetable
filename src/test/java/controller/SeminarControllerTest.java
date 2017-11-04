@@ -48,7 +48,7 @@ public class SeminarControllerTest {
     private MockMvc mockMvc;
     private JacksonTester<Seminar> jacksonTester;
     private final String title = "Test-Seminar";
-    private final Seminar seminar = new Seminar(title, SeminarType.SONSTIGES);
+    private final Seminar seminar = new Seminar(title, SeminarType.OTHER);
     private final Long seminarId = 1L;
 
     @Before

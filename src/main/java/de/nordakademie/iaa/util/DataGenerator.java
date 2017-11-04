@@ -126,19 +126,19 @@ public class DataGenerator {
     }
 
     private void createSeminars() {
-        seminarService.saveSeminar(new Seminar("Business-Knigge", SCHLUESSELQUALIFIKATION));
-        seminarService.saveSeminar(new Seminar("Case studies of Export business and Import business in Practice of industrial goods in/from non-EU", INTERNATIONALES));
-        seminarService.saveSeminar(new Seminar("Der Business Plan - Mit System zum Erfolg", SCHLUESSELQUALIFIKATION));
-        seminarService.saveSeminar(new Seminar("Einführung Wirtschaftsmediation", ETHIK_SOZIALES));
-        seminarService.saveSeminar(new Seminar("Emotionale Intelligenz", ETHIK_SOZIALES));
-        seminarService.saveSeminar(new Seminar("Excel VBA für Einsteiger", SCHLUESSELQUALIFIKATION));
-        seminarService.saveSeminar(new Seminar("Große Dokumente in Word", SCHLUESSELQUALIFIKATION));
-        seminarService.saveSeminar(new Seminar("Networking Excellence", SCHLUESSELQUALIFIKATION));
-        seminarService.saveSeminar(new Seminar("Sourcecodeverwaltung mit Git und GitHub", SCHLUESSELQUALIFIKATION));
-        seminarService.saveSeminar(new Seminar("Virtual Power Teams", INTERNATIONALES));
-        seminarService.saveSeminar(new Seminar("Wirksame Tools für erfolgreiches Projektmanagement", SCHLUESSELQUALIFIKATION));
-        seminarService.saveSeminar(new Seminar("Young Sales Professional Training", SONSTIGES));
-        seminarService.saveSeminar(new Seminar("Zeit- und Selbstmanagement", SONSTIGES));
+        seminarService.saveSeminar(new Seminar("Business-Knigge", KEY_QUALIFICATION));
+        seminarService.saveSeminar(new Seminar("Case studies of Export business and Import business in Practice of industrial goods in/from non-EU", INTERNATIONAL));
+        seminarService.saveSeminar(new Seminar("Der Business Plan - Mit System zum Erfolg", KEY_QUALIFICATION));
+        seminarService.saveSeminar(new Seminar("Einführung Wirtschaftsmediation", ETHICS_SOCIAL));
+        seminarService.saveSeminar(new Seminar("Emotionale Intelligenz", ETHICS_SOCIAL));
+        seminarService.saveSeminar(new Seminar("Excel VBA für Einsteiger", KEY_QUALIFICATION));
+        seminarService.saveSeminar(new Seminar("Große Dokumente in Word", KEY_QUALIFICATION));
+        seminarService.saveSeminar(new Seminar("Networking Excellence", KEY_QUALIFICATION));
+        seminarService.saveSeminar(new Seminar("Sourcecodeverwaltung mit Git und GitHub", KEY_QUALIFICATION));
+        seminarService.saveSeminar(new Seminar("Virtual Power Teams", INTERNATIONAL));
+        seminarService.saveSeminar(new Seminar("Wirksame Tools für erfolgreiches Projektmanagement", KEY_QUALIFICATION));
+        seminarService.saveSeminar(new Seminar("Young Sales Professional Training", OTHER));
+        seminarService.saveSeminar(new Seminar("Zeit- und Selbstmanagement", OTHER));
     }
 
     private void createSubjects() {

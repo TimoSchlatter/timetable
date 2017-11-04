@@ -44,7 +44,7 @@ public class SeminarDAOTest {
 
     @Before
     public void setupData() {
-        seminar = new Seminar("Richtig lesen", SeminarType.SCHLUESSELQUALIFIKATION);
+        seminar = new Seminar("Richtig lesen", SeminarType.KEY_QUALIFICATION);
         seminarDAO.save(seminar);
     }
 
