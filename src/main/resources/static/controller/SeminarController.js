@@ -27,6 +27,7 @@ app.controller('SeminarController', function ($scope, $http) {
     };
 
     $scope.createData = function () {
+        this.seminar.type='seminar';
         $http.post(seminarUrl, JSON.stringify(this.seminar))
             .then(function successCallback(data) {
                 console.log(data);
