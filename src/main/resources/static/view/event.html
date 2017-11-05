@@ -11,7 +11,23 @@
         <i class="fa fa-calendar"></i> Veranstaltungsplanung
     </div>
     <div class="card-body">
-        <div ui-calendar="uiConfig.calendar" ng-Model="eventsources"></div>
+        <div class="form-group col-md-2">
+            <label for="modalSelectedEntity">Entity</label>
+            <select class="form-control"
+                    id="modalSelectedEntity"
+                    ng-options="cohort.name for cohort in cohorts"
+                    ng-model="modalSelectedEntity">
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="modalSelectedEntityName">Entity-Name</label>
+            <select class="form-control"
+                    id="modalSelectedEntityName"
+                    ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
+                    ng-Model="modalSelectedEntityName">
+            </select>
+        </div>
+        <div ui-calendar="uiConfig.calendar" ng-Model="events"></div>
     </div>
     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
