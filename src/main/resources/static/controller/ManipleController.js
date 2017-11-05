@@ -47,7 +47,7 @@ app.controller('ManipleController', function ($scope, $http) {
     };
 
     $scope.createData = function () {
-        this.maniples.type='maniple';
+        this.maniple.type='maniple';
         $http.post(cohortsUrl + this.modalSelectedCohort.id + '/addManiple', JSON.stringify(this.maniple))
             .then(function successCallback(data) {
                 console.log(data);
