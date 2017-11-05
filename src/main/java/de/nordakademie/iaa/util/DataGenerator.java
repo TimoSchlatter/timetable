@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static de.nordakademie.iaa.model.SeminarType.*;
@@ -147,7 +152,6 @@ public class DataGenerator {
         seminarService.listSeminars().forEach(seminar -> subjectService.saveSubject(new Subject(20, SubjectType.SEMINAR, seminar)));
     }
 
-
     private void createGroups() {
         for (int i = 14; i < 18; i++) {
             String[] centuryNames = new String[]{"a", "b", "c", "d"};
@@ -168,18 +172,25 @@ public class DataGenerator {
     }
 
     private void createEvents() {
-//        Set<Room> eventRooms = new HashSet<>(Arrays.asList(roomService.findByBuildingAndNumber("A", "001")));
-//        List<Docent> docents = docentService.listDocents();
-//        Set<Docent> eventDocents = new HashSet<>();
-//        docents.stream().filter(docent -> docent.getForename().contains("Uwe")).findFirst().ifPresent(eventDocents::add);
-//        docents.stream().filter(docent -> docent.getForename().contains("Joachim")).findFirst().ifPresent(eventDocents::add);
-//        Group eventGroup = centuryService.listCenturies().stream().filter(century -> century.getName().equals("I14a")).findFirst().get();
-//        LocalDate date = LocalDate.of(2017, Month.DECEMBER, 12);
-//        LocalTime startTime = LocalTime.of(9, 15);
-//        LocalTime endTime = LocalTime.of(11, 30);
-//        Course course = courseService.listCourses().stream().filter(c -> c.getField().equals("I") && c.getNumber() == 104).findFirst().get();
-//        Subject eventSubject = lectureService.listLectures().stream().filter(lecture -> lecture.getCourse().equals(course)).findFirst().get();
-//        Event event = new Event(eventRooms, eventDocents, eventGroup, date, startTime, endTime, eventSubject);
-//        eventService.saveEvent(event);
+        LocalDate date = LocalDate.of(2017, Month.OCTOBER, 30);
+        for (int i = 0; i < 10; i++) {
+            date = date.plusDays(i*7);
+            Set<Room> rooms = new HashSet<>(Arrays.asList(
+                    roomService.findByBuildingAndNumber("A", "001"),
+                    roomService.findByBuildingAndNumber("A", "002")));
+            rooms.forEach(room -> { assert room != null; });
+            Set<Docent> docents = new HashSet<>(Arrays.asList(
+                    docentService.findByForenameAndSurname("Uwe", "Neuhaus"),
+                    docentService.findByForenameAndSurname("Joachim", "Sauer")));
+            docents.forEach(docent -> { assert docent != null; });
+            Group group = centuryService.findByName("I14a");
+            assert group != null;
+            LocalTime startTime = LocalTime.of(9, 15);
+            LocalTime endTime = LocalTime.of(11, 30);
+            Subject subject = subjectService.findBySubjectTypeAndModule(SubjectType.LECTURE, courseService.findByTitle("Softwaretechnik"));
+            assert subject != null;
+            Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
+            eventService.saveEvent(event);
+        }
     }
 }
