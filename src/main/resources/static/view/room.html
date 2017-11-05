@@ -121,11 +121,11 @@
                                    placeholder="0"/>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="modalSelectKohorte">Raumtyp</label>
-                            <select class="form-control" id="modalSelectKohorte" ng-model="room.roomType">
-                                <option>COMPUTERROOM</option>
-                                <option>LABORATORY</option>
-                                <option>LECTUREROOM</option>
+                            <label for="modalSelectedRoomtype">Raumtyp</label>
+                            <select class="form-control"
+                                    id="modalSelectedRoomtype"
+                                    ng-options="key as name for (key,name) in roomTypes"
+                                    ng-model="room.roomType">
                             </select>
                         </div>
                         <div class="form-group col-md-3">

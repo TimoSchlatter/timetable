@@ -3,6 +3,13 @@
 app.controller('RoomController', function ($scope, $http) {
 
     var roomsUrl = 'http://localhost:49999/rooms/';
+    var roomTypesUrl = 'http://localhost:49999/roomtypes/';
+
+    $http.get(roomTypesUrl).then(function successCallback(response) {
+        $scope.roomTypes = response.data;
+    }, function errorCallback(response) {
+        console.log(response.statusText);
+    });
 
     var getData = function () {
         $http.get(roomsUrl).then(function successCallback(response) {
