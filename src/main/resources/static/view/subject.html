@@ -13,10 +13,11 @@
     <div class="card-body">
         <form>
             <div class="form-group">
-                <label for="selectedCohort">Vorauswahl des Veranstaltungstyps:</label>
+                <label for="selectedSeminartype">Vorauswahl des Veranstaltungstyps:</label>
                 <select class="form-control"
-                        id="selectedCohort"
-                        ng-options="subject.subjectType for subject in selectableSubjects"
+                        id="selectedSeminartype"
+                        ng-options="subjectType as subjectType.name for subjectType in subjectTypesAdvanced | orderBy: 'name'"
+                        ;
                         ng-model="selectedSubjectType">
                 </select>
             </div>
@@ -32,7 +33,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="subject in subjects | filter: (selectedSubjectType !== selectableSubjects[0] ? {subjectType: selectedSubjectType.subjectType} : '')">
+                <tr ng-repeat="subject in subjects | filter: {subjectType: selectedSubjectType.key}">
                     <td>{{subject.module.shortTitle}}</td>
                     <td>{{subject.subjectType}}</td>
                     <td>{{subject.minChangeoverTime}}</td>
@@ -100,13 +101,11 @@
                             </select>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="modalSelectedManiple">Veranstaltungstyp</label>
+                            <label for="modalSelectedSeminartype">Veranstaltungstyp</label>
                             <select class="form-control"
-                                    id="modalSelectedManiple"
-                                    ng-Model="subject.subjectType">
-                                <option>EXAM</option>
-                                <option>LECTURE</option>
-                                <option>SEMINAR</option>
+                                    id="modalSelectedSeminartype"
+                                    ng-options="key as name for (key,name) in subjectTypes"
+                                    ng-model="subject.subjectType">
                             </select>
                         </div>
                         <div class="form-group col-md-4">
