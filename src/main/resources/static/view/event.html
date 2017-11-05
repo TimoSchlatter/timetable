@@ -1,13 +1,46 @@
-<!-- Breadcrumbs-->
 <!-- Angular UI Calendar -->
+<div class="card mb-3">
+    <div class="card-header">
+        <button class="btn btn-success btn-xs"
+                ng-click="setSelectedSubject({})"
+                data-title="Delete"
+                data-toggle="modal"
+                data-target="#addEditModal">
+            <span class="fa fa-plus"></span>
+        </button>
+        <i class="fa fa-calendar"></i> Veranstaltungsplanung
+    </div>
+    <div class="card-body">
+        <div ui-calendar="uiConfig.calendar" ng-Model="eventsources"></div>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>
 
-<!-- Core plugin JavaScript-->
-<ol class="breadcrumb">
-    <li class="breadcrumb-item">
-        <a href="#">Veranstaltungen</a>
-    </li>
-    <li class="breadcrumb-item active">My Dashboard</li>
-</ol>
-<div ui-calendar="uiConfig.calendar" ng-Model="eventsources">
-
+<!-- Add/Edit Modal-->
+<div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content card mx-auto mt-5">
+            <div class="card-header">{{subject.id ? 'Aktualisieren' : 'Hinzufügen'}}</div>
+            <div class="card-body">
+                <form name="modal">
+                    <div class="form-row">
+                        Die Form Elemente müssen hier eingefügt werden.
+                    </div>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()"
+                                ng-show="subject.id" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="createData()"
+                                ng-hide="subject.id" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
