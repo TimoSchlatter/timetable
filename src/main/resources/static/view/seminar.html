@@ -97,12 +97,11 @@
                                    placeholder="Kurz Titel">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="modalSelectKohorte">Seminartyp</label>
-                            <select class="form-control" id="modalSelectKohorte" ng-model="seminar.seminarType">
-                                <option>INTERNATIONALES</option>
-                                <option>ETHIK_SOZIALES</option>
-                                <option>SCHLUESSELQUALIFIKATION</option>
-                                <option>SONSTIGES</option>
+                            <label for="modalSelectedSeminartype">Seminartyp</label>
+                            <select class="form-control"
+                                    id="modalSelectedSeminartype"
+                                    ng-options="key as name for (key,name) in seminarTypes"
+                                    ng-model="seminar.seminarType">
                             </select>
                         </div>
                         <div class="pull-right">

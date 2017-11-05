@@ -3,6 +3,13 @@
 app.controller('SeminarController', function ($scope, $http) {
 
     var seminarUrl = 'http://localhost:49999/seminars/';
+    var seminarTypesUrl = 'http://localhost:49999/seminartypes/';
+
+    $http.get(seminarTypesUrl).then(function successCallback(response) {
+        $scope.seminarTypes = response.data;
+    }, function errorCallback(response) {
+        console.log(response.statusText);
+    });
 
     var getData = function () {
         $http.get(seminarUrl).then(function successCallback(response) {
