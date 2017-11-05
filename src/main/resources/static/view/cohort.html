@@ -83,6 +83,7 @@
                                    class="form-control"
                                    ng-class="{ 'is-invalid': !modal.title.$valid}"
                                    name="title"
+                                   ng-disabled="cohort.id"
                                    ng-model="cohort.name"
                                    id="inputTitel"
                                    minlength="2"

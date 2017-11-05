@@ -86,6 +86,7 @@
                         <div class="form-group col-md-2">
                             <label for="inputBuilding">Gebäude</label>
                             <input type="text"
+                                   ng-disabled="room.id"
                                    ng-model="room.building"
                                    class="form-control"
                                    id="inputBuilding"
@@ -96,6 +97,7 @@
                             <label for="inputNumber">Nummer</label>
                             <input type="tel"
                                    class="form-control"
+                                   ng-disabled="room.id"
                                    ng-class="{ 'is-invalid': !modal.number.$valid}"
                                    name="number"
                                    ng-model="room.number"
