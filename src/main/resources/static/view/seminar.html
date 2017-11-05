@@ -25,7 +25,7 @@
                 <tr ng-repeat="seminar in seminars">
                     <td>{{seminar.title}}</td>
                     <td>{{seminar.shortTitle}}</td>
-                    <td>{{seminar.seminarType}}</td>
+                    <td>{{seminarTypes[seminar.seminarType]}}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
                                 ng-click="setSelectedSeminar(seminar)"
