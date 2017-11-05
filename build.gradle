@@ -9,17 +9,15 @@ sourceCompatibility = 1.8
 
 buildscript {
     repositories {
-        maven {
-            credentials {
-                username artifactoryUser
-                password artifactoryPassword
-            }
-            url "https://artifacts.mms-at-work.de/artifactory/prj-cmshared/"
-        }
+        mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE")
     }
+}
+
+repositories {
+    mavenCentral()
 }
 
 repositories {
