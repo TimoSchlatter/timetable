@@ -20,6 +20,7 @@ app.controller('CourseController', function ($scope, $http) {
     };
 
     $scope.createData = function () {
+        this.course.type='course';
         $http.post(coursesUrl, JSON.stringify(this.course))
             .then(function successCallback(data) {
                 console.log(data);

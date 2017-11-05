@@ -19,6 +19,7 @@ app.controller('CohortController', function ($scope, $http) {
     };
 
     $scope.createData = function () {
+        this.cohort.type='cohort';
         $http.post(cohortsUrl, JSON.stringify(this.cohort))
             .then(function successCallback(data) {
                 console.log(data);

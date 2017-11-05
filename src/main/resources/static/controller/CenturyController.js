@@ -64,6 +64,7 @@ app.controller('CenturyController', function ($scope, $http) {
     };
 
     $scope.createData = function () {
+        this.century.type='centuries';
         $http.post(maniplesUrl + this.modalSelectedManiple.id + '/addCentury', JSON.stringify(this.century))
             .then(function successCallback(data) {
                 console.log(data);
