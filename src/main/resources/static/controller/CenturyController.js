@@ -22,6 +22,8 @@ app.controller('CenturyController', function ($scope, $http) {
     };
 
     var setModalSelectedValues = function (id) {
+        $scope.modalSelectedCohort = undefined;
+        $scope.modalSelectedManiple = undefined;
         angular.forEach($scope.cohorts, function (cohort) {
             angular.forEach(cohort.maniples, function (maniple) {
                 angular.forEach(maniple.centuries, function (century) {
@@ -55,12 +57,8 @@ app.controller('CenturyController', function ($scope, $http) {
 
     $scope.setSelectedCentury = function (century) {
         $scope.century = angular.copy(century);
-        if (century.id) {
-            setModalSelectedValues(century.id);
-        } else {
-            $scope.modalSelectedCohort = undefined;
-            $scope.modalSelectedManiple = undefined;
-        }
+        setModalSelectedValues(century.id);
+        console.log('Selected Century:', $scope.century);
     };
 
     $scope.createData = function () {

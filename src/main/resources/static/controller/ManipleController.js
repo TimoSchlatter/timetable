@@ -15,7 +15,8 @@ app.controller('ManipleController', function ($scope, $http) {
         $scope.cohortsAdvanced.unshift({name: "Alle", maniples: allManiples});
     };
 
-    var setModalSelectedValues = function (id) {
+    var setModalSelectedCohort = function (id) {
+        $scope.modalSelectedCohort = undefined;
         angular.forEach($scope.cohorts, function (cohort) {
             angular.forEach(cohort.maniples, function (maniple) {
                 if (id === maniple.id) {
@@ -39,11 +40,8 @@ app.controller('ManipleController', function ($scope, $http) {
 
     $scope.setSelectedManiple = function (maniple) {
         $scope.maniple = angular.copy(maniple);
-        if (maniple.id) {
-            setModalSelectedValues(maniple.id);
-        } else {
-            $scope.modalSelectedCohort = undefined;
-        }
+        setModalSelectedCohort(maniple.id);
+        console.log('Selected Maniple:', $scope.maniple);
     };
 
     $scope.createData = function () {

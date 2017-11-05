@@ -16,6 +16,7 @@ app.controller('CohortController', function ($scope, $http) {
 
     $scope.setSelectedCohort = function (cohort) {
         $scope.cohort = angular.copy(cohort);
+        console.log('Selected Cohort:', $scope.cohort);
     };
 
     $scope.createData = function () {

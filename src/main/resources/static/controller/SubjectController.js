@@ -29,7 +29,7 @@ app.controller('SubjectController', function ($scope, $http, $filter) {
 
     $scope.setSelectedSubject = function (subject) {
         $scope.subject = angular.copy(subject);
-        console.log($scope.subject.id);
+        console.log('Selected Subject:', $scope.subject);
     };
 
     $scope.createData = function () {

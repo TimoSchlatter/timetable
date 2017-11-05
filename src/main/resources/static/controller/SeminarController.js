@@ -23,7 +23,7 @@ app.controller('SeminarController', function ($scope, $http) {
 
     $scope.setSelectedSeminar = function (seminar) {
         $scope.seminar = angular.copy(seminar);
-        console.log($scope.seminar.id);
+        console.log('Selected Seminar:', $scope.seminar);
     };
 
     $scope.createData = function () {

@@ -16,7 +16,7 @@ app.controller('CourseController', function ($scope, $http) {
 
     $scope.setSelectedCourse = function (course) {
         $scope.course = angular.copy(course);
-        console.log($scope.course.id);
+        console.log('Selected Course:', $scope.course);
     };
 
     $scope.createData = function () {

@@ -23,6 +23,7 @@ app.controller('RoomController', function ($scope, $http) {
 
     $scope.setSelectedRoom = function (room) {
         $scope.room = angular.copy(room);
+        console.log('Selected Room:', $scope.room);
     };
 
     $scope.createData = function () {
