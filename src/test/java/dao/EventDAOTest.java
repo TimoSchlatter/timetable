@@ -45,6 +45,9 @@ public class EventDAOTest {
     private Docent docent;
     private Subject subject;
     private Room room;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private LocalDate date;
 
     @Autowired
     public void setEventDAO(EventDAO eventDAO) {
@@ -86,9 +89,9 @@ public class EventDAOTest {
         group = new Century("I14a",20,30);
         groupDAO.save(group);
 
-        LocalDate date = LocalDate.of(2017,12,24);
-        LocalTime startTime = LocalTime.of(20,0);
-        LocalTime endTime = LocalTime.of(22,30);
+        date = LocalDate.of(2017,12,24);
+        startTime = LocalTime.of(20,0);
+        endTime = LocalTime.of(22,30);
 
         docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20);
         docentDAO.save(docent);
@@ -178,6 +181,17 @@ public class EventDAOTest {
     @Test
     public void testFindByRooms() {
         List<Event> events = eventDAO.findByRooms(room);
+        assertEquals(1, events.size());
+        for(Event event : events) {
+            compareEvent(event);
+        }
+    }
+
+    @Test
+    public void testFindByTime() {
+        List<Event> events = eventDAO.findByTime(date, endTime.plusMinutes(2), endTime.plusMinutes(10));
+        assertTrue(events.isEmpty());
+        events = eventDAO.findByTime(date, startTime.minusMinutes(10), endTime.minusMinutes(10));
         assertEquals(1, events.size());
         for(Event event : events) {
             compareEvent(event);
