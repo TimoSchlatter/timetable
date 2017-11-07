@@ -13,11 +13,10 @@
     <div class="card-body">
         <form>
             <div class="form-group">
-                <label for="selectedSeminartype">Vorauswahl des Veranstaltungstyps:</label>
+                <label for="selectedSubjecttype">Vorauswahl des Veranstaltungstyps:</label>
                 <select class="form-control"
-                        id="selectedSeminartype"
+                        id="selectedSubjecttype"
                         ng-options="subjectType as subjectType.name for subjectType in subjectTypesAdvanced | orderBy: 'name'"
-                        ;
                         ng-model="selectedSubjectType">
                 </select>
             </div>
