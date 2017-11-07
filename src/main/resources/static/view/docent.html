@@ -26,7 +26,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="docent in docents">
+                <tr ng-repeat="docent in docents()">
                     <td>{{docent.title}}</td>
                     <td>{{docent.forename}}</td>
                     <td>{{docent.surname}}</td>
@@ -73,7 +73,7 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteData()"
+                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteDocent(docent)"
                                 ng-show="docent.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-trash"></i></span>Löschen
                         </button>
@@ -171,11 +171,11 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()"
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateDocent(docent)"
                                 ng-show="docent.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="createData()"
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="createDocent(docent)"
                                 ng-hide="docent.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>

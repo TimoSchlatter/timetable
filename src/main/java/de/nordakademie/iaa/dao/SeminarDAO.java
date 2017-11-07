@@ -8,5 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface SeminarDAO extends JpaRepository<Seminar,Long>,BaseDAO<Seminar, Long> {
 
+    /**
+     *
+     * @param title
+     * @return
+     */
     Seminar findByTitle(String title);
 }

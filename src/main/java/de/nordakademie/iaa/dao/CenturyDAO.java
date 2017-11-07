@@ -8,5 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CenturyDAO extends JpaRepository<Century, Long>, BaseDAO<Century, Long> {
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     Century findByName(String name);
 }

@@ -8,5 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface ManipleDAO extends JpaRepository<Maniple,Long>, BaseDAO<Maniple, Long> {
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     Maniple findByName(String name);
 }
