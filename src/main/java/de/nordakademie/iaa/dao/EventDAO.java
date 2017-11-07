@@ -18,7 +18,7 @@ public interface EventDAO extends JpaRepository<Event,Long>, BaseDAO<Event, Long
 
     void deleteBySubject(Subject subject);
 
-    List<Event> findByRoom(Room room);
+    List<Event> findByRooms(Room room);
 
-    List<Event> findByDocent(Docent docent);
+    List<Event> findByDocents(Docent docent);
 }
