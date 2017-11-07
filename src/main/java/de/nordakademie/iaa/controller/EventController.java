@@ -45,7 +45,7 @@ public class EventController {
     @PostMapping
     public ResponseEntity saveEvent(@RequestBody Event event) {
         try {
-            if (eventService.findByDateAndStartTimeAndEndTimeAndGroup(event.getDate(), event.getStartTime(), event.getEndTime(), event.getGroup()) == null) {
+            if (eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(event.getDate(), event.getStartTime(), event.getEndTime(), event.getGroup()) == null) {
                 eventService.saveEvent(event);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }

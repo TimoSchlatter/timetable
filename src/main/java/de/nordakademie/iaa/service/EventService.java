@@ -2,6 +2,7 @@ package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.model.Group;
+import de.nordakademie.iaa.model.Subject;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 
 import java.time.LocalDate;
@@ -49,6 +50,9 @@ public interface EventService {
      * @param group the identifier.
      * @return the found event or null if no event was found with given identifiers.
      */
-    Event findByDateAndStartTimeAndEndTimeAndGroup(LocalDate date, LocalTime startTime, LocalTime endTime, Group group);
+    Event findEventByDateAndStartTimeAndEndTimeAndGroup(LocalDate date, LocalTime startTime, LocalTime endTime, Group group);
 
+    void deleteEventByGroup(Group group);
+
+    void deleteEventBySubject(Subject subject);
 }

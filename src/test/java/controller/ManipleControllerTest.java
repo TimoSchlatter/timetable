@@ -6,6 +6,7 @@ import de.nordakademie.iaa.controller.ManipleController;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CenturyService;
+import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.ManipleService;
 import org.junit.After;
 import org.junit.Before;
@@ -46,6 +47,9 @@ public class ManipleControllerTest {
 
     @Autowired
     private ManipleController manipleController;
+
+    @Autowired
+    private EventService eventService;
 
     @Autowired
     private ManipleService manipleService;
@@ -160,53 +164,62 @@ public class ManipleControllerTest {
     }
 
     @Test
-    public void testRemoveManipleFromCohort() throws Exception {
+    public void testRemoveCenturyFromManiple() throws Exception {
         when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
         when(centuryService.loadCentury(centuryId)).thenReturn(century);
         mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isOk());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(1)).loadCentury(centuryId);
+        verify(eventService, times(1)).deleteEventByGroup(century);
         verify(centuryService, times(1)).deleteCentury(any());
     }
 
     @Test
-    public void testRemoveManipleFromNonExistingCohort() throws Exception {
+    public void testRemoveCenturyFromNonExistingManiple() throws Exception {
         when(manipleService.loadManiple(anyLong())).thenReturn(null);
         when(centuryService.loadCentury(centuryId)).thenReturn(century);
         mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(1)).loadCentury(centuryId);
+        verify(eventService, times(0)).deleteEventByGroup(century);
         verify(centuryService, times(0)).deleteCentury(any());
     }
 
     @Test
-    public void testRemoveNonExistingManipleFromCohort() throws Exception {
+    public void testRemoveNonExistingCenturyFromManiple() throws Exception {
         when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
         when(centuryService.loadCentury(centuryId)).thenReturn(null);
         mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(1)).loadCentury(centuryId);
+        verify(eventService, times(0)).deleteEventByGroup(century);
         verify(centuryService, times(0)).deleteCentury(any());
     }
 
     @Test
-    public void testRemoveNonExistingManipleFromNonExistingCohort() throws Exception {
+    public void testRemoveNonExistingCenturyFromNonExistingManiple() throws Exception {
         when(manipleService.loadManiple(manipleId)).thenReturn(null);
         when(centuryService.loadCentury(centuryId)).thenReturn(null);
         mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(1)).loadCentury(centuryId);
+        verify(eventService, times(0)).deleteEventByGroup(century);
         verify(centuryService, times(0)).deleteCentury(any());
     }
     
     @After
     public void reset() {
+        Mockito.reset(eventService);
         Mockito.reset(manipleService);
         Mockito.reset(centuryService);
     }
 
     @Configuration
     static class TestConfiguration {
+        @Bean
+        public EventService eventService() {
+            return mock(EventService.class);
+        }
 
         @Bean
         public ManipleService manipleService() {
@@ -220,7 +233,7 @@ public class ManipleControllerTest {
 
         @Bean
         public ManipleController manipleController() {
-            return new ManipleController(manipleService(), centuryService());
+            return new ManipleController(eventService(), manipleService(), centuryService());
         }
     }
 }

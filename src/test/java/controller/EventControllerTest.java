@@ -91,14 +91,14 @@ public class EventControllerTest {
         JacksonTester.initFields(this, objectMapper);
         String url = "/events";
         // Event already existing
-        when(eventService.findByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group)).thenReturn(event);
+        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group)).thenReturn(event);
         mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(eventService, times(0)).saveEvent(event);
         // Event not yet existing
-        when(eventService.findByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group)).thenReturn(null);
+        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group)).thenReturn(null);
         mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

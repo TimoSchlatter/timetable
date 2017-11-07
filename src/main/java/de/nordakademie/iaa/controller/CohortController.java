@@ -4,6 +4,7 @@ package de.nordakademie.iaa.controller;
 import de.nordakademie.iaa.model.Cohort;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CohortService;
+import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.ManipleService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/cohorts")
 public class CohortController {
 
+    private EventService eventService;
     private CohortService cohortService;
     private ManipleService manipleService;
 
     @Autowired
-    public CohortController(CohortService cohortService, ManipleService manipleService) {
+    public CohortController(EventService eventService, CohortService cohortService, ManipleService manipleService) {
+        this.eventService = eventService;
         this.cohortService = cohortService;
         this.manipleService = manipleService;
     }
@@ -80,11 +83,18 @@ public class CohortController {
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteCohort(@PathVariable Long id) {
         try {
-            cohortService.deleteCohort(id);
-            return ResponseEntity.ok(null);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().build();
-        }
+            Cohort cohort = cohortService.loadCohort(id);
+            if (cohort != null) {
+                cohort.getManiples().forEach(maniple -> {
+                    maniple.getCenturies().forEach(eventService::deleteEventByGroup);
+                    eventService.deleteEventByGroup(maniple);
+                });
+                eventService.deleteEventByGroup(cohort);
+                cohortService.deleteCohort(id);
+                return ResponseEntity.ok(null);
+            }
+        } catch (EntityNotFoundException ignored) {}
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -121,6 +131,8 @@ public class CohortController {
         if (cohort != null && maniple != null) {
             try {
                 cohort.removeManiple(maniple);
+                maniple.getCenturies().forEach(eventService::deleteEventByGroup);
+                eventService.deleteEventByGroup(maniple);
                 manipleService.deleteManiple(maniple.getId());
                 return ResponseEntity.ok(null);
             } catch (EntityNotFoundException ignored) {}

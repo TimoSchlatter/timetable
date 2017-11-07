@@ -82,9 +82,21 @@ public class EventServiceTest {
     }
 
     @Test
-    public void testFindByDateAndStartTimeAndEndTimeAndGroup() {
-        eventService.findByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group);
+    public void testFindEventByDateAndStartTimeAndEndTimeAndGroup() {
+        eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group);
         verify(eventDAO, times(1)).findByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group);
+    }
+
+    @Test
+    public void testDeleteEventByGroup() {
+        eventService.deleteEventByGroup(group);
+        verify(eventDAO, times(1)).deleteByGroup(group);
+    }
+
+    @Test
+    public void testDeleteEventBySubject() {
+        eventService.deleteEventBySubject(subject);
+        verify(eventDAO, times(1)).deleteBySubject(subject);
     }
 
     @After

@@ -4,8 +4,8 @@ package de.nordakademie.iaa.controller;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CenturyService;
+import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.ManipleService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +21,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/maniples")
 public class ManipleController {
 
+    private EventService eventService;
     private ManipleService manipleService;
     private CenturyService centuryService;
 
     @Autowired
-    public ManipleController(ManipleService manipleService, CenturyService centuryService) {
+    public ManipleController(EventService eventService, ManipleService manipleService, CenturyService centuryService) {
+        this.eventService = eventService;
         this.manipleService = manipleService;
         this.centuryService = centuryService;
     }
@@ -84,12 +86,13 @@ public class ManipleController {
      * @param centuryId The id of the maniple to delete.
      */
     @RequestMapping(value = "/{manipleId}/deleteCentury/{centuryId}", method = DELETE)
-    public ResponseEntity removeManiple(@PathVariable Long manipleId, @PathVariable Long centuryId) {
+    public ResponseEntity removeCentury(@PathVariable Long manipleId, @PathVariable Long centuryId) {
         Maniple maniple = manipleService.loadManiple(manipleId);
         Century century = centuryService.loadCentury(centuryId);
         if (maniple != null && century != null) {
             try {
                 maniple.removeCentury(century);
+                eventService.deleteEventByGroup(century);
                 centuryService.deleteCentury(century.getId());
                 return ResponseEntity.ok(null);
             } catch (Exception ignored) {}

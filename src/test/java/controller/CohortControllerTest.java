@@ -7,12 +7,14 @@ import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.model.Cohort;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CohortService;
+import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.ManipleService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
@@ -31,11 +33,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.isIn;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -44,6 +46,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class CohortControllerTest {
+
+    @Autowired
+    private EventService eventService;
 
     @Autowired
     private CohortController cohortController;
@@ -62,14 +67,14 @@ public class CohortControllerTest {
     private final Century century = new Century("a", 30);
     private final String newManipleName = maniple.getName() + cohort.getName();
     private final Long cohortId = 1L;
-    private final Long manipleId = cohortId+1;
+    private final Long manipleId = cohortId + 1;
 
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(cohortController).build();
         cohort.setId(cohortId);
         maniple.setId(manipleId);
-        maniple.setId(manipleId+1);
+        century.setId(manipleId + 1);
     }
 
     @Test
@@ -85,12 +90,15 @@ public class CohortControllerTest {
                 .andReturn();
         verify(cohortService, times(1)).listCohorts();
         String jsonResponse = mvcResult.getResponse().getContentAsString();
-        List<Cohort> cohortsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Cohort>>() {});
+        List<Cohort> cohortsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Cohort>>() {
+        });
         assertEquals(cohorts, cohortsResponse);
     }
 
     @Test
     public void testSaveCohort() throws Exception {
+        cohort.addManiple(maniple);
+        maniple.addCentury(century);
         JacksonTester.initFields(this, new ObjectMapper());
         String url = "/cohorts";
         // Cohort already existing
@@ -118,6 +126,8 @@ public class CohortControllerTest {
 
     @Test
     public void testUpdateCohort() throws Exception {
+        cohort.addManiple(maniple);
+        maniple.addCentury(century);
         final String url = "/cohorts/" + cohortId;
         JacksonTester.initFields(this, new ObjectMapper());
         // Cohort not existing
@@ -145,15 +155,31 @@ public class CohortControllerTest {
 
     @Test
     public void testDeleteCohort() throws Exception {
+        cohort.addManiple(maniple);
+        maniple.addCentury(century);
+        InOrder inOrder = inOrder(cohortService, eventService);
+        when(cohortService.loadCohort(cohortId)).thenReturn(cohort);
+        List<Maniple> maniples = cohort.getManiples();
         mockMvc.perform(delete("/cohorts/" + cohortId)).andExpect(status().isOk());
-        verify(cohortService, times(1)).deleteCohort(cohortId);
+        maniples.forEach(m -> {
+            m.getCenturies().forEach(c -> inOrder.verify(eventService, times(1)).deleteEventByGroup(c));
+            inOrder.verify(eventService, times(1)).deleteEventByGroup(m);
+        });
+        inOrder.verify(eventService, times(1)).deleteEventByGroup(cohort);
+        inOrder.verify(cohortService, times(1)).deleteCohort(cohortId);
+
         doThrow(new EntityNotFoundException()).when(cohortService).deleteCohort(anyLong());
         mockMvc.perform(delete("/cohorts/" + cohortId)).andExpect(status().isBadRequest());
-        verify(cohortService, times(2)).deleteCohort(cohortId);
+        maniples.forEach(m -> {
+            m.getCenturies().forEach(c -> inOrder.verify(eventService, times(2)).deleteEventByGroup(c));
+            inOrder.verify(eventService, times(2)).deleteEventByGroup(m);
+        });
+        inOrder.verify(eventService, times(2)).deleteEventByGroup(cohort);
+        inOrder.verify(cohortService, times(2)).deleteCohort(cohortId);
     }
 
     @Test
-    public void testAddNonExistingManipleToExistingManiple() throws Exception {
+    public void testAddNonExistingManipleToExistingCohort() throws Exception {
         when(cohortService.loadCohort(cohortId)).thenReturn(cohort);
         when(manipleService.findByName(newManipleName)).thenReturn(null);
         JacksonTester.initFields(this, new ObjectMapper());
@@ -201,12 +227,18 @@ public class CohortControllerTest {
 
     @Test
     public void testRemoveManipleFromCohort() throws Exception {
+        cohort.addManiple(maniple);
+        maniple.addCentury(century);
+        InOrder inOrder = inOrder(cohortService, manipleService, eventService);
         when(cohortService.loadCohort(cohortId)).thenReturn(cohort);
         when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
         mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isOk());
-        verify(cohortService, times(1)).loadCohort(cohortId);
-        verify(manipleService, times(1)).loadManiple(manipleId);
-        verify(manipleService, times(1)).deleteManiple(any());
+        inOrder.verify(cohortService, times(1)).loadCohort(cohortId);
+        inOrder.verify(manipleService, times(1)).loadManiple(manipleId);
+        maniple.getCenturies().forEach(c ->
+            inOrder.verify(eventService, times(1)).deleteEventByGroup(c));
+        inOrder.verify(eventService, times(1)).deleteEventByGroup(maniple);
+        inOrder.verify(manipleService, times(1)).deleteManiple(any());
     }
 
     @Test
@@ -216,6 +248,7 @@ public class CohortControllerTest {
         mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
         verify(manipleService, times(1)).loadManiple(manipleId);
+        verify(eventService, times(0)).deleteEventByGroup(any());
         verify(manipleService, times(0)).deleteManiple(any());
     }
 
@@ -226,6 +259,7 @@ public class CohortControllerTest {
         mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
         verify(manipleService, times(1)).loadManiple(manipleId);
+        verify(eventService, times(0)).deleteEventByGroup(any());
         verify(manipleService, times(0)).deleteManiple(any());
     }
 
@@ -236,17 +270,23 @@ public class CohortControllerTest {
         mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
         verify(manipleService, times(1)).loadManiple(manipleId);
+        verify(eventService, times(0)).deleteEventByGroup(any());
         verify(manipleService, times(0)).deleteManiple(any());
     }
 
     @After
     public void reset() {
+        Mockito.reset(eventService);
         Mockito.reset(cohortService);
         Mockito.reset(manipleService);
     }
 
     @Configuration
     static class TestConfiguration {
+        @Bean
+        public EventService eventService() {
+            return mock(EventService.class);
+        }
 
         @Bean
         public CohortService cohortService() {
@@ -260,7 +300,7 @@ public class CohortControllerTest {
 
         @Bean
         public CohortController cohortController() {
-            return new CohortController(cohortService(), manipleService());
+            return new CohortController(eventService(), cohortService(), manipleService());
         }
     }
 }
