@@ -52,10 +52,8 @@ public class ManipleController {
                 manipleService.saveManiple(maniple);
                 return ResponseEntity.ok().build();
             }
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        } catch (Exception ignored) {}
+        return ResponseEntity.badRequest().build();
     }
     
     /**
@@ -75,9 +73,8 @@ public class ManipleController {
                 maniple.addCentury(century);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
-            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -95,10 +92,8 @@ public class ManipleController {
                 maniple.removeCentury(century);
                 centuryService.deleteCentury(century.getId());
                 return ResponseEntity.ok(null);
-            } catch (EntityNotFoundException e) {
-                return ResponseEntity.notFound().build();
-            }
+            } catch (Exception ignored) {}
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().build();
     }
 }

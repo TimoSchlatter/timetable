@@ -77,7 +77,7 @@ public class CenturyControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(century).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
         verify(centuryService, times(0)).saveCentury(century);
         // Century existing
         when(centuryService.loadCentury(centuryId)).thenReturn(century);

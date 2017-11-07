@@ -94,7 +94,7 @@ public class ManipleControllerTest {
         mockMvc.perform(put(url).content(jacksonManipleTester.write(maniple).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
         verify(manipleService, times(0)).saveManiple(maniple);
         // Maniple existing
         when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
@@ -153,7 +153,7 @@ public class ManipleControllerTest {
                 .content(jacksonCenturyTester.write(century).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(0)).findByName(anyString());
         verify(centuryService, times(0)).saveCentury(any());
@@ -173,7 +173,7 @@ public class ManipleControllerTest {
     public void testRemoveManipleFromNonExistingCohort() throws Exception {
         when(manipleService.loadManiple(anyLong())).thenReturn(null);
         when(centuryService.loadCentury(centuryId)).thenReturn(century);
-        mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(1)).loadCentury(centuryId);
         verify(centuryService, times(0)).deleteCentury(any());
@@ -183,7 +183,7 @@ public class ManipleControllerTest {
     public void testRemoveNonExistingManipleFromCohort() throws Exception {
         when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
         when(centuryService.loadCentury(centuryId)).thenReturn(null);
-        mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(1)).loadCentury(centuryId);
         verify(centuryService, times(0)).deleteCentury(any());
@@ -193,7 +193,7 @@ public class ManipleControllerTest {
     public void testRemoveNonExistingManipleFromNonExistingCohort() throws Exception {
         when(manipleService.loadManiple(manipleId)).thenReturn(null);
         when(centuryService.loadCentury(centuryId)).thenReturn(null);
-        mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(1)).loadCentury(centuryId);
         verify(centuryService, times(0)).deleteCentury(any());

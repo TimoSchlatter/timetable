@@ -46,9 +46,7 @@ public class CenturyController {
                 centuryService.saveCentury(century);
                 return ResponseEntity.ok().build();
             }
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        } catch (Exception ignored) {}
+        return ResponseEntity.badRequest().build();
     }
 }

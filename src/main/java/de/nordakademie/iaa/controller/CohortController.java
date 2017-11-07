@@ -52,10 +52,8 @@ public class CohortController {
                 cohortService.saveCohort(cohort);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        } catch (Exception ignored) {}
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -70,10 +68,8 @@ public class CohortController {
                 cohortService.saveCohort(cohort);
                 return ResponseEntity.ok().build();
             }
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        } catch (Exception ignored) {}
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -87,7 +83,7 @@ public class CohortController {
             cohortService.deleteCohort(id);
             return ResponseEntity.ok(null);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -108,9 +104,8 @@ public class CohortController {
                 cohort.addManiple(maniple);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
-            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -128,10 +123,8 @@ public class CohortController {
                 cohort.removeManiple(maniple);
                 manipleService.deleteManiple(maniple.getId());
                 return ResponseEntity.ok(null);
-            } catch (EntityNotFoundException e) {
-                return ResponseEntity.notFound().build();
-            }
+            } catch (EntityNotFoundException ignored) {}
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().build();
     }
 }

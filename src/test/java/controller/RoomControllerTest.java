@@ -110,7 +110,7 @@ public class RoomControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
         verify(roomService, times(0)).saveRoom(room);
         // Room existing
         when(roomService.loadRoom(roomId)).thenReturn(room);
@@ -133,7 +133,7 @@ public class RoomControllerTest {
         mockMvc.perform(delete("/rooms/" + room.getId())).andExpect(status().isOk());
         verify(this.roomService, times(1)).deleteRoom(room.getId());
         doThrow(new EntityNotFoundException()).when(roomService).deleteRoom(anyLong());
-        mockMvc.perform(delete("/rooms/" + room.getId())).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/rooms/" + room.getId())).andExpect(status().isBadRequest());
         verify(this.roomService, times(2)).deleteRoom(room.getId());
     }
 

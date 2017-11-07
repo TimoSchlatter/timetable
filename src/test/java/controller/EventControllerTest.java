@@ -125,7 +125,7 @@ public class EventControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
         verify(eventService, times(0)).saveEvent(event);
         // Event existing
         when(eventService.loadEvent(eventId)).thenReturn(event);
@@ -148,7 +148,7 @@ public class EventControllerTest {
         mockMvc.perform(delete("/events/" + event.getId())).andExpect(status().isOk());
         verify(eventService, times(1)).deleteEvent(event.getId());
         doThrow(new EntityNotFoundException()).when(eventService).deleteEvent(anyLong());
-        mockMvc.perform(delete("/events/" + event.getId())).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/events/" + event.getId())).andExpect(status().isBadRequest());
         verify(eventService, times(2)).deleteEvent(event.getId());
     }
 

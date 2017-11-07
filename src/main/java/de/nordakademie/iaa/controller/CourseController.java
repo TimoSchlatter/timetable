@@ -49,10 +49,8 @@ public class CourseController {
                 courseService.saveCourse(course);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        } catch (Exception ignored) {}
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -67,10 +65,8 @@ public class CourseController {
                 courseService.saveCourse(course);
                 return ResponseEntity.ok().build();
             }
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        } catch (Exception ignored) {}
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -84,7 +80,7 @@ public class CourseController {
             courseService.deleteCourse(id);
             return ResponseEntity.ok(null);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 }
