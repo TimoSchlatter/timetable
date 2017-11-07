@@ -38,6 +38,7 @@ public class SubjectDAOTest {
     private EntityManager entityManager;
 
     private Subject subject;
+    private Course course;
 
     @Autowired
     public void setSubjectDAO(SubjectDAO subjectDAO) {
@@ -51,7 +52,7 @@ public class SubjectDAOTest {
 
     @Before
     public void setupData() {
-        Course course = new Course("Treppensteigen III","I",123);
+        course = new Course("Treppensteigen III","I",123);
         courseDAO.save(course);
         subject = new Subject(20, SubjectType.LECTURE, course);
         subjectDAO.save(subject);
@@ -100,6 +101,13 @@ public class SubjectDAOTest {
     public void testFindBySubjectTypeAndModule() {
         Subject subject = subjectDAO.findBySubjectTypeAndModule(this.subject.getSubjectType(), this.subject.getModule());
         compareSubjects(subject);
+    }
+
+    @Test
+    public void testDeleteByModule() {
+        subjectDAO.deleteByModule(course);
+        List<Subject> subjects = subjectDAO.findAll();
+        assertTrue(subjects.isEmpty());
     }
 
     private void compareSubjects(Subject subject) {
