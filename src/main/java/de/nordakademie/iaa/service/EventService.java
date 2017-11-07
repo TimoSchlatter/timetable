@@ -52,6 +52,8 @@ public interface EventService {
      */
     Event findEventByDateAndStartTimeAndEndTimeAndGroup(LocalDate date, LocalTime startTime, LocalTime endTime, Group group);
 
+    List<Event> findEventByTime(LocalDate date, LocalTime startTime, LocalTime endTime);
+
     void deleteEventByGroup(Group group);
 
     void deleteEventBySubject(Subject subject);

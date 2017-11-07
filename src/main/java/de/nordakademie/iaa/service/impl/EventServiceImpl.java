@@ -55,6 +55,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Event> findEventByTime(LocalDate date, LocalTime startTime, LocalTime endTime) {
+        return eventDAO.findByTime(date, startTime, endTime);
+    }
+
+    @Override
     public void deleteEventByGroup(Group group) {
         eventDAO.deleteByGroup(group);
     }

@@ -88,6 +88,12 @@ public class EventServiceTest {
     }
 
     @Test
+    public void testFindEventByTime() {
+        eventService.findEventByTime(date, startTime, endTime);
+        verify(eventDAO, times(1)).findByTime(date, startTime, endTime);
+    }
+
+    @Test
     public void testDeleteEventByGroup() {
         eventService.deleteEventByGroup(group);
         verify(eventDAO, times(1)).deleteByGroup(group);
