@@ -41,6 +41,9 @@ public class EventDAOTest {
     private EntityManager entityManager;
 
     private Event event;
+    private Group group;
+    private Docent docent;
+    private Subject subject;
 
     @Autowired
     public void setEventDAO(EventDAO eventDAO) {
@@ -76,17 +79,17 @@ public class EventDAOTest {
         Course course = new Course("Wuerfel Tricks","I", 123);
         courseDAO.save(course);
 
-        Subject subject = new Subject(20, SubjectType.EXAM, course);
+        subject = new Subject(20, SubjectType.EXAM, course);
         subjectDAO.save(subject);
 
-        Group group = new Century("I14a",20,30);
+        group = new Century("I14a",20,30);
         groupDAO.save(group);
 
         LocalDate date = LocalDate.of(2017,12,24);
         LocalTime startTime = LocalTime.of(20,0);
         LocalTime endTime = LocalTime.of(22,30);
 
-        Docent docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20);
+        docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20);
         docentDAO.save(docent);
         HashSet<Docent> docents = new HashSet<>();
         docents.add(docent);
@@ -139,6 +142,12 @@ public class EventDAOTest {
     public void testFindByDateAndStartTimeAndEndTimeAndGroup() {
         Event event = eventDAO.findByDateAndStartTimeAndEndTimeAndGroup(this.event.getDate(),this.event.getStartTime(), this.event.getEndTime(), this.event.getGroup());
         compareEvent(event);
+    }
+
+    @Test
+    public void testDeleteByGroup() {
+        eventDAO.deleteByGroup(group);
+        assertTrue(eventDAO.findAll().isEmpty());
     }
 
     private void compareEvent(Event event) {
