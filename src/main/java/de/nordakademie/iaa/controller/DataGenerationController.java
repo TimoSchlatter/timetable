@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DataGenerationController {
 
     private DataGenerator dataGenerator;
+    private boolean dataGenerated = false;
 
     @Autowired
     public DataGenerationController(DataGenerator dataGenerator) {
@@ -20,7 +21,10 @@ public class DataGenerationController {
 
     @RequestMapping("/generateData")
     public ResponseEntity generateData() {
-        dataGenerator.createData();
+        if (!dataGenerated) {
+            dataGenerator.createData();
+            dataGenerated = true;
+        }
         return ResponseEntity.ok(null);
     }
 }
