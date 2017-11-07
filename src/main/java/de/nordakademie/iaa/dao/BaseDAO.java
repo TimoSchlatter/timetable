@@ -10,8 +10,9 @@ import java.util.Optional;
 public interface BaseDAO<T, ID extends Serializable> extends Repository<T, ID> {
 
     /**
+     * Delete an object by its id
      *
-     * @param id
+     * @param id object id
      * @return
      */
     Optional<T> deleteById(ID id);
