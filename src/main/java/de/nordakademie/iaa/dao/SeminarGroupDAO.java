@@ -5,5 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SeminarGroupDAO extends JpaRepository<SeminarGroup,Long>,BaseDAO<SeminarGroup, Long> {
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     SeminarGroup findByName(String name);
 }

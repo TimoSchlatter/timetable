@@ -10,9 +10,24 @@ import java.util.List;
 
 public interface SubjectDAO extends JpaRepository<Subject,Long>,BaseDAO<Subject, Long> {
 
+    /**
+     *
+     * @param subjectType
+     * @param module
+     * @return
+     */
     Subject findBySubjectTypeAndModule(SubjectType subjectType, Module module);
 
+    /**
+     *
+     * @param subjectType
+     * @return
+     */
     List<Subject> findBySubjectType(SubjectType subjectType);
 
+    /**
+     *
+     * @param course
+     */
     void deleteByModule(Course course);
 }

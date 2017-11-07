@@ -12,7 +12,18 @@ import java.util.List;
 
 public interface RoomDAO extends JpaRepository<Room,Long>, BaseDAO<Room, Long> {
 
+    /**
+     *
+     * @param building
+     * @param number
+     * @return
+     */
     Room findByBuildingAndNumber(String building, String number);
 
+    /**
+     *
+     * @param roomType
+     * @return
+     */
     List<Room> findByRoomType(RoomType roomType);
 }

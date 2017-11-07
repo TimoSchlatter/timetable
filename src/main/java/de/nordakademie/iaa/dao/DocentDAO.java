@@ -10,7 +10,18 @@ import java.util.List;
  */
 public interface DocentDAO extends JpaRepository<Docent,Long>, BaseDAO<Docent, Long> {
 
+    /**
+     *
+     * @param forename
+     * @param surname
+     * @return
+     */
     Docent findByForenameAndSurname(String forename, String surname);
 
+    /**
+     *
+     * @param isPermanentlyEmployed
+     * @return
+     */
     List<Docent> findByPermanentlyEmployed(boolean isPermanentlyEmployed);
 }
