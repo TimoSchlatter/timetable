@@ -51,7 +51,7 @@ public class Event extends HasId implements Serializable {
         this.docents = docents;
     }
 
-    @NaturalId
+    @NaturalId(mutable = true)
     public LocalDate getDate() {
         return date;
     }
@@ -60,7 +60,7 @@ public class Event extends HasId implements Serializable {
         this.date = date;
     }
 
-    @NaturalId
+    @NaturalId(mutable = true)
     public LocalTime getStartTime() {
         return startTime;
     }
@@ -69,7 +69,7 @@ public class Event extends HasId implements Serializable {
         this.startTime = startTime;
     }
 
-    @NaturalId
+    @NaturalId(mutable = true)
     public LocalTime getEndTime() {
         return endTime;
     }
