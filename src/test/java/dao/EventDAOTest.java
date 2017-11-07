@@ -44,6 +44,7 @@ public class EventDAOTest {
     private Group group;
     private Docent docent;
     private Subject subject;
+    private Room room;
 
     @Autowired
     public void setEventDAO(EventDAO eventDAO) {
@@ -94,7 +95,7 @@ public class EventDAOTest {
         HashSet<Docent> docents = new HashSet<>();
         docents.add(docent);
 
-        Room room = new Room(20,"X", 42, "999", RoomType.COMPUTERROOM);
+        room = new Room(20,"X", 42, "999", RoomType.COMPUTERROOM);
         roomDAO.save(room);
         HashSet<Room> rooms = new HashSet<>();
         rooms.add(room);
@@ -146,8 +147,34 @@ public class EventDAOTest {
 
     @Test
     public void testDeleteByGroup() {
+        assertEquals(eventDAO.findAll().size(),1);
         eventDAO.deleteByGroup(group);
         assertTrue(eventDAO.findAll().isEmpty());
+    }
+
+    @Test
+    public void testDeleteBySubject() {
+        assertEquals(eventDAO.findAll().size(),1);
+        eventDAO.deleteBySubject(subject);
+        assertTrue(eventDAO.findAll().isEmpty());
+    }
+
+    @Test
+    public void testFindByDocents() {
+        List<Event> events = eventDAO.findByDocents(docent);
+        assertEquals(1, events.size());
+        for(Event event : events) {
+            compareEvent(event);
+        }
+    }
+
+    @Test
+    public void testFindByRooms() {
+        List<Event> events = eventDAO.findByRooms(room);
+        assertEquals(1, events.size());
+        for(Event event : events) {
+            compareEvent(event);
+        }
     }
 
     private void compareEvent(Event event) {
