@@ -11,17 +11,19 @@ import java.util.List;
 public interface DocentDAO extends JpaRepository<Docent,Long>, BaseDAO<Docent, Long> {
 
     /**
+     * Find a docent by his/her forename and surname
      *
-     * @param forename
-     * @param surname
+     * @param forename forname of the docent
+     * @param surname surname of the docent
      * @return
      */
     Docent findByForenameAndSurname(String forename, String surname);
 
     /**
+     * Find docents by their employment state
      *
-     * @param isPermanentlyEmployed
-     * @return
+     * @param isPermanentlyEmployed the employment state of the docent
+     * @return the docents with the given employment state
      */
     List<Docent> findByPermanentlyEmployed(boolean isPermanentlyEmployed);
 }

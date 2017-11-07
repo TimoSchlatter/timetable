@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.dao;
 
-import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.model.Module;
 import de.nordakademie.iaa.model.Subject;
 import de.nordakademie.iaa.model.SubjectType;
@@ -11,23 +10,26 @@ import java.util.List;
 public interface SubjectDAO extends JpaRepository<Subject,Long>,BaseDAO<Subject, Long> {
 
     /**
+     * Find a subject by its type and module
      *
-     * @param subjectType
-     * @param module
-     * @return
+     * @param subjectType the type of the subject
+     * @param module the module of the subject
+     * @return the subject with the given type and module
      */
     Subject findBySubjectTypeAndModule(SubjectType subjectType, Module module);
 
     /**
+     *Find subject of a specific type
      *
-     * @param subjectType
-     * @return
+     * @param subjectType the type of the subject
+     * @return the subjects that are the given type
      */
     List<Subject> findBySubjectType(SubjectType subjectType);
 
     /**
+     * Delete subjects that contain the given module
      *
-     * @param course
+     * @param module the module of the subject
      */
-    void deleteByModule(Course course);
+    void deleteByModule(Module module);
 }
