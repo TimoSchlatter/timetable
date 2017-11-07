@@ -107,7 +107,7 @@ public class CourseControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
         verify(courseService, times(0)).saveCourse(course);
         // Course existing
         when(courseService.loadCourse(courseId)).thenReturn(course);
@@ -130,7 +130,7 @@ public class CourseControllerTest {
         mockMvc.perform(delete("/courses/" + course.getId())).andExpect(status().isOk());
         verify(courseService, times(1)).deleteCourse(course.getId());
         doThrow(new EntityNotFoundException()).when(courseService).deleteCourse(anyLong());
-        mockMvc.perform(delete("/courses/" + course.getId())).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/courses/" + course.getId())).andExpect(status().isBadRequest());
         verify(courseService, times(2)).deleteCourse(course.getId());
     }
 

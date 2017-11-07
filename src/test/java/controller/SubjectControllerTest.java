@@ -113,7 +113,7 @@ public class SubjectControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(subject).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
         verify(subjectService, times(0)).saveSubject(subject);
         // Subject existing
         when(subjectService.loadSubject(subjectId)).thenReturn(subject);
@@ -137,7 +137,7 @@ public class SubjectControllerTest {
         mockMvc.perform(delete(url)).andExpect(status().isOk());
         verify(subjectService, times(1)).deleteSubject(subjectId);
         doThrow(new EntityNotFoundException()).when(subjectService).deleteSubject(anyLong());
-        mockMvc.perform(delete(url)).andExpect(status().isNotFound());
+        mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
         verify(subjectService, times(2)).deleteSubject(subjectId);
     }
 

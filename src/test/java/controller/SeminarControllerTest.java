@@ -108,7 +108,7 @@ public class SeminarControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(seminar).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
         verify(seminarService, times(0)).saveSeminar(seminar);
         // Seminar existing
         when(seminarService.loadSeminar(seminarId)).thenReturn(seminar);
@@ -131,7 +131,7 @@ public class SeminarControllerTest {
         mockMvc.perform(delete("/seminars/" + seminar.getId())).andExpect(status().isOk());
         verify(seminarService, times(1)).deleteSeminar(seminar.getId());
         doThrow(new EntityNotFoundException()).when(seminarService).deleteSeminar(anyLong());
-        mockMvc.perform(delete("/seminars/" + seminar.getId())).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/seminars/" + seminar.getId())).andExpect(status().isBadRequest());
         verify(seminarService, times(2)).deleteSeminar(seminar.getId());
     }
 

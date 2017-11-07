@@ -107,7 +107,7 @@ public class DocentControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
         verify(docentService, times(0)).saveDocent(docent);
         // Docent existing
         when(docentService.loadDocent(docentId)).thenReturn(docent);
@@ -131,7 +131,7 @@ public class DocentControllerTest {
         mockMvc.perform(delete(url)).andExpect(status().isOk());
         verify(docentService, times(1)).deleteDocent(docentId);
         doThrow(new EntityNotFoundException()).when(docentService).deleteDocent(anyLong());
-        mockMvc.perform(delete(url)).andExpect(status().isNotFound());
+        mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
         verify(docentService, times(2)).deleteDocent(docentId);
     }
 

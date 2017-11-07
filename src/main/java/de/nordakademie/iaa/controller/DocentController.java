@@ -64,10 +64,8 @@ public class DocentController {
                 docentService.saveDocent(docent);
                 return ResponseEntity.ok().build();
             }
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        } catch (Exception ignored) {}
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -81,7 +79,7 @@ public class DocentController {
             docentService.deleteDocent(id);
             return ResponseEntity.ok(null);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 

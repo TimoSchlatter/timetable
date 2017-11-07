@@ -125,7 +125,7 @@ public class CohortControllerTest {
         mockMvc.perform(put(url).content(jacksonCohortTester.write(cohort).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
         verify(cohortService, times(0)).saveCohort(cohort);
         // Cohort existing
         when(cohortService.loadCohort(cohortId)).thenReturn(cohort);
@@ -148,7 +148,7 @@ public class CohortControllerTest {
         mockMvc.perform(delete("/cohorts/" + cohortId)).andExpect(status().isOk());
         verify(cohortService, times(1)).deleteCohort(cohortId);
         doThrow(new EntityNotFoundException()).when(cohortService).deleteCohort(anyLong());
-        mockMvc.perform(delete("/cohorts/" + cohortId)).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/cohorts/" + cohortId)).andExpect(status().isBadRequest());
         verify(cohortService, times(2)).deleteCohort(cohortId);
     }
 
@@ -193,7 +193,7 @@ public class CohortControllerTest {
                 .content(jacksonManipleTester.write(maniple).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
         verify(manipleService, times(0)).findByName(anyString());
         verify(manipleService, times(0)).saveManiple(any());
@@ -213,7 +213,7 @@ public class CohortControllerTest {
     public void testRemoveManipleFromNonExistingCohort() throws Exception {
         when(cohortService.loadCohort(anyLong())).thenReturn(null);
         when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
-        mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(manipleService, times(0)).deleteManiple(any());
@@ -223,7 +223,7 @@ public class CohortControllerTest {
     public void testRemoveNonExistingManipleFromCohort() throws Exception {
         when(cohortService.loadCohort(cohortId)).thenReturn(cohort);
         when(manipleService.loadManiple(manipleId)).thenReturn(null);
-        mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(manipleService, times(0)).deleteManiple(any());
@@ -233,7 +233,7 @@ public class CohortControllerTest {
     public void testRemoveNonExistingManipleFromNonExistingCohort() throws Exception {
         when(cohortService.loadCohort(cohortId)).thenReturn(null);
         when(manipleService.loadManiple(manipleId)).thenReturn(null);
-        mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(manipleService, times(0)).deleteManiple(any());
