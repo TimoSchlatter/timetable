@@ -22,7 +22,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="course in courses">
+                <tr ng-repeat="course in courses()">
                     <td>{{course.field}}{{course.number}}</td>
                     <td>{{course.title}}</td>
                     <td>{{course.shortTitle}}</td>
@@ -61,7 +61,7 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteData()"
+                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteCourse(course)"
                                 ng-show="course.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-trash"></i></span>Löschen
                         </button>
@@ -122,11 +122,11 @@
                             <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                                 <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                             </button>
-                            <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()"
+                            <button type="button" class="btn btn-labeled btn-success" ng-click="updateCourse(course)"
                                     ng-show="course.id" data-dismiss="modal">
                                 <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                             </button>
-                            <button type="button" class="btn btn-labeled btn-success" ng-click="createData()"
+                            <button type="button" class="btn btn-labeled btn-success" ng-click="createCourse(course)"
                                     ng-hide="course.id" data-dismiss="modal">
                                 <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                             </button>

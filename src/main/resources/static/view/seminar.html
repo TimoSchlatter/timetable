@@ -22,7 +22,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="seminar in seminars">
+                <tr ng-repeat="seminar in seminars()">
                     <td>{{seminar.title}}</td>
                     <td>{{seminar.shortTitle}}</td>
                     <td>{{seminarTypes[seminar.seminarType]}}</td>
@@ -61,7 +61,7 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteData()"
+                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteSeminar(seminar)"
                                 ng-show="seminar.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-trash"></i></span>Löschen
                         </button>
@@ -108,11 +108,11 @@
                             <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                                 <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                             </button>
-                            <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()"
+                            <button type="button" class="btn btn-labeled btn-success" ng-click="updateSeminar(seminar)"
                                     ng-show="seminar.id" data-dismiss="modal">
                                 <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                             </button>
-                            <button type="button" class="btn btn-labeled btn-success" ng-click="createData()"
+                            <button type="button" class="btn btn-labeled btn-success" ng-click="createSeminar(seminar)"
                                     ng-hide="seminar.id" data-dismiss="modal">
                                 <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                             </button>

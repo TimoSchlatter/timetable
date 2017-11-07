@@ -1,10 +1,8 @@
 'use strict';
 
-app.controller('ManipleController', function ($scope, $http) {
+app.controller('ManipleController', function ($scope, $http, ConnectionService) {
 
-    var cohortsUrl = 'http://localhost:49999/cohorts/';
-    var maniplesUrl = 'http://localhost:49999/maniples/';
-
+    $scope.cohorts = ConnectionService.getCohorts;
     /* Sort centuries to get all by default selection */
     var collectAllManiple = function () {
         $scope.cohortsAdvanced = angular.copy($scope.cohorts);
@@ -26,17 +24,17 @@ app.controller('ManipleController', function ($scope, $http) {
         });
     };
 
-    var getData = function () {
-        $http.get(cohortsUrl).then(function successCallback(response) {
-            $scope.cohorts = response.data;
-            collectAllManiple();
-            $scope.selectedCohort = $scope.cohortsAdvanced[0];
-        }, function errorCallback(response) {
-            console.log(response.statusText);
-        });
-    };
-
-    getData();
+    // var getData = function () {
+    //     $http.get(cohortsUrl).then(function successCallback(response) {
+    //         $scope.cohorts = response.data;
+    //         collectAllManiple();
+    //         $scope.selectedCohort = $scope.cohortsAdvanced[0];
+    //     }, function errorCallback(response) {
+    //         console.log(response.statusText);
+    //     });
+    // };
+    //
+    // getData();
 
     $scope.setSelectedManiple = function (maniple) {
         $scope.maniple = angular.copy(maniple);
@@ -44,34 +42,34 @@ app.controller('ManipleController', function ($scope, $http) {
         console.log('Selected Maniple:', $scope.maniple);
     };
 
-    $scope.createData = function () {
-        this.maniple.type='maniple';
-        $http.post(cohortsUrl + this.modalSelectedCohort.id + '/addManiple', JSON.stringify(this.maniple))
-            .then(function successCallback(data) {
-                console.log(data);
-                getData();
-            }, function errorCallback(data, status, header, config) {
-                console.log(data, status, header, config);
-            });
-    };
-
-    $scope.updateData = function () {
-        $http.put(maniplesUrl + this.maniple.id, JSON.stringify(this.maniple))
-            .then(function successCallback(data) {
-                console.log(data);
-                getData();
-            }, function errorCallback(data, status, header, config) {
-                console.log(data, status, header, config);
-            });
-    };
-
-    $scope.deleteData = function () {
-        $http.delete(cohortsUrl + this.modalSelectedCohort.id + '/deleteManiple/' + this.maniple.id)
-            .then(function successCallback(data) {
-                console.log(data);
-                getData();
-            }, function errorCallback(data, status, header, config) {
-                console.log(data, status, header, config);
-            });
-    };
+    // $scope.createData = function () {
+    //     this.maniple.type='maniple';
+    //     $http.post(cohortsUrl + this.modalSelectedCohort.id + '/addManiple', JSON.stringify(this.maniple))
+    //         .then(function successCallback(data) {
+    //             console.log(data);
+    //             getData();
+    //         }, function errorCallback(data, status, header, config) {
+    //             console.log(data, status, header, config);
+    //         });
+    // };
+    //
+    // $scope.updateData = function () {
+    //     $http.put(maniplesUrl + this.maniple.id, JSON.stringify(this.maniple))
+    //         .then(function successCallback(data) {
+    //             console.log(data);
+    //             getData();
+    //         }, function errorCallback(data, status, header, config) {
+    //             console.log(data, status, header, config);
+    //         });
+    // };
+    //
+    // $scope.deleteData = function () {
+    //     $http.delete(cohortsUrl + this.modalSelectedCohort.id + '/deleteManiple/' + this.maniple.id)
+    //         .then(function successCallback(data) {
+    //             console.log(data);
+    //             getData();
+    //         }, function errorCallback(data, status, header, config) {
+    //             console.log(data, status, header, config);
+    //         });
+    // };
 });

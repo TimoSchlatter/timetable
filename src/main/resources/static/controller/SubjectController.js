@@ -1,8 +1,7 @@
 'use strict';
 
-app.controller('SubjectController', function ($scope, $http, $filter) {
+app.controller('SubjectController', function ($scope, $http, ConnectionService) {
 
-    var subjectsUrl = 'http://localhost:49999/subjects/';
     var subjectTypesUrl = 'http://localhost:49999/subjecttypes/';
 
     $http.get(subjectTypesUrl).then(function successCallback(response) {
@@ -17,48 +16,14 @@ app.controller('SubjectController', function ($scope, $http, $filter) {
         console.log(response.statusText);
     });
 
-    var getData = function () {
-        $http.get(subjectsUrl).then(function successCallback(response) {
-            $scope.subjects = response.data;
-        }, function errorCallback(response) {
-            console.log(response.statusText);
-        });
-    };
-
-    getData();
-
     $scope.setSelectedSubject = function (subject) {
         $scope.subject = angular.copy(subject);
         console.log('Selected Subject:', $scope.subject);
     };
 
-    $scope.createData = function () {
-        $http.post(subjectsUrl, JSON.stringify(this.subject))
-            .then(function successCallback(data) {
-                console.log(data);
-                getData();
-            }, function errorCallback(data, status, header, config) {
-                console.log(data, status, header, config);
-            });
-    };
+    $scope.subjects = ConnectionService.getSubjects;
+    $scope.createSubject = ConnectionService.createSubject;
+    $scope.updateSubject = ConnectionService.updateSubject;
+    $scope.deleteSubject = ConnectionService.deleteSubject;
 
-    $scope.updateData = function () {
-        $http.put(subjectsUrl + this.subject.id, JSON.stringify(this.subject))
-            .then(function successCallback(data) {
-                console.log(data);
-                getData();
-            }, function errorCallback(data, status, header, config) {
-                console.log(data, status, header, config);
-            });
-    };
-
-    $scope.deleteData = function () {
-        $http.delete(subjectsUrl + this.subject.id)
-            .then(function successCallback(data) {
-                console.log(data);
-                getData();
-            }, function errorCallback(data, status, header, config) {
-                console.log(data, status, header, config);
-            });
-    };
 });

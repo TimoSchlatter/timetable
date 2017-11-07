@@ -16,7 +16,7 @@
                 <label for="selectedCohort">Vorauswahl der Kohorte:</label>
                 <select class="form-control"
                         id="selectedCohort"
-                        ng-options="cohort.name for cohort in cohortsAdvanced"
+                        ng-options="cohort.name for cohort in cohorts()"
                         ng-model="selectedCohort">
                 </select>
             </div>
