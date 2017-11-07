@@ -160,6 +160,13 @@ public class EventDAOTest {
     }
 
     @Test
+    public void testDeleteByRooms() {
+        assertEquals(eventDAO.findAll().size(),1);
+        eventDAO.deleteByRooms(room);
+        assertTrue(eventDAO.findAll().isEmpty());
+    }
+
+    @Test
     public void testFindByDocents() {
         List<Event> events = eventDAO.findByDocents(docent);
         assertEquals(1, events.size());
