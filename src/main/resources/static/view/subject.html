@@ -13,11 +13,10 @@
     <div class="card-body">
         <form>
             <div class="form-group">
-                <label for="selectedSeminartype">Vorauswahl des Veranstaltungstyps:</label>
+                <label for="selectedSubjecttype">Vorauswahl des Veranstaltungstyps:</label>
                 <select class="form-control"
-                        id="selectedSeminartype"
+                        id="selectedSubjecttype"
                         ng-options="subjectType as subjectType.name for subjectType in subjectTypesAdvanced | orderBy: 'name'"
-                        ;
                         ng-model="selectedSubjectType">
                 </select>
             </div>
@@ -33,7 +32,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="subject in subjects | filter: {subjectType: selectedSubjectType.key}">
+                <tr ng-repeat="subject in subjects() | filter: {subjectType: selectedSubjectType.key}">
                     <td>{{subject.module.shortTitle}}</td>
                     <td>{{subjectTypes[subject.subjectType]}}</td>
                     <td>{{subject.minChangeoverTime}}</td>
@@ -74,7 +73,7 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteData()"
+                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteSubject(subject)"
                                 ng-show="subject.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-trash"></i></span>Löschen
                         </button>
@@ -129,11 +128,11 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()"
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateSubject(subject)"
                                 ng-show="subject.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="createData()"
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="createSubject(subject)"
                                 ng-hide="subject.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>

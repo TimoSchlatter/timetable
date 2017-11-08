@@ -2,7 +2,7 @@
 <div class="card mb-3">
     <div class="card-header">
         <button class="btn btn-success btn-xs"
-                ng-click="setSelectedSubject({})"
+                ng-click="setSelectedEvent({})"
                 data-title="Delete"
                 data-toggle="modal"
                 data-target="#addEditModal">
@@ -27,20 +27,117 @@
                     ng-Model="modalSelectedEntityName">
             </select>
         </div>
-        <div ui-calendar="uiConfig.calendar" ng-Model="events"></div>
+        <!-- <div ui-calendar="uiConfig.calendar" ng-Model="events"></div>-->
     </div>
     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
 
 <!-- Add/Edit Modal-->
-<div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+<div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">leModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content card mx-auto mt-5">
             <div class="card-header">{{subject.id ? 'Aktualisieren' : 'Hinzufügen'}}</div>
             <div class="card-body">
                 <form name="modal">
                     <div class="form-row">
-                        Die Form Elemente müssen hier eingefügt werden.
+                        <div class="form-group col-md-4">
+                            <label for="inputCohort">Kohorte</label>
+                            <select class="form-control"
+                                    id="inputCohort"
+                                    ng-options="cohort.name for cohort in cohortsAdvanced"
+                                    ng-model="event.cohort"
+                                    ng-change="changedCohort()">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputManiple">Manipel</label>
+                            <select class="form-control"
+                                    id="inputManiple"
+                                    ng-options="maniple.name for maniple in event.cohort.maniples"
+                                    ng-Model="event.maniple"
+                                    ng-change="changedManiple()">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputCentury">Zenturie</label>
+                            <select class="form-control"
+                                    id="inputCentury"
+                                    ng-options="century.name for century in event.maniple.centuries"
+                                    ng-Model="event.century">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputStartDate">Datum</label>
+                            <div class="input-group date">
+                                <input type="text"
+                                       class="form-control"
+                                       id="inputStartDate"
+                                       ng-model="event.startDate"
+                                       placeholder="TT.MM.JJJJ">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputStartTime">Startzeit</label>
+                            <div class="input-group date">
+                                <input type="text"
+                                       class="form-control clockpicker"
+                                       id="inputStartTime"
+                                       ng-model="event.startTime">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputEndTime">Endzeit</label>
+                            <div class="input-group date">
+                                <input type="text"
+                                       class="form-control clockpicker"
+                                       id="inputEndTime"
+                                       ng-model="event.endTime">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputSubjecttype">Veranstaltungstyp</label>
+                            <select class="form-control"
+                                    id="inputSubjecttype"
+                                    ng-options="key as value for (key , value) in subjectTypes"
+                                    ng-model="event.subjectType">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputSubject">{{event.subjectType ? subjectTypes[event.subjectType] :
+                                'Modul'}}</label>
+                            <select class="form-control"
+                                    id="inputSubject"
+                                    ng-options="subject.module.shortTitle for subject in subjects | filter: event.subjectType? {subjectType: event.subjectType} : 'undefined'"
+                                    ng-model="event.subject">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" name="multipleSelectForm" novalidate>
+                        <label for="inputRooms">Räume</label>
+                        <multiple-autocomplete ng-model="selectedRooms"
+                                               object-property="number"
+                                               name="multipleSelect"
+                                               required="true"
+                                               id="inputRooms"
+                                               suggestions-arr="rooms()">
+                        </multiple-autocomplete>
+                    </div>
+                    <div class="form-group" name="multipleSelectForm" novalidate>
+                        <label for="inputDocents">Dozenten</label>
+                        <multiple-autocomplete ng-model="selectedDocents"
+                                               object-property="surname"
+                                               name="multipleSelect"
+                                               required="true"
+                                               id="inputDocents"
+                                               suggestions-arr="docents()">
+                        </multiple-autocomplete>
                     </div>
                     <div class="pull-right">
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
@@ -60,3 +157,21 @@
         </div>
     </div>
 </div>
+
+
+<!-- Bootstrap DatePicker-->
+<script type="text/javascript" src="../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="../vendor/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
+<!-- Bootstrap ClockPicker-->
+<script type="text/javascript" src="../vendor/bootstrap-clockpicker/js/clockpicker.js"></script>
+
+<script>
+    $('#inputStartDate').datepicker({
+        language: 'de',
+        todayHighlight: 'true'
+    });
+
+    $('.form-control.clockpicker').clockpicker({
+        autoclose: true
+    });
+</script>

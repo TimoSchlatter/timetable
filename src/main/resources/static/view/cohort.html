@@ -21,7 +21,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="cohort in cohorts">
+                <tr ng-repeat="cohort in cohorts()">
                     <td>{{cohort.name}}</td>
                     <td>{{cohort.minChangeoverTime}}</td>
                     <td>
@@ -59,7 +59,7 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteData()"
+                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteCohort(cohort)"
                                 ng-show="cohort.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-trash"></i></span>Löschen
                         </button>
@@ -112,11 +112,11 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()"
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateCohort(cohort)"
                                 ng-show="cohort.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="createData()"
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="createCohort(cohort)"
                                 ng-hide="cohort.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
