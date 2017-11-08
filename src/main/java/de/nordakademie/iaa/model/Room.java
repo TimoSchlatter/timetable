@@ -63,6 +63,11 @@ public class Room extends HasMinChangeoverTime implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "Raum " + building + number + " (" + maxSeats + " Sitzplätze, " + roomType.getTranslation() + ")";
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

@@ -2,6 +2,7 @@ package de.nordakademie.iaa.util;
 
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.*;
+import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +48,7 @@ public class DataGenerator {
      * Warning: Be careful when changing this order!
      */
     //    @PostConstruct
-    public void createData() {
+    public void createData() throws RoomTooSmallForGroupException {
         createRooms();
         createDocents();
         createCourses();
@@ -171,7 +172,7 @@ public class DataGenerator {
         }
     }
 
-    private void createEvents() {
+    private void createEvents() throws RoomTooSmallForGroupException {
         LocalDate date = LocalDate.of(2017, Month.OCTOBER, 30);
         for (int i = 0; i < 10; i++) {
             date = date.plusDays(i*7);

@@ -47,4 +47,9 @@ public class Maniple extends Group {
 	public void removeCentury(Century century) {
 		centuries.remove(century);
 	}
+
+	@Override
+	public String toString() {
+		return "Manipel" + super.toString();
+	}
 }

@@ -5,6 +5,7 @@ import de.nordakademie.iaa.dao.EventDAO;
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 import de.nordakademie.iaa.service.impl.EventServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -37,7 +39,9 @@ public class EventServiceTest {
     @Autowired
     private EventDAO eventDAO;
 
-    private final Set<Room> rooms = new HashSet<>(Arrays.asList(new Room(15, "A", 40, "001", RoomType.LECTUREROOM)));
+    private final Room room1 = new Room(15, "A", 40, "001", RoomType.LECTUREROOM);
+    private final Room room2 = new Room(15, "A", 30, "002", RoomType.COMPUTERROOM);
+    private final Set<Room> rooms = new HashSet<>(Arrays.asList(room1, room2));
     private final Set<Docent> docents = new HashSet<>(Arrays.asList(new Docent("a@a.com", "Ed", "Sy", "0115273487", "Dr.", true, 20)));
     private final Group group = new Century("I14a", 30, 30);
     private final LocalDate date = LocalDate.of(2018, Month.APRIL, 1);
@@ -47,9 +51,29 @@ public class EventServiceTest {
     private final Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
 
     @Test
-    public void testSaveEvent() {
+    public void testSaveEvent() throws RoomTooSmallForGroupException {
         eventService.saveEvent(event);
         Mockito.verify(eventDAO, times(1)).save(event);
+    }
+
+    @Test(expected = RoomTooSmallForGroupException.class)
+    public void testSaveEventWithTooSmallRoom() throws RoomTooSmallForGroupException {
+        room2.setMaxSeats(group.calculateNumberOfStudents()-1);
+        try {
+            eventService.saveEvent(event);
+        } catch (RoomTooSmallForGroupException e) {
+            verify(eventDAO, times(0)).save(event);
+            assertEquals("Der " + room2 + " ist zu klein für " + group, e.getMessage());
+            throw e;
+        }
+    }
+
+    @Test(expected = RoomTooSmallForGroupException.class)
+    public void testSaveEventWithTooSmallRooms() throws RoomTooSmallForGroupException {
+        room1.setMaxSeats(group.calculateNumberOfStudents()-1);
+        room2.setMaxSeats(group.calculateNumberOfStudents()-1);
+        eventService.saveEvent(event);
+        Mockito.verify(eventDAO, times(0)).save(event);
     }
 
     @Test

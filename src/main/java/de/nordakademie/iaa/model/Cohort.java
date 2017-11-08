@@ -51,4 +51,9 @@ public class Cohort extends Group {
     public void removeManiple(Maniple maniple) {
         maniples.remove(maniple);
     }
+
+    @Override
+    public String toString() {
+        return "Kohorte" + super.toString();
+    }
 }

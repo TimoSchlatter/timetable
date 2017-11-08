@@ -3,9 +3,11 @@ package de.nordakademie.iaa.service.impl;
 import de.nordakademie.iaa.dao.EventDAO;
 import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.model.Group;
+import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.model.Subject;
 import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,7 +29,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void saveEvent(Event event) {
+    public void saveEvent(Event event) throws RoomTooSmallForGroupException {
+        Group eventGroup = event.getGroup();
+        int students = eventGroup.calculateNumberOfStudents();
+        Optional<Room> optionalRoom = event.getRooms().stream().filter(room -> room.getMaxSeats() < students).findFirst();
+        if (optionalRoom.isPresent()) {
+            throw new RoomTooSmallForGroupException(optionalRoom.get(), eventGroup);
+        }
         eventDAO.save(event);
     }
 

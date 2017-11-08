@@ -4,6 +4,7 @@ import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.model.Group;
 import de.nordakademie.iaa.model.Subject;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,7 +18,7 @@ public interface EventService {
      *
      * @param event the event to be saved.
      */
-    void saveEvent(Event event);
+    void saveEvent(Event event) throws RoomTooSmallForGroupException;
 
     /**
      * List all events currently stored in the database.

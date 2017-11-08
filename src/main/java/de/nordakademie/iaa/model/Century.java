@@ -33,4 +33,9 @@ public class Century extends Group {
 	public int calculateNumberOfStudents() {
 		return getNumberOfStudents();
 	}
+
+	@Override
+	public String toString() {
+		return "Zenturie" + super.toString();
+	}
 }

@@ -28,4 +28,9 @@ public class SeminarGroup extends Group{
     public int calculateNumberOfStudents() {
         return maximumNumberOfStudents;
     }
+
+    @Override
+    public String toString() {
+        return "Seminargruppe" + super.toString();
+    }
 }
