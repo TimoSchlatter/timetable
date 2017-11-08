@@ -1,6 +1,6 @@
 package de.nordakademie.iaa.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Entity;
@@ -9,14 +9,10 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Entity
 public class Event extends HasId implements Serializable {
-
-    private final static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy, MM, dd");
-    private final static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH, mm");
 
     private Group group;
     private LocalDate date;
@@ -57,6 +53,7 @@ public class Event extends HasId implements Serializable {
     }
 
     @NaturalId(mutable = true)
+    @JsonFormat(pattern = "yyyy.MM.dd")
     public LocalDate getDate() {
         return date;
     }
@@ -66,6 +63,7 @@ public class Event extends HasId implements Serializable {
     }
 
     @NaturalId(mutable = true)
+    @JsonFormat(pattern = "HH:mm")
     public LocalTime getStartTime() {
         return startTime;
     }
@@ -75,6 +73,7 @@ public class Event extends HasId implements Serializable {
     }
 
     @NaturalId(mutable = true)
+    @JsonFormat(pattern = "HH:mm")
     public LocalTime getEndTime() {
         return endTime;
     }
@@ -100,16 +99,6 @@ public class Event extends HasId implements Serializable {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
-    }
-
-    @JsonProperty("start")
-    public String formatStartTimeToFrontendCalendarFormat() {
-        return date.format(dateFormatter) + ", " + startTime.format(timeFormatter);
-    }
-
-    @JsonProperty("end")
-    public String formatEndTimeToFrontendCalendarFormat() {
-        return date.format(dateFormatter) + ", " + endTime.format(timeFormatter);
     }
 
     @Override
