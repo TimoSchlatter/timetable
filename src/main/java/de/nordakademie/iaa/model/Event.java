@@ -53,7 +53,7 @@ public class Event extends HasId implements Serializable {
     }
 
     @NaturalId(mutable = true)
-    @JsonFormat(pattern = "yyyy.MM.dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate getDate() {
         return date;
     }
@@ -63,7 +63,7 @@ public class Event extends HasId implements Serializable {
     }
 
     @NaturalId(mutable = true)
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm:ss")
     public LocalTime getStartTime() {
         return startTime;
     }
@@ -73,7 +73,7 @@ public class Event extends HasId implements Serializable {
     }
 
     @NaturalId(mutable = true)
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm:ss")
     public LocalTime getEndTime() {
         return endTime;
     }
