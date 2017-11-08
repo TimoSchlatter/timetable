@@ -25,7 +25,7 @@
                 <tr ng-repeat="seminar in seminars()">
                     <td>{{seminar.title}}</td>
                     <td>{{seminar.shortTitle}}</td>
-                    <td>{{seminarTypes[seminar.seminarType]}}</td>
+                    <td>{{seminarTypes()[seminar.seminarType]}}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
                                 ng-click="setSelectedSeminar(seminar)"
@@ -100,7 +100,7 @@
                             <label for="modalSelectedSeminartype">Seminartyp</label>
                             <select class="form-control"
                                     id="modalSelectedSeminartype"
-                                    ng-options="key as name for (key,name) in seminarTypes"
+                                    ng-options="key as name for (key,name) in seminarTypes()"
                                     ng-model="seminar.seminarType">
                             </select>
                         </div>
