@@ -128,6 +128,41 @@ public class EventDAOTest {
     }
 
     @Test
+    public void testFindByTime() {
+        List<Event> events = eventDAO.findByTime(date, endTime.plusMinutes(2), endTime.plusMinutes(10));
+        assertTrue(events.isEmpty());
+        events = eventDAO.findByTime(date, startTime.minusMinutes(10), endTime.minusMinutes(10));
+        assertEquals(1, events.size());
+        for(Event event : events) {
+            compareEvent(event);
+        }
+    }
+
+    @Test
+    public void testFindByDateAndStartTimeAndEndTimeAndGroup() {
+        Event event = eventDAO.findByDateAndStartTimeAndEndTimeAndGroup(this.event.getDate(),this.event.getStartTime(), this.event.getEndTime(), this.event.getGroup());
+        compareEvent(event);
+    }
+
+    @Test
+    public void testFindByRooms() {
+        List<Event> events = eventDAO.findByRooms(room);
+        assertEquals(1, events.size());
+        for(Event event : events) {
+            compareEvent(event);
+        }
+    }
+
+    @Test
+    public void testFindByDocents() {
+        List<Event> events = eventDAO.findByDocents(docent);
+        assertEquals(1, events.size());
+        for(Event event : events) {
+            compareEvent(event);
+        }
+    }
+
+    @Test
     public void testDelete() {
         eventDAO.delete(this.event);
         List<Event> events = eventDAO.findAll();
@@ -140,12 +175,6 @@ public class EventDAOTest {
         eventDAO.deleteById(this.event.getId());
         List<Event> events = eventDAO.findAll();
         assertTrue(events.isEmpty());
-    }
-
-    @Test
-    public void testFindByDateAndStartTimeAndEndTimeAndGroup() {
-        Event event = eventDAO.findByDateAndStartTimeAndEndTimeAndGroup(this.event.getDate(),this.event.getStartTime(), this.event.getEndTime(), this.event.getGroup());
-        compareEvent(event);
     }
 
     @Test
@@ -167,35 +196,6 @@ public class EventDAOTest {
         assertEquals(eventDAO.findAll().size(),1);
         eventDAO.deleteByRooms(room);
         assertTrue(eventDAO.findAll().isEmpty());
-    }
-
-    @Test
-    public void testFindByDocents() {
-        List<Event> events = eventDAO.findByDocents(docent);
-        assertEquals(1, events.size());
-        for(Event event : events) {
-            compareEvent(event);
-        }
-    }
-
-    @Test
-    public void testFindByRooms() {
-        List<Event> events = eventDAO.findByRooms(room);
-        assertEquals(1, events.size());
-        for(Event event : events) {
-            compareEvent(event);
-        }
-    }
-
-    @Test
-    public void testFindByTime() {
-        List<Event> events = eventDAO.findByTime(date, endTime.plusMinutes(2), endTime.plusMinutes(10));
-        assertTrue(events.isEmpty());
-        events = eventDAO.findByTime(date, startTime.minusMinutes(10), endTime.minusMinutes(10));
-        assertEquals(1, events.size());
-        for(Event event : events) {
-            compareEvent(event);
-        }
     }
 
     private void compareEvent(Event event) {

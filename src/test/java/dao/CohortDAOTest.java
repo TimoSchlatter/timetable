@@ -92,6 +92,12 @@ public class CohortDAOTest {
     }
 
     @Test
+    public void findByName() {
+        Cohort cohort = cohortDAO.findByName(this.cohort.getName());
+        compareCohort(cohort);
+    }
+
+    @Test
     public void testDelete() {
         cohortDAO.delete(this.cohort);
         List<Cohort> cohorts = cohortDAO.findAll();
@@ -104,12 +110,6 @@ public class CohortDAOTest {
         cohortDAO.deleteById(this.cohort.getId());
         List<Cohort> cohorts = cohortDAO.findAll();
         assertTrue(cohorts.isEmpty());
-    }
-
-    @Test
-    public void findByName() {
-        Cohort cohort = cohortDAO.findByName(this.cohort.getName());
-        compareCohort(cohort);
     }
 
     private void compareCohort(Cohort cohort) {
