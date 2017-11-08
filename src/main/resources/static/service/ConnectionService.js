@@ -119,6 +119,14 @@ app.factory('ConnectionService', function ($http) {
     var seminarTypesUrl = 'http://localhost:49999/seminartypes/';
     getData(seminarTypesUrl, setSeminarTypes);
 
+    /* RoomTypes */
+    var roomTypes = {};
+    var setRoomTypes = function (data) {
+        roomTypes = data;
+    };
+    var roomTypesUrl = 'http://localhost:49999/roomtypes/';
+    getData(roomTypesUrl, setRoomTypes);
+
 
     return {
         createDocent: function (docent) {
@@ -227,6 +235,9 @@ app.factory('ConnectionService', function ($http) {
         },
         getSeminarTypes: function () {
             return seminarTypes;
+        },
+        getRoomTypes: function () {
+            return roomTypes;
         }
     }
 });
