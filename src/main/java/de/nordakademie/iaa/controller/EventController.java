@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -43,13 +44,25 @@ public class EventController {
      * @param event The event to save.
      */
     @PostMapping
-    public ResponseEntity saveEvent(@RequestBody Event event) {
-        try {
-            if (eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(event.getDate(), event.getStartTime(), event.getEndTime(), event.getGroup()) == null) {
-                eventService.saveEvent(event);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
-            }
-        } catch (Exception ignored) {}
+    public ResponseEntity saveEvent(@RequestBody Event event, @RequestParam(value = "repeatWeeks", required = false) Integer repeatWeeks) {
+
+        int repeat = (repeatWeeks == null ? 1 : repeatWeeks);
+        int created = 0;
+        LocalDate date = event.getDate();
+        for (int i = 0; i < repeat; i++) {
+            try {
+                if (eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, event.getStartTime(),
+                        event.getEndTime(), event.getGroup()) == null) {
+                    event.setDate(date);
+                    eventService.saveEvent(event);
+                    created++;
+                }
+            } catch (Exception ignored) {}
+            date = date.plusDays(7);
+        }
+        if (created > 0) {
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
         return ResponseEntity.badRequest().build();
     }
 
@@ -65,7 +78,8 @@ public class EventController {
                 eventService.saveEvent(event);
                 return ResponseEntity.ok().build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
 

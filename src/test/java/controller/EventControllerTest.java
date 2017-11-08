@@ -114,6 +114,37 @@ public class EventControllerTest {
     }
 
     @Test
+    public void testSaveEventSeries() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+        objectMapper.registerModule(new JavaTimeModule());
+        JacksonTester.initFields(this, objectMapper);
+        int repeatWeeks = 10;
+        String url = "/events?repeatWeeks=" + repeatWeeks;
+        // Events already existing
+        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any())).thenReturn(event);
+        mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(eventService, times(0)).saveEvent(event);
+        // Events not yet existing
+        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any())).thenReturn(null);
+        mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.CREATED.value()));
+        verify(eventService, times(repeatWeeks)).saveEvent(isA(Event.class));
+        // Events not yet existing & saving failed
+        doThrow(new RuntimeException()).when(eventService).saveEvent(any());
+        mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(eventService, times(2 * repeatWeeks)).saveEvent(isA(Event.class));
+    }
+
+    @Test
     public void testUpdateEvent() throws Exception {
         final String url = "/events/" + eventId;
         ObjectMapper objectMapper = new ObjectMapper();
@@ -133,7 +164,7 @@ public class EventControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        verify(eventService, times(1)).saveEvent(event);
+        verify(eventService, times(1)).saveEvent(isA(Event.class));
         // Event existing & updating failed
         doThrow(new RuntimeException()).when(eventService).saveEvent(any());
         mockMvc.perform(put(url).content(jacksonTester.write(event).getJson())
