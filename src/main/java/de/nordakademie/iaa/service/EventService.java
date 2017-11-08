@@ -72,4 +72,6 @@ public interface EventService {
      */
     List<Event> findEventsByDocent(Docent docent);
 
+    List<String> findCollisions(Event event);
+
 }

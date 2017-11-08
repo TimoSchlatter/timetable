@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -43,26 +44,45 @@ public class EventController {
      * @param event The event to save.
      */
     @PostMapping
-    public ResponseEntity saveEvent(@RequestBody Event event, @RequestParam(value = "repeatWeeks", required = false) Integer repeatWeeks) {
+    public ResponseEntity saveEvent(@RequestBody Event event,
+                                    @RequestParam(value = "repeatWeeks", required = false) Integer repeatWeeks,
+                                    @RequestParam(value = "ignoreCollision", required = false) Boolean ignoreCollision) {
+        repeatWeeks = (repeatWeeks == null ? 1 : repeatWeeks);
+        ignoreCollision = (ignoreCollision == null ? false : ignoreCollision);
+        LocalDate startDate = event.getDate();
+        List<String> collisions = new ArrayList<>();
+        List<Event> eventsToSave = new ArrayList<>();
+        for (int i = 0; i < repeatWeeks; i++) {
+            event.setDate(startDate.plusDays(i * 7));
+            eventsToSave.add(event);
+        }
 
-        int repeat = (repeatWeeks == null ? 1 : repeatWeeks);
-        int created = 0;
-        LocalDate date = event.getDate();
-        for (int i = 0; i < repeat; i++) {
-            try {
-                if (eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, event.getStartTime(),
-                        event.getEndTime(), event.getGroup()) == null) {
-                    event.setDate(date);
-                    eventService.saveEvent(event);
-                    created++;
-                }
-            } catch (Exception ignored) {}
-            date = date.plusDays(7);
+        eventsToSave.forEach(eventToSave -> collisions.addAll(eventService.findCollisions(eventToSave)));
+
+        if (collisions.isEmpty() || ignoreCollision) {
+            int created = 0;
+            for (Event eventToSave : eventsToSave) {
+                created = (saveEvent(eventToSave) ? created + 1 : created);
+            }
+            if (created > 0) {
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            return ResponseEntity.badRequest().build();
+        } else {
+            return ResponseEntity.ok(collisions);
         }
-        if (created > 0) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    private boolean saveEvent(Event event) {
+        try {
+            if (eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(event.getDate(),
+                    event.getStartTime(), event.getEndTime(), event.getGroup()) == null) {
+                eventService.saveEvent(event);
+                return true;
+            }
+        } catch (Exception ignored) {
         }
-        return ResponseEntity.badRequest().build();
+        return false;
     }
 
     /**
@@ -90,5 +110,10 @@ public class EventController {
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteEvent(@PathVariable Long id) {
         return (eventService.deleteEvent(id) ? ResponseEntity.ok(null) : ResponseEntity.badRequest().build());
+    }
+
+    @RequestMapping("/test")
+    public ResponseEntity testResponse() {
+        return ResponseEntity.ok("Hello World");
     }
 }
