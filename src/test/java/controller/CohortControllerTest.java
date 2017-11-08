@@ -171,11 +171,11 @@ public class CohortControllerTest {
         doThrow(new EntityNotFoundException()).when(cohortService).deleteCohort(anyLong());
         mockMvc.perform(delete("/cohorts/" + cohortId)).andExpect(status().isBadRequest());
         maniples.forEach(m -> {
-            m.getCenturies().forEach(c -> inOrder.verify(eventService, times(2)).deleteEventByGroup(c));
-            inOrder.verify(eventService, times(2)).deleteEventByGroup(m);
+            m.getCenturies().forEach(c -> inOrder.verify(eventService, times(1)).deleteEventByGroup(c));
+            inOrder.verify(eventService, times(1)).deleteEventByGroup(m);
         });
-        inOrder.verify(eventService, times(2)).deleteEventByGroup(cohort);
-        inOrder.verify(cohortService, times(2)).deleteCohort(cohortId);
+        inOrder.verify(eventService, times(1)).deleteEventByGroup(cohort);
+        inOrder.verify(cohortService, times(1)).deleteCohort(cohortId);
     }
 
     @Test
