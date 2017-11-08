@@ -97,4 +97,15 @@ public class Docent extends HasMinChangeoverTime implements Serializable {
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        if(title != null) {
+            return "Dozent " + title + " " + forename + " " + surname;
+        }
+        else {
+            return "Dozent " + forename + " " + surname;
+        }
+
+    }
 }
