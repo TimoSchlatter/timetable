@@ -66,6 +66,19 @@ public class RoomDAOTest {
     }
 
     @Test
+    public void testFindRoomByBuildingAndNumber() {
+        Room room = roomDAO.findByBuildingAndNumber(this.room.getBuilding(), this.room.getNumber());
+        compareRooms(room);
+    }
+
+    @Test
+    public void testFindRoomsByType() {
+        List<Room> rooms = roomDAO.findByRoomType(this.room.getRoomType());
+        assertEquals(1, rooms.size());
+        rooms.forEach(this::compareRooms);
+    }
+
+    @Test
     public void testDelete() {
         roomDAO.delete(this.room);
         List<Room> rooms = roomDAO.findAll();
@@ -77,19 +90,6 @@ public class RoomDAOTest {
         roomDAO.deleteById(this.room.getId());
         List<Room> rooms = roomDAO.findAll();
         assertTrue(rooms.isEmpty());
-    }
-
-    @Test
-    public void testFindRoomByBuildingAndNumber() {
-        Room room = roomDAO.findByBuildingAndNumber(this.room.getBuilding(), this.room.getNumber());
-        compareRooms(room);
-    }
-
-    @Test
-    public void testFindRoomsByType() {
-        List<Room> rooms = roomDAO.findByRoomType(this.room.getRoomType());
-        assertEquals(1, rooms.size());
-        rooms.forEach(this::compareRooms);
     }
 
     private void compareRooms(Room room) {

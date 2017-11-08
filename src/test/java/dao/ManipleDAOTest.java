@@ -80,6 +80,12 @@ public class ManipleDAOTest {
     }
 
     @Test
+    public void findByName() {
+        Maniple maniple = manipleDAO.findByName(this.maniple.getName());
+        compareManiple(maniple);
+    }
+
+    @Test
     public void testDelete() {
         manipleDAO.delete(this.maniple);
         List<Maniple> maniples = manipleDAO.findAll();
@@ -92,12 +98,6 @@ public class ManipleDAOTest {
         manipleDAO.deleteById(this.maniple.getId());
         List<Maniple> maniples = manipleDAO.findAll();
         assertTrue(maniples.isEmpty());
-    }
-
-    @Test
-    public void findByName() {
-        Maniple maniple = manipleDAO.findByName(this.maniple.getName());
-        compareManiple(maniple);
     }
 
     private void compareManiple(Maniple maniple) {

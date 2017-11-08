@@ -1,6 +1,5 @@
 package dao;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import de.nordakademie.iaa.Application;
 import de.nordakademie.iaa.dao.ModuleDAO;
 import de.nordakademie.iaa.model.Course;
@@ -70,6 +69,12 @@ public class ModuleDAOTest {
     }
 
     @Test
+    public void testFindByTitle() {
+        Module module = moduleDAO.findByTitle(this.module.getTitle());
+        compareModules(module);
+    }
+
+    @Test
     public void testDelete() {
         moduleDAO.delete(this.module);
         List<Module> modules = moduleDAO.findAll();
@@ -82,12 +87,6 @@ public class ModuleDAOTest {
         moduleDAO.deleteById(this.module.getId());
         List<Module> modules = moduleDAO.findAll();
         assertTrue(modules.isEmpty());
-    }
-
-    @Test
-    public void testFindByTitle() {
-        Module module = moduleDAO.findByTitle(this.module.getTitle());
-        compareModules(module);
     }
 
     private void compareModules(Module module) {

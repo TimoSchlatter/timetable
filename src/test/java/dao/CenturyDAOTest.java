@@ -67,6 +67,12 @@ public class CenturyDAOTest {
     }
 
     @Test
+    public void findByName() {
+        Century century = centuryDAO.findByName(this.century.getName());
+        compareCentury(century);
+    }
+
+    @Test
     public void testDelete() {
         centuryDAO.delete(this.century);
         List<Century> centurys = centuryDAO.findAll();
@@ -79,12 +85,6 @@ public class CenturyDAOTest {
         centuryDAO.deleteById(this.century.getId());
         List<Century> centurys = centuryDAO.findAll();
         assertTrue(centurys.isEmpty());
-    }
-
-    @Test
-    public void findByName() {
-        Century century = centuryDAO.findByName(this.century.getName());
-        compareCentury(century);
     }
 
     private void compareCentury(Century century) {

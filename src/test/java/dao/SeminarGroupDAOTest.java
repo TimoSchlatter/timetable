@@ -68,6 +68,12 @@ public class SeminarGroupDAOTest {
     }
 
     @Test
+    public void findByName() {
+        SeminarGroup seminarGroup = seminarGroupDAO.findByName(this.seminarGroup.getName());
+        compareSeminarGroups(seminarGroup);
+    }
+
+    @Test
     public void testDelete() {
         seminarGroupDAO.delete(this.seminarGroup);
         List<SeminarGroup> seminarGroups = seminarGroupDAO.findAll();
@@ -80,12 +86,6 @@ public class SeminarGroupDAOTest {
         seminarGroupDAO.deleteById(this.seminarGroup.getId());
         List<SeminarGroup> seminarGroups = seminarGroupDAO.findAll();
         assertTrue(seminarGroups.isEmpty());
-    }
-
-    @Test
-    public void findByName() {
-        SeminarGroup seminarGroup = seminarGroupDAO.findByName(this.seminarGroup.getName());
-        compareSeminarGroups(seminarGroup);
     }
 
     private void compareSeminarGroups(SeminarGroup seminarGroup) {
