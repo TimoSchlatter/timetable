@@ -61,23 +61,23 @@ app.controller('EventController', function ($scope, $http, ConnectionService) {
         $scope.event.century = $scope.event.maniple.centuries[0];
     };
 
-    $scope.uiConfig = {
-        calendar:{
-            monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-            monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-            dayNames: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
-            dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa'],
-            locale: 'de',
-            height: 500,
-            editable: true,
-            header:{
-                left: 'month basicWeek basicDay agendaWeek agendaDay',
-                center: 'title',
-                right: 'today prev,next'
-            },
-            eventClick: $scope.alertEventOnClick,
-            eventDrop: $scope.alertOnDrop,
-            eventResize: $scope.alertOnResize
-        }
-    };
+    // $scope.uiConfig = {
+    //     calendar:{
+    //         monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+    //         monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+    //         dayNames: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
+    //         dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+    //         locale: 'de',
+    //         height: 500,
+    //         editable: true,
+    //         header:{
+    //             left: 'month basicWeek basicDay agendaWeek agendaDay',
+    //             center: 'title',
+    //             right: 'today prev,next'
+    //         },
+    //         eventClick: $scope.alertEventOnClick,
+    //         eventDrop: $scope.alertOnDrop,
+    //         eventResize: $scope.alertOnResize
+    //     }
+    // };
 });

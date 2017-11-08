@@ -26,7 +26,7 @@
                 <select class="form-control"
                         id="selectedManiple"
                         ng-options="maniple.name for maniple in selectedCohort.maniples"
-                        ng-Model="selectedManiple">
+                        ng-model="selectedManiple">
                 </select>
             </div>
         </form>
@@ -112,6 +112,7 @@
                             <label for="modalSelectedCohort">Kohorte</label>
                             <select class="form-control"
                                     id="modalSelectedCohort"
+                                    ng-disabled="century.id"
                                     ng-options="cohort.name for cohort in cohorts"
                                     ng-model="modalSelectedCohort">
                             </select>
@@ -120,8 +121,9 @@
                             <label for="modalSelectedManiple">Manipel</label>
                             <select class="form-control"
                                     id="modalSelectedManiple"
+                                    ng-disabled="century.id"
                                     ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
-                                    ng-Model="modalSelectedManiple">
+                                    ng-model="modalSelectedManiple">
                             </select>
                         </div>
                         <div class="form-group col-md-2">
