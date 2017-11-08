@@ -48,12 +48,17 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject findBySubjectTypeAndModule(SubjectType subjectType, Module module) {
+    public Subject findSubjectBySubjectTypeAndModule(SubjectType subjectType, Module module) {
         return subjectDAO.findBySubjectTypeAndModule(subjectType, module);
     }
 
     @Override
-    public List<Subject> findBySubjectType(SubjectType subjectType) {
+    public List<Subject> findSubjectBySubjectType(SubjectType subjectType) {
         return subjectDAO.findBySubjectType(subjectType);
+    }
+
+    @Override
+    public void deleteSubjectByModule(Module module) {
+        subjectDAO.deleteByModule(module);
     }
 }

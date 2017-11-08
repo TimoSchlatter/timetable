@@ -19,7 +19,7 @@ public interface SubjectDAO extends JpaRepository<Subject,Long>,BaseDAO<Subject,
     Subject findBySubjectTypeAndModule(SubjectType subjectType, Module module);
 
     /**
-     *Find subject of a specific type
+     * Find subject of a specific type
      *
      * @param subjectType the type of the subject
      * @return the subjects that are the given type

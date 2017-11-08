@@ -3,6 +3,7 @@ package de.nordakademie.iaa.controller;
 
 import de.nordakademie.iaa.model.Seminar;
 import de.nordakademie.iaa.service.SeminarService;
+import de.nordakademie.iaa.service.SubjectService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +22,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 public class SeminarController {
 
     private SeminarService seminarService;
+    private SubjectService subjectService;
 
     @Autowired
-    public SeminarController(SeminarService seminarService) {
+    public SeminarController(SeminarService seminarService, SubjectService subjectService) {
         this.seminarService = seminarService;
+        this.subjectService = subjectService;
     }
 
     /**
@@ -76,12 +79,15 @@ public class SeminarController {
      */
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteSeminar(@PathVariable Long id) {
-        try {
-            seminarService.deleteSeminar(id);
-            return ResponseEntity.ok(null);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().build();
+        Seminar seminar = seminarService.loadSeminar(id);
+        if (seminar != null) {
+            try {
+                subjectService.deleteSubjectByModule(seminar);
+                seminarService.deleteSeminar(id);
+                return ResponseEntity.ok(null);
+            } catch (EntityNotFoundException ignored) {}
         }
+        return ResponseEntity.badRequest().build();
     }
 
 }

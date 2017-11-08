@@ -67,21 +67,6 @@ public class DocentDAOTest {
     }
 
     @Test
-    public void testDelete() {
-        docentDAO.delete(this.docent);
-        List<Docent> docents = docentDAO.findAll();
-        assertTrue(docents.isEmpty());
-
-    }
-
-    @Test
-    public void testDeleteById() {
-        docentDAO.deleteById(this.docent.getId());
-        List<Docent> docents = docentDAO.findAll();
-        assertTrue(docents.isEmpty());
-    }
-
-    @Test
     public void testFindDocentByName() {
         Docent docent = docentDAO.findByForenameAndSurname("John","Doe");
         compareDocents(docent);
@@ -94,6 +79,21 @@ public class DocentDAOTest {
         for (Docent docent : docents) {
             compareDocents(docent);
         }
+    }
+
+    @Test
+    public void testDelete() {
+        docentDAO.delete(this.docent);
+        List<Docent> docents = docentDAO.findAll();
+        assertTrue(docents.isEmpty());
+
+    }
+
+    @Test
+    public void testDeleteById() {
+        docentDAO.deleteById(this.docent.getId());
+        List<Docent> docents = docentDAO.findAll();
+        assertTrue(docents.isEmpty());
     }
 
     private void compareDocents(Docent docent) {

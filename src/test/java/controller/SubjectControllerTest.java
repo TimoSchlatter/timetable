@@ -82,14 +82,14 @@ public class SubjectControllerTest {
         JacksonTester.initFields(this, new ObjectMapper());
         String url = "/subjects";
         // Subject already existing
-        when(subjectService.findBySubjectTypeAndModule(subjectType, module)).thenReturn(subject);
+        when(subjectService.findSubjectBySubjectTypeAndModule(subjectType, module)).thenReturn(subject);
         mockMvc.perform(post(url).content(jacksonTester.write(subject).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(subjectService, times(0)).saveSubject(subject);
         // Subject not yet existing
-        when(subjectService.findBySubjectTypeAndModule(subjectType, module)).thenReturn(null);
+        when(subjectService.findSubjectBySubjectTypeAndModule(subjectType, module)).thenReturn(null);
         mockMvc.perform(post(url).content(jacksonTester.write(subject).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

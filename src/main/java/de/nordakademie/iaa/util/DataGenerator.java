@@ -188,7 +188,7 @@ public class DataGenerator {
             assert group != null;
             LocalTime startTime = LocalTime.of(9, 15);
             LocalTime endTime = LocalTime.of(11, 30);
-            Subject subject = subjectService.findBySubjectTypeAndModule(SubjectType.LECTURE, courseService.findByTitle("Softwaretechnik"));
+            Subject subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.LECTURE, courseService.findByTitle("Softwaretechnik"));
             assert subject != null;
             Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
             eventService.saveEvent(event);

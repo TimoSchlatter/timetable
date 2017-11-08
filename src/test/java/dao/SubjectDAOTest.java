@@ -77,6 +77,19 @@ public class SubjectDAOTest {
     }
 
     @Test
+    public void testFindBySubjectTypeAndModule() {
+        Subject subject = subjectDAO.findBySubjectTypeAndModule(this.subject.getSubjectType(), this.subject.getModule());
+        compareSubjects(subject);
+    }
+
+    @Test
+    public void testFindSubjectsByType() {
+        List<Subject> subjects = subjectDAO.findBySubjectType(this.subject.getSubjectType());
+        assertEquals(1, subjects.size());
+        subjects.forEach(this::compareSubjects);
+    }
+
+    @Test
     public void testDelete() {
         subjectDAO.delete(this.subject);
         List<Subject> subjects = subjectDAO.findAll();
@@ -88,19 +101,6 @@ public class SubjectDAOTest {
         subjectDAO.deleteById(this.subject.getId());
         List<Subject> subjects = subjectDAO.findAll();
         assertTrue(subjects.isEmpty());
-    }
-
-    @Test
-    public void testFindSubjectsByType() {
-        List<Subject> subjects = subjectDAO.findBySubjectType(this.subject.getSubjectType());
-        assertEquals(1, subjects.size());
-        subjects.forEach(this::compareSubjects);
-    }
-
-    @Test
-    public void testFindBySubjectTypeAndModule() {
-        Subject subject = subjectDAO.findBySubjectTypeAndModule(this.subject.getSubjectType(), this.subject.getModule());
-        compareSubjects(subject);
     }
 
     @Test

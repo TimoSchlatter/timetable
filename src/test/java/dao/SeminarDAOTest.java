@@ -69,6 +69,12 @@ public class SeminarDAOTest {
     }
 
     @Test
+    public void testFindByTitle() {
+        Seminar seminar = seminarDAO.findByTitle(this.seminar.getTitle());
+        compareSeminars(seminar);
+    }
+
+    @Test
     public void testDelete() {
         seminarDAO.delete(this.seminar);
         List<Seminar> seminars = seminarDAO.findAll();
@@ -81,12 +87,6 @@ public class SeminarDAOTest {
         seminarDAO.deleteById(this.seminar.getId());
         List<Seminar> seminars = seminarDAO.findAll();
         assertTrue(seminars.isEmpty());
-    }
-
-    @Test
-    public void testFindByTitle() {
-        Seminar seminar = seminarDAO.findByTitle(this.seminar.getTitle());
-        compareSeminars(seminar);
     }
 
     private void compareSeminars(Seminar seminar) {

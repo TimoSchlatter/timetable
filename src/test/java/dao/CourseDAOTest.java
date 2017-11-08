@@ -68,6 +68,18 @@ public class CourseDAOTest
     }
 
     @Test
+    public void testFindByTitle() {
+        Course course = courseDAO.findByTitle(this.course.getTitle());
+        compareCourses(course);
+    }
+
+    @Test
+    public void testFindCourseByFieldAndNumber() {
+        Course course = courseDAO.findByFieldAndNumber(this.course.getField(), this.course.getNumber());
+        compareCourses(course);
+    }
+
+    @Test
     public void testDelete() {
         courseDAO.delete(this.course);
         List<Course> courses = courseDAO.findAll();
@@ -80,18 +92,6 @@ public class CourseDAOTest
         courseDAO.deleteById(this.course.getId());
         List<Course> courses = courseDAO.findAll();
         assertTrue(courses.isEmpty());
-    }
-
-    @Test
-    public void testFindCourseByFieldAndNumber() {
-        Course course = courseDAO.findByFieldAndNumber(this.course.getField(), this.course.getNumber());
-        compareCourses(course);
-    }
-
-    @Test
-    public void testFindByTitle() {
-        Course course = courseDAO.findByTitle(this.course.getTitle());
-        compareCourses(course);
     }
 
     private void compareCourses(Course course) {

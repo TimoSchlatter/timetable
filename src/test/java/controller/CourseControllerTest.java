@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.CourseController;
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.service.CourseService;
+import de.nordakademie.iaa.service.SubjectService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
@@ -29,7 +31,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -44,6 +45,9 @@ public class CourseControllerTest {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private SubjectService subjectService;
 
     private MockMvc mockMvc;
     private JacksonTester<Course> jacksonTester;
@@ -127,11 +131,26 @@ public class CourseControllerTest {
 
     @Test
     public void testDeleteCourse() throws Exception {
-        mockMvc.perform(delete("/courses/" + course.getId())).andExpect(status().isOk());
-        verify(courseService, times(1)).deleteCourse(course.getId());
+        final String url = "/courses/" + courseId;
+        InOrder inOrder = inOrder(courseService, subjectService);
+        // Course not existing
+        when(courseService.loadCourse(courseId)).thenReturn(null);
+        mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
+        inOrder.verify(courseService, times(1)).loadCourse(courseId);
+        inOrder.verify(subjectService, times(0)).deleteSubjectByModule(course);
+        inOrder.verify(courseService, times(0)).deleteCourse(courseId);
+        // Course existing
+        when(courseService.loadCourse(courseId)).thenReturn(course);
+        mockMvc.perform(delete(url)).andExpect(status().isOk());
+        inOrder.verify(courseService, times(1)).loadCourse(courseId);
+        inOrder.verify(subjectService, times(1)).deleteSubjectByModule(course);
+        inOrder.verify(courseService, times(1)).deleteCourse(courseId);
+        // Course existing & deletion failed
         doThrow(new EntityNotFoundException()).when(courseService).deleteCourse(anyLong());
-        mockMvc.perform(delete("/courses/" + course.getId())).andExpect(status().isBadRequest());
-        verify(courseService, times(2)).deleteCourse(course.getId());
+        mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
+        inOrder.verify(courseService, times(1)).loadCourse(courseId);
+        inOrder.verify(subjectService, times(1)).deleteSubjectByModule(course);
+        inOrder.verify(courseService, times(1)).deleteCourse(courseId);
     }
 
     @After
@@ -148,8 +167,13 @@ public class CourseControllerTest {
         }
 
         @Bean
+        SubjectService subjectService() {
+            return mock(SubjectService.class);
+        }
+
+        @Bean
         public CourseController courseController() {
-            return new CourseController(courseService());
+            return new CourseController(courseService(), subjectService());
         }
     }
 }
