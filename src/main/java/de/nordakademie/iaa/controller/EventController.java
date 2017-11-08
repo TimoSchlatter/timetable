@@ -1,8 +1,12 @@
 package de.nordakademie.iaa.controller;
 
 
+import de.nordakademie.iaa.model.Docent;
 import de.nordakademie.iaa.model.Event;
+import de.nordakademie.iaa.model.Room;
+import de.nordakademie.iaa.service.DocentService;
 import de.nordakademie.iaa.service.EventService;
+import de.nordakademie.iaa.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Transactional
 @RestController
@@ -22,10 +25,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 public class EventController {
 
     private EventService eventService;
+    private DocentService docentService;
+    private RoomService roomService;
 
     @Autowired
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, DocentService docentService, RoomService roomService) {
         this.eventService = eventService;
+        this.docentService = docentService;
+        this.roomService = roomService;
     }
 
     /**
@@ -112,8 +119,21 @@ public class EventController {
         return (eventService.deleteEvent(id) ? ResponseEntity.ok(null) : ResponseEntity.badRequest().build());
     }
 
-    @RequestMapping("/test")
-    public ResponseEntity testResponse() {
-        return ResponseEntity.ok("Hello World");
+    @RequestMapping(value = "/findByDocent", method = GET)
+    public List<Event> findEventsByDocentId(@RequestParam("id")Long docentId) {
+        Docent docent = docentService.loadDocent(docentId);
+        if (docent != null) {
+            return eventService.findEventsByDocent(docent);
+        }
+        return new ArrayList<>();
+    }
+
+    @RequestMapping(value = "/findByRoom", method = GET)
+    public List<Event> findEventsByRoomId(@RequestParam("id")Long roomId) {
+        Room room = roomService.loadRoom(roomId);
+        if (room != null) {
+            return eventService.findEventsByRoom(room);
+        }
+        return new ArrayList<>();
     }
 }
