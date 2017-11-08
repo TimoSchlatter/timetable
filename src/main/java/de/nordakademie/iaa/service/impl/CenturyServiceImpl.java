@@ -4,6 +4,7 @@ import de.nordakademie.iaa.dao.CenturyDAO;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.service.CenturyService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,10 @@ public class CenturyServiceImpl implements CenturyService {
     }
 
     @Override
-    public void saveCentury(Century century) {
+    public void saveCentury(Century century) throws NotEnoughChangeoverTimeProvidedException {
+        if (century.getMinChangeoverTime() < 15) {
+            throw new NotEnoughChangeoverTimeProvidedException();
+        }
         centuryDAO.save(century);
     }
 

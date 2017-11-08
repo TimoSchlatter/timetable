@@ -4,6 +4,7 @@ import de.nordakademie.iaa.dao.CohortDAO;
 import de.nordakademie.iaa.model.Cohort;
 import de.nordakademie.iaa.service.CohortService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,10 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public void saveCohort(Cohort cohort) {
+    public void saveCohort(Cohort cohort) throws NotEnoughChangeoverTimeProvidedException {
+        if (cohort.getMinChangeoverTime() < 15) {
+            throw new NotEnoughChangeoverTimeProvidedException();
+        }
         cohortDAO.save(cohort);
     }
 

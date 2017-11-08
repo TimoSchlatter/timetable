@@ -1,5 +1,6 @@
 package de.nordakademie.iaa.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.hibernate.annotations.NaturalId;
@@ -45,6 +46,7 @@ public abstract class Group extends HasMinChangeoverTime implements Serializable
         this.name = name;
     }
 
+    @JsonProperty("numberOfStudents")
     public abstract int calculateNumberOfStudents();
 
     @Override

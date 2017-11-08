@@ -5,6 +5,7 @@ import de.nordakademie.iaa.dao.CohortDAO;
 import de.nordakademie.iaa.model.Cohort;
 import de.nordakademie.iaa.service.CohortService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.CohortServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -34,8 +35,16 @@ public class CohortServiceTest {
     private final int numberOfStudents = 42;
     private final Cohort cohort = new Cohort(name, numberOfStudents);
 
+    @Test(expected = NotEnoughChangeoverTimeProvidedException.class)
+    public void testSaveCohortWithoutEnoughChangeoverTime() throws NotEnoughChangeoverTimeProvidedException {
+        cohort.setMinChangeoverTime(14);
+        cohortService.saveCohort(cohort);
+        verify(cohortDAO, times(0)).save(cohort);
+    }
+
     @Test
-    public void testSaveCohort() {
+    public void testSaveCohort() throws NotEnoughChangeoverTimeProvidedException {
+        cohort.setMinChangeoverTime(15);
         cohortService.saveCohort(cohort);
         verify(cohortDAO, times(1)).save(cohort);
     }

@@ -2,6 +2,7 @@ package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Docent;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface DocentService {
      *
      * @param docent the docent to be saved.
      */
-    void saveDocent(Docent docent);
+    void saveDocent(Docent docent) throws NotEnoughChangeoverTimeProvidedException;
 
     /**
      * List all docents currently stored in the database.

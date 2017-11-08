@@ -4,6 +4,7 @@ import de.nordakademie.iaa.dao.ManipleDAO;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.ManipleService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,10 @@ public class ManipleServiceImpl implements ManipleService {
     }
 
     @Override
-    public void saveManiple(Maniple maniple) {
+    public void saveManiple(Maniple maniple) throws NotEnoughChangeoverTimeProvidedException {
+        if (maniple.getMinChangeoverTime() < 15) {
+            throw new NotEnoughChangeoverTimeProvidedException();
+        }
         manipleDAO.save(maniple);
     }
 

@@ -2,6 +2,7 @@ package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Cohort;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface CohortService {
      *
      * @param cohort the cohort to be saved.
      */
-    void saveCohort(Cohort cohort);
+    void saveCohort(Cohort cohort) throws NotEnoughChangeoverTimeProvidedException;
 
     /**
      * List all cohorts currently stored in the database.

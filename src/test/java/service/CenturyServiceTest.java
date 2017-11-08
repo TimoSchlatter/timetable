@@ -5,6 +5,7 @@ import de.nordakademie.iaa.dao.CenturyDAO;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.service.CenturyService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.CenturyServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -35,8 +36,16 @@ public class CenturyServiceTest {
     private final Long id = 1L;
     private final Century century = new Century(name, numberOfStudents);
 
+    @Test(expected = NotEnoughChangeoverTimeProvidedException.class)
+    public void testSaveCenturyWithoutEnoughChangeoverTime() throws NotEnoughChangeoverTimeProvidedException {
+        century.setMinChangeoverTime(14);
+        centuryService.saveCentury(century);
+        verify(centuryDAO, times(0)).save(century);
+    }
+
     @Test
-    public void testSaveCentury() {
+    public void testSaveCentury() throws NotEnoughChangeoverTimeProvidedException {
+        century.setMinChangeoverTime(15);
         centuryService.saveCentury(century);
         verify(centuryDAO, times(1)).save(century);
     }

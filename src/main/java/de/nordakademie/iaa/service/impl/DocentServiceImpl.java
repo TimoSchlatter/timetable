@@ -4,6 +4,7 @@ import de.nordakademie.iaa.dao.DocentDAO;
 import de.nordakademie.iaa.model.Docent;
 import de.nordakademie.iaa.service.DocentService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,10 @@ public class DocentServiceImpl implements DocentService {
     }
 
     @Override
-    public void saveDocent(Docent docent) {
+    public void saveDocent(Docent docent) throws NotEnoughChangeoverTimeProvidedException {
+        if (docent.getMinChangeoverTime() < 15) {
+            throw new NotEnoughChangeoverTimeProvidedException();
+        }
         docentDAO.save(docent);
     }
 

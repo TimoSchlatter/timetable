@@ -2,6 +2,7 @@ package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface ManipleService {
      *
      * @param maniple the maniple to be saved.
      */
-    void saveManiple(Maniple maniple);
+    void saveManiple(Maniple maniple) throws NotEnoughChangeoverTimeProvidedException;
 
     /**
      * List all maniples currently stored in the database.

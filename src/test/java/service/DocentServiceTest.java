@@ -5,6 +5,7 @@ import de.nordakademie.iaa.dao.DocentDAO;
 import de.nordakademie.iaa.model.Docent;
 import de.nordakademie.iaa.service.DocentService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.DocentServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -41,8 +42,16 @@ public class DocentServiceTest {
     private final boolean isPermanentlyEmployed = true;
     private final Docent docent = new Docent(email, forename, surname, phoneNumber, title, isPermanentlyEmployed, minChangeoverTime);
 
+    @Test(expected = NotEnoughChangeoverTimeProvidedException.class)
+    public void testSaveDocentWithoutEnoughChangeoverTime() throws NotEnoughChangeoverTimeProvidedException {
+        docent.setMinChangeoverTime(14);
+        docentService.saveDocent(docent);
+        verify(docentDAO, times(0)).save(docent);
+    }
+
     @Test
-    public void testSaveDocent() {
+    public void testSaveDocent() throws NotEnoughChangeoverTimeProvidedException {
+        docent.setMinChangeoverTime(15);
         docentService.saveDocent(docent);
         verify(docentDAO, times(1)).save(docent);
     }
