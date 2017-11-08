@@ -69,7 +69,8 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteData()"
+                        <button type="button" class="btn btn-labeled btn-danger"
+                                ng-click="deleteManiple(modalSelectedCohort.id, maniple)"
                                 ng-show="maniple.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-trash"></i></span>Löschen
                         </button>
@@ -114,10 +115,10 @@
                                        name="changeOverTime"
                                        ng-model="maniple.minChangeoverTime"
                                        id="inputChangeOverTime"
-                                       min="0"
+                                       min="15"
                                        max="120"
                                        step="1"
-                                       placeholder="0"/>
+                                       placeholder="15"/>
                                 <span class="input-group-addon">Minuten</span>
                             </div>
                         </div>
@@ -126,11 +127,12 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()"
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateManiple(maniple)"
                                 ng-show="maniple.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="createData()"
+                        <button type="button" class="btn btn-labeled btn-success"
+                                ng-click="createManiple(modalSelectedCohort.id, maniple)"
                                 ng-hide="maniple.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>

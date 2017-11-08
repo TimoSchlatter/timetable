@@ -1,14 +1,24 @@
 'use strict';
 
-app.controller('CenturyController', function ($scope, $http) {
+app.controller('CenturyController', function ($scope, ConnectionService) {
 
-    var cohortsUrl = 'http://localhost:49999/cohorts/';
-    var maniplesUrl = 'http://localhost:49999/maniples/';
-    var centuriesUrl = 'http://localhost:49999/centuries/';
+    $scope.cohorts = ConnectionService.getCohorts;
+    $scope.updateCentury = ConnectionService.updateCentury;
+    $scope.deleteCentury = ConnectionService.deleteCentury;
+
+    $scope.createCentury = function () {
+        this.century.type = 'century';
+        ConnectionService.createCentury(this.modalSelectedManiple.id, this.century);
+    };
+
+    $scope.$watch('cohorts()', function () {
+        buildCohortsAdvanced($scope.cohorts());
+        $scope.setSelectedValues();
+    });
 
     /* Sort centuries to get all by default selection */
-    var collectAllCenturies = function () {
-        $scope.cohortsAdvanced = angular.copy($scope.cohorts);
+    var buildCohortsAdvanced = function () {
+        $scope.cohortsAdvanced = angular.copy($scope.cohorts());
         var allCenturies = [];
         angular.forEach($scope.cohortsAdvanced, function (cohort) {
             var cohortCenturies = [];
@@ -24,7 +34,7 @@ app.controller('CenturyController', function ($scope, $http) {
     var setModalSelectedValues = function (id) {
         $scope.modalSelectedCohort = undefined;
         $scope.modalSelectedManiple = undefined;
-        angular.forEach($scope.cohorts, function (cohort) {
+        angular.forEach($scope.cohorts(), function (cohort) {
             angular.forEach(cohort.maniples, function (maniple) {
                 angular.forEach(maniple.centuries, function (century) {
                     if (id === century.id) {
@@ -35,18 +45,6 @@ app.controller('CenturyController', function ($scope, $http) {
             });
         });
     };
-
-    var getData = function () {
-        $http.get(cohortsUrl).then(function successCallback(response) {
-            $scope.cohorts = response.data;
-            collectAllCenturies();
-            $scope.setSelectedValues();
-        }, function errorCallback(response) {
-            console.log(response.statusText);
-        });
-    };
-
-    getData();
 
     $scope.setSelectedValues = function () {
         if (!$scope.selectedCohort) {
@@ -59,36 +57,5 @@ app.controller('CenturyController', function ($scope, $http) {
         $scope.century = angular.copy(century);
         setModalSelectedValues(century.id);
         console.log('Selected Century:', $scope.century);
-    };
-
-    $scope.createData = function () {
-        this.century.type='century';
-        $http.post(maniplesUrl + this.modalSelectedManiple.id + '/addCentury', JSON.stringify(this.century))
-            .then(function successCallback(data) {
-                console.log(data);
-                getData();
-            }, function errorCallback(data, status, header, config) {
-                console.log(data, status, header, config);
-            });
-    };
-
-    $scope.updateData = function () {
-        $http.put(centuriesUrl + this.century.id, JSON.stringify(this.century))
-            .then(function successCallback(data) {
-                console.log(data);
-                getData();
-            }, function errorCallback(data, status, header, config) {
-                console.log(data, status, header, config);
-            });
-    };
-
-    $scope.deleteData = function () {
-        $http.delete(maniplesUrl + this.modalSelectedManiple.id + '/deleteCentury/' + this.century.id)
-            .then(function successCallback(data) {
-                console.log(data);
-                getData();
-            }, function errorCallback(data, status, header, config) {
-                console.log(data, status, header, config);
-            });
     };
 });
