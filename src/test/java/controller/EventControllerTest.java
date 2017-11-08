@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.nordakademie.iaa.controller.EventController;
 import de.nordakademie.iaa.model.*;
+import de.nordakademie.iaa.service.DocentService;
 import de.nordakademie.iaa.service.EventService;
+import de.nordakademie.iaa.service.GroupService;
+import de.nordakademie.iaa.service.RoomService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +47,16 @@ public class EventControllerTest {
     private EventController eventController;
 
     @Autowired
+    private DocentService docentService;
+
+    @Autowired
     private EventService eventService;
+
+    @Autowired
+    private GroupService groupService;
+
+    @Autowired
+    private RoomService roomService;
 
     private MockMvc mockMvc;
     private JacksonTester<Event> jacksonTester;
@@ -194,13 +206,29 @@ public class EventControllerTest {
     static class TestConfiguration {
 
         @Bean
+        public DocentService docentService() {
+            return mock(DocentService.class);
+        }
+
+        @Bean
         public EventService eventService() {
             return mock(EventService.class);
         }
 
         @Bean
+        public GroupService groupService() {
+            return mock(GroupService.class);
+        }
+
+        @Bean
+        public RoomService roomService() {
+            return mock(RoomService.class);
+        }
+
+        @Bean
         public EventController eventController() {
-            return new EventController(eventService());
+            return new EventController(docentService(), eventService(),
+                    groupService(), roomService());
         }
     }
 }

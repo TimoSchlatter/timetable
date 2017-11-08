@@ -3,9 +3,11 @@ package de.nordakademie.iaa.controller;
 
 import de.nordakademie.iaa.model.Docent;
 import de.nordakademie.iaa.model.Event;
+import de.nordakademie.iaa.model.Group;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.service.DocentService;
 import de.nordakademie.iaa.service.EventService;
+import de.nordakademie.iaa.service.GroupService;
 import de.nordakademie.iaa.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,16 +26,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/events")
 public class EventController {
 
-    private EventService eventService;
     private DocentService docentService;
+    private EventService eventService;
+    private GroupService groupService;
     private RoomService roomService;
 
-    @Autowired
-    public EventController(EventService eventService, DocentService docentService, RoomService roomService) {
-        this.eventService = eventService;
+    public EventController(DocentService docentService, EventService eventService, GroupService groupService, RoomService roomService) {
         this.docentService = docentService;
+        this.eventService = eventService;
+        this.groupService = groupService;
         this.roomService = roomService;
     }
+
+    @Autowired
+
 
     /**
      * List all events.
@@ -124,6 +130,15 @@ public class EventController {
         Docent docent = docentService.loadDocent(docentId);
         if (docent != null) {
             return eventService.findEventsByDocent(docent);
+        }
+        return new ArrayList<>();
+    }
+
+    @RequestMapping(value = "/findByGroup", method = GET)
+    public List<Event> findEventsByGroupId(@RequestParam("id")Long groupId) {
+        Group group = groupService.loadGroup(groupId);
+        if (group != null) {
+            return eventService.findEventsByGroup(group);
         }
         return new ArrayList<>();
     }
