@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.CenturyController;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.service.CenturyService;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -87,7 +88,7 @@ public class CenturyControllerTest {
                 .andExpect(status().isOk());
         verify(centuryService, times(1)).saveCentury(century);
         // Century existing & updating failed
-        doThrow(new RuntimeException()).when(centuryService).saveCentury(any());
+        doThrow(new NotEnoughChangeoverTimeProvidedException()).when(centuryService).saveCentury(any());
         mockMvc.perform(put(url).content(jacksonTester.write(century).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

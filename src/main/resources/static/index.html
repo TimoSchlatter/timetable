@@ -240,6 +240,24 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fa fa-angle-up"></i>
     </a>
+    <!-- Alert Modal-->
+    <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" ng-controller="AlertController">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content card mx-auto mt-5">
+                <div class="card-header">Hinweis</div>
+                <div class="card-body">
+                    <form name="modal">
+                        <div class="form-group" ng-repeat="alert in alerts">{{alert.type}}: {{alert.msg}}</div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal" ng-click="closeAlert()">
+                                <span class="btn-label"><i class="fa fa-times"></i></span>Schließen
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Logout Modal-->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
@@ -268,6 +286,8 @@
     <script type="text/javascript" src="directive/multiple-select/templates.js"></script>
     <script type="text/javascript" src="App.js"></script>
     <script type="text/javascript" src="service/ConnectionService.js"></script>
+    <script type="text/javascript" src="service/AlertService.js"></script>
+    <script type="text/javascript" src="controller/AlertController.js"></script>
     <script type="text/javascript" src="controller/DashboardController.js"></script>
     <script type="text/javascript" src="controller/EventController.js"></script>
     <script type="text/javascript" src="controller/SubjectController.js"></script>

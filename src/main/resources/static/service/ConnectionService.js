@@ -103,6 +103,14 @@ app.factory('ConnectionService', function ($http) {
     var subjectsUrl = 'http://localhost:49999/subjects/';
     getData(subjectsUrl, setSubjects);
 
+    /* EventsControl */
+    var events = [];
+    var setEvents = function (data) {
+        events = data;
+    };
+    var eventsUrl = 'http://localhost:49999/events/';
+    getData(eventsUrl, setEvents);
+
     /* SubjectTypes */
     var subjectTypes = {};
     var setSubjectTypes = function (data) {
@@ -118,6 +126,14 @@ app.factory('ConnectionService', function ($http) {
     };
     var seminarTypesUrl = 'http://localhost:49999/seminartypes/';
     getData(seminarTypesUrl, setSeminarTypes);
+
+    /* RoomTypes */
+    var roomTypes = {};
+    var setRoomTypes = function (data) {
+        roomTypes = data;
+    };
+    var roomTypesUrl = 'http://localhost:49999/roomtypes/';
+    getData(roomTypesUrl, setRoomTypes);
 
 
     return {
@@ -145,15 +161,15 @@ app.factory('ConnectionService', function ($http) {
         getRooms: function () {
             return rooms;
         },
-        createCentury: function (century) {
+        createCentury: function (manipleId, century) {
             century.type = 'century'
-            createData(centuriesUrl, JSON.stringify(century), centuriesUrl, setCenturies);
+            createData(maniplesUrl + manipleId + '/addCentury', JSON.stringify(century), centuriesUrl, setCenturies);
         },
         updateCentury: function (century) {
             updateData(centuriesUrl + century.id, JSON.stringify(century), centuriesUrl, setCenturies);
         },
-        deleteCentury: function (century) {
-            deleteData(centuriesUrl, century.id, centuriesUrl, setCenturies);
+        deleteCentury: function (manipleId, century) {
+            deleteData(maniplesUrl + manipleId + '/deleteCentury/', century.id, centuriesUrl, setCenturies);
         },
         getCenturies: function () {
             return centuries;
@@ -222,11 +238,26 @@ app.factory('ConnectionService', function ($http) {
         getSubjects: function () {
             return subjects;
         },
+        createEvent: function (event) {
+            createData(eventsUrl, JSON.stringify(event), eventsUrl, setEvents);
+        },
+        updateEvent: function (event) {
+            updateData(eventsUrl + event.id, JSON.stringify(event), eventsUrl, setEvents);
+        },
+        deleteEvent: function (event) {
+            deleteData(eventsUrl, event.id, eventsUrl, setEvents);
+        },
+        getEvents: function () {
+            return subjects;
+        },
         getSubjectTypes: function () {
             return subjectTypes;
         },
         getSeminarTypes: function () {
             return seminarTypes;
+        },
+        getRoomTypes: function () {
+            return roomTypes;
         }
     }
 });

@@ -28,7 +28,7 @@
                     <td>{{room.building}}</td>
                     <td>{{room.number}}</td>
                     <td>{{room.maxSeats}}</td>
-                    <td>{{roomTypes[room.roomType]}}</td>
+                    <td>{{roomTypes()[room.roomType]}}</td>
                     <td>{{room.minChangeoverTime}}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
@@ -124,7 +124,7 @@
                             <label for="modalSelectedRoomtype">Raumtyp</label>
                             <select class="form-control"
                                     id="modalSelectedRoomtype"
-                                    ng-options="key as name for (key,name) in roomTypes"
+                                    ng-options="key as name for (key,name) in roomTypes()"
                                     ng-model="room.roomType">
                             </select>
                         </div>
