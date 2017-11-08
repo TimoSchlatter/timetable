@@ -39,7 +39,7 @@ app.factory('ConnectionService', function ($http) {
             });
     };
 
-    /* DocentControl */
+    /* DocentsControl */
     var docents = [];
     var setDocents = function (data) {
         docents = data
@@ -47,7 +47,7 @@ app.factory('ConnectionService', function ($http) {
     var docentsUrl = 'http://localhost:49999/docents/';
     getData(docentsUrl, setDocents);
 
-    /* RoomControl */
+    /* RoomsControl */
     var rooms = [];
     var setRooms = function (data) {
         rooms = data
@@ -55,53 +55,69 @@ app.factory('ConnectionService', function ($http) {
     var roomsUrl = 'http://localhost:49999/rooms/';
     getData(roomsUrl, setRooms);
 
-    /* CenturyControl */
+    /* CenturiesControl */
     var centuries = [];
     var setCenturies = function (data) {
         centuries = data
     };
-    var centuryUrl = 'http://localhost:49999/centuries/';
-    getData(centuryUrl, setCenturies);
+    var centuriesUrl = 'http://localhost:49999/centuries/';
+    getData(centuriesUrl, setCenturies);
 
-    /*ManipleControl */
+    /*ManiplesControl */
     var maniples = [];
     var setManiples = function (data) {
         maniples = data;
     };
-    var manipleUrl =  'http://localhost:49999/maniples/';
-    getData(manipleUrl, setManiples);
+    var maniplesUrl = 'http://localhost:49999/maniples/';
+    getData(maniplesUrl, setManiples);
 
-    /*CohortControl */
+    /*CohortsControl */
     var cohorts = [];
     var setCohorts = function (data) {
         cohorts = data;
     };
-    var cohortUrl =  'http://localhost:49999/cohorts/';
-    getData(cohortUrl, setCohorts);
+    var cohortsUrl = 'http://localhost:49999/cohorts/';
+    getData(cohortsUrl, setCohorts);
 
-    /*CourseControl */
+    /*CoursesControl */
     var courses = [];
     var setCourses = function (data) {
         courses = data;
     };
-    var courseUrl =  'http://localhost:49999/courses/';
-    getData(courseUrl, setCourses);
+    var coursesUrl = 'http://localhost:49999/courses/';
+    getData(coursesUrl, setCourses);
 
-    /* SeminarControl */
+    /* SeminarsControl */
     var seminars = [];
     var setSeminars = function (data) {
         seminars = data;
     };
-    var seminarUrl =  'http://localhost:49999/seminars/';
-    getData(seminarUrl, setSeminars);
+    var seminarsUrl = 'http://localhost:49999/seminars/';
+    getData(seminarsUrl, setSeminars);
 
-    /* SubjectControl */
+    /* SubjectsControl */
     var subjects = [];
     var setSubjects = function (data) {
         subjects = data;
     };
-    var subjectUrl =  'http://localhost:49999/subjects/';
-    getData(subjectUrl, setSubjects);
+    var subjectsUrl = 'http://localhost:49999/subjects/';
+    getData(subjectsUrl, setSubjects);
+
+    /* SubjectTypes */
+    var subjectTypes = {};
+    var setSubjectTypes = function (data) {
+        subjectTypes = data;
+    };
+    var subjectTypesUrl = 'http://localhost:49999/subjecttypes/';
+    getData(subjectTypesUrl, setSubjectTypes);
+
+    /* SeminarTypes */
+    var seminarTypes = {};
+    var setSeminarTypes = function (data) {
+        seminarTypes = data;
+    };
+    var seminarTypesUrl = 'http://localhost:49999/seminartypes/';
+    getData(seminarTypesUrl, setSeminarTypes);
 
 
     return {
@@ -131,80 +147,86 @@ app.factory('ConnectionService', function ($http) {
         },
         createCentury: function (century) {
             century.type = 'century'
-            createData(centuryUrl, JSON.stringify(century), centuryUrl, setCenturies);
+            createData(centuriesUrl, JSON.stringify(century), centuriesUrl, setCenturies);
         },
         updateCentury: function (century) {
-            updateData(centuryUrl + century.id, JSON.stringify(century), centuryUrl, setCenturies);
+            updateData(centuriesUrl + century.id, JSON.stringify(century), centuriesUrl, setCenturies);
         },
         deleteCentury: function (century) {
-            deleteData(centuryUrl, century.id, centuryUrl, setCenturies);
+            deleteData(centuriesUrl, century.id, centuriesUrl, setCenturies);
         },
         getCenturies: function () {
             return centuries;
         },
         createManiple: function (maniple) {
             maniple.type = 'maniple';
-            createData(manipleUrl, JSON.stringify(maniple), manipleUrl, setManiples);
+            createData(maniplesUrl, JSON.stringify(maniple), maniplesUrl, setManiples);
         },
         updateManiple: function (maniple) {
-            updateData(manipleUrl + maniple.id, JSON.stringify(maniple), manipleUrl, setManiples);
+            updateData(maniplesUrl + maniple.id, JSON.stringify(maniple), maniplesUrl, setManiples);
         },
         deleteManiple: function (maniple) {
-            deleteData(manipleUrl, maniple.id, manipleUrl, setManiples);
+            deleteData(maniplesUrl, maniple.id, maniplesUrl, setManiples);
         },
         getManiples: function () {
             return maniples;
         },
         createCohort: function (cohort) {
             cohort.type='cohort';
-            createData(cohortUrl, JSON.stringify(cohort), cohortUrl, setCohorts);
+            createData(cohortsUrl, JSON.stringify(cohort), cohortsUrl, setCohorts);
         },
         updateCohort: function (cohort) {
-            updateData(cohortUrl + cohort.id, JSON.stringify(cohort), cohortUrl, setCohorts);
+            updateData(cohortsUrl + cohort.id, JSON.stringify(cohort), cohortsUrl, setCohorts);
         },
         deleteCohort: function (cohort) {
-            deleteData(cohortUrl, cohort.id, cohortUrl, setCohorts);
+            deleteData(cohortsUrl, cohort.id, cohortsUrl, setCohorts);
         },
         getCohorts: function () {
             return cohorts;
         },
         createCourse: function (course) {
             course.type = 'course';
-            createData(courseUrl, JSON.stringify(course), courseUrl, setCourses);
+            createData(coursesUrl, JSON.stringify(course), coursesUrl, setCourses);
         },
         updateCourse: function (course) {
-            updateData(courseUrl + course.id, JSON.stringify(course), courseUrl, setCourses);
+            updateData(coursesUrl + course.id, JSON.stringify(course), coursesUrl, setCourses);
         },
         deleteCourse: function (course) {
-            deleteData(courseUrl, course.id, courseUrl, setCourses);
+            deleteData(coursesUrl, course.id, coursesUrl, setCourses);
         },
         getCourses: function () {
             return courses;
         },
         createSeminar: function (seminar) {
             seminar.type = 'seminar';
-            createData(seminarUrl, JSON.stringify(seminar), seminarUrl, setSeminars);
+            createData(seminarsUrl, JSON.stringify(seminar), seminarsUrl, setSeminars);
         },
         updateSeminar: function (seminar) {
-            updateData(seminarUrl + seminar.id, JSON.stringify(seminar), seminarUrl, setSeminars);
+            updateData(seminarsUrl + seminar.id, JSON.stringify(seminar), seminarsUrl, setSeminars);
         },
         deleteSeminar: function (seminar) {
-            deleteData(seminarUrl, seminar.id, seminarUrl, setSeminars);
+            deleteData(seminarsUrl, seminar.id, seminarsUrl, setSeminars);
         },
         getSeminars: function () {
             return seminars;
         },
         createSubject: function (subject) {
-            createData(subjectUrl, JSON.stringify(subject), subjectUrl, setSubjects);
+            createData(subjectsUrl, JSON.stringify(subject), subjectsUrl, setSubjects);
         },
         updateSubject: function (subject) {
-            updateData(subjectUrl + subject.id, JSON.stringify(subject), subjectUrl, setSubjects);
+            updateData(subjectsUrl + subject.id, JSON.stringify(subject), subjectsUrl, setSubjects);
         },
         deleteSubject: function (subject) {
-            deleteData(subjectUrl, subject.id, subjectUrl, setSubjects);
+            deleteData(subjectsUrl, subject.id, subjectsUrl, setSubjects);
         },
         getSubjects: function () {
             return subjects;
+        },
+        getSubjectTypes: function () {
+            return subjectTypes;
+        },
+        getSeminarTypes: function () {
+            return seminarTypes;
         }
     }
 });
