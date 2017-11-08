@@ -2,13 +2,19 @@
 
 app.controller('EventController', function ($scope, $http, ConnectionService) {
 
-    var cohortsUrl = 'http://localhost:49999/cohorts/';
-    var eventsUrl = 'http://localhost:49999/events/';
-    var subjectsUrl = 'http://localhost:49999/subjects/';
     var subjectTypesUrl = 'http://localhost:49999/subjecttypes/';
+    var eventsUrl = 'http://localhost:49999/events/';
 
-    /* Sort centuries to get all by default selection */
-    var collectAllCenturies = function (cohorts) {
+    $scope.rooms = ConnectionService.getRooms;
+    $scope.docents = ConnectionService.getDocents;
+    $scope.subjects = ConnectionService.getSubjects;
+    $scope.cohorts = ConnectionService.getCohorts;
+
+    $scope.$watch('cohorts()', function () {
+        buildCohortsAdvanced($scope.cohorts());
+    });
+
+    var buildCohortsAdvanced = function (cohorts) {
         $scope.cohortsAdvanced = angular.copy(cohorts);
         angular.forEach($scope.cohortsAdvanced, function (cohort) {
             angular.forEach(cohort.maniples, function (maniple) {
@@ -19,22 +25,9 @@ app.controller('EventController', function ($scope, $http, ConnectionService) {
         $scope.cohortsAdvanced.unshift({name: "Alle", maniples: [{name: "Alle", centuries: [{name: "Alle"}]}]});
     };
 
-    $scope.rooms = ConnectionService.getRooms;
-    $scope.docents = ConnectionService.getDocents;
-
     var getData = function () {
         $http.get(eventsUrl).then(function successCallback(response) {
             $scope.events = response.data;
-        }, function errorCallback(response) {
-            console.log(response.statusText);
-        });
-        $http.get(cohortsUrl).then(function successCallback(response) {
-            collectAllCenturies(response.data);
-        }, function errorCallback(response) {
-            console.log(response.statusText);
-        });
-        $http.get(subjectsUrl).then(function successCallback(response) {
-            $scope.subjects = response.data;
         }, function errorCallback(response) {
             console.log(response.statusText);
         });
@@ -46,6 +39,12 @@ app.controller('EventController', function ($scope, $http, ConnectionService) {
     };
 
     getData();
+
+    $scope.setSelectedEvent = function (event) {
+        $scope.event = angular.copy(event);
+        console.log('Selected Event:', $scope.event);
+        resetGroups();
+    };
 
     var resetGroups = function () {
         $scope.event.cohort = $scope.cohortsAdvanced[0];
@@ -60,12 +59,6 @@ app.controller('EventController', function ($scope, $http, ConnectionService) {
 
     $scope.changedManiple = function () {
         $scope.event.century = $scope.event.maniple.centuries[0];
-    };
-
-    $scope.setSelectedEvent = function (event) {
-        $scope.event = angular.copy(event);
-        console.log('Selected Event:', $scope.event);
-        resetGroups();
     };
 
     $scope.uiConfig = {

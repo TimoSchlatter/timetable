@@ -114,7 +114,7 @@
                                 'Modul'}}</label>
                             <select class="form-control"
                                     id="inputSubject"
-                                    ng-options="subject.module.shortTitle for subject in subjects | filter: event.subjectType? {subjectType: event.subjectType} : 'undefined'"
+                                    ng-options="subject.module.shortTitle for subject in subjects() | filter: event.subjectType? {subjectType: event.subjectType} : 'undefined'"
                                     ng-model="event.subject">
                             </select>
                         </div>

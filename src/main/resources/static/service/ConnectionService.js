@@ -64,7 +64,7 @@ app.factory('ConnectionService', function ($http) {
     getData(centuryUrl, setCenturies);
 
     /*ManipleControl */
-    var maniple = [];
+    var maniples = [];
     var setManiples = function (data) {
         maniples = data;
     };
@@ -72,7 +72,7 @@ app.factory('ConnectionService', function ($http) {
     getData(manipleUrl, setManiples);
 
     /*CohortControl */
-    var cohort = [];
+    var cohorts = [];
     var setCohorts = function (data) {
         cohorts = data;
     };
@@ -80,7 +80,7 @@ app.factory('ConnectionService', function ($http) {
     getData(cohortUrl, setCohorts);
 
     /*CourseControl */
-    var course = [];
+    var courses = [];
     var setCourses = function (data) {
         courses = data;
     };
@@ -96,7 +96,7 @@ app.factory('ConnectionService', function ($http) {
     getData(seminarUrl, setSeminars);
 
     /* SubjectControl */
-    var seminars = [];
+    var subjects = [];
     var setSubjects = function (data) {
         subjects = data;
     };
