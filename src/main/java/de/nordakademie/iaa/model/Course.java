@@ -57,4 +57,9 @@ public class Course extends Module implements Serializable {
         result = 31 * result + number;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Kurs " + field + number + " " + super.toString();
+    }
 }

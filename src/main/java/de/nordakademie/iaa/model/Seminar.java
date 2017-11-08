@@ -29,4 +29,9 @@ public class Seminar extends Module implements Serializable {
     public void setSeminarType(SeminarType seminarType) {
         this.seminarType = seminarType;
     }
+
+    @Override
+    public String toString() {
+        return "Seminar " + super.toString();
+    }
 }

@@ -67,4 +67,9 @@ public abstract class Module extends HasId implements Serializable {
     public int hashCode() {
         return title != null ? title.hashCode() : 0;
     }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }
