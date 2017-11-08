@@ -199,6 +199,27 @@ public class DataGenerator {
             Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
             eventService.saveEvent(event);
         }
+
+        for (int i = 0; i < 10; i++) {
+            date = date.plusDays(i*7);
+            Set<Room> rooms = new HashSet<>(Arrays.asList(
+                    roomService.findByBuildingAndNumber("A", "001"),
+                    roomService.findByBuildingAndNumber("A", "002")));
+            rooms.forEach(room -> { assert room != null; });
+            Set<Docent> docents = new HashSet<>(Arrays.asList(
+                    docentService.findByForenameAndSurname("Uwe", "Adamczak"),
+                    docentService.findByForenameAndSurname("Joachim", "Sauer")));
+            docents.forEach(docent -> { assert docent != null; });
+            Group group = centuryService.findByName("I14a");
+            assert group != null;
+            LocalTime startTime = LocalTime.of(12, 15);
+            LocalTime endTime = LocalTime.of(16, 30);
+            Subject subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.LECTURE, courseService.findByTitle("Allgemeine Volkswirtschaftslehre"));
+            assert subject != null;
+            Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
+            eventService.saveEvent(event);
+        }
+
         date = LocalDate.of(2017, Month.OCTOBER, 29);
         for (int i = 0; i < 10; i++) {
             date = date.plusDays(i*7);
@@ -213,6 +234,24 @@ public class DataGenerator {
             LocalTime startTime = LocalTime.of(9, 15);
             LocalTime endTime = LocalTime.of(11, 30);
             Subject subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.LECTURE, courseService.findByTitle("Controlling"));
+            assert subject != null;
+            Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
+            eventService.saveEvent(event);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            date = date.plusDays(i*7);
+            Set<Room> rooms = new HashSet<>(Arrays.asList(
+                    roomService.findByBuildingAndNumber("A", "001"),
+                    roomService.findByBuildingAndNumber("A", "002")));
+            rooms.forEach(room -> { assert room != null; });
+            Set<Docent> docents = new HashSet<>(Arrays.asList(docentService.findByForenameAndSurname("Soenke", "Stange")));
+            docents.forEach(docent -> { assert docent != null; });
+            Group group = centuryService.findByName("I14a");
+            assert group != null;
+            LocalTime startTime = LocalTime.of(13, 15);
+            LocalTime endTime = LocalTime.of(18, 30);
+            Subject subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.LECTURE, courseService.findByTitle("Allgemeine Betriebswirtschaftslehre"));
             assert subject != null;
             Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
             eventService.saveEvent(event);
