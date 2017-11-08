@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.controller;
 
-import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 import de.nordakademie.iaa.util.DataGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class DataGenerationController {
     }
 
     @RequestMapping("/generateData")
-    public ResponseEntity generateData() throws RoomTooSmallForGroupException {
+    public ResponseEntity generateData() throws Exception {
         if (!dataGenerated) {
             dataGenerator.createData();
             dataGenerated = true;

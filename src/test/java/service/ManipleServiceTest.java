@@ -5,6 +5,7 @@ import de.nordakademie.iaa.dao.ManipleDAO;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.ManipleService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.ManipleServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -34,8 +35,16 @@ public class ManipleServiceTest {
     private final String name = "I";
     private final Maniple maniple = new Maniple(name);
 
+    @Test(expected = NotEnoughChangeoverTimeProvidedException.class)
+    public void testSaveManipleWithoutEnoughChangeoverTime() throws NotEnoughChangeoverTimeProvidedException {
+        maniple.setMinChangeoverTime(14);
+        manipleService.saveManiple(maniple);
+        verify(manipleDAO, times(0)).save(maniple);
+    }
+
     @Test
-    public void testSaveManiple() {
+    public void testSaveManiple() throws NotEnoughChangeoverTimeProvidedException {
+        maniple.setMinChangeoverTime(15);
         manipleService.saveManiple(maniple);
         verify(manipleDAO, times(1)).save(maniple);
     }

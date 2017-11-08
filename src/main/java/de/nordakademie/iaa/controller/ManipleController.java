@@ -6,6 +6,7 @@ import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CenturyService;
 import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.ManipleService;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,9 +72,11 @@ public class ManipleController {
             String newCenturyName = maniple.getName() + century.getName();
             if (centuryService.findByName(newCenturyName) == null) {
                 century.setName(newCenturyName);
-                centuryService.saveCentury(century);
-                maniple.addCentury(century);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
+                try {
+                    centuryService.saveCentury(century);
+                    maniple.addCentury(century);
+                    return ResponseEntity.status(HttpStatus.CREATED).build();
+                } catch (NotEnoughChangeoverTimeProvidedException ignored) {}
             }
         }
         return ResponseEntity.badRequest().build();

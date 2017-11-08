@@ -7,6 +7,7 @@ import de.nordakademie.iaa.service.CohortService;
 import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.ManipleService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -109,10 +110,12 @@ public class CohortController {
         if (cohort != null) {
             String newCenturyName = maniple.getName() + cohort.getName();
             if (manipleService.findByName(newCenturyName) == null) {
-                maniple.setName(newCenturyName);
-                manipleService.saveManiple(maniple);
-                cohort.addManiple(maniple);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
+                try {
+                    maniple.setName(newCenturyName);
+                    manipleService.saveManiple(maniple);
+                    cohort.addManiple(maniple);
+                    return ResponseEntity.status(HttpStatus.CREATED).build();
+                } catch (NotEnoughChangeoverTimeProvidedException ignored) {}
             }
         }
         return ResponseEntity.badRequest().build();

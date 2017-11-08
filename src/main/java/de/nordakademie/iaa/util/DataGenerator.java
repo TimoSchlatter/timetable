@@ -2,6 +2,7 @@ package de.nordakademie.iaa.util;
 
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.*;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,7 +49,7 @@ public class DataGenerator {
      * Warning: Be careful when changing this order!
      */
     //    @PostConstruct
-    public void createData() throws RoomTooSmallForGroupException {
+    public void createData() throws Exception {
         createRooms();
         createDocents();
         createCourses();
@@ -86,7 +87,7 @@ public class DataGenerator {
         roomService.saveRoom(new Room(30, "D", 20, "105", RoomType.LECTUREROOM));
     }
 
-    private void createDocents() {
+    private void createDocents() throws NotEnoughChangeoverTimeProvidedException {
         docentService.saveDocent(new Docent("", "Uwe", "Adamczak", "", "", false, 30));
         docentService.saveDocent(new Docent("", "Martin", "Müller", "", "Dr.", false, 30));
         docentService.saveDocent(new Docent("", "Soenke", "Stange", "", "", false, 30));
@@ -153,21 +154,26 @@ public class DataGenerator {
         seminarService.listSeminars().forEach(seminar -> subjectService.saveSubject(new Subject(20, SubjectType.SEMINAR, seminar)));
     }
 
-    private void createGroups() {
+    private void createGroups() throws NotEnoughChangeoverTimeProvidedException {
         for (int i = 14; i < 18; i++) {
             String[] centuryNames = new String[]{"a", "b", "c", "d"};
             Cohort cohort = new Cohort(Integer.toString(i), 30);
             cohortService.saveCohort(cohort);
             Arrays.asList("A" + i, "B" + i, "I" + i, "W" + i).forEach(manipleName -> {
-                Maniple maniple = new Maniple(manipleName, 30);
-                manipleService.saveManiple(maniple);
-                ThreadLocalRandom random = ThreadLocalRandom.current();
-                for (int centuryNumber = 0; centuryNumber < random.nextInt(2, centuryNames.length + 1); centuryNumber++) {
-                    Century century = new Century(manipleName + centuryNames[centuryNumber], 15, random.nextInt(25, 36));
-                    centuryService.saveCentury(century);
-                    maniple.addCentury(century);
+                try {
+                    Maniple maniple = new Maniple(manipleName, 30);
+                    manipleService.saveManiple(maniple);
+                    ThreadLocalRandom random = ThreadLocalRandom.current();
+                    for (int centuryNumber = 0; centuryNumber < random.nextInt(2, centuryNames.length + 1); centuryNumber++) {
+                        try {
+                            Century century = new Century(manipleName + centuryNames[centuryNumber], 15, random.nextInt(25, 36));
+                            centuryService.saveCentury(century);
+                            maniple.addCentury(century);
+                        } catch (NotEnoughChangeoverTimeProvidedException ignored) {}
+                    }
+                    cohort.addManiple(maniple);
+                } catch (NotEnoughChangeoverTimeProvidedException ignored) {
                 }
-                cohort.addManiple(maniple);
             });
         }
     }
