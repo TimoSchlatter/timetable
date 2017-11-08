@@ -9,10 +9,14 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Entity
 public class Event extends HasId implements Serializable {
+
+    private final static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private final static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
     private Group group;
     private LocalDate date;
@@ -111,6 +115,13 @@ public class Event extends HasId implements Serializable {
 
     public int calculateMinChangeoverTime() {
         return 42;
+    }
+
+    @Override
+    public String toString() {
+        return "Veranstaltung " + subject.toString() + " am " + date.format(dateFormatter) + " von " +
+                startTime.format(timeFormatter) + "-" + endTime.format(timeFormatter) + " für " + group.toString() +
+                " in " + rooms.toString();
     }
 
     @Override
