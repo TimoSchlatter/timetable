@@ -26,7 +26,7 @@
                 <select class="form-control"
                         id="selectedManiple"
                         ng-options="maniple.name for maniple in selectedCohort.maniples"
-                        ng-model="selectedManiple">
+                        ng-Model="selectedManiple">
                 </select>
             </div>
         </form>
@@ -80,7 +80,8 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-danger" ng-click="deleteData()"
+                        <button type="button" class="btn btn-labeled btn-danger"
+                                ng-click="deleteCentury(modalSelectedManiple.id, century)"
                                 ng-show="century.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-trash"></i></span>Löschen
                         </button>
@@ -112,8 +113,7 @@
                             <label for="modalSelectedCohort">Kohorte</label>
                             <select class="form-control"
                                     id="modalSelectedCohort"
-                                    ng-disabled="century.id"
-                                    ng-options="cohort.name for cohort in cohorts"
+                                    ng-options="cohort.name for cohort in cohorts()"
                                     ng-model="modalSelectedCohort">
                             </select>
                         </div>
@@ -148,10 +148,10 @@
                                        name="changeOverTime"
                                        ng-model="century.minChangeoverTime"
                                        id="inputChangeOverTime"
-                                       min="0"
+                                       min="15"
                                        max="120"
                                        step="1"
-                                       placeholder="0"/>
+                                       placeholder="15"/>
                                 <span class="input-group-addon">Minuten</span>
                             </div>
                         </div>
@@ -160,11 +160,11 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()"
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateCentury(century)"
                                 ng-show="century.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="createData()"
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="createCentury()"
                                 ng-hide="century.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>

@@ -23,6 +23,20 @@ app.controller('SubjectController', function ($scope, $http, ConnectionService) 
 
     $scope.setSelectedSubject = function (subject) {
         $scope.subject = angular.copy(subject);
+        $scope.setModulModel(subject);
+        angular.forEach($scope.module(), function (modul) {
+            if (modul.id === subject.module.id) {
+                $scope.subject.module = modul;
+            }
+        });
         console.log('Selected Subject:', $scope.subject);
+    };
+
+    $scope.setModulModel = function (subject) {
+        if (subject.subjectType === 'SEMINAR') {
+            $scope.module = ConnectionService.getSeminars;
+        } else {
+            $scope.module = ConnectionService.getCourses;
+        }
     };
 });

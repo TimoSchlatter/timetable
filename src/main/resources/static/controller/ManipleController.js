@@ -3,6 +3,9 @@
 app.controller('ManipleController', function ($scope, ConnectionService) {
 
     $scope.cohorts = ConnectionService.getCohorts;
+    $scope.createManiple = ConnectionService.createManiple;
+    $scope.updateManiple = ConnectionService.updateManiple;
+    $scope.deleteManiple = ConnectionService.deleteManiple;
 
     $scope.$watch('cohorts()', function () {
         buildCohortsAdvanced($scope.cohorts());

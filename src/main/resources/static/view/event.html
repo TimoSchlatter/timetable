@@ -1,10 +1,42 @@
-
+<!-- Angular UI Calendar -->
+<div class="card mb-3">
+    <div class="card-header">
+        <button class="btn btn-success btn-xs"
+                ng-click="setSelectedEvent({})"
+                data-title="Delete"
+                data-toggle="modal"
+                data-target="#addEditModal">
+            <span class="fa fa-plus"></span>
+        </button>
+        <i class="fa fa-calendar"></i> Veranstaltungsplanung
+    </div>
+    <div class="card-body">
+        <div class="form-group col-md-2">
+            <label for="modalSelectedEntity">Entity</label>
+            <select class="form-control"
+                    id="modalSelectedEntity"
+                    ng-options="cohort.name for cohort in cohorts"
+                    ng-model="modalSelectedEntity">
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="modalSelectedEntityName">Entity-Name</label>
+            <select class="form-control"
+                    id="modalSelectedEntityName"
+                    ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
+                    ng-Model="modalSelectedEntityName">
+            </select>
+        </div>
+        <!-- <div ui-calendar="uiConfig.calendar" ng-Model="events"></div>-->
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>
 
 <!-- Add/Edit Modal-->
 <div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">leModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content card mx-auto mt-5">
-            <div class="card-header">{{subject.id ? 'Aktualisieren' : 'Hinzufügen'}}</div>
+            <div class="card-header">{{event.id ? 'Aktualisieren' : 'Hinzufügen'}}</div>
             <div class="card-body">
                 <form name="modal">
                     <div class="form-row">
@@ -13,7 +45,7 @@
                             <select class="form-control"
                                     id="inputCohort"
                                     ng-options="cohort.name for cohort in cohortsAdvanced"
-                                    ng-model="event.cohort"
+                                    ng-model="modalSelectedCohort"
                                     ng-change="changedCohort()">
                             </select>
                         </div>
@@ -21,8 +53,8 @@
                             <label for="inputManiple">Manipel</label>
                             <select class="form-control"
                                     id="inputManiple"
-                                    ng-options="maniple.name for maniple in event.cohort.maniples"
-                                    ng-model="event.maniple"
+                                    ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
+                                    ng-Model="modalSelectedManiple"
                                     ng-change="changedManiple()">
                             </select>
                         </div>
@@ -30,19 +62,19 @@
                             <label for="inputCentury">Zenturie</label>
                             <select class="form-control"
                                     id="inputCentury"
-                                    ng-options="century.name for century in event.maniple.centuries"
-                                    ng-Model="event.century">
+                                    ng-options="century.name for century in modalSelectedManiple.centuries"
+                                    ng-Model="modalSelectedCentury">
                             </select>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <label for="inputStartDate">Datum</label>
+                            <label for="inputDate">Datum</label>
                             <div class="input-group date">
                                 <input type="text"
-                                       class="form-control"
-                                       id="inputStartDate"
-                                       ng-model="event.startDate"
+                                       class="form-control datepicker"
+                                       id="inputDate"
+                                       ng-model="modalDate"
                                        placeholder="TT.MM.JJJJ">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
@@ -53,7 +85,7 @@
                                 <input type="text"
                                        class="form-control clockpicker"
                                        id="inputStartTime"
-                                       ng-model="event.startTime">
+                                       ng-model="modalStartTime">
                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                             </div>
                         </div>
@@ -63,33 +95,33 @@
                                 <input type="text"
                                        class="form-control clockpicker"
                                        id="inputEndTime"
-                                       ng-model="event.endTime">
+                                       ng-model="modalEndTime">
                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="inputSubjecttype">Veranstaltungstyp</label>
+                            <label for="inputSubjectType">Veranstaltungstyp</label>
                             <select class="form-control"
-                                    id="inputSubjecttype"
-                                    ng-options="key as value for (key , value) in subjectTypes"
-                                    ng-model="event.subjectType">
+                                    id="inputSubjectType"
+                                    ng-options="key as value for (key , value) in subjectTypes()"
+                                    ng-model="modalSubjectType">
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="inputSubject">{{event.subjectType ? subjectTypes[event.subjectType] :
+                            <label for="inputSubject">{{modalSubjectType ? subjectTypes()[modalSubjectType] :
                                 'Modul'}}</label>
                             <select class="form-control"
                                     id="inputSubject"
-                                    ng-options="subject.module.shortTitle for subject in subjects() | filter: event.subjectType? {subjectType: event.subjectType} : 'undefined'"
-                                    ng-model="event.subject">
+                                    ng-options="subject.module.shortTitle for subject in subjects() | filter: modalSubjectType? {subjectType: modalSubjectType} : 'undefined'"
+                                    ng-model="modalSubject">
                             </select>
                         </div>
                     </div>
                     <div class="form-group" name="multipleSelectForm" novalidate>
                         <label for="inputRooms">Räume</label>
-                        <multiple-autocomplete ng-model="selectedRooms"
+                        <multiple-autocomplete ng-model="modalSelectedRooms"
                                                object-property="number"
                                                name="multipleSelect"
                                                required="true"
@@ -99,7 +131,7 @@
                     </div>
                     <div class="form-group" name="multipleSelectForm" novalidate>
                         <label for="inputDocents">Dozenten</label>
-                        <multiple-autocomplete ng-model="selectedDocents"
+                        <multiple-autocomplete ng-model="modalSelectedDocents"
                                                object-property="surname"
                                                name="multipleSelect"
                                                required="true"
@@ -111,12 +143,12 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateData()"
-                                ng-show="subject.id" data-dismiss="modal">
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateEvent(event)"
+                                ng-show="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="createData()"
-                                ng-hide="subject.id" data-dismiss="modal">
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="createEvent(event)"
+                                ng-hide="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
                     </div>
@@ -134,7 +166,8 @@
 <script type="text/javascript" src="../vendor/bootstrap-clockpicker/js/clockpicker.js"></script>
 
 <script>
-    $('#inputStartDate').datepicker({
+    $('.form-control.datepicker').datepicker({
+        autoclose: true,
         language: 'de',
         todayHighlight: 'true'
     });

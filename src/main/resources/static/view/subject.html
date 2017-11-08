@@ -34,7 +34,7 @@
                 <tbody>
                 <tr ng-repeat="subject in subjects() | filter: {subjectType: selectedSubjectType.key}">
                     <td>{{subject.module.shortTitle}}</td>
-                    <td>{{subjectTypes[subject.subjectType]}}</td>
+                    <td>{{subjectTypes()[subject.subjectType]}}</td>
                     <td>{{subject.minChangeoverTime}}</td>
                     <td>
                         <button class="btn btn-primary btn-xs"
@@ -91,23 +91,24 @@
             <div class="card-body">
                 <form name="modal">
                     <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="modalSelectedCohort">Modul</label>
-                            <select class="form-control"
-                                    id="modalSelectedCohort"
-                                    ng-options="cohort.name for cohort in cohorts"
-                                    ng-model="subject.module">
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
                             <label for="modalSelectedSeminartype">Veranstaltungstyp</label>
                             <select class="form-control"
                                     id="modalSelectedSeminartype"
-                                    ng-options="key as name for (key,name) in subjectTypes"
-                                    ng-model="subject.subjectType">
+                                    ng-options="key as name for (key,name) in subjectTypes()"
+                                    ng-model="subject.subjectType"
+                                    ng-change="setModulModel(subject)">
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
+                            <label for="modalSelectedCohort">Modul</label>
+                            <select class="form-control"
+                                    id="modalSelectedCohort"
+                                    ng-options="modul as modul.title for modul in module()"
+                                    ng-model="subject.module">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
                             <label for="inputChangeOverTime">Wechselzeit</label>
                             <div class="input-group">
                                 <input type="number"

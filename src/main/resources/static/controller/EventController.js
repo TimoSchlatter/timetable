@@ -1,18 +1,31 @@
 'use strict';
 
-app.controller('EventController', function ($scope, $http, ConnectionService) {
+app.controller('EventController', function ($scope, ConnectionService) {
 
-    var subjectTypesUrl = 'http://localhost:49999/subjecttypes/';
-    var eventsUrl = 'http://localhost:49999/events/';
-
+    $scope.events = ConnectionService.getEvents;
+    $scope.updateEvent = ConnectionService.updateEvent;
+    $scope.deleteEvent = ConnectionService.deleteEvent;
     $scope.rooms = ConnectionService.getRooms;
     $scope.docents = ConnectionService.getDocents;
     $scope.subjects = ConnectionService.getSubjects;
     $scope.cohorts = ConnectionService.getCohorts;
+    $scope.subjectTypes = ConnectionService.getSubjectTypes;
 
     $scope.$watch('cohorts()', function () {
         buildCohortsAdvanced($scope.cohorts());
     });
+
+    $scope.createEvent = function () {
+        $scope.event.date = $scope.modalDate.split('.').reverse();//[2018,4,40];
+        $scope.event.docents = $scope.modalSelectedDocents;
+        $scope.event.endTime = $scope.modalEndTime.split(':');//[18,30];
+        $scope.event.group = getSelectedGroup();
+        $scope.event.startTime = $scope.modalStartTime.split(':');
+        ;
+        $scope.event.subject = $scope.modalSubject;
+        $scope.event.rooms = $scope.modalSelectedRooms;
+        ConnectionService.createEvent($scope.event);
+    };
 
     var buildCohortsAdvanced = function (cohorts) {
         $scope.cohortsAdvanced = angular.copy(cohorts);
@@ -25,40 +38,37 @@ app.controller('EventController', function ($scope, $http, ConnectionService) {
         $scope.cohortsAdvanced.unshift({name: "Alle", maniples: [{name: "Alle", centuries: [{name: "Alle"}]}]});
     };
 
-    var getData = function () {
-        $http.get(eventsUrl).then(function successCallback(response) {
-            $scope.events = response.data;
-        }, function errorCallback(response) {
-            console.log(response.statusText);
-        });
-        $http.get(subjectTypesUrl).then(function successCallback(response) {
-            $scope.subjectTypes = response.data;
-        }, function errorCallback(response) {
-            console.log(response.statusText);
-        });
-    };
-
-    getData();
-
     $scope.setSelectedEvent = function (event) {
         $scope.event = angular.copy(event);
         console.log('Selected Event:', $scope.event);
         resetGroups();
     };
 
+    var getSelectedGroup = function () {
+        if ($scope.modalSelectedCentury !== $scope.modalSelectedManiple.centuries[0]) {
+            return $scope.modalSelectedCentury;
+        } else if ($scope.modalSelectedManiple !== $scope.modalSelectedCohort.maniples[0]) {
+            return $scope.modalSelectedManiple;
+        } else if ($scope.modalSelectedCohort !== $scope.cohortsAdvanced[0]) {
+            return $scope.modalSelectedCohort;
+        } else {
+            return undefined;
+        }
+    };
+
     var resetGroups = function () {
-        $scope.event.cohort = $scope.cohortsAdvanced[0];
-        $scope.event.maniple = $scope.event.cohort.maniples[0];
-        $scope.event.century = $scope.event.maniple.centuries[0];
+        $scope.modalSelectedCohort = $scope.cohortsAdvanced[0];
+        $scope.modalSelectedManiple = $scope.modalSelectedCohort.maniples[0];
+        $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
     };
 
     $scope.changedCohort = function () {
-        $scope.event.maniple = $scope.event.cohort.maniples[0];
-        $scope.event.century = $scope.event.maniple.centuries[0];
+        $scope.modalSelectedManiple = $scope.modalSelectedCohort.maniples[0];
+        $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
     };
 
     $scope.changedManiple = function () {
-        $scope.event.century = $scope.event.maniple.centuries[0];
+        $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
     };
 
     // $scope.uiConfig = {
