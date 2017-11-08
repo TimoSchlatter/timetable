@@ -9,7 +9,7 @@ import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CohortService;
 import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.ManipleService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -157,24 +157,24 @@ public class CohortControllerTest {
     public void testDeleteCohort() throws Exception {
         cohort.addManiple(maniple);
         maniple.addCentury(century);
+        final List<Maniple> maniples = cohort.getManiples();
         InOrder inOrder = inOrder(cohortService, eventService);
-        when(cohortService.loadCohort(cohortId)).thenReturn(cohort);
-        List<Maniple> maniples = cohort.getManiples();
-        mockMvc.perform(delete("/cohorts/" + cohortId)).andExpect(status().isOk());
-        maniples.forEach(m -> {
-            m.getCenturies().forEach(c -> inOrder.verify(eventService, times(1)).deleteEventByGroup(c));
-            inOrder.verify(eventService, times(1)).deleteEventByGroup(m);
-        });
-        inOrder.verify(eventService, times(1)).deleteEventByGroup(cohort);
-        inOrder.verify(cohortService, times(1)).deleteCohort(cohortId);
+        final String url = "/cohorts/" + cohortId;
 
-        doThrow(new EntityNotFoundException()).when(cohortService).deleteCohort(anyLong());
-        mockMvc.perform(delete("/cohorts/" + cohortId)).andExpect(status().isBadRequest());
+        // Cohort not existing
+        when(cohortService.loadCohort(anyLong())).thenReturn(null);
+        mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
+        verify(eventService, times(0)).deleteEventsByGroup(any());
+        verify(cohortService, times(0)).deleteCohort(anyLong());
+
+        // Cohort existing
+        when(cohortService.loadCohort(cohortId)).thenReturn(cohort);
+        mockMvc.perform(delete(url)).andExpect(status().isOk());
         maniples.forEach(m -> {
-            m.getCenturies().forEach(c -> inOrder.verify(eventService, times(1)).deleteEventByGroup(c));
-            inOrder.verify(eventService, times(1)).deleteEventByGroup(m);
+            m.getCenturies().forEach(c -> inOrder.verify(eventService, times(1)).deleteEventsByGroup(c));
+            inOrder.verify(eventService, times(1)).deleteEventsByGroup(m);
         });
-        inOrder.verify(eventService, times(1)).deleteEventByGroup(cohort);
+        inOrder.verify(eventService, times(1)).deleteEventsByGroup(cohort);
         inOrder.verify(cohortService, times(1)).deleteCohort(cohortId);
     }
 
@@ -236,9 +236,9 @@ public class CohortControllerTest {
         inOrder.verify(cohortService, times(1)).loadCohort(cohortId);
         inOrder.verify(manipleService, times(1)).loadManiple(manipleId);
         maniple.getCenturies().forEach(c ->
-            inOrder.verify(eventService, times(1)).deleteEventByGroup(c));
-        inOrder.verify(eventService, times(1)).deleteEventByGroup(maniple);
-        inOrder.verify(manipleService, times(1)).deleteManiple(any());
+            inOrder.verify(eventService, times(1)).deleteEventsByGroup(c));
+        inOrder.verify(eventService, times(1)).deleteEventsByGroup(maniple);
+        inOrder.verify(manipleService, times(1)).deleteManiple(manipleId);
     }
 
     @Test
@@ -248,7 +248,7 @@ public class CohortControllerTest {
         mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
         verify(manipleService, times(1)).loadManiple(manipleId);
-        verify(eventService, times(0)).deleteEventByGroup(any());
+        verify(eventService, times(0)).deleteEventsByGroup(any());
         verify(manipleService, times(0)).deleteManiple(any());
     }
 
@@ -259,7 +259,7 @@ public class CohortControllerTest {
         mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
         verify(manipleService, times(1)).loadManiple(manipleId);
-        verify(eventService, times(0)).deleteEventByGroup(any());
+        verify(eventService, times(0)).deleteEventsByGroup(any());
         verify(manipleService, times(0)).deleteManiple(any());
     }
 
@@ -270,7 +270,7 @@ public class CohortControllerTest {
         mockMvc.perform(delete("/cohorts/" + cohortId + "/deleteManiple/" + manipleId)).andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
         verify(manipleService, times(1)).loadManiple(manipleId);
-        verify(eventService, times(0)).deleteEventByGroup(any());
+        verify(eventService, times(0)).deleteEventsByGroup(any());
         verify(manipleService, times(0)).deleteManiple(any());
     }
 

@@ -1,12 +1,8 @@
 package de.nordakademie.iaa.service.impl;
 
 import de.nordakademie.iaa.dao.EventDAO;
-import de.nordakademie.iaa.model.Event;
-import de.nordakademie.iaa.model.Group;
-import de.nordakademie.iaa.model.Room;
-import de.nordakademie.iaa.model.Subject;
+import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.EventService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,12 +46,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void deleteEvent(Long id) throws EntityNotFoundException {
+    public boolean deleteEvent(Long id) {
         Event event = loadEvent(id);
         if (event == null) {
-            throw new EntityNotFoundException();
+            return false;
         }
         eventDAO.delete(event);
+        return true;
     }
 
     @Override
@@ -64,17 +61,27 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> findEventByTime(LocalDate date, LocalTime startTime, LocalTime endTime) {
+    public List<Event> findEventsByTime(LocalDate date, LocalTime startTime, LocalTime endTime) {
         return eventDAO.findByTime(date, startTime, endTime);
     }
 
     @Override
-    public void deleteEventByGroup(Group group) {
+    public void deleteEventsByGroup(Group group) {
         eventDAO.deleteByGroup(group);
     }
 
     @Override
-    public void deleteEventBySubject(Subject subject) {
+    public void deleteEventsBySubject(Subject subject) {
         eventDAO.deleteBySubject(subject);
+    }
+
+    @Override
+    public List<Event> findEventsByRoom(Room room) {
+        return eventDAO.findByRooms(room);
+    }
+
+    @Override
+    public List<Event> findEventsByDocent(Docent docent) {
+        return eventDAO.findByDocents(docent);
     }
 }

@@ -3,7 +3,6 @@ package de.nordakademie.iaa.service.impl;
 import de.nordakademie.iaa.dao.CenturyDAO;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.service.CenturyService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,12 +40,13 @@ public class CenturyServiceImpl implements CenturyService {
     }
 
     @Override
-    public void deleteCentury(Long id) throws EntityNotFoundException {
+    public boolean deleteCentury(Long id) {
         Century century = loadCentury(id);
         if (century == null) {
-            throw new EntityNotFoundException();
+            return false;
         }
         centuryDAO.delete(century);
+        return true;
     }
 
     @Override

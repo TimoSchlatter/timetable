@@ -1,9 +1,6 @@
 package de.nordakademie.iaa.service;
 
-import de.nordakademie.iaa.model.Event;
-import de.nordakademie.iaa.model.Group;
-import de.nordakademie.iaa.model.Subject;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 
 import java.time.LocalDate;
@@ -39,9 +36,9 @@ public interface EventService {
      * Deletes the event with the given id.
      *
      * @param id The identifier.
-     * @throws EntityNotFoundException if no event could be found for the given id.
+     * @return
      */
-    void deleteEvent(Long id) throws EntityNotFoundException;
+    boolean deleteEvent(Long id);
 
     /**
      * Retrieves a event by its date and startTime and endTime and group.
@@ -53,9 +50,26 @@ public interface EventService {
      */
     Event findEventByDateAndStartTimeAndEndTimeAndGroup(LocalDate date, LocalTime startTime, LocalTime endTime, Group group);
 
-    List<Event> findEventByTime(LocalDate date, LocalTime startTime, LocalTime endTime);
+    List<Event> findEventsByTime(LocalDate date, LocalTime startTime, LocalTime endTime);
 
-    void deleteEventByGroup(Group group);
+    void deleteEventsByGroup(Group group);
 
-    void deleteEventBySubject(Subject subject);
+    void deleteEventsBySubject(Subject subject);
+
+    /**
+     * Find events by room
+     *
+     * @param room the room the events are happening in
+     * @return events that happen in the given room
+     */
+    List<Event> findEventsByRoom(Room room);
+
+    /**
+     * Find events by docents
+     *
+     * @param docent the docent who is holding the event
+     * @return events that are holded by the given docent
+     */
+    List<Event> findEventsByDocent(Docent docent);
+
 }

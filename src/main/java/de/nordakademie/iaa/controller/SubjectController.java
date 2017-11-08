@@ -2,8 +2,8 @@ package de.nordakademie.iaa.controller;
 
 
 import de.nordakademie.iaa.model.Subject;
+import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.SubjectService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +20,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RequestMapping("/subjects")
 public class SubjectController {
 
+    private EventService eventService;
     private SubjectService subjectService;
 
     @Autowired
-    public SubjectController(SubjectService subjectService) {
+    public SubjectController(EventService eventService, SubjectService subjectService) {
+        this.eventService = eventService;
         this.subjectService = subjectService;
     }
 
@@ -76,12 +78,13 @@ public class SubjectController {
      */
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteSubject(@PathVariable Long id) {
-        try {
+        Subject subject = subjectService.loadSubject(id);
+        if (subject != null) {
+            eventService.deleteEventsBySubject(subject);
             subjectService.deleteSubject(id);
             return ResponseEntity.ok(null);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().build();
         }
+        return ResponseEntity.badRequest().build();
     }
 
 }

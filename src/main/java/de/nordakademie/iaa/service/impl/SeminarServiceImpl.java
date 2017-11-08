@@ -3,7 +3,6 @@ package de.nordakademie.iaa.service.impl;
 import de.nordakademie.iaa.dao.SeminarDAO;
 import de.nordakademie.iaa.model.Seminar;
 import de.nordakademie.iaa.service.SeminarService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,12 +36,13 @@ public class SeminarServiceImpl implements SeminarService {
     }
 
     @Override
-    public void deleteSeminar(Long id) throws EntityNotFoundException {
+    public boolean deleteSeminar(Long id) {
         Seminar seminar = loadSeminar(id);
         if (seminar == null) {
-            throw new EntityNotFoundException();
+            return false;
         }
         seminarDAO.delete(seminar);
+        return true;
     }
 
     @Override

@@ -7,7 +7,7 @@ import de.nordakademie.iaa.model.Seminar;
 import de.nordakademie.iaa.model.SeminarType;
 import de.nordakademie.iaa.service.SeminarService;
 import de.nordakademie.iaa.service.SubjectService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -144,12 +144,6 @@ public class SeminarControllerTest {
         // Seminar existing
         when(seminarService.loadSeminar(seminarId)).thenReturn(seminar);
         mockMvc.perform(delete(url)).andExpect(status().isOk());
-        inOrder.verify(seminarService, times(1)).loadSeminar(seminarId);
-        inOrder.verify(subjectService, times(1)).deleteSubjectByModule(seminar);
-        inOrder.verify(seminarService, times(1)).deleteSeminar(seminarId);
-        // Seminar existing & deletion failed
-        doThrow(new EntityNotFoundException()).when(seminarService).deleteSeminar(anyLong());
-        mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
         inOrder.verify(seminarService, times(1)).loadSeminar(seminarId);
         inOrder.verify(subjectService, times(1)).deleteSubjectByModule(seminar);
         inOrder.verify(seminarService, times(1)).deleteSeminar(seminarId);

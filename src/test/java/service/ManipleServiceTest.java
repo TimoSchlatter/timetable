@@ -1,10 +1,8 @@
 package service;
 
-
 import de.nordakademie.iaa.dao.ManipleDAO;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.ManipleService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.ManipleServiceImpl;
 import org.junit.After;
@@ -17,6 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,6 +33,7 @@ public class ManipleServiceTest {
     private ManipleDAO manipleDAO;
 
     private final String name = "I";
+    private final Long id = 1L;
     private final Maniple maniple = new Maniple(name);
 
     @Test(expected = NotEnoughChangeoverTimeProvidedException.class)
@@ -57,24 +58,21 @@ public class ManipleServiceTest {
 
     @Test
     public void testLoadManiple() {
-        final Long id = 123L;
         manipleService.loadManiple(id);
         verify(manipleDAO, times(1)).findOne(id);
     }
 
-    @Test(expected = EntityNotFoundException.class)
-    public void testDeleteNonExistingManiple() throws EntityNotFoundException {
-        final Long id = 123L;
-        when(manipleDAO.findOne(anyLong())).thenReturn(null);
-        manipleService.deleteManiple(id);
+    @Test
+    public void testDeleteNonExistingManiple() {
+        when(manipleDAO.findOne(id)).thenReturn(null);
+        assertFalse(manipleService.deleteManiple(id));
+        verify(manipleDAO, times(0)).deleteById(anyLong());
     }
 
     @Test
-    public void testDeleteExistingManiple() throws EntityNotFoundException {
-        final Long id = 123L;
-        when(manipleDAO.findOne(anyLong())).thenReturn(maniple);
-        manipleService.deleteManiple(id);
-        verify(manipleDAO, times(1)).findOne(id);
+    public void testDeleteExistingManiple() {
+        when(manipleDAO.findOne(id)).thenReturn(maniple);
+        assertTrue(manipleService.deleteManiple(id));
         verify(manipleDAO, times(1)).delete(maniple);
     }
 

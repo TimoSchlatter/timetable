@@ -6,7 +6,6 @@ import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CohortService;
 import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.ManipleService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,7 +55,8 @@ public class CohortController {
                 cohortService.saveCohort(cohort);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
 
@@ -72,7 +72,8 @@ public class CohortController {
                 cohortService.saveCohort(cohort);
                 return ResponseEntity.ok().build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
 
@@ -83,18 +84,16 @@ public class CohortController {
      */
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteCohort(@PathVariable Long id) {
-        try {
-            Cohort cohort = cohortService.loadCohort(id);
-            if (cohort != null) {
-                cohort.getManiples().forEach(maniple -> {
-                    maniple.getCenturies().forEach(eventService::deleteEventByGroup);
-                    eventService.deleteEventByGroup(maniple);
-                });
-                eventService.deleteEventByGroup(cohort);
-                cohortService.deleteCohort(id);
-                return ResponseEntity.ok(null);
-            }
-        } catch (EntityNotFoundException ignored) {}
+        Cohort cohort = cohortService.loadCohort(id);
+        if (cohort != null) {
+            cohort.getManiples().forEach(maniple -> {
+                maniple.getCenturies().forEach(eventService::deleteEventsByGroup);
+                eventService.deleteEventsByGroup(maniple);
+            });
+            eventService.deleteEventsByGroup(cohort);
+            cohortService.deleteCohort(id);
+            return ResponseEntity.ok(null);
+        }
         return ResponseEntity.badRequest().build();
     }
 
@@ -115,7 +114,8 @@ public class CohortController {
                     manipleService.saveManiple(maniple);
                     cohort.addManiple(maniple);
                     return ResponseEntity.status(HttpStatus.CREATED).build();
-                } catch (NotEnoughChangeoverTimeProvidedException ignored) {}
+                } catch (NotEnoughChangeoverTimeProvidedException ignored) {
+                }
             }
         }
         return ResponseEntity.badRequest().build();
@@ -124,7 +124,7 @@ public class CohortController {
     /**
      * Deletes the maniple with the given id.
      *
-     * @param cohortId The id of the cohort, to which the maniple belongs.
+     * @param cohortId  The id of the cohort, to which the maniple belongs.
      * @param manipleId The id of the maniple to delete.
      */
     @RequestMapping(value = "/{cohortId}/deleteManiple/{manipleId}", method = DELETE)
@@ -132,13 +132,11 @@ public class CohortController {
         Cohort cohort = cohortService.loadCohort(cohortId);
         Maniple maniple = manipleService.loadManiple(manipleId);
         if (cohort != null && maniple != null) {
-            try {
-                cohort.removeManiple(maniple);
-                maniple.getCenturies().forEach(eventService::deleteEventByGroup);
-                eventService.deleteEventByGroup(maniple);
-                manipleService.deleteManiple(maniple.getId());
-                return ResponseEntity.ok(null);
-            } catch (EntityNotFoundException ignored) {}
+            cohort.removeManiple(maniple);
+            maniple.getCenturies().forEach(eventService::deleteEventsByGroup);
+            eventService.deleteEventsByGroup(maniple);
+            manipleService.deleteManiple(maniple.getId());
+            return ResponseEntity.ok(null);
         }
         return ResponseEntity.badRequest().build();
     }

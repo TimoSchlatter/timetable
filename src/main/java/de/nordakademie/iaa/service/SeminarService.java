@@ -1,7 +1,6 @@
 package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Seminar;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 
 import java.util.List;
 
@@ -35,9 +34,9 @@ public interface SeminarService {
      * Deletes the seminar with the given id.
      *
      * @param id The identifier.
-     * @throws EntityNotFoundException if no seminar could be found for the given id.
+     * @return .
      */
-    void deleteSeminar(Long id) throws EntityNotFoundException;
+    boolean deleteSeminar(Long id);
 
     /**
      * Retrieves a seminar by its title.

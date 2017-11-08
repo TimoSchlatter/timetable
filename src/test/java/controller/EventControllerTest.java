@@ -7,7 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.nordakademie.iaa.controller.EventController;
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.EventService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +31,6 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -50,8 +48,10 @@ public class EventControllerTest {
 
     private MockMvc mockMvc;
     private JacksonTester<Event> jacksonTester;
-    private final Set<Room> rooms = new HashSet<>(Arrays.asList(new Room(15, "A", 40, "001", RoomType.LECTUREROOM)));
-    private final Set<Docent> docents = new HashSet<>(Arrays.asList(new Docent("a@a.com", "Ed", "Sy", "0115273487", "Dr.", true, 20)));
+    private final Room room = new Room(15, "A", 40, "001", RoomType.LECTUREROOM);
+    private final Set<Room> rooms = new HashSet<>(Arrays.asList(room));
+    private final Docent docent = new Docent("a@a.com", "Ed", "Sy", "0115273487", "Dr.", true, 20);
+    private final Set<Docent> docents = new HashSet<>(Arrays.asList(docent));
     private final Group group = new Century("I14a", 30, 30);
     private final LocalDate date = LocalDate.of(2018, Month.APRIL, 1);
     private final LocalTime startTime = LocalTime.of(9, 30);
@@ -176,11 +176,13 @@ public class EventControllerTest {
 
     @Test
     public void testDeleteEvent() throws Exception {
-        mockMvc.perform(delete("/events/" + event.getId())).andExpect(status().isOk());
-        verify(eventService, times(1)).deleteEvent(event.getId());
-        doThrow(new EntityNotFoundException()).when(eventService).deleteEvent(anyLong());
-        mockMvc.perform(delete("/events/" + event.getId())).andExpect(status().isBadRequest());
-        verify(eventService, times(2)).deleteEvent(event.getId());
+        final String url = "/events/" + event.getId();
+
+        when(eventService.deleteEvent(eventId)).thenReturn(false);
+        mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
+
+        when(eventService.deleteEvent(eventId)).thenReturn(true);
+        mockMvc.perform(delete(url)).andExpect(status().isOk());
     }
 
     @After

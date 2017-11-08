@@ -44,7 +44,7 @@ public class CenturyControllerTest {
 
     private MockMvc mockMvc;
     private JacksonTester<Century> jacksonTester;
-    private final Century century = new Century("I14", 30);
+    private final Century century = new Century("I14", 30, 30);
     private final Long centuryId = 1L;
 
     @Before

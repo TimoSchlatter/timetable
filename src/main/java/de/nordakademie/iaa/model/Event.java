@@ -112,6 +112,14 @@ public class Event extends HasId implements Serializable {
         return date.format(dateFormatter) + ", " + endTime.format(timeFormatter);
     }
 
+    public boolean removeRoom(Room room) {
+        return rooms.remove(room);
+    }
+
+    public boolean removeDocent(Docent docent) {
+        return docents.remove(docent);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

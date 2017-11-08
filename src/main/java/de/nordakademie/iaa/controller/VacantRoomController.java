@@ -45,7 +45,7 @@ public class VacantRoomController {
                                 @RequestParam("startTime")@DateTimeFormat(pattern = "HH:mm")LocalTime startTime,
                                 @RequestParam("endTime")@DateTimeFormat(pattern = "HH:mm")LocalTime endTime,
                                 @RequestParam(value = "groupSize", required = false)Integer groupSize) {
-        List<Event> events = eventService.findEventByTime(date, startTime, endTime);
+        List<Event> events = eventService.findEventsByTime(date, startTime, endTime);
         List<Room> rooms = new ArrayList<>(roomService.listRooms());
         if (!rooms.isEmpty()) {
             if (!events.isEmpty()) {

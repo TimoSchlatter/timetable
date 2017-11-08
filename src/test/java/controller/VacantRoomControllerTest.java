@@ -72,11 +72,11 @@ public class VacantRoomControllerTest {
     @Test
     public void testListVacantRooms() throws Exception {
         when(roomService.listRooms()).thenReturn(Arrays.asList(room1, room2, room3, room4, room5, room6));
-        when(eventService.findEventByTime(date, startTime, endTime)).thenReturn(Arrays.asList(event1, event2));
+        when(eventService.findEventsByTime(date, startTime, endTime)).thenReturn(Arrays.asList(event1, event2));
         MvcResult mvcResult = mockMvc.perform(get("/vacantRooms?date=" + date.toString() + "&startTime=" + startTime.toString() + "&endTime=" + endTime.toString()))
                 .andExpect(status().isOk())
                 .andReturn();
-        verify(eventService, times(1)).findEventByTime(date, startTime, endTime);
+        verify(eventService, times(1)).findEventsByTime(date, startTime, endTime);
         verify(roomService, times(1)).listRooms();
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Room> roomsResponse = new ObjectMapper().readValue(jsonResponse, new TypeReference<List<Room>>() {});
@@ -86,12 +86,12 @@ public class VacantRoomControllerTest {
     @Test
     public void testListVacantRoomsWithGroupSize() throws Exception {
         when(roomService.listRooms()).thenReturn(Arrays.asList(room1, room2, room3, room4, room5, room6));
-        when(eventService.findEventByTime(date, startTime, endTime)).thenReturn(Arrays.asList(event1, event2));
+        when(eventService.findEventsByTime(date, startTime, endTime)).thenReturn(Arrays.asList(event1, event2));
         MvcResult mvcResult = mockMvc.perform(get("/vacantRooms?date=" + date.toString() + "&startTime=" +
                 startTime.toString() + "&endTime=" + endTime.toString() + "&groupSize=" + groupSize))
                 .andExpect(status().isOk())
                 .andReturn();
-        verify(eventService, times(1)).findEventByTime(date, startTime, endTime);
+        verify(eventService, times(1)).findEventsByTime(date, startTime, endTime);
         verify(roomService, times(1)).listRooms();
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Room> roomsResponse = new ObjectMapper().readValue(jsonResponse, new TypeReference<List<Room>>() {});

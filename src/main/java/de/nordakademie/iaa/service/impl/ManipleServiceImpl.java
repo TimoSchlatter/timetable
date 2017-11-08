@@ -3,7 +3,6 @@ package de.nordakademie.iaa.service.impl;
 import de.nordakademie.iaa.dao.ManipleDAO;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.ManipleService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,12 +40,13 @@ public class ManipleServiceImpl implements ManipleService {
     }
 
     @Override
-    public void deleteManiple(Long id) throws EntityNotFoundException {
+    public boolean deleteManiple(Long id) {
         Maniple maniple = loadManiple(id);
         if (maniple == null) {
-            throw new EntityNotFoundException();
+            return false;
         }
         manipleDAO.delete(maniple);
+        return true;
     }
 
     @Override

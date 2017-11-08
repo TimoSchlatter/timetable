@@ -4,7 +4,7 @@ package service;
 import de.nordakademie.iaa.dao.DocentDAO;
 import de.nordakademie.iaa.model.Docent;
 import de.nordakademie.iaa.service.DocentService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.DocentServiceImpl;
 import org.junit.After;
@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -33,6 +35,7 @@ public class DocentServiceTest {
     @Autowired
     private DocentDAO docentDAO;
 
+    private final Long id = 1L;
     private final String forename = "John";
     private final String surname = "Doe";
     private final String email = "test@docent.com";
@@ -64,24 +67,21 @@ public class DocentServiceTest {
 
     @Test
     public void testLoadDocent() {
-        final Long id = 123L;
         docentService.loadDocent(id);
         verify(docentDAO, times(1)).findOne(id);
     }
 
-    @Test(expected = EntityNotFoundException.class)
-    public void testDeleteNonExistingDocent() throws EntityNotFoundException {
-        final Long id = 123L;
-        when(docentDAO.findOne(anyLong())).thenReturn(null);
-        docentService.deleteDocent(id);
+    @Test
+    public void testDeleteNonExistingDocent() {
+        when(docentDAO.findOne(id)).thenReturn(null);
+        assertFalse(docentService.deleteDocent(id));
+        verify(docentDAO, times(0)).deleteById(anyLong());
     }
 
     @Test
-    public void testDeleteExistingDocent() throws EntityNotFoundException {
-        final Long id = 123L;
-        when(docentDAO.findOne(anyLong())).thenReturn(docent);
-        docentService.deleteDocent(id);
-        verify(docentDAO, times(1)).findOne(id);
+    public void testDeleteExistingDocent() {
+        when(docentDAO.findOne(id)).thenReturn(docent);
+        assertTrue(docentService.deleteDocent(id));
         verify(docentDAO, times(1)).delete(docent);
     }
 

@@ -26,7 +26,7 @@ public interface EventDAO extends JpaRepository<Event,Long>, BaseDAO<Event, Long
     Event findByDateAndStartTimeAndEndTimeAndGroup(LocalDate date, LocalTime startTime, LocalTime endTime, Group group);
 
     /**
-     *Find events by room
+     * Find events by room
      *
      * @param room the room the events are happening in
      * @return events that happen in the given room
@@ -35,6 +35,7 @@ public interface EventDAO extends JpaRepository<Event,Long>, BaseDAO<Event, Long
 
     /**
      * Find events by docents
+     *
      * @param docent the docent who is holding the event
      * @return events that are holded by the given docent
      */
@@ -59,7 +60,7 @@ public interface EventDAO extends JpaRepository<Event,Long>, BaseDAO<Event, Long
     void deleteByGroup(Group group);
 
     /**
-     *Delete events that are related to a specific subject
+     * Delete events that are related to a specific subject
      *
      * @param subject the subject the events are related to
      */

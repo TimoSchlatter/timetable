@@ -4,7 +4,7 @@ package service;
 import de.nordakademie.iaa.dao.CourseDAO;
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.service.CourseService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+
 import de.nordakademie.iaa.service.impl.CourseServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -34,6 +36,7 @@ public class CourseServiceTest {
 
     private final String field = "I";
     private final int number = 101;
+    private final Long id = 1L;
     private final String title = "Test Driven Development";
     private final String shortTitle = "TDD";
     private final Course course = new Course(title, shortTitle, field, number);
@@ -52,24 +55,21 @@ public class CourseServiceTest {
 
     @Test
     public void testLoadCourse() {
-        final Long id = 123L;
         courseService.loadCourse(id);
         verify(courseDAO, times(1)).findOne(id);
     }
 
-    @Test(expected = EntityNotFoundException.class)
-    public void testDeleteNonExistingCourse() throws EntityNotFoundException {
-        final Long id = 123L;
-        when(courseDAO.findOne(anyLong())).thenReturn(null);
-        courseService.deleteCourse(id);
+    @Test
+    public void testDeleteNonExistingCourse() {
+        when(courseDAO.findOne(id)).thenReturn(null);
+        assertFalse(courseService.deleteCourse(id));
+        verify(courseDAO, times(0)).deleteById(anyLong());
     }
 
     @Test
-    public void testDeleteExistingCourse() throws EntityNotFoundException {
-        final Long id = 123L;
-        when(courseDAO.findOne(anyLong())).thenReturn(course);
-        courseService.deleteCourse(id);
-        verify(courseDAO, times(1)).findOne(id);
+    public void testDeleteExistingCourse() {
+        when(courseDAO.findOne(id)).thenReturn(course);
+        assertTrue(courseService.deleteCourse(id));
         verify(courseDAO, times(1)).delete(course);
     }
 

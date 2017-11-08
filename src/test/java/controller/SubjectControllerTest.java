@@ -5,8 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import de.nordakademie.iaa.controller.SubjectController;
 import de.nordakademie.iaa.model.*;
+import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.SubjectService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +40,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class SubjectControllerTest {
+
+    @Autowired
+    private EventService eventService;
 
     @Autowired
     private SubjectController subjectController;
@@ -134,11 +138,16 @@ public class SubjectControllerTest {
     @Test
     public void testDeleteSubject() throws Exception {
         final String url = "/subjects/" + subjectId;
-        mockMvc.perform(delete(url)).andExpect(status().isOk());
-        verify(subjectService, times(1)).deleteSubject(subjectId);
-        doThrow(new EntityNotFoundException()).when(subjectService).deleteSubject(anyLong());
+
+        when(subjectService.loadSubject(subjectId)).thenReturn(null);
         mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
-        verify(subjectService, times(2)).deleteSubject(subjectId);
+        verify(eventService, times(0)).deleteEventsBySubject(any());
+        verify(subjectService, times(0)).deleteSubject(anyLong());
+
+        when(subjectService.loadSubject(subjectId)).thenReturn(subject);
+        mockMvc.perform(delete(url)).andExpect(status().isOk());
+        verify(eventService, times(1)).deleteEventsBySubject(subject);
+        verify(subjectService, times(1)).deleteSubject(subjectId);
     }
 
     @After
@@ -150,13 +159,18 @@ public class SubjectControllerTest {
     static class TestConfiguration {
 
         @Bean
+        public EventService eventService() {
+            return mock(EventService.class);
+        }
+
+        @Bean
         public SubjectService subjectService() {
             return mock(SubjectService.class);
         }
 
         @Bean
         public SubjectController subjectController() {
-            return new SubjectController(subjectService());
+            return new SubjectController(eventService(), subjectService());
         }
     }
 }

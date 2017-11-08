@@ -5,7 +5,7 @@ import de.nordakademie.iaa.dao.RoomDAO;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.model.RoomType;
 import de.nordakademie.iaa.service.RoomService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+
 import de.nordakademie.iaa.service.impl.RoomServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -33,6 +35,7 @@ public class RoomServiceTest {
     @Autowired
     private RoomDAO roomDAO;
 
+    private final Long id = 1L;
     private final String building = "A";
     private final String number = "123";
     private final RoomType roomType = RoomType.LECTUREROOM;
@@ -52,24 +55,21 @@ public class RoomServiceTest {
 
     @Test
     public void testLoadRoom() {
-        final Long id = 123L;
         roomService.loadRoom(id);
         verify(roomDAO, times(1)).findOne(id);
     }
 
-    @Test(expected = EntityNotFoundException.class)
-    public void testDeleteNonExistingRoom() throws EntityNotFoundException {
-        final Long id = 123L;
-        when(roomDAO.findOne(anyLong())).thenReturn(null);
-        roomService.deleteRoom(id);
+    @Test
+    public void testDeleteNonExistingRoom() {
+        when(roomDAO.findOne(id)).thenReturn(null);
+        assertFalse(roomService.deleteRoom(id));
+        verify(roomDAO, times(0)).deleteById(anyLong());
     }
 
     @Test
-    public void testDeleteExistingRoom() throws EntityNotFoundException {
-        final Long id = 123L;
-        when(roomDAO.findOne(anyLong())).thenReturn(room);
-        roomService.deleteRoom(id);
-        verify(roomDAO, times(1)).findOne(id);
+    public void testDeleteExistingRoom() {
+        when(roomDAO.findOne(id)).thenReturn(room);
+        assertTrue(roomService.deleteRoom(id));
         verify(roomDAO, times(1)).delete(room);
     }
 

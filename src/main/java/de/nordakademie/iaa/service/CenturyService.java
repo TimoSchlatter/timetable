@@ -1,7 +1,6 @@
 package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Century;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 
 import java.util.List;
@@ -35,9 +34,9 @@ public interface CenturyService {
      * Deletes the century with the given id.
      *
      * @param id the identifier.
-     * @throws EntityNotFoundException if no century could be found for the given id.
+     * @return
      */
-    void deleteCentury(Long id) throws EntityNotFoundException;
+    boolean deleteCentury(Long id);
 
     /**
      * Retrieves a century by its name.

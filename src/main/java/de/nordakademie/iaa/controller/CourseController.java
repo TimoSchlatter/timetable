@@ -4,7 +4,6 @@ package de.nordakademie.iaa.controller;
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.service.CourseService;
 import de.nordakademie.iaa.service.SubjectService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +51,8 @@ public class CourseController {
                 courseService.saveCourse(course);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
 
@@ -68,7 +68,8 @@ public class CourseController {
                 courseService.saveCourse(course);
                 return ResponseEntity.ok().build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
 
@@ -81,11 +82,9 @@ public class CourseController {
     public ResponseEntity deleteCourse(@PathVariable Long id) {
         Course course = courseService.loadCourse(id);
         if (course != null) {
-            try {
-                subjectService.deleteSubjectByModule(course);
-                courseService.deleteCourse(id);
-                return ResponseEntity.ok(null);
-            } catch (EntityNotFoundException ignored) {}
+            subjectService.deleteSubjectByModule(course);
+            courseService.deleteCourse(id);
+            return ResponseEntity.ok(null);
         }
         return ResponseEntity.badRequest().build();
     }

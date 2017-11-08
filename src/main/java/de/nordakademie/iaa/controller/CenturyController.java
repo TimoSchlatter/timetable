@@ -3,6 +3,7 @@ package de.nordakademie.iaa.controller;
 
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.service.CenturyService;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,7 @@ public class CenturyController {
                 centuryService.saveCentury(century);
                 return ResponseEntity.ok().build();
             }
-        } catch (Exception ignored) {}
+        } catch (NotEnoughChangeoverTimeProvidedException ignored) {}
         return ResponseEntity.badRequest().build();
     }
 }

@@ -2,8 +2,9 @@ package de.nordakademie.iaa.controller;
 
 
 import de.nordakademie.iaa.model.Docent;
+import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.service.DocentService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Transactional
 @RestController
@@ -20,10 +22,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class DocentController {
 
     private DocentService docentService;
+    private EventService eventService;
 
     @Autowired
-    public DocentController(DocentService docentService) {
+    public DocentController(DocentService docentService, EventService eventService) {
         this.docentService = docentService;
+        this.eventService = eventService;
     }
 
     /**
@@ -75,12 +79,20 @@ public class DocentController {
      */
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteDocent(@PathVariable Long id) {
-        try {
+        Docent docent = docentService.loadDocent(id);
+        if (docent != null) {
+            List<Event> eventsWithDocent = eventService.findEventsByDocent(docent);
+            eventsWithDocent.forEach(event -> {
+                if (event.getDocents().size() == 1) {
+                    eventService.deleteEvent(event.getId());
+                } else {
+                    event.removeDocent(docent);
+                }
+            });
             docentService.deleteDocent(id);
             return ResponseEntity.ok(null);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().build();
         }
+        return ResponseEntity.badRequest().build();
     }
 
 }

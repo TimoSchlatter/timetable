@@ -3,7 +3,6 @@ package de.nordakademie.iaa.service.impl;
 import de.nordakademie.iaa.dao.DocentDAO;
 import de.nordakademie.iaa.model.Docent;
 import de.nordakademie.iaa.service.DocentService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,12 +40,13 @@ public class DocentServiceImpl implements DocentService {
     }
 
     @Override
-    public void deleteDocent(Long id) throws EntityNotFoundException {
+    public boolean deleteDocent(Long id) {
         Docent docent = loadDocent(id);
         if (docent == null) {
-            throw new EntityNotFoundException();
+            return false;
         }
         docentDAO.delete(docent);
+        return true;
     }
 
     @Override

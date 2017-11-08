@@ -1,7 +1,6 @@
 package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Maniple;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 
 import java.util.List;
@@ -35,9 +34,9 @@ public interface ManipleService {
      * Deletes the maniple with the given id.
      *
      * @param id The identifier.
-     * @throws EntityNotFoundException if no maniple could be found for the given id.
+     * @return
      */
-    void deleteManiple(Long id) throws EntityNotFoundException;
+    boolean deleteManiple(Long id);
 
     /**
      * Retrieves a maniple by its name.

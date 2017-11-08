@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.DocentController;
 import de.nordakademie.iaa.model.Docent;
+import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.service.DocentService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+import de.nordakademie.iaa.service.EventService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
@@ -25,6 +27,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -40,10 +43,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DocentControllerTest {
 
     @Autowired
-    private DocentController docentController;
+    private EventService eventService;
 
     @Autowired
     private DocentService docentService;
+
+    @Autowired
+    private DocentController docentController;
 
     private MockMvc mockMvc;
     private JacksonTester<Docent> jacksonTester;
@@ -128,11 +134,27 @@ public class DocentControllerTest {
     @Test
     public void testDeleteDocent() throws Exception {
         String url = "/docents/" + docentId;
-        mockMvc.perform(delete(url)).andExpect(status().isOk());
-        verify(docentService, times(1)).deleteDocent(docentId);
-        doThrow(new EntityNotFoundException()).when(docentService).deleteDocent(anyLong());
+        
+        // Docent not existing
+        when(docentService.loadDocent(anyLong())).thenReturn(null);
         mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
-        verify(docentService, times(2)).deleteDocent(docentId);
+        verify(eventService, times(0)).findEventsByDocent(any());
+        verify(eventService, times(0)).deleteEventsByGroup(any());
+        verify(docentService, times(0)).deleteDocent(anyLong());
+
+        // Docent existing
+        InOrder inOrder = inOrder(docentService, eventService);
+        Event event1 = new Event();
+        event1.setId(1L);
+        event1.setDocents(new HashSet<>(Arrays.asList(docent)));
+        Event event2 = new Event();
+        event2.setDocents(new HashSet<>(Arrays.asList(docent, new Docent())));
+        when(docentService.loadDocent(docentId)).thenReturn(docent);
+        when(eventService.findEventsByDocent(docent)).thenReturn(Arrays.asList(event1, event2));
+        mockMvc.perform(delete(url)).andExpect(status().isOk());
+        inOrder.verify(eventService, times(1)).findEventsByDocent(docent);
+        inOrder.verify(eventService, times(1)).deleteEvent(event1.getId());
+        inOrder.verify(docentService, times(1)).deleteDocent(docentId);
     }
 
     @After
@@ -149,8 +171,13 @@ public class DocentControllerTest {
         }
 
         @Bean
+        public EventService eventService() {
+            return mock(EventService.class);
+        }
+
+        @Bean
         public DocentController docentController() {
-            return new DocentController(docentService());
+            return new DocentController(docentService(), eventService());
         }
     }
 }

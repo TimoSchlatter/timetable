@@ -4,7 +4,7 @@ package service;
 import de.nordakademie.iaa.dao.CenturyDAO;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.service.CenturyService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.CenturyServiceImpl;
 import org.junit.After;
@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -62,17 +64,17 @@ public class CenturyServiceTest {
         verify(centuryDAO, times(1)).findOne(id);
     }
 
-    @Test(expected = EntityNotFoundException.class)
-    public void testDeleteNonExistingCentury() throws EntityNotFoundException {
-        when(centuryDAO.findOne(anyLong())).thenReturn(null);
-        centuryService.deleteCentury(id);
+    @Test
+    public void testDeleteNonExistingCentury() {
+        when(centuryDAO.findOne(id)).thenReturn(null);
+        assertFalse(centuryService.deleteCentury(id));
+        verify(centuryDAO, times(0)).deleteById(anyLong());
     }
 
     @Test
-    public void testDeleteExistingCentury() throws EntityNotFoundException {
-        when(centuryDAO.findOne(anyLong())).thenReturn(century);
-        centuryService.deleteCentury(id);
-        verify(centuryDAO, times(1)).findOne(id);
+    public void testDeleteExistingCentury() {
+        when(centuryDAO.findOne(id)).thenReturn(century);
+        assertTrue(centuryService.deleteCentury(id));
         verify(centuryDAO, times(1)).delete(century);
     }
 

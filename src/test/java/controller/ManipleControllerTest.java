@@ -170,7 +170,7 @@ public class ManipleControllerTest {
         mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isOk());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(1)).loadCentury(centuryId);
-        verify(eventService, times(1)).deleteEventByGroup(century);
+        verify(eventService, times(1)).deleteEventsByGroup(century);
         verify(centuryService, times(1)).deleteCentury(any());
     }
 
@@ -181,7 +181,7 @@ public class ManipleControllerTest {
         mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(1)).loadCentury(centuryId);
-        verify(eventService, times(0)).deleteEventByGroup(century);
+        verify(eventService, times(0)).deleteEventsByGroup(century);
         verify(centuryService, times(0)).deleteCentury(any());
     }
 
@@ -192,7 +192,7 @@ public class ManipleControllerTest {
         mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(1)).loadCentury(centuryId);
-        verify(eventService, times(0)).deleteEventByGroup(century);
+        verify(eventService, times(0)).deleteEventsByGroup(century);
         verify(centuryService, times(0)).deleteCentury(any());
     }
 
@@ -203,7 +203,7 @@ public class ManipleControllerTest {
         mockMvc.perform(delete("/maniples/" + manipleId + "/deleteCentury/" + centuryId)).andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
         verify(centuryService, times(1)).loadCentury(centuryId);
-        verify(eventService, times(0)).deleteEventByGroup(century);
+        verify(eventService, times(0)).deleteEventsByGroup(century);
         verify(centuryService, times(0)).deleteCentury(any());
     }
     

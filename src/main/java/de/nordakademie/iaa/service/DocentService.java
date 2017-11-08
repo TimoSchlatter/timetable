@@ -1,7 +1,6 @@
 package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Docent;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 
 import java.util.List;
@@ -35,9 +34,9 @@ public interface DocentService {
      * Deletes the docent with the given id.
      *
      * @param id The identifier.
-     * @throws EntityNotFoundException if no docent could be found for the given id.
+     * @return .
      */
-    void deleteDocent(Long id) throws EntityNotFoundException;
+    boolean deleteDocent(Long id);
 
     /**
      * Retrieves a docent by its field and number.

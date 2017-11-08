@@ -3,7 +3,6 @@ package de.nordakademie.iaa.service.impl;
 import de.nordakademie.iaa.dao.CourseDAO;
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.service.CourseService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,12 +36,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void deleteCourse(Long id) throws EntityNotFoundException {
+    public boolean deleteCourse(Long id) {
         Course course = loadCourse(id);
         if (course == null) {
-            throw new EntityNotFoundException();
+            return false;
         }
         courseDAO.delete(course);
+        return true;
     }
 
     @Override

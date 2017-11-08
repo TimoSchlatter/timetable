@@ -3,7 +3,6 @@ package de.nordakademie.iaa.service.impl;
 import de.nordakademie.iaa.dao.CohortDAO;
 import de.nordakademie.iaa.model.Cohort;
 import de.nordakademie.iaa.service.CohortService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,12 +40,13 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public void deleteCohort(Long id) throws EntityNotFoundException {
+    public boolean deleteCohort(Long id) {
         Cohort cohort = loadCohort(id);
         if (cohort == null) {
-            throw new EntityNotFoundException();
+            return false;
         }
         cohortDAO.delete(cohort);
+        return true;
     }
 
     @Override

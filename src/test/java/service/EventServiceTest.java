@@ -4,7 +4,7 @@ package service;
 import de.nordakademie.iaa.dao.EventDAO;
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.EventService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+
 import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 import de.nordakademie.iaa.service.impl.EventServiceImpl;
 import org.junit.After;
@@ -24,9 +24,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,10 +42,12 @@ public class EventServiceTest {
     @Autowired
     private EventDAO eventDAO;
 
+    private final Long id = 1L;
     private final Room room1 = new Room(15, "A", 40, "001", RoomType.LECTUREROOM);
     private final Room room2 = new Room(15, "A", 30, "002", RoomType.COMPUTERROOM);
     private final Set<Room> rooms = new HashSet<>(Arrays.asList(room1, room2));
-    private final Set<Docent> docents = new HashSet<>(Arrays.asList(new Docent("a@a.com", "Ed", "Sy", "0115273487", "Dr.", true, 20)));
+    private final Docent docent = new Docent("a@a.com", "Ed", "Sy", "0115273487", "Dr.", true, 20);
+    private final Set<Docent> docents = new HashSet<>(Arrays.asList(docent));
     private final Group group = new Century("I14a", 30, 30);
     private final LocalDate date = LocalDate.of(2018, Month.APRIL, 1);
     private final LocalTime startTime = LocalTime.of(9, 30);
@@ -84,25 +89,22 @@ public class EventServiceTest {
 
     @Test
     public void testLoadEvent() {
-        final Long id = 123L;
         eventService.loadEvent(id);
         Mockito.verify(eventDAO, times(1)).findOne(id);
     }
 
-    @Test(expected = EntityNotFoundException.class)
-    public void testDeleteNonExistingEvent() throws EntityNotFoundException {
-        final Long id = 123L;
-        Mockito.when(eventDAO.findOne(anyLong())).thenReturn(null);
-        eventService.deleteEvent(id);
+    @Test
+    public void testDeleteNonExistingEvent() {
+        when(eventDAO.findOne(id)).thenReturn(null);
+        assertFalse(eventService.deleteEvent(id));
+        verify(eventDAO, times(0)).deleteById(anyLong());
     }
 
     @Test
-    public void testDeleteExistingEvent() throws EntityNotFoundException {
-        final Long id = 123L;
-        Mockito.when(eventDAO.findOne(anyLong())).thenReturn(event);
-        eventService.deleteEvent(id);
-        Mockito.verify(eventDAO, times(1)).findOne(id);
-        Mockito.verify(eventDAO, times(1)).delete(event);
+    public void testDeleteExistingEvent() {
+        when(eventDAO.findOne(id)).thenReturn(event);
+        assertTrue(eventService.deleteEvent(id));
+        verify(eventDAO, times(1)).delete(event);
     }
 
     @Test
@@ -113,20 +115,32 @@ public class EventServiceTest {
 
     @Test
     public void testFindEventByTime() {
-        eventService.findEventByTime(date, startTime, endTime);
+        eventService.findEventsByTime(date, startTime, endTime);
         verify(eventDAO, times(1)).findByTime(date, startTime, endTime);
     }
 
     @Test
     public void testDeleteEventByGroup() {
-        eventService.deleteEventByGroup(group);
+        eventService.deleteEventsByGroup(group);
         verify(eventDAO, times(1)).deleteByGroup(group);
     }
 
     @Test
     public void testDeleteEventBySubject() {
-        eventService.deleteEventBySubject(subject);
+        eventService.deleteEventsBySubject(subject);
         verify(eventDAO, times(1)).deleteBySubject(subject);
+    }
+
+    @Test
+    public void testFindEventsByRoom() {
+        eventService.findEventsByRoom(room1);
+        verify(eventDAO, times(1)).findByRooms(room1);
+    }
+
+    @Test
+    public void testFindEventsByDocent() {
+        eventService.findEventsByDocent(docent);
+        verify(eventDAO, times(1)).findByDocents(docent);
     }
 
     @After

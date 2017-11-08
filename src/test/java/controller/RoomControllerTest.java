@@ -3,14 +3,16 @@ package controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.nordakademie.iaa.controller.RoomController;
+import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.model.RoomType;
+import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.RoomService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
@@ -26,6 +28,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -39,6 +42,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class RoomControllerTest {
+
+    @Autowired
+    private EventService eventService;
 
     @Autowired
     private RoomController roomController;
@@ -130,11 +136,28 @@ public class RoomControllerTest {
 
     @Test
     public void testDeleteRoom() throws Exception {
-        mockMvc.perform(delete("/rooms/" + room.getId())).andExpect(status().isOk());
-        verify(this.roomService, times(1)).deleteRoom(room.getId());
-        doThrow(new EntityNotFoundException()).when(roomService).deleteRoom(anyLong());
-        mockMvc.perform(delete("/rooms/" + room.getId())).andExpect(status().isBadRequest());
-        verify(this.roomService, times(2)).deleteRoom(room.getId());
+        String url = "/rooms/" + roomId;
+
+        // Room not existing
+        when(roomService.loadRoom(anyLong())).thenReturn(null);
+        mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
+        verify(eventService, times(0)).findEventsByRoom(any());
+        verify(eventService, times(0)).deleteEventsByGroup(any());
+        verify(roomService, times(0)).deleteRoom(anyLong());
+
+        // Room existing
+        InOrder inOrder = inOrder(roomService, eventService);
+        Event event1 = new Event();
+        event1.setId(1L);
+        event1.setRooms(new HashSet<>(Arrays.asList(room)));
+        Event event2 = new Event();
+        event2.setRooms(new HashSet<>(Arrays.asList(room, new Room(20, "A", 40, "001", RoomType.LECTUREROOM))));
+        when(roomService.loadRoom(roomId)).thenReturn(room);
+        when(eventService.findEventsByRoom(room)).thenReturn(Arrays.asList(event1, event2));
+        mockMvc.perform(delete(url)).andExpect(status().isOk());
+        inOrder.verify(eventService, times(1)).findEventsByRoom(room);
+        inOrder.verify(eventService, times(1)).deleteEvent(event1.getId());
+        inOrder.verify(roomService, times(1)).deleteRoom(roomId);
     }
 
     @After
@@ -146,13 +169,18 @@ public class RoomControllerTest {
     static class TestConfiguration {
 
         @Bean
+        public EventService eventService() {
+            return mock(EventService.class);
+        }
+
+        @Bean
         public RoomService roomService() {
             return mock(RoomService.class);
         }
 
         @Bean
         public RoomController roomController() {
-            return new RoomController(roomService());
+            return new RoomController(eventService(), roomService());
         }
     }
 }

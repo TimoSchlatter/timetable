@@ -6,7 +6,7 @@ import de.nordakademie.iaa.controller.CourseController;
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.service.CourseService;
 import de.nordakademie.iaa.service.SubjectService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -142,12 +142,6 @@ public class CourseControllerTest {
         // Course existing
         when(courseService.loadCourse(courseId)).thenReturn(course);
         mockMvc.perform(delete(url)).andExpect(status().isOk());
-        inOrder.verify(courseService, times(1)).loadCourse(courseId);
-        inOrder.verify(subjectService, times(1)).deleteSubjectByModule(course);
-        inOrder.verify(courseService, times(1)).deleteCourse(courseId);
-        // Course existing & deletion failed
-        doThrow(new EntityNotFoundException()).when(courseService).deleteCourse(anyLong());
-        mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
         inOrder.verify(courseService, times(1)).loadCourse(courseId);
         inOrder.verify(subjectService, times(1)).deleteSubjectByModule(course);
         inOrder.verify(courseService, times(1)).deleteCourse(courseId);

@@ -4,7 +4,6 @@ package de.nordakademie.iaa.controller;
 import de.nordakademie.iaa.model.Seminar;
 import de.nordakademie.iaa.service.SeminarService;
 import de.nordakademie.iaa.service.SubjectService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +51,8 @@ public class SeminarController {
                 seminarService.saveSeminar(seminar);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
 
@@ -68,7 +68,8 @@ public class SeminarController {
                 seminarService.saveSeminar(seminar);
                 return ResponseEntity.ok().build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
 
@@ -81,11 +82,9 @@ public class SeminarController {
     public ResponseEntity deleteSeminar(@PathVariable Long id) {
         Seminar seminar = seminarService.loadSeminar(id);
         if (seminar != null) {
-            try {
-                subjectService.deleteSubjectByModule(seminar);
-                seminarService.deleteSeminar(id);
-                return ResponseEntity.ok(null);
-            } catch (EntityNotFoundException ignored) {}
+            subjectService.deleteSubjectByModule(seminar);
+            seminarService.deleteSeminar(id);
+            return ResponseEntity.ok(null);
         }
         return ResponseEntity.badRequest().build();
     }

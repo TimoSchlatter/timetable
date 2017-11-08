@@ -4,7 +4,6 @@ import de.nordakademie.iaa.dao.RoomDAO;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.model.RoomType;
 import de.nordakademie.iaa.service.RoomService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,12 +37,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void deleteRoom(Long id) throws EntityNotFoundException {
+    public boolean deleteRoom(Long id) {
         Room room = loadRoom(id);
         if (room == null) {
-            throw new EntityNotFoundException();
+            return false;
         }
         roomDAO.delete(room);
+        return true;
     }
 
     @Override

@@ -5,7 +5,6 @@ import de.nordakademie.iaa.model.Module;
 import de.nordakademie.iaa.model.Subject;
 import de.nordakademie.iaa.model.SubjectType;
 import de.nordakademie.iaa.service.SubjectService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,12 +38,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public void deleteSubject(Long id) throws EntityNotFoundException {
+    public boolean deleteSubject(Long id) {
         Subject subject = loadSubject(id);
         if (subject == null) {
-            throw new EntityNotFoundException();
+            return false;
         }
         subjectDAO.delete(subject);
+        return true;
     }
 
     @Override

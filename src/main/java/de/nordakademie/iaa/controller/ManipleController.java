@@ -55,10 +55,11 @@ public class ManipleController {
                 manipleService.saveManiple(maniple);
                 return ResponseEntity.ok().build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
-    
+
     /**
      * Saves the given century.
      * Adds the given century to the referenced maniple.
@@ -76,7 +77,8 @@ public class ManipleController {
                     centuryService.saveCentury(century);
                     maniple.addCentury(century);
                     return ResponseEntity.status(HttpStatus.CREATED).build();
-                } catch (NotEnoughChangeoverTimeProvidedException ignored) {}
+                } catch (NotEnoughChangeoverTimeProvidedException ignored) {
+                }
             }
         }
         return ResponseEntity.badRequest().build();
@@ -93,12 +95,10 @@ public class ManipleController {
         Maniple maniple = manipleService.loadManiple(manipleId);
         Century century = centuryService.loadCentury(centuryId);
         if (maniple != null && century != null) {
-            try {
-                maniple.removeCentury(century);
-                eventService.deleteEventByGroup(century);
-                centuryService.deleteCentury(century.getId());
-                return ResponseEntity.ok(null);
-            } catch (Exception ignored) {}
+            maniple.removeCentury(century);
+            eventService.deleteEventsByGroup(century);
+            centuryService.deleteCentury(century.getId());
+            return ResponseEntity.ok(null);
         }
         return ResponseEntity.badRequest().build();
     }

@@ -4,7 +4,7 @@ package service;
 import de.nordakademie.iaa.dao.CohortDAO;
 import de.nordakademie.iaa.model.Cohort;
 import de.nordakademie.iaa.service.CohortService;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
+
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.CohortServiceImpl;
 import org.junit.After;
@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -32,6 +34,7 @@ public class CohortServiceTest {
     private CohortDAO cohortDAO;
 
     private final String name = "A";
+    private final Long id = 1L;
     private final int numberOfStudents = 42;
     private final Cohort cohort = new Cohort(name, numberOfStudents);
 
@@ -57,24 +60,21 @@ public class CohortServiceTest {
 
     @Test
     public void testLoadCohort() {
-        final Long id = 123L;
         cohortService.loadCohort(id);
         verify(cohortDAO, times(1)).findOne(id);
     }
 
-    @Test(expected = EntityNotFoundException.class)
-    public void testDeleteNonExistingCohort() throws EntityNotFoundException {
-        final Long id = 123L;
-        when(cohortDAO.findOne(anyLong())).thenReturn(null);
-        cohortService.deleteCohort(id);
+    @Test
+    public void testDeleteNonExistingCohort() {
+        when(cohortDAO.findOne(id)).thenReturn(null);
+        assertFalse(cohortService.deleteCohort(id));
+        verify(cohortDAO, times(0)).deleteById(anyLong());
     }
 
     @Test
-    public void testDeleteExistingCohort() throws EntityNotFoundException {
-        final Long id = 123L;
-        when(cohortDAO.findOne(anyLong())).thenReturn(cohort);
-        cohortService.deleteCohort(id);
-        verify(cohortDAO, times(1)).findOne(id);
+    public void testDeleteExistingCohort() {
+        when(cohortDAO.findOne(id)).thenReturn(cohort);
+        assertTrue(cohortService.deleteCohort(id));
         verify(cohortDAO, times(1)).delete(cohort);
     }
 

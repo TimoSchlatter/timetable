@@ -1,7 +1,6 @@
 package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Cohort;
-import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 
 import java.util.List;
@@ -35,9 +34,9 @@ public interface CohortService {
      * Deletes the cohort with the given id.
      *
      * @param id The identifier.
-     * @throws EntityNotFoundException if no cohort could be found for the given id.
+     * @return .
      */
-    void deleteCohort(Long id) throws EntityNotFoundException;
+    boolean deleteCohort(Long id);
 
     /**
      * Retrieves a cohort by its name.
