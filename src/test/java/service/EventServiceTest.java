@@ -138,6 +138,12 @@ public class EventServiceTest {
     }
 
     @Test
+    public void testFindEventsByGroup() {
+        eventService.findEventsByGroup(group);
+        verify(eventDAO, times(1)).findByGroup(group);
+    }
+
+    @Test
     public void testFindEventsByDocent() {
         eventService.findEventsByDocent(docent);
         verify(eventDAO, times(1)).findByDocents(docent);

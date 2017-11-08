@@ -42,6 +42,14 @@ public interface EventDAO extends JpaRepository<Event,Long>, BaseDAO<Event, Long
     List<Event> findByDocents(Docent docent);
 
     /**
+     * Finds events by group
+     *
+     * @param group the group that attends the events
+     * @return the events that are attended by the given group
+     */
+    List<Event> findByGroup(Group group);
+
+    /**
      * Find events that happen during a given period
      *
      * @param date the date on which the events are scheduled

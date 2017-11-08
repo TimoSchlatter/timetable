@@ -117,4 +117,7 @@ public class EventServiceImpl implements EventService {
         return eventToBeCreated.toString() + ": " + collidingObject.toString() +
                 " ist bereits für folgendes Event eingeplant: " + concurrentEvent.toString();
     }
+
+    @Override
+    public List<Event> findEventsByGroup(Group group) { return eventDAO.findByGroup(group); }
 }

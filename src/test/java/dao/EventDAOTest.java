@@ -154,6 +154,15 @@ public class EventDAOTest {
     }
 
     @Test
+    public void testFindByGroup() {
+        List<Event> events = eventDAO.findByGroup(group);
+        assertEquals(1, events.size());
+        for(Event event : events) {
+            compareEvent(event);
+        }
+    }
+
+    @Test
     public void testFindByDocents() {
         List<Event> events = eventDAO.findByDocents(docent);
         assertEquals(1, events.size());
