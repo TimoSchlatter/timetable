@@ -109,6 +109,10 @@ public class Event extends HasId implements Serializable {
         return docents.remove(docent);
     }
 
+    public int calculateMinChangeoverTime() {
+        return 42;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
