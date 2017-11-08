@@ -1,5 +1,6 @@
 package de.nordakademie.iaa.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.NaturalId;
 
@@ -57,6 +58,7 @@ public class Event extends HasId implements Serializable {
     }
 
     @NaturalId(mutable = true)
+    @JsonFormat(pattern = "yyyy.MM.dd")
     public LocalDate getDate() {
         return date;
     }
@@ -66,6 +68,7 @@ public class Event extends HasId implements Serializable {
     }
 
     @NaturalId(mutable = true)
+    @JsonFormat(pattern = "HH:mm")
     public LocalTime getStartTime() {
         return startTime;
     }
@@ -75,6 +78,7 @@ public class Event extends HasId implements Serializable {
     }
 
     @NaturalId(mutable = true)
+    @JsonFormat(pattern = "HH:mm")
     public LocalTime getEndTime() {
         return endTime;
     }
