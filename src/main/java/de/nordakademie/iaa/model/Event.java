@@ -179,7 +179,7 @@ public class Event extends HasId implements Serializable {
     public String toString() {
         return "Veranstaltung " + subject.toString() + " am " + date.format(dateFormatter) + " von " +
                 startTime.format(timeFormatter) + "-" + endTime.format(timeFormatter) + " für " + group.toString() +
-                " in " + rooms.toString() + " " + printDocents() + " " + printRooms();
+                " in " + rooms.toString() + " von " + printDocents() + " " + printRooms();
     }
 
     @Override
