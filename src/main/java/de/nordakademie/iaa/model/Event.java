@@ -155,11 +155,31 @@ public class Event extends HasId implements Serializable {
         return maxRoom;
     }
 
+    public String printRooms() {
+        String rooms = "";
+        Iterator<Room> iterator = this.rooms.iterator();
+        while(iterator.hasNext()) {
+            Room room = iterator.next();
+            rooms += room.toString() + " ";
+        }
+        return rooms;
+    }
+
+    public String printDocents() {
+        String docents = "";
+        Iterator<Docent> iterator = this.docents.iterator();
+        while(iterator.hasNext()) {
+            Docent docent = iterator.next();
+            docents += docent.toString() + " ";
+        }
+        return docents;
+    }
+
     @Override
     public String toString() {
         return "Veranstaltung " + subject.toString() + " am " + date.format(dateFormatter) + " von " +
                 startTime.format(timeFormatter) + "-" + endTime.format(timeFormatter) + " für " + group.toString() +
-                " in " + rooms.toString();
+                " in " + rooms.toString() + " " + printDocents() + " " + printRooms();
     }
 
     @Override
