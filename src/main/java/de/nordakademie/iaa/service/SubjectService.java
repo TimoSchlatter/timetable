@@ -47,12 +47,19 @@ public interface SubjectService {
      * @param module the identifier.
      * @return the found subject or null if no subject was found with given identifiers.
      */
-    Subject findBySubjectTypeAndModule(SubjectType subjectType, Module module);
+    Subject findSubjectBySubjectTypeAndModule(SubjectType subjectType, Module module);
 
     /**
      * Retrieves a subject by its subjectType.
      * @param subjectType the identifier.
      * @return the found subject or null if no subject was found with given identifier.
      */
-    List<Subject> findBySubjectType(SubjectType subjectType);
+    List<Subject> findSubjectBySubjectType(SubjectType subjectType);
+
+    /**
+     * Delete subjects that contain the given module
+     *
+     * @param module the module of the subject
+     */
+    void deleteSubjectByModule(Module module);
 }

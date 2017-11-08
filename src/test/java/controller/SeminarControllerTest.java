@@ -6,11 +6,13 @@ import de.nordakademie.iaa.controller.SeminarController;
 import de.nordakademie.iaa.model.Seminar;
 import de.nordakademie.iaa.model.SeminarType;
 import de.nordakademie.iaa.service.SeminarService;
+import de.nordakademie.iaa.service.SubjectService;
 import de.nordakademie.iaa.service.exception.EntityNotFoundException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
@@ -44,6 +46,9 @@ public class SeminarControllerTest {
 
     @Autowired
     private SeminarService seminarService;
+
+    @Autowired
+    private SubjectService subjectService;
 
     private MockMvc mockMvc;
     private JacksonTester<Seminar> jacksonTester;
@@ -128,11 +133,26 @@ public class SeminarControllerTest {
 
     @Test
     public void testDeleteSeminar() throws Exception {
-        mockMvc.perform(delete("/seminars/" + seminar.getId())).andExpect(status().isOk());
-        verify(seminarService, times(1)).deleteSeminar(seminar.getId());
+        final String url = "/seminars/" + seminarId;
+        InOrder inOrder = inOrder(seminarService, subjectService);
+        // Seminar not existing
+        when(seminarService.loadSeminar(seminarId)).thenReturn(null);
+        mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
+        inOrder.verify(seminarService, times(1)).loadSeminar(seminarId);
+        inOrder.verify(subjectService, times(0)).deleteSubjectByModule(seminar);
+        inOrder.verify(seminarService, times(0)).deleteSeminar(seminarId);
+        // Seminar existing
+        when(seminarService.loadSeminar(seminarId)).thenReturn(seminar);
+        mockMvc.perform(delete(url)).andExpect(status().isOk());
+        inOrder.verify(seminarService, times(1)).loadSeminar(seminarId);
+        inOrder.verify(subjectService, times(1)).deleteSubjectByModule(seminar);
+        inOrder.verify(seminarService, times(1)).deleteSeminar(seminarId);
+        // Seminar existing & deletion failed
         doThrow(new EntityNotFoundException()).when(seminarService).deleteSeminar(anyLong());
-        mockMvc.perform(delete("/seminars/" + seminar.getId())).andExpect(status().isBadRequest());
-        verify(seminarService, times(2)).deleteSeminar(seminar.getId());
+        mockMvc.perform(delete(url)).andExpect(status().isBadRequest());
+        inOrder.verify(seminarService, times(1)).loadSeminar(seminarId);
+        inOrder.verify(subjectService, times(1)).deleteSubjectByModule(seminar);
+        inOrder.verify(seminarService, times(1)).deleteSeminar(seminarId);
     }
 
     @After
@@ -149,8 +169,13 @@ public class SeminarControllerTest {
         }
 
         @Bean
+        SubjectService subjectService() {
+            return mock(SubjectService.class);
+        }
+
+        @Bean
         public SeminarController seminarController() {
-            return new SeminarController(seminarService());
+            return new SeminarController(seminarService(), subjectService());
         }
     }
 }
