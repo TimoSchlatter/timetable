@@ -260,7 +260,7 @@
     </div>
     <!--Events Alert-->
     <div class="modal fade"  id="modalEventAlert" tabindex="-1" style="overflow-y: scroll" role="dialog" aria-labelledby="exampleModalLabel" ng-controller="AlertController">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content card mx-auto mt-5">
                 <div class="card-header">Achtung</div>
                 <div class="card-body">
@@ -268,7 +268,7 @@
                         <div class="form-group" ng-repeat="alert in alertEvents">{{alert.type}}: {{alert.msg}}</div>
                         <div class="pull-right">
                             <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal" ng-click="setIgnore()">
-                                <span class="btn-label"><i class="fa fa-times"></i></span>Schließen
+                                <span class="btn-label"><i class="fa fa-times"></i></span>Ignorieren und Anlegen
                             </button>
                             <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal" ng-click="closeAlert()">
                                 <span class="btn-label"><i class="fa fa-times"></i></span>Schließen

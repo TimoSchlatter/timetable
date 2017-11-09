@@ -1,4 +1,6 @@
-app.factory('ConnectionService', function ($http, AlertService) {
+app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
+
+    var callPut = false;
 
     var getData = function (url, functionToSetModel) {
         $http.get(url).then(function successCallback(response) {
@@ -16,7 +18,8 @@ app.factory('ConnectionService', function ($http, AlertService) {
                 console.log(data);
                 if(data.status == 200) {
                     AlertService.addEventAlert('Kollisionen', data.data.toString());
-                }
+                    $rootScope.collisionEvent = angular.copy(objectToCreateData);
+                    }
                 functionToUpdateModel();
             }, function errorCallback(data, status, header, config) {
                 AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server gesichert werden.');
@@ -28,6 +31,12 @@ app.factory('ConnectionService', function ($http, AlertService) {
         $http.put(urlToUpdateData, objectToUpdateData)
             .then(function successCallback(data) {
                 console.log(data);
+                if(data.status == 200) {
+                    AlertService.addEventAlert('Kollisionen', data.data.toString());
+                    $rootScope.collisionEvent = angular.copy(objectToUpdateData);
+                    $rootScope.putEventUrl = angular.copy(urlToUpdateData);
+                    callPut = true;
+                }
                 functionToUpdateModel();
             }, function errorCallback(data, status, header, config) {
                 AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server akualisiert werden. [' + data.error + ']');
@@ -44,6 +53,31 @@ app.factory('ConnectionService', function ($http, AlertService) {
                 AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server gelöscht werden. [' + data.error + ']');
                 console.error(data, status, header, config);
             });
+    };
+
+    var createEventInsteadOfCollision = function () {
+        if(callPut){
+            $rootScope.putEventUrl = $rootScope.putEventUrl +  '?ignoreCollisions=true';
+            $http.put($rootScope.putEventUrl, $rootScope.collisionEvent)
+                .then(function successCallback(data) {
+                    console.log(data);
+                    getEvents();
+                }, function errorCallback(data, status, header, config) {
+                    AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server gesichert werden.');
+                    console.error(data, status, header, config);
+                });
+            callPut = false;
+        } else {
+            var postEventUrl = eventsUrl + '?ignoreCollisions=true';
+            $http.post(postEventUrl, $rootScope.collisionEvent)
+                .then(function successCallback(data) {
+                    console.log(data);
+                    getEvents();
+                }, function errorCallback(data, status, header, config) {
+                    AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server gesichert werden.');
+                    console.error(data, status, header, config);
+                });
+        }
     };
 
     /* DocentsControl */
@@ -291,6 +325,11 @@ app.factory('ConnectionService', function ($http, AlertService) {
         },
         dataGenerated: function () {
             return dataGenerated;
+        },
+        createEventInsteadOfCollision: function () {
+            createEventInsteadOfCollision();
         }
+
+
     }
 });
