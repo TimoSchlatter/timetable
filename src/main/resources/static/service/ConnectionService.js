@@ -155,10 +155,10 @@ app.factory('ConnectionService', function ($http, AlertService) {
 
     return {
         createDocent: function (docent) {
-            createData(docentsUrl, JSON.stringify(docent), getDocents);
+            createData(docentsUrl, angular.toJson(docent), getDocents);
         },
         updateDocent: function (docent) {
-            updateData(docentsUrl + docent.id, JSON.stringify(docent), getDocents);
+            updateData(docentsUrl + docent.id, angular.toJson(docent), getDocents);
         },
         deleteDocent: function (docent) {
             deleteData(docentsUrl, docent.id, getDocents);
@@ -167,10 +167,10 @@ app.factory('ConnectionService', function ($http, AlertService) {
             return docents;
         },
         createRoom: function (room) {
-            createData(roomsUrl, JSON.stringify(room), getRooms);
+            createData(roomsUrl, angular.toJson(room), getRooms);
         },
         updateRoom: function (room) {
-            updateData(roomsUrl + room.id, JSON.stringify(room), getRooms);
+            updateData(roomsUrl + room.id, angular.toJson(room), getRooms);
         },
         deleteRoom: function (room) {
             deleteData(roomsUrl, room.id, getRooms);
@@ -180,30 +180,30 @@ app.factory('ConnectionService', function ($http, AlertService) {
         },
         createCentury: function (manipleId, century) {
             century.type = 'century';
-            createData(maniplesUrl + manipleId + '/addCentury', JSON.stringify(century), getCohorts);
+            createData(maniplesUrl + manipleId + '/addCentury', angular.toJson(century), getCohorts);
         },
         updateCentury: function (century) {
-            updateData(centuriesUrl + century.id, JSON.stringify(century), getCohorts);
+            updateData(centuriesUrl + century.id, angular.toJson(century), getCohorts);
         },
         deleteCentury: function (manipleId, century) {
             deleteData(maniplesUrl + manipleId + '/deleteCentury/', century.id, getCohorts);
         },
         createManiple: function (cohortId, maniple) {
             maniple.type = 'maniple';
-            createData(cohortsUrl + cohortId + '/addManiple', JSON.stringify(maniple), getCohorts);
+            createData(cohortsUrl + cohortId + '/addManiple', angular.toJson(maniple), getCohorts);
         },
         updateManiple: function (maniple) {
-            updateData(maniplesUrl + maniple.id, JSON.stringify(maniple), getCohorts);
+            updateData(maniplesUrl + maniple.id, angular.toJson(maniple), getCohorts);
         },
         deleteManiple: function (cohortId, maniple) {
             deleteData(cohortsUrl + cohortId + '/deleteManiple/', maniple.id, getCohorts);
         },
         createCohort: function (cohort) {
             cohort.type = 'cohort';
-            createData(cohortsUrl, JSON.stringify(cohort), getCohorts);
+            createData(cohortsUrl, angular.toJson(cohort), getCohorts);
         },
         updateCohort: function (cohort) {
-            updateData(cohortsUrl + cohort.id, JSON.stringify(cohort), getCohorts);
+            updateData(cohortsUrl + cohort.id, angular.toJson(cohort), getCohorts);
         },
         deleteCohort: function (cohort) {
             deleteData(cohortsUrl, cohort.id, getCohorts);
@@ -213,10 +213,10 @@ app.factory('ConnectionService', function ($http, AlertService) {
         },
         createCourse: function (course) {
             course.type = 'course';
-            createData(coursesUrl, JSON.stringify(course), getCourses);
+            createData(coursesUrl, angular.toJson(course), getCourses);
         },
         updateCourse: function (course) {
-            updateData(coursesUrl + course.id, JSON.stringify(course), getCourses);
+            updateData(coursesUrl + course.id, angular.toJson(course), getCourses);
         },
         deleteCourse: function (course) {
             deleteData(coursesUrl, course.id, getCourses);
@@ -226,10 +226,10 @@ app.factory('ConnectionService', function ($http, AlertService) {
         },
         createSeminar: function (seminar) {
             seminar.type = 'seminar';
-            createData(seminarsUrl, JSON.stringify(seminar), getSeminars);
+            createData(seminarsUrl, angular.toJson(seminar), getSeminars);
         },
         updateSeminar: function (seminar) {
-            updateData(seminarsUrl + seminar.id, JSON.stringify(seminar), getSeminars);
+            updateData(seminarsUrl + seminar.id, angular.toJson(seminar), getSeminars);
         },
         deleteSeminar: function (seminar) {
             deleteData(seminarsUrl, seminar.id, getSeminars);
@@ -238,10 +238,10 @@ app.factory('ConnectionService', function ($http, AlertService) {
             return seminars;
         },
         createSubject: function (subject) {
-            createData(subjectsUrl, JSON.stringify(subject), getSubjects);
+            createData(subjectsUrl, angular.toJson(subject), getSubjects);
         },
         updateSubject: function (subject) {
-            updateData(subjectsUrl + subject.id, JSON.stringify(subject), getSubjects);
+            updateData(subjectsUrl + subject.id, angular.toJson(subject), getSubjects);
         },
         deleteSubject: function (subject) {
             deleteData(subjectsUrl, subject.id, getSubjects);
@@ -253,7 +253,7 @@ app.factory('ConnectionService', function ($http, AlertService) {
             createData(eventsUrl, angular.toJson(event), getEvents);
         },
         updateEvent: function (event) {
-            updateData(eventsUrl + event.id, JSON.stringify(event), getEvents);
+            updateData(eventsUrl + event.id, angular.toJson(event), getEvents);
         },
         deleteEvent: function (event) {
             deleteData(eventsUrl, event.id, getEvents);
