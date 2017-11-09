@@ -7,7 +7,7 @@
 </ol>
 <!-- Icon Cards-->
 <div class="row">
-    <div class="col-xl-12 col-sm-7 mb-12">
+    <div class="col-xl-12 col-sm-6 mb-12">
         <div class="card text-white bg-warning o-hidden h-100">
             <div class="card-body">
                 <div class="card-body-icon">
@@ -21,9 +21,15 @@
         </div>
     </div>
 </div>
-<!-- Angular UI Calendar -->
 <div class="card mb-3">
     <div class="card-header">
+        <button class="btn btn-success btn-xs"
+                ng-click="setSelectedEvent({})"
+                data-title="Delete"
+                data-toggle="modal"
+                data-target="#addEditModal">
+            <span class="fa fa-plus"></span>
+        </button>
         <i class="fa fa-calendar"></i> Veranstaltungsplanung
     </div>
     <div class="card-body">
@@ -31,7 +37,14 @@
             <label for="modalSelectedEntity">Entity</label>
             <select class="form-control"
                     id="modalSelectedEntity"
+                    ng-
                     ng-model="modalSelectedEntity">
+                <option>Raum</option>
+                <option>Dozent</option>
+                <option>Kohorte</option>
+                <option>Manipel</option>
+                <option>Zenturie</option>
+                <option>Seminargruppe</option>
             </select>
         </div>
         <div class="form-group col-md-2">
@@ -47,10 +60,181 @@
     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
 
-<!-- Page level plugin JavaScript-->
-<script src="../vendor/chart.js/Chart.min.js"></script>
-<script src="../vendor/datatables/jquery.dataTables.js"></script>
-<script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
-<!-- Custom scripts for this page-->
-<script src="../vendor/sb-admin/js/sb-admin-datatables.min.js"></script>
-<script src="../vendor/sb-admin/js/sb-admin-charts.min.js"></script>
+<!-- Add/Edit Modal-->
+<div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">leModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content card mx-auto mt-5">
+            <div class="card-header">{{event.id ? 'Aktualisieren' : 'Hinzufügen'}}</div>
+            <div class="card-body">
+                <form name="modal">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputCohort">Kohorte</label>
+                            <select class="form-control"
+                                    id="inputCohort"
+                                    ng-options="cohort.name for cohort in cohortsAdvanced"
+                                    ng-model="modalSelectedCohort"
+                                    ng-change="changedCohort()">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputManiple">Manipel</label>
+                            <select class="form-control"
+                                    id="inputManiple"
+                                    ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
+                                    ng-Model="modalSelectedManiple"
+                                    ng-change="changedManiple()">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputCentury">Zenturie</label>
+                            <select class="form-control"
+                                    id="inputCentury"
+                                    ng-options="century.name for century in modalSelectedManiple.centuries"
+                                    ng-Model="modalSelectedCentury">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputDate">Datum</label>
+                            <div class="input-group date">
+                                <input type="text"
+                                       class="form-control datepicker"
+                                       id="inputDate"
+                                       ng-model="modalDate"
+                                       placeholder="TT.MM.JJJJ">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputStartTime">Startzeit</label>
+                            <div class="input-group date">
+                                <input type="text"
+                                       class="form-control clockpicker"
+                                       id="inputStartTime"
+                                       ng-model="modalStartTime">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputEndTime">Endzeit</label>
+                            <div class="input-group date">
+                                <input type="text"
+                                       class="form-control clockpicker"
+                                       id="inputEndTime"
+                                       ng-model="modalEndTime">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputSubjectType">Veranstaltungstyp</label>
+                            <select class="form-control"
+                                    id="inputSubjectType"
+                                    ng-options="key as value for (key , value) in subjectTypes()"
+                                    ng-model="modalSubjectType">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputSubject">{{modalSubjectType ? subjectTypes()[modalSubjectType] :
+                                'Modul'}}</label>
+                            <select class="form-control"
+                                    id="inputSubject"
+                                    ng-options="subject.module.shortTitle for subject in subjects() | filter: modalSubjectType? {subjectType: modalSubjectType} : 'undefined'"
+                                    ng-model="modalSubject">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" name="multipleSelectForm" novalidate>
+                        <label for="inputRooms">Räume</label>
+                        <multiple-autocomplete ng-model="modalSelectedRooms"
+                                               object-property="number"
+                                               name="multipleSelect"
+                                               required="true"
+                                               id="inputRooms"
+                                               suggestions-arr="rooms()">
+                        </multiple-autocomplete>
+                    </div>
+                    <div class="form-group" name="multipleSelectForm" novalidate>
+                        <label for="inputDocents">Dozenten</label>
+                        <multiple-autocomplete ng-model="modalSelectedDocents"
+                                               object-property="surname"
+                                               name="multipleSelect"
+                                               required="true"
+                                               id="inputDocents"
+                                               suggestions-arr="docents()">
+                        </multiple-autocomplete>
+                    </div>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateEvent(event)"
+                                ng-show="event.id" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="createEvent(event)"
+                                ng-hide="event.id" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap DatePicker-->
+<script type="text/javascript" src="../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="../vendor/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
+<!-- Bootstrap ClockPicker-->
+<script type="text/javascript" src="../vendor/bootstrap-clockpicker/js/clockpicker.js"></script>
+
+<script>
+    $('.form-control.datepicker').datepicker({
+        autoclose: true,
+        language: 'de',
+        todayHighlight: 'true'
+    });
+
+    $('.form-control.clockpicker').clockpicker({
+        autoclose: true
+    });
+</script>
+
+<!--&lt;!&ndash; Angular UI Calendar &ndash;&gt;-->
+<!--<div class="card mb-3">-->
+    <!--<div class="card-header">-->
+        <!--<i class="fa fa-calendar"></i> Veranstaltungsplanung-->
+    <!--</div>-->
+    <!--<div class="card-body">-->
+        <!--<div class="form-group col-md-2">-->
+            <!--<label for="modalSelectedEntity">Entity</label>-->
+            <!--<select class="form-control"-->
+                    <!--id="modalSelectedEntity"-->
+                    <!--ng-model="modalSelectedEntity">-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-2">-->
+            <!--<label for="modalSelectedEntityName">Entity-Name</label>-->
+            <!--<select class="form-control"-->
+                    <!--id="modalSelectedEntityName"-->
+                    <!--ng-options="maniple.name for maniple in modalSelectedCohort.maniples"-->
+                    <!--ng-Model="modalSelectedEntityName">-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div ui-calendar="uiConfig.calendar" ng-model="eventsSource"></div>-->
+    <!--</div>-->
+    <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Page level plugin JavaScript&ndash;&gt;-->
+<!--<script src="../vendor/chart.js/Chart.min.js"></script>-->
+<!--<script src="../vendor/datatables/jquery.dataTables.js"></script>-->
+<!--<script src="../vendor/datatables/dataTables.bootstrap4.js"></script>-->
+<!--&lt;!&ndash; Custom scripts for this page&ndash;&gt;-->
+<!--<script src="../vendor/sb-admin/js/sb-admin-datatables.min.js"></script>-->
+<!--<script src="../vendor/sb-admin/js/sb-admin-charts.min.js"></script>-->
