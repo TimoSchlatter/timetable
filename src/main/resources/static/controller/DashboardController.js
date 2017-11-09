@@ -2,9 +2,9 @@
 
 app.controller('DashboardController', function($scope , $http, AlertService, ConnectionService, $filter) {
 
-    $scope.eventsSource = [];
-    $scope.advancedEvents = [];
+    $scope.generateData = ConnectionService.generateData;
     $scope.events = ConnectionService.getEvents;
+    $scope.createEvent = ConnectionService.createEvent;
     $scope.updateEvent = ConnectionService.updateEvent;
     $scope.deleteEvent = ConnectionService.deleteEvent;
     $scope.rooms = ConnectionService.getRooms;
@@ -13,22 +13,16 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     $scope.cohorts = ConnectionService.getCohorts;
     $scope.subjectTypes = ConnectionService.getSubjectTypes;
 
+    $scope.calenderEvents = [[]];
+
     $scope.$watch('cohorts()', function () {
         buildCohortsAdvanced($scope.cohorts());
     });
 
-    $scope.createEvent = function () {
-        $scope.event.date = $scope.modalDate.split('.').reverse();//[2018,4,40];
-        $scope.event.date = $scope.event.date[0] + '-' + $scope.event.date[1] +'-' +$scope.event.date[2];
-        $scope.event.docents = $scope.modalSelectedDocents;
-        $scope.event.endTime = $scope.modalEndTime + ':00';
-        $scope.event.group = getSelectedGroup();
-        $scope.event.startTime = $scope.modalStartTime + ':00';
-        $scope.event.subject = $scope.modalSubject;
-        $scope.event.rooms = $scope.modalSelectedRooms;
-        console.log(JSON.stringify($scope.event))
-        ConnectionService.createEvent($scope.event);
-    };
+    $scope.$watch('events()', function () {
+        convertToCalenderEvents(angular.copy($scope.events()));
+    });
+
 
     var buildCohortsAdvanced = function (cohorts) {
         $scope.cohortsAdvanced = angular.copy(cohorts);
@@ -41,25 +35,42 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         $scope.cohortsAdvanced.unshift({name: "Alle", maniples: [{name: "Alle", centuries: [{name: "Alle"}]}]});
     };
 
-    $scope.setSelectedEvent = function (event) {
-        $scope.event = angular.copy(event);
-        console.log('Selected Event:', $scope.event);
-        resetGroups();
+    $scope.buildEvent = function () {
+        var date = $scope.modalDate.split('.');
+        $scope.event.date = date[2] + '-' + date[1] + '-' + date[0];
+        $scope.event.docents = $scope.modalSelectedDocents;
+        $scope.event.endTime = $scope.modalEndTime + ':00';
+        $scope.event.group = getSelectedGroup();
+        $scope.event.startTime = $scope.modalStartTime + ':00';
+        $scope.event.subject = $scope.modalSubject;
+        $scope.event.rooms = $scope.modalSelectedRooms;
+        console.log(angular.toJson($scope.event));
+        return $scope.event;
     };
 
     var getSelectedGroup = function () {
         if ($scope.modalSelectedCentury !== $scope.modalSelectedManiple.centuries[0]) {
             return $scope.modalSelectedCentury;
         } else if ($scope.modalSelectedManiple !== $scope.modalSelectedCohort.maniples[0]) {
-            return $scope.modalSelectedManiple;
+            var modalSelectedManiple = angular.copy($scope.modalSelectedManiple);
+            delete modalSelectedManiple.centuries;
+            return modalSelectedManiple;
         } else if ($scope.modalSelectedCohort !== $scope.cohortsAdvanced[0]) {
-            return $scope.modalSelectedCohort;
+            var modalSelectedCohort = angular.copy($scope.modalSelectedCohort);
+            delete modalSelectedCohort.maniples;
+            return modalSelectedCohort;
         } else {
             return undefined;
         }
     };
 
-    var resetGroups = function () {
+    $scope.setSelectedEvent = function (event) {
+        $scope.event = angular.copy(event);
+        console.log('Selected Event:', $scope.event);
+        setModalValues();
+    };
+
+    var setModalValues = function () {
         $scope.modalSelectedCohort = $scope.cohortsAdvanced[0];
         $scope.modalSelectedManiple = $scope.modalSelectedCohort.maniples[0];
         $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
@@ -74,9 +85,22 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
     };
 
+    var convertToCalenderEvents = function (events) {
+        angular.forEach(events, function (event) {
+            var event = {
+                id: event.id,
+                title: event.subject.module.title,
+                start: event.date + 'T' + event.startTime,
+                end: event.date + 'T' + event.endTime,
+                allDay: false,
+                editable: false
+            };
+            $scope.calenderEvents[0].push(event);
+        });
+    };
 
     $scope.alertEventOnClick = function (event) {
-        $scope.selectedEvent = $filter('filter')($scope.events, {id: event.id});
+        $scope.selectedEvent = $filter('filter')($scope.events(), {id: event.id});
         $scope.setSelectedEvent($scope.selectedEvent[0]);
         $('#addEditModal').modal('show');
     };
@@ -101,33 +125,4 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         }
 
     };
-
-    $scope.generateData = function () {
-        ConnectionService.generateData();
-    };
-
-    var convert = function (events2) {
-        for(var i=0;i<events2.length;i++) {
-            var event = {
-                id: events2[i].id,
-                title: events2[i].subject.module.title,
-                start: events2[i].date + 'T' + events2[i].startTime,
-                end: events2[i].date + 'T' + events2[i].endTime,
-                allDay: false,
-                editable: false
-            }
-            $scope.advancedEvents.push(event);
-        }
-    };
-
-    $http.get('http://localhost:49999/events').then(function successCallback(response) {
-        console.log(response.data);
-        $scope.events = response.data;
-        convert(angular.copy($scope.events));
-    }, function errorCallback(response) {
-        console.error(response.statusText);
-    });
-    $scope.eventsSource = [$scope.advancedEvents];
-
-
 });

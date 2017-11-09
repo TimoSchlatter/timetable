@@ -54,7 +54,7 @@
                     ng-Model="modalSelectedEntityName">
             </select>
         </div>
-        <div ui-calendar="uiConfig.calendar" ng-model="eventsSource"></div>
+        <div ui-calendar="uiConfig.calendar" ng-model="calenderEvents"></div>
     </div>
     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
@@ -170,11 +170,11 @@
                         <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateEvent(event)"
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateEvent(buildEvent())"
                                 ng-show="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="createEvent(event)"
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="createEvent(buildEvent())"
                                 ng-hide="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
@@ -203,37 +203,3 @@
         autoclose: true
     });
 </script>
-
-<!--&lt;!&ndash; Angular UI Calendar &ndash;&gt;-->
-<!--<div class="card mb-3">-->
-    <!--<div class="card-header">-->
-        <!--<i class="fa fa-calendar"></i> Veranstaltungsplanung-->
-    <!--</div>-->
-    <!--<div class="card-body">-->
-        <!--<div class="form-group col-md-2">-->
-            <!--<label for="modalSelectedEntity">Entity</label>-->
-            <!--<select class="form-control"-->
-                    <!--id="modalSelectedEntity"-->
-                    <!--ng-model="modalSelectedEntity">-->
-            <!--</select>-->
-        <!--</div>-->
-        <!--<div class="form-group col-md-2">-->
-            <!--<label for="modalSelectedEntityName">Entity-Name</label>-->
-            <!--<select class="form-control"-->
-                    <!--id="modalSelectedEntityName"-->
-                    <!--ng-options="maniple.name for maniple in modalSelectedCohort.maniples"-->
-                    <!--ng-Model="modalSelectedEntityName">-->
-            <!--</select>-->
-        <!--</div>-->
-        <!--<div ui-calendar="uiConfig.calendar" ng-model="eventsSource"></div>-->
-    <!--</div>-->
-    <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; Page level plugin JavaScript&ndash;&gt;-->
-<!--<script src="../vendor/chart.js/Chart.min.js"></script>-->
-<!--<script src="../vendor/datatables/jquery.dataTables.js"></script>-->
-<!--<script src="../vendor/datatables/dataTables.bootstrap4.js"></script>-->
-<!--&lt;!&ndash; Custom scripts for this page&ndash;&gt;-->
-<!--<script src="../vendor/sb-admin/js/sb-admin-datatables.min.js"></script>-->
-<!--<script src="../vendor/sb-admin/js/sb-admin-charts.min.js"></script>-->
