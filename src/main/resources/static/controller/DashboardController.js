@@ -3,6 +3,7 @@
 app.controller('DashboardController', function($scope , $http, AlertService, ConnectionService, $filter) {
 
     $scope.generateData = ConnectionService.generateData;
+    $scope.dataGenerated = ConnectionService.dataGenerated;
     $scope.events = ConnectionService.getEvents;
     $scope.createEvent = ConnectionService.createEvent;
     $scope.updateEvent = ConnectionService.updateEvent;
@@ -22,7 +23,6 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     $scope.$watch('events()', function () {
         convertToCalenderEvents(angular.copy($scope.events()));
     });
-
 
     var buildCohortsAdvanced = function (cohorts) {
         $scope.cohortsAdvanced = angular.copy(cohorts);
@@ -158,6 +158,5 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
             eventDrop: $scope.alertOnDrop,
             eventResize: $scope.alertOnResize,
         }
-
     };
 });
