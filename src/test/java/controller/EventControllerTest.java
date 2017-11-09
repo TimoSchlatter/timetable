@@ -10,6 +10,7 @@ import de.nordakademie.iaa.service.DocentService;
 import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.GroupService;
 import de.nordakademie.iaa.service.RoomService;
+import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -91,7 +92,8 @@ public class EventControllerTest {
                 .andReturn();
         verify(eventService, times(1)).listEvents();
         String jsonResponse = mvcResult.getResponse().getContentAsString();
-        List<Event> eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        List<Event> eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {
+        });
         assertEquals(events, eventsResponse);
     }
 
@@ -105,15 +107,32 @@ public class EventControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(eventService, times(0)).saveEvent(event);
-        // Event not yet existing
+        // Event not yet existing & no collisions
         when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group)).thenReturn(null);
+        when(eventService.findCollisions(event)).thenReturn(new ArrayList<>());
         mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
+        verify(eventService, times(1)).findCollisions(event);
         verify(eventService, times(1)).saveEvent(event);
-        // Event not yet existing & saving failed
-        doThrow(new RuntimeException()).when(eventService).saveEvent(any());
+        // Event existing & collisions
+        List<String> collisions = Arrays.asList("Test1", "Test2");
+        when(eventService.findCollisions(event)).thenReturn(collisions);
+        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group)).thenReturn(null);
+        MvcResult mvcResult = mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(eventService, times(1)).findCollisions(event);
+        verify(eventService, times(0)).saveEvent(event);
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<String> collisionsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<String>>() {});
+        assertEquals(collisions, collisionsResponse);
+        // Event not yet existing & no collisions & saving failed
+        doThrow(new RoomTooSmallForGroupException()).when(eventService).saveEvent(any());
+        when(eventService.findCollisions(event)).thenReturn(new ArrayList<>());
         mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -158,15 +177,29 @@ public class EventControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(eventService, times(0)).saveEvent(event);
-        // Event existing
+        // Event existing & no collisions
         when(eventService.loadEvent(eventId)).thenReturn(event);
+        when(eventService.findCollisions(event)).thenReturn(new ArrayList<>());
         mockMvc.perform(put(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
         verify(eventService, times(1)).saveEvent(isA(Event.class));
-        // Event existing & updating failed
-        doThrow(new RuntimeException()).when(eventService).saveEvent(any());
+        // Event existing & collisions
+        List<String> collisions = Arrays.asList("Test1", "Test2");
+        when(eventService.findCollisions(event)).thenReturn(collisions);
+        MvcResult mvcResult = mockMvc.perform(put(url).content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<String> collisionsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<String>>() {});
+        assertEquals(collisions, collisionsResponse);
+        verify(eventService, times(1)).saveEvent(isA(Event.class));
+        // Event existing & no collisions & updating failed
+        doThrow(new RoomTooSmallForGroupException()).when(eventService).saveEvent(any());
+        when(eventService.findCollisions(event)).thenReturn(new ArrayList<>());
         mockMvc.perform(put(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -197,7 +230,8 @@ public class EventControllerTest {
                 .andReturn();
         verify(eventService, times(0)).findEventsByDocent(any());
         String jsonResponse = mvcResult.getResponse().getContentAsString();
-        List<Event> eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        List<Event> eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {
+        });
         assertEquals(new ArrayList<Event>(), eventsResponse);
 
         // Docent existing
@@ -208,7 +242,8 @@ public class EventControllerTest {
                 .andReturn();
         verify(eventService, times(1)).findEventsByDocent(any());
         jsonResponse = mvcResult.getResponse().getContentAsString();
-        eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {
+        });
         assertEquals(Arrays.asList(event), eventsResponse);
     }
 
@@ -223,7 +258,8 @@ public class EventControllerTest {
                 .andReturn();
         verify(eventService, times(0)).findEventsByGroup(any());
         String jsonResponse = mvcResult.getResponse().getContentAsString();
-        List<Event> eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        List<Event> eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {
+        });
         assertEquals(new ArrayList<Event>(), eventsResponse);
 
         // Group existing
@@ -234,7 +270,8 @@ public class EventControllerTest {
                 .andReturn();
         verify(eventService, times(1)).findEventsByGroup(any());
         jsonResponse = mvcResult.getResponse().getContentAsString();
-        eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {
+        });
         assertEquals(Arrays.asList(event), eventsResponse);
     }
 
@@ -249,7 +286,8 @@ public class EventControllerTest {
                 .andReturn();
         verify(eventService, times(0)).findEventsByRoom(any());
         String jsonResponse = mvcResult.getResponse().getContentAsString();
-        List<Event> eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        List<Event> eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {
+        });
         assertEquals(new ArrayList<Event>(), eventsResponse);
 
         // Room existing
@@ -260,7 +298,8 @@ public class EventControllerTest {
                 .andReturn();
         verify(eventService, times(1)).findEventsByRoom(any());
         jsonResponse = mvcResult.getResponse().getContentAsString();
-        eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {
+        });
         assertEquals(Arrays.asList(event), eventsResponse);
     }
 

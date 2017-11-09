@@ -120,7 +120,7 @@ public class SeminarControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(seminar).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
         verify(seminarService, times(1)).saveSeminar(seminar);
         // Seminar existing & updating failed
         doThrow(new RuntimeException()).when(seminarService).saveSeminar(any());

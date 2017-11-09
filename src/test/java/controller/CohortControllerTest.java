@@ -142,7 +142,7 @@ public class CohortControllerTest {
         mockMvc.perform(put(url).content(jacksonCohortTester.write(cohort).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
         verify(cohortService, times(1)).saveCohort(cohort);
         // Cohort existing & updating failed
         doThrow(new RuntimeException()).when(cohortService).saveCohort(any());

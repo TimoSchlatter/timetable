@@ -124,7 +124,7 @@ public class SubjectControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(subject).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
         verify(subjectService, times(1)).saveSubject(subject);
         // Subject existing & updating failed
         doThrow(new RuntimeException()).when(subjectService).saveSubject(any());

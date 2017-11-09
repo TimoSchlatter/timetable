@@ -118,7 +118,7 @@ public class CourseControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
         verify(courseService, times(1)).saveCourse(course);
         // Course existing & updating failed
         doThrow(new RuntimeException()).when(courseService).saveCourse(any());

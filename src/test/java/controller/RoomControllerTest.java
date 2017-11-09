@@ -123,7 +123,7 @@ public class RoomControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
         verify(roomService, times(1)).saveRoom(room);
         // Room existing & updating failed
         doThrow(new RuntimeException()).when(roomService).saveRoom(any());

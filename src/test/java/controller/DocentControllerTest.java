@@ -120,7 +120,7 @@ public class DocentControllerTest {
         mockMvc.perform(put(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
         verify(docentService, times(1)).saveDocent(docent);
         // Docent existing & updating failed
         doThrow(new RuntimeException()).when(docentService).saveDocent(any());
