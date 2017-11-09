@@ -115,7 +115,7 @@ public class EventServiceImpl implements EventService {
 
     private String createCollisionString(Event eventToBeCreated, Object collidingObject, Event concurrentEvent) {
         return eventToBeCreated.toString() + ": " + collidingObject.toString() +
-                " ist bereits für folgendes Event eingeplant: " + concurrentEvent.toString();
+                " ist bereits für folgendes Event eingeplant: " + concurrentEvent.toString() + "\\\n";
     }
 
     @Override

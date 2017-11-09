@@ -39,10 +39,7 @@ public class DataGenerationController {
                 dataGenerator.createData();
                 dataGenerated = true;
                 return ResponseEntity.ok(null);
-            } catch (RoomTooSmallForGroupException e) {
-                System.err.println(e.getMessage());
-            } catch (NotEnoughChangeoverTimeProvidedException e) {
-                System.err.println(e.getMessage());
+            } catch (RoomTooSmallForGroupException | NotEnoughChangeoverTimeProvidedException ignored) {
             }
         }
         return ResponseEntity.badRequest().build();
