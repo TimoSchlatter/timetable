@@ -4,8 +4,8 @@ app.factory('ConnectionService', function ($http, AlertService) {
         $http.get(url).then(function successCallback(response) {
             functionToSetModel(response.data);
         }, function errorCallback(response) {
-            console.error(response.statusText);
-            AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich vom Server abgerufen werden. [' + data.data.error + ']');
+            AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich vom Server abgerufen werden. [' + response.data.error + ']');
+            console.error(response);
         });
         return this.response;
     };
