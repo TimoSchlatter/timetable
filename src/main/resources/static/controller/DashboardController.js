@@ -24,7 +24,6 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         $scope.event.endTime = $scope.modalEndTime + ':00';
         $scope.event.group = getSelectedGroup();
         $scope.event.startTime = $scope.modalStartTime + ':00';
-        ;
         $scope.event.subject = $scope.modalSubject;
         $scope.event.rooms = $scope.modalSelectedRooms;
         console.log(JSON.stringify($scope.event))
