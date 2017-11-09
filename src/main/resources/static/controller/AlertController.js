@@ -1,12 +1,13 @@
 'use strict';
 
-app.controller('AlertController', function ($scope, AlertService, $rootScope) {
+app.controller('AlertController', function ($scope, AlertService, ConnectionService) {
 
     $scope.closeAlert = function () {
        AlertService.clear();
     }
 
     $scope.setIgnore = function () {
-        $rootScope.ignoreCollisions = true;
+        AlertService.clear();
+        ConnectionService.createEventInsteadOfCollision();
     }
 });

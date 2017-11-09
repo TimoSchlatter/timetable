@@ -1,5 +1,5 @@
 
-    app.factory('AlertService', ['$rootScope', '$timeout', function ($rootScope, $timeout) {
+    app.factory('AlertService', ['$rootScope', '$timeout', function ($rootScope) {
 
         var alertService = {};
 
@@ -47,6 +47,7 @@
             },
             clear: function () {
                 $rootScope.alerts = [];
+                $rootScope.alertEvents = [];
             }
         };
     }]);
