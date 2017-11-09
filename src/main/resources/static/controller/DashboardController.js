@@ -1,6 +1,6 @@
 'use strict'
 
-app.controller('DashboardController', function($scope , $http, AlertService, ConnectionService) {
+app.controller('DashboardController', function($scope , $http, AlertService, ConnectionService, $filter) {
 
     $scope.eventsSource = [];
     $scope.advancedEvents = [];
@@ -75,8 +75,9 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
 
 
     $scope.alertEventOnClick = function (event) {
+        $scope.selectedEvent = $filter('filter')($scope.events, {id: event.id});
+        $scope.setSelectedEvent($scope.selectedEvent[0]);
         $('#addEditModal').modal('show');
-        $scope.selectedEventId = event.id;
     };
 
     $scope.uiConfig = {
@@ -89,7 +90,7 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
             height: 500,
             editable: true,
             header:{
-                left: 'month basicWeek basicDay agendaWeek agendaDay',
+                left: 'month agendaWeek agendaDay',
                 center: 'title',
                 right: 'today prev,next'
             },

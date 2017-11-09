@@ -37,7 +37,7 @@
             <label for="modalSelectedEntity">Entity</label>
             <select class="form-control"
                     id="modalSelectedEntity"
-                    ng-
+                    ng-switch="modalSelectedEntity"
                     ng-model="modalSelectedEntity">
                 <option>Raum</option>
                 <option>Dozent</option>
@@ -51,7 +51,6 @@
             <label for="modalSelectedEntityName">Entity-Name</label>
             <select class="form-control"
                     id="modalSelectedEntityName"
-                    ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
                     ng-Model="modalSelectedEntityName">
             </select>
         </div>
@@ -113,7 +112,7 @@
                                 <input type="text"
                                        class="form-control clockpicker"
                                        id="inputStartTime"
-                                       ng-model="modalStartTime">
+                                       ng-model="event.startTime">
                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                             </div>
                         </div>
@@ -123,7 +122,7 @@
                                 <input type="text"
                                        class="form-control clockpicker"
                                        id="inputEndTime"
-                                       ng-model="modalEndTime">
+                                       ng-model="event.endTime">
                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                             </div>
                         </div>
