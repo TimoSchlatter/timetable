@@ -5,6 +5,7 @@ app.factory('ConnectionService', function ($http, AlertService) {
             functionToSetModel(response.data);
         }, function errorCallback(response) {
             console.error(response.statusText);
+            AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich vom Server abgerufen werden. [' + data.data.error + ']');
         });
         return this.response;
     };
@@ -15,6 +16,7 @@ app.factory('ConnectionService', function ($http, AlertService) {
                 console.log(data);
                 functionToUpdateModel();
             }, function errorCallback(data, status, header, config) {
+                AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server gesichert werden. [' + data.data.error + ']');
                 console.error(data, status, header, config);
             });
     };
@@ -25,6 +27,7 @@ app.factory('ConnectionService', function ($http, AlertService) {
                 console.log(data);
                 functionToUpdateModel();
             }, function errorCallback(data, status, header, config) {
+                AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server akualisiert werden. [' + data.data.error + ']');
                 console.error(data, status, header, config);
             });
     };
@@ -35,6 +38,7 @@ app.factory('ConnectionService', function ($http, AlertService) {
                 console.log(data);
                 functionToUpdateModel();
             }, function errorCallback(data, status, header, config) {
+                AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server gelöscht werden. [' + data.data.error + ']');
                 console.error(data, status, header, config);
             });
     };
@@ -269,7 +273,7 @@ app.factory('ConnectionService', function ($http, AlertService) {
         generateData: function () {
             getData('http://localhost:49999/generateData', function (data) {
                 getFullDataModel();
-                AlertService.add('Erfolgreich', 'Simulationsdaten wurden generiert!');
+                AlertService.add('Erfolgreich', 'Die Simulationsdaten wurden erfolgreich generiert!');
             });
         }
     }
