@@ -139,6 +139,15 @@ app.factory('ConnectionService', function ($http, AlertService) {
         });
     };
 
+    /* Data Generated */
+    var dataGenerated = {};
+    var dataGeneratedUrl = 'http://localhost:49999/dataGenerated/';
+    var getDataGenerated = function () {
+        getData(dataGeneratedUrl, function (data) {
+            dataGenerated = data;
+        });
+    };
+
     var getFullDataModel = function () {
         getDocents();
         getRooms();
@@ -150,6 +159,7 @@ app.factory('ConnectionService', function ($http, AlertService) {
         getSubjectTypes();
         getSeminarTypes();
         getRoomTypes();
+        getDataGenerated();
     };
     getFullDataModel();
 
@@ -275,6 +285,9 @@ app.factory('ConnectionService', function ($http, AlertService) {
                 getFullDataModel();
                 AlertService.add('Erfolgreich', 'Die Simulationsdaten wurden erfolgreich generiert!');
             });
+        },
+        dataGenerated: function () {
+            return dataGenerated;
         }
     }
 });
