@@ -74,4 +74,12 @@ public interface EventService {
 
     List<String> findCollisions(Event event);
 
+    /**
+     * Find events by group
+     *
+     * @param group group that attends the event
+     * @return events that are attended by the given group
+     */
+    List<Event> findEventsByGroup(Group group);
+
 }
