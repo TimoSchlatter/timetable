@@ -59,4 +59,9 @@ public class Subject extends HasMinChangeoverTime implements Serializable {
         result = 31 * result + (module != null ? module.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return subjectType + " " + module;
+    }
 }
