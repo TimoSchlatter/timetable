@@ -294,5 +294,57 @@ public class DataGenerator {
             eventService.saveEvent(event);
         }
 
+        date = LocalDate.of(2017, Month.NOVEMBER, 1);
+        for (int i = 0; i < 10; i++) {
+            date = date.plusDays(i*7);
+            Set<Room> rooms = new HashSet<>(Arrays.asList(
+                    roomService.findByBuildingAndNumber("A", "101")));
+            rooms.forEach(room -> { assert room != null; });
+            Set<Docent> docents = new HashSet<>(Arrays.asList(docentService.findByForenameAndSurname("Michael", "Bregulla")));
+            docents.forEach(docent -> { assert docent != null; });
+            Group group = manipleService.findByName("I14");
+            assert group != null;
+            LocalTime startTime = LocalTime.of(20, 15);
+            LocalTime endTime = LocalTime.of(22, 30);
+            Subject subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR, seminarService.findByTitle("Business-Knigge"));
+            assert subject != null;
+            Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
+            eventService.saveEvent(event);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            date = date.plusDays(i*7);
+            Set<Room> rooms = new HashSet<>(Arrays.asList(
+                    roomService.findByBuildingAndNumber("A", "103")));
+            rooms.forEach(room -> { assert room != null; });
+            Set<Docent> docents = new HashSet<>(Arrays.asList(docentService.findByForenameAndSurname("Michael", "Bregulla")));
+            docents.forEach(docent -> { assert docent != null; });
+            Group group = manipleService.findByName("I14");
+            assert group != null;
+            LocalTime startTime = LocalTime.of(13, 15);
+            LocalTime endTime = LocalTime.of(16, 30);
+            Subject subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR, seminarService.findByTitle("Große Dokumente in Word"));
+            assert subject != null;
+            Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
+            eventService.saveEvent(event);
+        }
+        date = LocalDate.of(2017, Month.NOVEMBER, 2);
+        for (int i = 0; i < 10; i++) {
+            date = date.plusDays(i*7);
+            Set<Room> rooms = new HashSet<>(Arrays.asList(
+                    roomService.findByBuildingAndNumber("A", "102")));
+            rooms.forEach(room -> { assert room != null; });
+            Set<Docent> docents = new HashSet<>(Arrays.asList(docentService.findByForenameAndSurname("Michael", "Bregulla")));
+            docents.forEach(docent -> { assert docent != null; });
+            Group group = cohortService.findByName("14");
+            assert group != null;
+            LocalTime startTime = LocalTime.of(17, 15);
+            LocalTime endTime = LocalTime.of(20, 30);
+            Subject subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR, seminarService.findByTitle("Große Dokumente in Word"));
+            assert subject != null;
+            Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
+            eventService.saveEvent(event);
+        }
+
     }
 }
