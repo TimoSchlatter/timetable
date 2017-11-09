@@ -246,7 +246,7 @@ app.factory('ConnectionService', function ($http, AlertService) {
             return subjects;
         },
         createEvent: function (event) {
-            createData(eventsUrl, JSON.stringify(event), getEvents);
+            createData(eventsUrl, angular.toJson(event), getEvents);
         },
         updateEvent: function (event) {
             updateData(eventsUrl + event.id, JSON.stringify(event), getEvents);

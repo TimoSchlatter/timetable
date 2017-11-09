@@ -19,13 +19,15 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
 
     $scope.createEvent = function () {
         $scope.event.date = $scope.modalDate.split('.').reverse();//[2018,4,40];
+        $scope.event.date = $scope.event.date[0] + '-' + $scope.event.date[1] +'-' +$scope.event.date[2];
         $scope.event.docents = $scope.modalSelectedDocents;
-        $scope.event.endTime = $scope.modalEndTime.split(':');//[18,30];
+        $scope.event.endTime = $scope.modalEndTime + ':00';
         $scope.event.group = getSelectedGroup();
-        $scope.event.startTime = $scope.modalStartTime.split(':');
+        $scope.event.startTime = $scope.modalStartTime + ':00';
         ;
         $scope.event.subject = $scope.modalSubject;
         $scope.event.rooms = $scope.modalSelectedRooms;
+        console.log(JSON.stringify($scope.event))
         ConnectionService.createEvent($scope.event);
     };
 
