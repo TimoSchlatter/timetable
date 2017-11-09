@@ -1,9 +1,12 @@
 package de.nordakademie.iaa.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 @Entity
@@ -14,6 +17,9 @@ public class Docent extends HasMinChangeoverTime implements Serializable {
     private String email;
     private String phoneNumber;
     private String title;
+    @JsonIgnore
+    @Transient
+    private String fullName;
     private boolean isPermanentlyEmployed;
 
     public Docent() {}
@@ -80,6 +86,20 @@ public class Docent extends HasMinChangeoverTime implements Serializable {
 
     public void setPermanentlyEmployed(boolean permanentlyEmployed) {
         isPermanentlyEmployed = permanentlyEmployed;
+    }
+
+    @JsonProperty
+    public String getFullName() {
+        if(title != null) {
+            return title + " " + surname + ", " + forename;
+        }
+        else {
+            return surname + ", " + forename;
+        }
+    }
+    @JsonIgnore
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     @Override
