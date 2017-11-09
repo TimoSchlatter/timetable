@@ -16,14 +16,15 @@ app.controller('EventController', function ($scope, ConnectionService) {
     });
 
     $scope.createEvent = function () {
-        $scope.event.date = $scope.modalDate.split('.').reverse();//[2018,4,40];
+        $scope.event.date = $scope.modalDate;
         $scope.event.docents = $scope.modalSelectedDocents;
-        $scope.event.endTime = $scope.modalEndTime.split(':');//[18,30];
+        $scope.event.endTime = $scope.modalEndTime + ':00';
         $scope.event.group = getSelectedGroup();
-        $scope.event.startTime = $scope.modalStartTime.split(':');
-        ;
+        $scope.event.startTime = $scope.modalStartTime + ':00';
         $scope.event.subject = $scope.modalSubject;
         $scope.event.rooms = $scope.modalSelectedRooms;
+        console.log($scope.event);
+        console.log($scope.events());
         ConnectionService.createEvent($scope.event);
     };
 

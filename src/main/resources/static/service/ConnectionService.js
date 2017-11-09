@@ -1,4 +1,4 @@
-app.factory('ConnectionService', function ($http) {
+app.factory('ConnectionService', function ($http, AlertService) {
 
     var getData = function (url, functionToSetModel) {
         $http.get(url).then(function successCallback(response) {
@@ -265,6 +265,11 @@ app.factory('ConnectionService', function ($http) {
         },
         getRoomTypes: function () {
             return roomTypes;
+        },
+        generateData: function () {
+            getData('http://localhost:49999/generateData', function (data) {
+                getFullDataModel();
+            });
         }
     }
 });
