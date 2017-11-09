@@ -246,13 +246,13 @@ app.factory('ConnectionService', function ($http, AlertService) {
             return subjects;
         },
         createEvent: function (event) {
-            createData(eventsUrl, JSON.stringify(event), getEvents());
+            createData(eventsUrl, JSON.stringify(event), getEvents);
         },
         updateEvent: function (event) {
-            updateData(eventsUrl + event.id, JSON.stringify(event), getEvents());
+            updateData(eventsUrl + event.id, JSON.stringify(event), getEvents);
         },
         deleteEvent: function (event) {
-            deleteData(eventsUrl, event.id, getEvents());
+            deleteData(eventsUrl, event.id, getEvents);
         },
         getEvents: function () {
             return events;
@@ -269,6 +269,7 @@ app.factory('ConnectionService', function ($http, AlertService) {
         generateData: function () {
             getData('http://localhost:49999/generateData', function (data) {
                 getFullDataModel();
+                AlertService.add('Erfolgreich', 'Simulationsdaten wurden generiert!');
             });
         }
     }

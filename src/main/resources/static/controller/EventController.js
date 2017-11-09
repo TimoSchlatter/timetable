@@ -49,7 +49,10 @@ app.controller('EventController', function ($scope, ConnectionService) {
         if ($scope.modalSelectedCentury !== $scope.modalSelectedManiple.centuries[0]) {
             return $scope.modalSelectedCentury;
         } else if ($scope.modalSelectedManiple !== $scope.modalSelectedCohort.maniples[0]) {
-            return $scope.modalSelectedManiple;
+            var modalSelectedManiple = angular.copy($scope.modalSelectedManiple);
+            modalSelectedManiple.centuries.splice(0, 1);
+            console.log(modalSelectedManiple);
+            return modalSelectedManiple;
         } else if ($scope.modalSelectedCohort !== $scope.cohortsAdvanced[0]) {
             return $scope.modalSelectedCohort;
         } else {
