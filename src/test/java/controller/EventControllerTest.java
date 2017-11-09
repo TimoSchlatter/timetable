@@ -59,6 +59,7 @@ public class EventControllerTest {
     private RoomService roomService;
 
     private MockMvc mockMvc;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private JacksonTester<Event> jacksonTester;
     private final Room room = new Room(15, "A", 40, "001", RoomType.LECTUREROOM);
     private final Set<Room> rooms = new HashSet<>(Arrays.asList(room));
@@ -75,15 +76,14 @@ public class EventControllerTest {
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(eventController).build();
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+        objectMapper.registerModule(new JavaTimeModule());
+        JacksonTester.initFields(this, objectMapper);
         event.setId(eventId);
     }
 
     @Test
     public void testListEvents() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-        objectMapper.registerModule(new JavaTimeModule());
-        JacksonTester.initFields(this, objectMapper);
         List<Event> events = new ArrayList<>(Arrays.asList(event));
         when(eventService.listEvents()).thenReturn(events);
         MvcResult mvcResult = mockMvc.perform(get("/events"))
@@ -97,10 +97,6 @@ public class EventControllerTest {
 
     @Test
     public void testSaveEvent() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-        objectMapper.registerModule(new JavaTimeModule());
-        JacksonTester.initFields(this, objectMapper);
         String url = "/events";
         // Event already existing
         when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group)).thenReturn(event);
@@ -127,10 +123,6 @@ public class EventControllerTest {
 
     @Test
     public void testSaveEventSeries() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-        objectMapper.registerModule(new JavaTimeModule());
-        JacksonTester.initFields(this, objectMapper);
         int repeatWeeks = 10;
         String url = "/events?repeatWeeks=" + repeatWeeks;
         // Events already existing
@@ -159,10 +151,6 @@ public class EventControllerTest {
     @Test
     public void testUpdateEvent() throws Exception {
         final String url = "/events/" + eventId;
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-        objectMapper.registerModule(new JavaTimeModule());
-        JacksonTester.initFields(this, objectMapper);
         // Event not existing
         when(eventService.loadEvent(eventId)).thenReturn(null);
         mockMvc.perform(put(url).content(jacksonTester.write(event).getJson())
@@ -197,9 +185,91 @@ public class EventControllerTest {
         mockMvc.perform(delete(url)).andExpect(status().isOk());
     }
 
+    @Test
+    public void testFindEventsByDocentId() throws Exception {
+        final Long docentId = 1L;
+        final String url = "/events/findByDocent?id=" + docentId;
+
+        // Docent not existing
+        when(docentService.loadDocent(anyLong())).thenReturn(null);
+        MvcResult mvcResult = mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(eventService, times(0)).findEventsByDocent(any());
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<Event> eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        assertEquals(new ArrayList<Event>(), eventsResponse);
+
+        // Docent existing
+        when(docentService.loadDocent(docentId)).thenReturn(docent);
+        when(eventService.findEventsByDocent(docent)).thenReturn(Arrays.asList(event));
+        mvcResult = mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(eventService, times(1)).findEventsByDocent(any());
+        jsonResponse = mvcResult.getResponse().getContentAsString();
+        eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        assertEquals(Arrays.asList(event), eventsResponse);
+    }
+
+    @Test
+    public void testFindEventsByGroupId() throws Exception {
+        final String url = "/events/findByGroup?id=1";
+
+        // Group not existing
+        when(groupService.loadGroup(anyLong())).thenReturn(null);
+        MvcResult mvcResult = mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(eventService, times(0)).findEventsByGroup(any());
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<Event> eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        assertEquals(new ArrayList<Event>(), eventsResponse);
+
+        // Group existing
+        when(groupService.loadGroup(anyLong())).thenReturn(group);
+        when(eventService.findEventsByGroup(group)).thenReturn(Arrays.asList(event));
+        mvcResult = mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(eventService, times(1)).findEventsByGroup(any());
+        jsonResponse = mvcResult.getResponse().getContentAsString();
+        eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        assertEquals(Arrays.asList(event), eventsResponse);
+    }
+
+    @Test
+    public void testFindEventsByRoomId() throws Exception {
+        final String url = "/events/findByRoom?id=1";
+
+        // Room not existing
+        when(roomService.loadRoom(anyLong())).thenReturn(null);
+        MvcResult mvcResult = mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(eventService, times(0)).findEventsByRoom(any());
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<Event> eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        assertEquals(new ArrayList<Event>(), eventsResponse);
+
+        // Room existing
+        when(roomService.loadRoom(anyLong())).thenReturn(room);
+        when(eventService.findEventsByRoom(room)).thenReturn(Arrays.asList(event));
+        mvcResult = mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(eventService, times(1)).findEventsByRoom(any());
+        jsonResponse = mvcResult.getResponse().getContentAsString();
+        eventsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<Event>>() {});
+        assertEquals(Arrays.asList(event), eventsResponse);
+    }
+
     @After
     public void reset() {
+        Mockito.reset(docentService);
         Mockito.reset(eventService);
+        Mockito.reset(groupService);
+        Mockito.reset(roomService);
     }
 
     @Configuration
