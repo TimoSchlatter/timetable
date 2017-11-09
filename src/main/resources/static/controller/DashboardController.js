@@ -5,6 +5,9 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     $scope.generateData = ConnectionService.generateData;
     $scope.dataGenerated = ConnectionService.dataGenerated;
     $scope.events = ConnectionService.getEvents;
+    $scope.eventsByGroup = ConnectionService.getEventsByGroup;
+    $scope.eventsByRoom = ConnectionService.getEventsByRoom;
+    $scope.eventsByDocent = ConnectionService.getEventsByDocent;
     $scope.createEvent = ConnectionService.createEvent;
     $scope.updateEvent = ConnectionService.updateEvent;
     $scope.deleteEvent = ConnectionService.deleteEvent;
@@ -12,17 +15,36 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     $scope.docents = ConnectionService.getDocents;
     $scope.subjects = ConnectionService.getSubjects;
     $scope.cohorts = ConnectionService.getCohorts;
+    $scope.maniples = ConnectionService.getManiples;
+    $scope.centuries = ConnectionService.getCenturies;
     $scope.subjectTypes = ConnectionService.getSubjectTypes;
 
     $scope.calenderEvents = [[]];
+
+    $scope.selectableEntities = ['Alle', 'Dozent', 'Raum', 'Kohorte', 'Manipel', 'Zenturie', 'Seminargruppe'];
+    $scope.selectedEntity = $scope.selectableEntities[0];
 
     $scope.$watch('cohorts()', function () {
         buildCohortsAdvanced($scope.cohorts());
     });
 
     $scope.$watch('events()', function () {
-        convertToCalenderEvents(angular.copy($scope.events()));
+        $scope.updateAllEvents();
     });
+
+    $scope.updateAllEvents = function () {
+        if ($scope.selectedEntity === $scope.selectableEntities[0]) {
+            convertEventsToCalender($scope.events());
+        }
+    };
+
+    $scope.convertEventsByToCalender = function (entity, getEventsBy) {
+        if (entity) {
+            getEventsBy(entity, function (data) {
+                convertEventsToCalender(data);
+            });
+        }
+    };
 
     var buildCohortsAdvanced = function (cohorts) {
         $scope.cohortsAdvanced = angular.copy(cohorts);
@@ -119,7 +141,7 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
     };
 
-    var convertToCalenderEvents = function (events) {
+    var convertEventsToCalender = function (events) {
         $scope.calenderEvents[0] = [];
         angular.forEach(events, function (event) {
             var event = {
@@ -135,8 +157,8 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     };
 
     $scope.alertEventOnClick = function (event) {
-        $scope.selectedEvent = $filter('filter')($scope.events(), {id: event.id});
-        $scope.setSelectedEvent($scope.selectedEvent[0]);
+        var selectedEvent = $filter('filter')($scope.events(), {id: event.id});
+        $scope.setSelectedEvent(selectedEvent[0]);
         $('#addEditModal').modal('show');
     };
 

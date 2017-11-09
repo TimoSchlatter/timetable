@@ -99,10 +99,22 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
     };
 
     /* CenturiesControl */
+    var centuries = [];
     var centuriesUrl = 'http://localhost:49999/centuries/';
+    var getCenturies = function () {
+        getData(centuriesUrl, function (data) {
+            centuries = data;
+        });
+    };
 
     /*ManiplesControl */
+    var maniples = [];
     var maniplesUrl = 'http://localhost:49999/maniples/';
+    var getManiples = function () {
+        getData(maniplesUrl, function (data) {
+            maniples = data;
+        });
+    };
 
     /*CohortsControl */
     var cohorts = [];
@@ -128,6 +140,15 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
     var getSeminars = function () {
         getData(seminarsUrl, function (data) {
             seminars = data;
+        });
+    };
+
+    /* SeminarsGroupsControl */
+    var seminarGroups = [];
+    var seminarGroupsUrl = 'http://localhost:49999/seminars/';
+    var getSeminarGroups = function () {
+        getData(seminarGroupsUrl, function (data) {
+            seminarGroups = data;
         });
     };
 
@@ -185,12 +206,15 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         });
     };
 
-    var getFullDataModel = function () {
+    var updateAllDataModels = function () {
         getDocents();
         getRooms();
         getCohorts();
+        getManiples();
+        getCenturies();
         getCourses();
         getSeminars();
+        getSeminarGroups();
         getSubjects();
         getEvents();
         getSubjectTypes();
@@ -198,7 +222,7 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getRoomTypes();
         getDataGenerated();
     };
-    getFullDataModel();
+    updateAllDataModels();
 
     return {
         createDocent: function (docent) {
@@ -235,6 +259,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         deleteCentury: function (manipleId, century) {
             deleteData(maniplesUrl + manipleId + '/deleteCentury/', century.id, getCohorts);
         },
+        getCenturies: function () {
+            return centuries;
+        },
         createManiple: function (cohortId, maniple) {
             maniple.type = 'maniple';
             createData(cohortsUrl + cohortId + '/addManiple', angular.toJson(maniple), getCohorts);
@@ -244,6 +271,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         },
         deleteManiple: function (cohortId, maniple) {
             deleteData(cohortsUrl + cohortId + '/deleteManiple/', maniple.id, getCohorts);
+        },
+        getManiples: function () {
+            return maniples;
         },
         createCohort: function (cohort) {
             cohort.type = 'cohort';
@@ -308,6 +338,15 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getEvents: function () {
             return events;
         },
+        getEventsByGroup: function (group, functionToSetModel) {
+            return getData(eventsUrl + 'findByGroup?id=' + group.id, functionToSetModel);
+        },
+        getEventsByRoom: function (docent, functionToSetModel) {
+            return getData(eventsUrl + 'findByRoom?id=' + docent.id, functionToSetModel);
+        },
+        getEventsByDocent: function (docent, functionToSetModel) {
+            return getData(eventsUrl + 'findByDocent?id=' + docent.id, functionToSetModel);
+        },
         getSubjectTypes: function () {
             return subjectTypes;
         },
@@ -319,7 +358,7 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         },
         generateData: function () {
             getData('http://localhost:49999/generateData', function (data) {
-                getFullDataModel();
+                updateAllDataModels();
                 AlertService.add('Erfolgreich', 'Die Simulationsdaten wurden erfolgreich generiert!');
             });
         },
@@ -329,7 +368,5 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         createEventInsteadOfCollision: function () {
             createEventInsteadOfCollision();
         }
-
-
     }
 });
