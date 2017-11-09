@@ -4,13 +4,19 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import java.io.Serializable;
 
+/**
+ * Course entity.
+ *
+ * @author Arvid Ottenberg
+ */
 @Entity
 public class Course extends Module implements Serializable {
 
     private String field;
     private int number;
 
-    public Course() {}
+    public Course() {
+    }
 
     public Course(String title, String field, int number) {
         super(title);

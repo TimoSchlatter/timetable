@@ -3,6 +3,11 @@ package de.nordakademie.iaa.model;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 
+/**
+ * Century entity.
+ *
+ * @author Arvid Ottenberg
+ */
 @Entity
 public class SeminarGroup extends Group{
 

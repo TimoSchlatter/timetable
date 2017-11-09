@@ -9,6 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 import java.io.Serializable;
 
+/**
+ * Docent entity.
+ *
+ * @author Arvid Ottenberg
+ */
 @Entity
 public class Docent extends HasMinChangeoverTime implements Serializable {
 
@@ -17,12 +22,14 @@ public class Docent extends HasMinChangeoverTime implements Serializable {
     private String email;
     private String phoneNumber;
     private String title;
+    private boolean isPermanentlyEmployed;
+
     @JsonIgnore
     @Transient
     private String fullName;
-    private boolean isPermanentlyEmployed;
 
-    public Docent() {}
+    public Docent() {
+    }
 
     public Docent(String email, String forename, String surname, String phoneNumber, String title, boolean isPermanentlyEmployed, int minChangeoverTime) {
         super(minChangeoverTime);
@@ -90,13 +97,13 @@ public class Docent extends HasMinChangeoverTime implements Serializable {
 
     @JsonProperty
     public String getFullName() {
-        if(title != null) {
+        if (title != null) {
             return title + " " + surname + ", " + forename;
-        }
-        else {
+        } else {
             return surname + ", " + forename;
         }
     }
+
     @JsonIgnore
     public void setFullName(String fullName) {
         this.fullName = fullName;
@@ -120,12 +127,6 @@ public class Docent extends HasMinChangeoverTime implements Serializable {
 
     @Override
     public String toString() {
-        if(title != null) {
-            return "Dozent " + title + " " + forename + " " + surname;
-        }
-        else {
-            return "Dozent " + forename + " " + surname;
-        }
-
+        return (title != null && !title.isEmpty() ? title + " " : "") + forename + " " + surname;
     }
 }

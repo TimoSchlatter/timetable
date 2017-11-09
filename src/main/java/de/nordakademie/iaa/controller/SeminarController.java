@@ -73,7 +73,7 @@ public class SeminarController {
         try {
             if (seminarService.loadSeminar(id) != null) {
                 seminarService.saveSeminar(seminar);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.noContent().build();
             }
         } catch (Exception ignored) {
         }

@@ -7,6 +7,11 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Room entity.
+ *
+ * @author Arvid Ottenberg
+ */
 @Entity
 public class Room extends HasMinChangeoverTime implements Serializable {
 
@@ -14,11 +19,13 @@ public class Room extends HasMinChangeoverTime implements Serializable {
     private String number;
     private int maxSeats;
     private RoomType roomType;
+
     @JsonIgnore
     @Transient
     private String fullName;
 
-    public Room() {}
+    public Room() {
+    }
 
     public Room(int minChangeoverTime, String building, int maxSeats, String number, RoomType roomType) {
         super(minChangeoverTime);

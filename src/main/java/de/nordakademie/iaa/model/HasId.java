@@ -5,18 +5,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+/**
+ * Abstract superclass for all entities.
+ *
+ * @author Arvid Ottenberg
+ */
 @MappedSuperclass
-public abstract class HasId {
+abstract class HasId {
 
-	private Long id;
+    private Long id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
-	public Long getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    public Long getId() {
+        return this.id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

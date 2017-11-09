@@ -80,7 +80,7 @@ public class RoomController {
         try {
             if (roomService.loadRoom(id) != null) {
                 roomService.saveRoom(room);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.noContent().build();
             }
         } catch (Exception ignored) {
         }

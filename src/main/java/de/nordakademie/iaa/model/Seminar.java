@@ -5,12 +5,18 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.io.Serializable;
 
+/**
+ * Century entity.
+ *
+ * @author Arvid Ottenberg
+ */
 @Entity
 public class Seminar extends Module implements Serializable {
 
     private SeminarType seminarType;
 
-    public Seminar() {}
+    public Seminar() {
+    }
 
     public Seminar(String title, SeminarType seminarType) {
         super(title);
@@ -21,6 +27,7 @@ public class Seminar extends Module implements Serializable {
         super(title, shortTitle);
         this.seminarType = seminarType;
     }
+
     @Enumerated(EnumType.STRING)
     public SeminarType getSeminarType() {
         return seminarType;

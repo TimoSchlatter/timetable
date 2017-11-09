@@ -6,6 +6,11 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Maniple entity.
+ *
+ * @author Arvid Ottenberg
+ */
 @Entity
 public class Maniple extends Group {
 

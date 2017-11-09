@@ -1,5 +1,10 @@
 package de.nordakademie.iaa.model;
 
+/**
+ * Century entity.
+ *
+ * @author Arvid Ottenberg
+ */
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Entity;

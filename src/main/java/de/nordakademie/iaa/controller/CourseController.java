@@ -73,7 +73,7 @@ public class CourseController {
         try {
             if (courseService.loadCourse(id) != null) {
                 courseService.saveCourse(course);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.noContent().build();
             }
         } catch (Exception ignored) {
         }

@@ -37,7 +37,8 @@ public class EventController {
     private RoomService roomService;
 
     @Autowired
-    public EventController(DocentService docentService, EventService eventService, GroupService groupService, RoomService roomService) {
+    public EventController(DocentService docentService, EventService eventService, GroupService groupService,
+                           RoomService roomService) {
         this.docentService = docentService;
         this.eventService = eventService;
         this.groupService = groupService;
@@ -63,7 +64,8 @@ public class EventController {
     @PostMapping
     public ResponseEntity saveEvent(@RequestBody Event event,
                                     @RequestParam(value = "repeatWeeks", required = false) Integer repeatWeeks,
-                                    @RequestParam(value = "ignoreCollisions", required = false) Boolean ignoreCollisions) {
+                                    @RequestParam(value = "ignoreCollisions", required = false)
+                                                Boolean ignoreCollisions) {
         repeatWeeks = (repeatWeeks == null ? 1 : repeatWeeks);
         ignoreCollisions = (ignoreCollisions == null ? false : ignoreCollisions);
         LocalDate startDate = event.getDate();
@@ -97,13 +99,20 @@ public class EventController {
      * @return status OK or BAD_REQUEST (if update failed).
      */
     @RequestMapping(value = "/{id}", method = PUT)
-    public ResponseEntity updateEvent(@PathVariable Long id, @RequestBody Event event) {
-        try {
-            if (eventService.loadEvent(id) != null) {
-                eventService.saveEvent(event);
-                return ResponseEntity.ok().build();
+    public ResponseEntity updateEvent(@PathVariable Long id,
+                                      @RequestBody Event event,
+                                      @RequestParam(value = "ignoreCollisions", required = false)
+                                                  Boolean ignoreCollisions) {
+        ignoreCollisions = (ignoreCollisions == null ? false : ignoreCollisions);
+        if (eventService.loadEvent(id) != null) {
+            List<String> collisions = eventService.findCollisions(event);
+            if (collisions.isEmpty() || ignoreCollisions) {
+                if (saveEvent(event)) {
+                    return ResponseEntity.noContent().build();
+                }
+            } else {
+                return ResponseEntity.ok(collisions);
             }
-        } catch (Exception ignored) {
         }
         return ResponseEntity.badRequest().build();
     }

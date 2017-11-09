@@ -77,7 +77,7 @@ public class CohortController {
         try {
             if (cohortService.loadCohort(id) != null) {
                 cohortService.saveCohort(cohort);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.noContent().build();
             }
         } catch (Exception ignored) {
         }

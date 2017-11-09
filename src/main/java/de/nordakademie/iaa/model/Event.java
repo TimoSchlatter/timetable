@@ -10,9 +10,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * Event entity.
+ *
+ * @author Arvid Ottenberg
+ */
 @Entity
 public class Event extends HasId implements Serializable {
 
@@ -27,7 +31,8 @@ public class Event extends HasId implements Serializable {
     private Set<Docent> docents;
     private Set<Room> rooms;
 
-    public Event() {}
+    public Event() {
+    }
 
     public Event(Set<Room> rooms, Set<Docent> docents, Group group, LocalDate date, LocalTime startTime, LocalTime endTime, Subject subject) {
         this.rooms = rooms;
@@ -114,24 +119,25 @@ public class Event extends HasId implements Serializable {
         return docents.remove(docent);
     }
 
+    /**
+     * Calculates the maximum minChangeoverTime of all entities belonging to the event.
+     * @return event's minChangeoverTime.
+     */
     public int calculateMinChangeoverTime() {
         int maxCoT = group.getMinChangeoverTime();
         Docent docent = findDocentWithMaxChangeoverTime();
         Room room = findRoomWithMaxChangeoverTime();
-        if(docent.getMinChangeoverTime() > maxCoT) {
+        if (docent.getMinChangeoverTime() > maxCoT) {
             maxCoT = docent.getMinChangeoverTime();
-        }
-        else if(room.getMinChangeoverTime() > maxCoT) {
+        } else if (room.getMinChangeoverTime() > maxCoT) {
             maxCoT = room.getMinChangeoverTime();
         }
         return maxCoT;
     }
 
-    public Docent findDocentWithMaxChangeoverTime() {
+    private Docent findDocentWithMaxChangeoverTime() {
         Docent maxDocent = null;
-        Iterator<Docent> iterator = docents.iterator();
-        while(iterator.hasNext()) {
-            Docent docent = iterator.next();
+        for (Docent docent : docents) {
             if (maxDocent == null) {
                 maxDocent = docent;
             } else if (docent.getMinChangeoverTime() > maxDocent.getMinChangeoverTime()) {
@@ -141,11 +147,9 @@ public class Event extends HasId implements Serializable {
         return maxDocent;
     }
 
-    public Room findRoomWithMaxChangeoverTime() {
+    private Room findRoomWithMaxChangeoverTime() {
         Room maxRoom = null;
-        Iterator<Room> iterator = rooms.iterator();
-        while(iterator.hasNext()) {
-            Room room = iterator.next();
+        for (Room room : rooms) {
             if (maxRoom == null) {
                 maxRoom = room;
             } else if (room.getMinChangeoverTime() > maxRoom.getMinChangeoverTime()) {
@@ -155,21 +159,17 @@ public class Event extends HasId implements Serializable {
         return maxRoom;
     }
 
-    public String printRooms() {
+    private String printRooms() {
         String rooms = "";
-        Iterator<Room> iterator = this.rooms.iterator();
-        while(iterator.hasNext()) {
-            Room room = iterator.next();
+        for (Room room : this.rooms) {
             rooms += room.toString() + " ";
         }
         return rooms;
     }
 
-    public String printDocents() {
+    private String printDocents() {
         String docents = "";
-        Iterator<Docent> iterator = this.docents.iterator();
-        while(iterator.hasNext()) {
-            Docent docent = iterator.next();
+        for (Docent docent : this.docents) {
             docents += docent.toString() + " ";
         }
         return docents;

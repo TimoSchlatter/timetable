@@ -10,6 +10,11 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+/**
+ * Abstract superclass for different groups.
+ *
+ * @author Arvid Ottenberg
+ */
 @Entity
 @Table(name = "group_table")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -25,7 +30,8 @@ public abstract class Group extends HasMinChangeoverTime implements Serializable
 
     private String name;
 
-    Group() {}
+    Group() {
+    }
 
     Group(String name) {
         this.name = name;

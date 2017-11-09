@@ -12,6 +12,11 @@ import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
+/**
+ * Abstract superclass for different modules.
+ *
+ * @author Arvid Ottenberg
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonTypeInfo(
@@ -25,7 +30,8 @@ public abstract class Module extends HasId implements Serializable {
     private String title;
     private String shortTitle;
 
-    public Module() {}
+    public Module() {
+    }
 
     public Module(String title) {
         this.title = title;

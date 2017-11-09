@@ -50,7 +50,7 @@ public class ManipleController {
         try {
             if (manipleService.loadManiple(id) != null) {
                 manipleService.saveManiple(maniple);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.noContent().build();
             }
         } catch (Exception ignored) {
         }

@@ -6,12 +6,18 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Cohort entity.
+ *
+ * @author Arvid Ottenberg
+ */
 @Entity
 public class Cohort extends Group {
 
     private List<Maniple> maniples = new ArrayList<>();
 
-    public Cohort() {}
+    public Cohort() {
+    }
 
     public Cohort(String name) {
         super(name);
@@ -39,9 +45,8 @@ public class Cohort extends Group {
     public int calculateNumberOfStudents() {
         if (maniples.isEmpty()) {
             return 0;
-        } else {
-            return maniples.stream().mapToInt(Maniple::calculateNumberOfStudents).sum();
         }
+        return maniples.stream().mapToInt(Maniple::calculateNumberOfStudents).sum();
     }
 
     public void addManiple(Maniple maniple) {

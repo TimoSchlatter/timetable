@@ -74,7 +74,7 @@ public class DocentController {
         try {
             if (docentService.loadDocent(id) != null) {
                 docentService.saveDocent(docent);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.noContent().build();
             }
         } catch (Exception ignored) {
         }

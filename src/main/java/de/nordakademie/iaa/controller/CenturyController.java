@@ -42,7 +42,7 @@ public class CenturyController {
         try {
             if (centuryService.loadCentury(id) != null) {
                 centuryService.saveCentury(century);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.noContent().build();
             }
         } catch (NotEnoughChangeoverTimeProvidedException ignored) {
         }

@@ -73,7 +73,7 @@ public class SubjectController {
         try {
             if (subjectService.loadSubject(id) != null) {
                 subjectService.saveSubject(subject);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.noContent().build();
             }
         } catch (Exception ignored) {
         }

@@ -3,8 +3,13 @@ package de.nordakademie.iaa.model;
 import javax.persistence.Basic;
 import javax.persistence.MappedSuperclass;
 
+/**
+ * Abstract superclass for all entities containing a minChangeoverTime.
+ *
+ * @author Arvid Ottenberg
+ */
 @MappedSuperclass
-public abstract class HasMinChangeoverTime extends HasId {
+abstract class HasMinChangeoverTime extends HasId {
 
 	private int minChangeoverTime;
 

@@ -1,5 +1,10 @@
 package de.nordakademie.iaa.model;
 
+/**
+ * Century entity.
+ *
+ * @author Arvid Ottenberg
+ */
 public enum SubjectType {
 
     EXAM("Klausur"),

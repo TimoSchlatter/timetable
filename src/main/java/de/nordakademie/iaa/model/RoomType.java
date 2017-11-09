@@ -1,5 +1,10 @@
 package de.nordakademie.iaa.model;
 
+/**
+ * Room type enum.
+ *
+ * @author Arvid Ottenberg
+ */
 public enum RoomType {
 
     COMPUTERROOM("Computerraum"),
