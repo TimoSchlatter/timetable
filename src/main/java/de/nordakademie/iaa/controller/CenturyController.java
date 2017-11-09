@@ -18,7 +18,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
  *
  * @author Timo Schlatter
  */
-
 @Transactional
 @RestController
 @RequestMapping("/centuries")

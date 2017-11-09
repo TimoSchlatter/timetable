@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  * @author Timo Schlatter
  */
-
 @Transactional
 @Controller
 public class DataGenerationController {

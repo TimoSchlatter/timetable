@@ -22,7 +22,6 @@ import java.util.List;
  *
  * @author Timo Schlatter
  */
-
 @Transactional
 @RestController
 @RequestMapping("/vacantRooms")
