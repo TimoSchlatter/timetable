@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.controller;
 
-
 import de.nordakademie.iaa.model.Cohort;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CohortService;
@@ -16,6 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
+
+/**
+ * REST-Controller for cohort entities.
+ *
+ * @author Timo Schlatter
+ */
 
 @Transactional
 @RestController
@@ -34,9 +39,9 @@ public class CohortController {
     }
 
     /**
-     * List all cohorts.
+     * Lists all cohorts.
      *
-     * @return the list of cohorts.
+     * @return list of all saved cohorts.
      */
     @GetMapping
     public List<Cohort> listCohorts() {
@@ -46,7 +51,8 @@ public class CohortController {
     /**
      * Saves the given cohort.
      *
-     * @param cohort The cohort to save.
+     * @param cohort the cohort to save.
+     * @return status OK or BAD_REQUEST (if the given cohort is already existing or saving failed).
      */
     @PostMapping
     public ResponseEntity saveCohort(@RequestBody Cohort cohort) {
@@ -61,9 +67,11 @@ public class CohortController {
     }
 
     /**
-     * Updates the given cohort.
+     * Updates the cohort with given id.
      *
-     * @param cohort The cohort to update.
+     * @param id     identifier for cohort to update.
+     * @param cohort new values for cohort.
+     * @return status OK or BAD_REQUEST (if update failed).
      */
     @RequestMapping(value = "/{id}", method = PUT)
     public ResponseEntity updateCohort(@PathVariable Long id, @RequestBody Cohort cohort) {
@@ -80,7 +88,8 @@ public class CohortController {
     /**
      * Deletes the cohort with given id.
      *
-     * @param id The id of the cohort to be deleted.
+     * @param id identifier for cohort to delete.
+     * @return status OK or BAD_REQUEST (if deletion failed or no century was found for given id).
      */
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteCohort(@PathVariable Long id) {
@@ -98,10 +107,11 @@ public class CohortController {
     }
 
     /**
-     * Saves the given maniple.
-     * Adds the given maniple to the referenced cohort.
+     * Saves the given maniple and adds the given maniple to the specified cohort.
      *
-     * @param maniple The century to save.
+     * @param id      identifier for the cohort to which the given maniple should be added.
+     * @param maniple the maniple to save.
+     * @return status OK or BAD_REQUEST (if cohort is not existing, maniple is already existing or saving failed).
      */
     @RequestMapping(value = "/{id}/addManiple", method = POST)
     public ResponseEntity addManiple(@PathVariable Long id, @RequestBody Maniple maniple) {
@@ -122,10 +132,11 @@ public class CohortController {
     }
 
     /**
-     * Deletes the maniple with the given id.
+     * Removes the given maniple from the specified cohort and deletes the given maniple.
      *
-     * @param cohortId  The id of the cohort, to which the maniple belongs.
-     * @param manipleId The id of the maniple to delete.
+     * @param cohortId  identifier for the cohort from which the given maniple should be removed.
+     * @param manipleId identifier for the maniple which should be removed and deleted.
+     * @return status OK or BAD_REQUEST (if cohort or maniple is not existing).
      */
     @RequestMapping(value = "/{cohortId}/deleteManiple/{manipleId}", method = DELETE)
     public ResponseEntity removeManiple(@PathVariable Long cohortId, @PathVariable Long manipleId) {

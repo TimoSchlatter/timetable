@@ -11,11 +11,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * REST-Controller for subject types.
+ *
+ * @author Timo Schlatter
+ */
+
 @Transactional
 @RestController
 @RequestMapping("/subjecttypes")
 public class SubjectTypeController {
 
+    /**
+     * Lists all subject types.
+     *
+     * @return the list of all subject types.
+     */
     @GetMapping
     public String listSubjectTypes() throws Exception {
         Map<SubjectType, String> subjectTypes = new HashMap<>();

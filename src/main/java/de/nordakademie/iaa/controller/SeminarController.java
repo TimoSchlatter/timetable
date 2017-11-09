@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.controller;
 
-
 import de.nordakademie.iaa.model.Seminar;
 import de.nordakademie.iaa.service.SeminarService;
 import de.nordakademie.iaa.service.SubjectService;
@@ -14,6 +13,12 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
+/**
+ * REST-Controller for seminar entities.
+ *
+ * @author Timo Schlatter
+ */
 
 @Transactional
 @RestController
@@ -30,9 +35,9 @@ public class SeminarController {
     }
 
     /**
-     * List all seminars.
+     * Lists all seminars.
      *
-     * @return the list of seminars.
+     * @return the list of all saved seminars.
      */
     @GetMapping
     public List<Seminar> listSeminars() {
@@ -42,7 +47,8 @@ public class SeminarController {
     /**
      * Saves the given seminar.
      *
-     * @param seminar The seminar to save.
+     * @param seminar the seminar to save.
+     * @return status OK or BAD_REQUEST (if the given seminar is already existing or saving failed).
      */
     @PostMapping
     public ResponseEntity saveSeminar(@RequestBody Seminar seminar) {
@@ -57,9 +63,11 @@ public class SeminarController {
     }
 
     /**
-     * Updates the given seminar.
+     * Updates the seminar with given id.
      *
-     * @param seminar The seminar to update.
+     * @param id      identifier for seminar to update.
+     * @param seminar new values for seminar.
+     * @return status OK or BAD_REQUEST (if update failed).
      */
     @RequestMapping(value = "/{id}", method = PUT)
     public ResponseEntity updateSeminar(@PathVariable Long id, @RequestBody Seminar seminar) {
@@ -76,7 +84,8 @@ public class SeminarController {
     /**
      * Deletes the seminar with given id.
      *
-     * @param id The id of the seminar to be deleted.
+     * @param id identifier for seminar to delete.
+     * @return status OK or BAD_REQUEST (if deletion failed or no seminar was found for given id).
      */
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteSeminar(@PathVariable Long id) {

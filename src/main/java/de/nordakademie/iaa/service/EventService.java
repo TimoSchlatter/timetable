@@ -42,10 +42,11 @@ public interface EventService {
 
     /**
      * Retrieves a event by its date and startTime and endTime and group.
-     * @param date the identifier.
+     *
+     * @param date      the identifier.
      * @param startTime the identifier.
-     * @param endTime the identifier.
-     * @param group the identifier.
+     * @param endTime   the identifier.
+     * @param group     the identifier.
      * @return the found event or null if no event was found with given identifiers.
      */
     Event findEventByDateAndStartTimeAndEndTimeAndGroup(LocalDate date, LocalTime startTime, LocalTime endTime, Group group);

@@ -11,11 +11,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * REST-Controller for room types.
+ *
+ * @author Timo Schlatter
+ */
+
 @Transactional
 @RestController
 @RequestMapping("/roomtypes")
 public class RoomTypeController {
 
+    /**
+     * Lists all room types.
+     *
+     * @return the list of all room types.
+     */
     @GetMapping
     public String listRoomTypes() throws Exception {
         Map<RoomType, String> roomTypes = new HashMap<>();

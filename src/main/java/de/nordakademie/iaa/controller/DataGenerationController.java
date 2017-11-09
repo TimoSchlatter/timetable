@@ -7,6 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * Controller for dummy data generation.
+ *
+ * @author Timo Schlatter
+ */
+
 @Transactional
 @Controller
 public class DataGenerationController {
@@ -19,12 +25,21 @@ public class DataGenerationController {
         this.dataGenerator = dataGenerator;
     }
 
+    /**
+     * Generates dummy data.
+     *
+     * @return status OK or BAD_REQUEST (if an exception occurred while creating dummy data).
+     */
     @RequestMapping("/generateData")
-    public ResponseEntity generateData() throws Exception {
+    public ResponseEntity generateData() {
         if (!dataGenerated) {
-            dataGenerator.createData();
-            dataGenerated = true;
+            try {
+                dataGenerator.createData();
+                dataGenerated = true;
+                return ResponseEntity.ok(null);
+            } catch (Exception ignored) {
+            }
         }
-        return ResponseEntity.ok(null);
+        return ResponseEntity.badRequest().build();
     }
 }

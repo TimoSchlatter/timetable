@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.controller;
 
-
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.model.Maniple;
 import de.nordakademie.iaa.service.CenturyService;
@@ -17,6 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
+
+/**
+ * REST-Controller for cohort entities.
+ *
+ * @author Timo Schlatter
+ */
 
 @Transactional
 @RestController
@@ -35,9 +40,11 @@ public class ManipleController {
     }
 
     /**
-     * Updates the given maniple.
+     * Updates the maniple with given id.
      *
-     * @param maniple The maniple to update.
+     * @param id      identifier for maniple to update.
+     * @param maniple new values for maniple.
+     * @return status OK or BAD_REQUEST (if update failed).
      */
     @RequestMapping(value = "/{id}", method = PUT)
     public ResponseEntity updateManiple(@PathVariable Long id, @RequestBody Maniple maniple) {
@@ -52,10 +59,11 @@ public class ManipleController {
     }
 
     /**
-     * Saves the given century.
-     * Adds the given century to the referenced maniple.
+     * Saves the given century and adds the given century to the specified maniple.
      *
-     * @param century The century to save.
+     * @param id      identifier for the maniple to which the given century should be added.
+     * @param century the century to save.
+     * @return status OK or BAD_REQUEST (if maniple is not existing, century is already existing or saving failed).
      */
     @RequestMapping(value = "/{id}/addCentury", method = POST)
     public ResponseEntity addCentury(@PathVariable Long id, @RequestBody Century century) {
@@ -76,10 +84,11 @@ public class ManipleController {
     }
 
     /**
-     * Deletes the maniple with the given id.
+     * Removes the given century from the specified maniple and deletes the given century.
      *
-     * @param manipleId The id of the cohort, to which the maniple belongs.
-     * @param centuryId The id of the maniple to delete.
+     * @param manipleId identifier for the maniple from which the given century should be removed.
+     * @param centuryId identifier for the century which should be removed and deleted.
+     * @return status OK or BAD_REQUEST (if maniple or century is not existing).
      */
     @RequestMapping(value = "/{manipleId}/deleteCentury/{centuryId}", method = DELETE)
     public ResponseEntity removeCentury(@PathVariable Long manipleId, @PathVariable Long centuryId) {

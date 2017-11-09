@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.controller;
 
-
 import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.service.EventService;
@@ -18,6 +17,12 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * REST-Controller for vacant room entities.
+ *
+ * @author Timo Schlatter
+ */
+
 @Transactional
 @RestController
 @RequestMapping("/vacantRooms")
@@ -33,7 +38,7 @@ public class VacantRoomController {
     }
 
     /**
-     * List all vacant rooms for a given time.
+     * List all vacant rooms for a given time frame.
      *
      * @param date on which the room should be vacant.
      * @param startTime from when the room should be vacant.

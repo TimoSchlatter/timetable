@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.controller;
 
-
 import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.service.EventService;
@@ -15,6 +14,12 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
+/**
+ * REST-Controller for room entities.
+ *
+ * @author Timo Schlatter
+ */
 
 @Transactional
 @RestController
@@ -31,9 +36,9 @@ public class RoomController {
     }
 
     /**
-     * List all rooms.
+     * Lists all rooms.
      *
-     * @return the list of rooms.
+     * @return the list of all saved rooms.
      */
     @GetMapping
     public List<Room> listRooms() {
@@ -43,7 +48,8 @@ public class RoomController {
     /**
      * Saves the given room.
      *
-     * @param room The room to save.
+     * @param room the room to save.
+     * @return status OK or BAD_REQUEST (if the given room is already existing or saving failed).
      */
     @PostMapping
     public ResponseEntity saveRoom(@RequestBody Room room) {
@@ -62,6 +68,14 @@ public class RoomController {
      *
      * @param room The room to update.
      */
+
+    /**
+     * Updates the room with given id.
+     *
+     * @param id   identifier for room to update.
+     * @param room new values for room.
+     * @return status OK or BAD_REQUEST (if update failed).
+     */
     @RequestMapping(value = "/{id}", method = PUT)
     public ResponseEntity updateRoom(@PathVariable Long id, @RequestBody Room room) {
         try {
@@ -77,7 +91,8 @@ public class RoomController {
     /**
      * Deletes the room with given id.
      *
-     * @param id The id of the room to be deleted.
+     * @param id identifier for room to delete.
+     * @return status OK or BAD_REQUEST (if deletion failed or no room was found for given id).
      */
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteRoom(@PathVariable Long id) {

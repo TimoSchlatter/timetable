@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.controller;
 
-
 import de.nordakademie.iaa.model.Docent;
 import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.service.DocentService;
@@ -15,6 +14,12 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
+/**
+ * REST-Controller for docent entities.
+ *
+ * @author Timo Schlatter
+ */
 
 @Transactional
 @RestController
@@ -31,9 +36,9 @@ public class DocentController {
     }
 
     /**
-     * List all docents.
+     * Lists all docents.
      *
-     * @return the list of docents.
+     * @return the list of all saved docents.
      */
     @GetMapping
     public List<Docent> listDocents() {
@@ -43,7 +48,8 @@ public class DocentController {
     /**
      * Saves the given docent.
      *
-     * @param docent The docent to save.
+     * @param docent the docent to save.
+     * @return status OK or BAD_REQUEST (if the given docent is already existing or saving failed).
      */
     @PostMapping
     public ResponseEntity saveDocent(@RequestBody Docent docent) {
@@ -52,14 +58,17 @@ public class DocentController {
                 docentService.saveDocent(docent);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
 
     /**
-     * Updates the given docent.
+     * Updates the docent with given id.
      *
-     * @param docent The docent to update.
+     * @param id     identifier for docent to update.
+     * @param docent new values for docent.
+     * @return status OK or BAD_REQUEST (if update failed).
      */
     @RequestMapping(value = "/{id}", method = PUT)
     public ResponseEntity updateDocent(@PathVariable Long id, @RequestBody Docent docent) {
@@ -68,14 +77,16 @@ public class DocentController {
                 docentService.saveDocent(docent);
                 return ResponseEntity.ok().build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
 
     /**
      * Deletes the docent with given id.
      *
-     * @param id The id of the docent to be deleted.
+     * @param id identifier for docent to delete.
+     * @return status OK or BAD_REQUEST (if deletion failed or no docent was found for given id).
      */
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteDocent(@PathVariable Long id) {

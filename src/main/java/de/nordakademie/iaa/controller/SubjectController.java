@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.controller;
 
-
 import de.nordakademie.iaa.model.Subject;
 import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.SubjectService;
@@ -14,6 +13,12 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
+/**
+ * REST-Controller for subject entities.
+ *
+ * @author Timo Schlatter
+ */
 
 @Transactional
 @RestController
@@ -30,9 +35,9 @@ public class SubjectController {
     }
 
     /**
-     * List all subjects.
+     * Lists all subjects.
      *
-     * @return the list of subjects.
+     * @return the list of all saved subjects.
      */
     @GetMapping
     public List<Subject> listSubjects() {
@@ -42,7 +47,8 @@ public class SubjectController {
     /**
      * Saves the given subject.
      *
-     * @param subject The subject to save.
+     * @param subject the subject to save.
+     * @return status OK or BAD_REQUEST (if the given subject is already existing or saving failed).
      */
     @PostMapping
     public ResponseEntity saveSubject(@RequestBody Subject subject) {
@@ -51,14 +57,17 @@ public class SubjectController {
                 subjectService.saveSubject(subject);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
 
     /**
-     * Updates the given subject.
+     * Updates the subject with given id.
      *
-     * @param subject The subject to update.
+     * @param id      identifier for subject to update.
+     * @param subject new values for subject.
+     * @return status OK or BAD_REQUEST (if update failed).
      */
     @RequestMapping(value = "/{id}", method = PUT)
     public ResponseEntity updateSubject(@PathVariable Long id, @RequestBody Subject subject) {
@@ -67,14 +76,16 @@ public class SubjectController {
                 subjectService.saveSubject(subject);
                 return ResponseEntity.ok().build();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return ResponseEntity.badRequest().build();
     }
 
     /**
      * Deletes the subject with given id.
      *
-     * @param id The id of the subject to be deleted.
+     * @param id identifier for subject to delete.
+     * @return status OK or BAD_REQUEST (if deletion failed or no subject was found for given id).
      */
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteSubject(@PathVariable Long id) {

@@ -11,11 +11,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * REST-Controller for seminar types.
+ *
+ * @author Timo Schlatter
+ */
+
 @Transactional
 @RestController
 @RequestMapping("/seminartypes")
 public class SeminarTypeController {
 
+    /**
+     * Lists all seminar types.
+     *
+     * @return the list of all seminar types.
+     */
     @GetMapping
     public String listSeminarTypes() throws Exception {
         Map<SeminarType, String> seminarTypes = new HashMap<>();

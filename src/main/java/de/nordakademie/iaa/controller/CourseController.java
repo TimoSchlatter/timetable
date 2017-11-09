@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.controller;
 
-
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.service.CourseService;
 import de.nordakademie.iaa.service.SubjectService;
@@ -14,6 +13,12 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
+/**
+ * REST-Controller for cohort entities.
+ *
+ * @author Timo Schlatter
+ */
 
 @Transactional
 @RestController
@@ -30,9 +35,9 @@ public class CourseController {
     }
 
     /**
-     * List all courses.
+     * Lists all courses.
      *
-     * @return the list of courses.
+     * @return the list of all saved courses.
      */
     @GetMapping
     public List<Course> listCourses() {
@@ -42,7 +47,8 @@ public class CourseController {
     /**
      * Saves the given course.
      *
-     * @param course The course to save.
+     * @param course the course to save.
+     * @return status OK or BAD_REQUEST (if the given course is already existing or saving failed).
      */
     @PostMapping
     public ResponseEntity saveCourse(@RequestBody Course course) {
@@ -57,9 +63,11 @@ public class CourseController {
     }
 
     /**
-     * Updates the given course.
+     * Updates the course with given id.
      *
-     * @param course The course to update.
+     * @param id     identifier for course to update.
+     * @param course new values for course.
+     * @return status OK or BAD_REQUEST (if update failed).
      */
     @RequestMapping(value = "/{id}", method = PUT)
     public ResponseEntity updateCourse(@PathVariable Long id, @RequestBody Course course) {
@@ -76,7 +84,8 @@ public class CourseController {
     /**
      * Deletes the course with given id.
      *
-     * @param id The id of the course to be deleted.
+     * @param id identifier for course to delete.
+     * @return status OK or BAD_REQUEST (if deletion failed or no course was found for given id).
      */
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteCourse(@PathVariable Long id) {
