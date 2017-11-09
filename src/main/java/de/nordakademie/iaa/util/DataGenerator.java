@@ -4,7 +4,6 @@ import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.*;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +30,9 @@ public class DataGenerator {
     private RoomService roomService;
     private SeminarService seminarService;
     private SubjectService subjectService;
+    private SeminarGroupService seminarGroupService;
 
-    @Autowired
-    public DataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService, DocentService docentService, EventService eventService, ManipleService manipleService, RoomService roomService, SeminarService seminarService, SubjectService subjectService) {
+    public DataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService, DocentService docentService, EventService eventService, ManipleService manipleService, RoomService roomService, SeminarService seminarService, SubjectService subjectService, SeminarGroupService seminarGroupService) {
         this.centuryService = centuryService;
         this.cohortService = cohortService;
         this.courseService = courseService;
@@ -43,6 +42,7 @@ public class DataGenerator {
         this.roomService = roomService;
         this.seminarService = seminarService;
         this.subjectService = subjectService;
+        this.seminarGroupService = seminarGroupService;
     }
 
     /**
@@ -55,8 +55,16 @@ public class DataGenerator {
         createCourses();
         createSeminars();
         createGroups();
+        createSeminarGroups();
         createSubjects();
         createEvents();
+    }
+
+    private void createSeminarGroups() {
+        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 15 Studenten",30,15));
+        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 20 Studenten",30,20));
+        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 25 Studenten",30,25));
+        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 30 Studenten",30,30));
     }
 
     private void createRooms() {
