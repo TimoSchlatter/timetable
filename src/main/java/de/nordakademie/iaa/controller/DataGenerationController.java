@@ -41,4 +41,14 @@ public class DataGenerationController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    /**
+     * Displays if data was already generated.
+     *
+     * @return boolean if data was already generated.
+     */
+    @RequestMapping("/dataGenerated")
+    public boolean dataGenerated() {
+        return dataGenerated;
+    }
 }
