@@ -62,6 +62,6 @@ public class Subject extends HasMinChangeoverTime implements Serializable {
 
     @Override
     public String toString() {
-        return subjectType + " " + module;
+        return module + " (" + subjectType.getTranslation() + ")";
     }
 }

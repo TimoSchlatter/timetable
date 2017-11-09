@@ -162,17 +162,17 @@ public class Event extends HasId implements Serializable {
     private String printRooms() {
         String rooms = "";
         for (Room room : this.rooms) {
-            rooms += room.toString() + " ";
+            rooms += room.toString() + ", ";
         }
-        return rooms;
+        return rooms.substring(0, rooms.length()-3);
     }
 
     private String printDocents() {
         String docents = "";
         for (Docent docent : this.docents) {
-            docents += docent.toString() + " ";
+            docents += docent.toString() + ", ";
         }
-        return docents;
+        return docents.substring(0, docents.length()-3);
     }
 
     @Override
