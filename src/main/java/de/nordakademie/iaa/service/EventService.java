@@ -73,7 +73,9 @@ public interface EventService {
      */
     List<Event> findEventsByDocent(Docent docent);
 
-    List<String> findCollisions(Event event);
+    List<String> findCollisions(Event newEvent);
+
+    List<String> findCollisions(Event newEvent, Event oldEvent);
 
     /**
      * Find events by group

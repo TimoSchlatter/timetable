@@ -87,35 +87,43 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<String> findCollisions(Event event) {
+    public List<String> findCollisions(Event newEvent, Event oldEvent) {
         List<String> collisions = new ArrayList<>();
-        List<Event> concurrentEvents = findEventsByTime(event.getDate(), event.getStartTime(),
-                (event.getEndTime().plusMinutes(event.calculateMinChangeoverTime())));
+        List<Event> concurrentEvents = findEventsByTime(newEvent.getDate(), newEvent.getStartTime(),
+                (newEvent.getEndTime().plusMinutes(newEvent.calculateMinChangeoverTime())));
+        if (oldEvent != null) {
+            concurrentEvents.remove(oldEvent);
+        }
         for (Event concurrentEvent : concurrentEvents) {
             // docents
-            event.getDocents().forEach(docent -> {
+            newEvent.getDocents().forEach(docent -> {
                 if (concurrentEvent.getDocents().contains(docent)) {
-                    collisions.add(createCollisionString(event, docent, concurrentEvent));
+                    collisions.add(createCollisionString(newEvent, docent, concurrentEvent));
                 }
             });
             // rooms
-            event.getRooms().forEach(room -> {
+            newEvent.getRooms().forEach(room -> {
                 if (concurrentEvent.getRooms().contains(room)) {
-                    collisions.add(createCollisionString(event, room, concurrentEvent));
+                    collisions.add(createCollisionString(newEvent, room, concurrentEvent));
                 }
             });
             // group
-            Group group = event.getGroup();
+            Group group = newEvent.getGroup();
             if (group.equals(concurrentEvent.getGroup())) {
-                collisions.add(createCollisionString(event, group, concurrentEvent));
+                collisions.add(createCollisionString(newEvent, group, concurrentEvent));
             }
         }
         return collisions;
     }
 
+    @Override
+    public List<String> findCollisions(Event newEvent) {
+        return findCollisions(newEvent, null);
+    }
+
     private String createCollisionString(Event eventToBeCreated, Object collidingObject, Event concurrentEvent) {
         return eventToBeCreated.toString() + ": " + collidingObject.toString() +
-                " ist bereits für folgendes Event eingeplant: " + concurrentEvent.toString() + "\\\n\\\n";
+                " ist bereits für folgendes Event eingeplant: " + concurrentEvent.toString();
     }
 
     @Override

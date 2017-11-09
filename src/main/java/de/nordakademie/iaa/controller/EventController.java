@@ -103,8 +103,9 @@ public class EventController {
                                       @RequestParam(value = "ignoreCollisions", required = false)
                                                   Boolean ignoreCollisions) {
         ignoreCollisions = (ignoreCollisions == null ? false : ignoreCollisions);
-        if (eventService.loadEvent(id) != null) {
-            List<String> collisions = eventService.findCollisions(event);
+        Event oldEvent = eventService.loadEvent(id);
+        if (oldEvent != null) {
+            List<String> collisions = eventService.findCollisions(event, oldEvent);
             if (collisions.isEmpty() || ignoreCollisions) {
                 if (saveEvent(event)) {
                     return ResponseEntity.noContent().build();
