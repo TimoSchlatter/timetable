@@ -82,8 +82,9 @@ public class EventController {
                 created = (saveEvent(eventToSave) ? created + 1 : created);
             }
             if (created > 0) {
-                return ResponseEntity.status(HttpStatus.CREATED).body(created + " von " + repeatWeeks +
-                        " Events wurden erzeugt");
+//                return ResponseEntity.status(HttpStatus.CREATED).body(created + " von " + repeatWeeks +
+//                        " Events wurden erzeugt");
+                return new ResponseEntity<String>(created + " von " + repeatWeeks + " Events wurden erzeugt", HttpStatus.CREATED);
             }
             return ResponseEntity.badRequest().build();
         } else {

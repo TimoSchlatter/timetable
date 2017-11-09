@@ -1,11 +1,14 @@
 package de.nordakademie.iaa.controller;
 
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
+import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 import de.nordakademie.iaa.util.DataGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Controller for dummy data generation.
@@ -36,7 +39,10 @@ public class DataGenerationController {
                 dataGenerator.createData();
                 dataGenerated = true;
                 return ResponseEntity.ok(null);
-            } catch (Exception ignored) {
+            } catch (RoomTooSmallForGroupException e) {
+                System.err.println(e.getMessage());
+            } catch (NotEnoughChangeoverTimeProvidedException e) {
+                System.err.println(e.getMessage());
             }
         }
         return ResponseEntity.badRequest().build();
@@ -47,6 +53,7 @@ public class DataGenerationController {
      *
      * @return boolean if data was already generated.
      */
+    @ResponseBody
     @RequestMapping("/dataGenerated")
     public boolean dataGenerated() {
         return dataGenerated;
