@@ -94,6 +94,7 @@
                         <div class="form-group col-md-3">
                             <label for="modalSelectedSeminartype">Veranstaltungstyp</label>
                             <select class="form-control"
+                                    ng-disabled="subject.id"
                                     id="modalSelectedSeminartype"
                                     ng-options="key as name for (key,name) in subjectTypes()"
                                     ng-model="subject.subjectType"
@@ -103,6 +104,7 @@
                         <div class="form-group col-md-6">
                             <label for="modalSelectedCohort">Modul</label>
                             <select class="form-control"
+                                    ng-disabled="subject.id"
                                     id="modalSelectedCohort"
                                     ng-options="modul as modul.title for modul in module()"
                                     ng-model="subject.module">
