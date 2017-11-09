@@ -4,8 +4,8 @@ app.factory('ConnectionService', function ($http, AlertService) {
         $http.get(url).then(function successCallback(response) {
             functionToSetModel(response.data);
         }, function errorCallback(response) {
-            AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich vom Server abgerufen werden. [' + response.data.error + ']');
-            console.error(response);
+            console.error(response.statusText);
+            AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich vom Server abgerufen werden. [' + data.error + ']');
         });
         return this.response;
     };
@@ -14,9 +14,12 @@ app.factory('ConnectionService', function ($http, AlertService) {
         $http.post(urlToCreateData, objectToCreateData)
             .then(function successCallback(data) {
                 console.log(data);
+                if(data.status == 200) {
+                    AlertService.addEventAlert('Kollisionen', data.data.toString());
+                }
                 functionToUpdateModel();
             }, function errorCallback(data, status, header, config) {
-                AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server gesichert werden. [' + data.data.error + ']');
+                AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server gesichert werden.');
                 console.error(data, status, header, config);
             });
     };
@@ -27,7 +30,7 @@ app.factory('ConnectionService', function ($http, AlertService) {
                 console.log(data);
                 functionToUpdateModel();
             }, function errorCallback(data, status, header, config) {
-                AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server akualisiert werden. [' + data.data.error + ']');
+                AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server akualisiert werden. [' + data.error + ']');
                 console.error(data, status, header, config);
             });
     };
@@ -38,7 +41,7 @@ app.factory('ConnectionService', function ($http, AlertService) {
                 console.log(data);
                 functionToUpdateModel();
             }, function errorCallback(data, status, header, config) {
-                AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server gelöscht werden. [' + data.data.error + ']');
+                AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server gelöscht werden. [' + data.error + ']');
                 console.error(data, status, header, config);
             });
     };

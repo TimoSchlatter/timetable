@@ -10,16 +10,30 @@
 
         // alerts array on root scope so that all controllers can access it
         $rootScope.alerts = [];
+        $rootScope.alertEvents = [];
         return {
 
-            add: function (type, msg, section) {
-                if (section == undefined) section = 1;  //default section number
+            add: function (type, msg) {
                 $rootScope.alerts.push({
-                    'type': type, 'msg': msg, 'section': section, close: function () {
+                    'type': type, 'msg': msg, close: function () {
                         return alertService.closeAlert(this);
                     }
                 });
                 $('#modalAlert').modal('show');
+                // If you want alerts to disappear automatically after few seconds.
+                // $timeout(function(){
+                //     alertService.closeAlert(this);
+                // }, 5000);
+            },
+
+            addEventAlert: function (type, msg) {
+
+                $rootScope.alertEvents.push({
+                    'type': type, 'msg': msg, close: function () {
+                        return alertService.closeAlert(this);
+                    }
+                });
+                $('#modalEventAlert').modal('show');
                 // If you want alerts to disappear automatically after few seconds.
                 // $timeout(function(){
                 //     alertService.closeAlert(this);
