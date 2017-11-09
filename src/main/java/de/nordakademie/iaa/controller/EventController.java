@@ -59,9 +59,9 @@ public class EventController {
     @PostMapping
     public ResponseEntity saveEvent(@RequestBody Event event,
                                     @RequestParam(value = "repeatWeeks", required = false) Integer repeatWeeks,
-                                    @RequestParam(value = "ignoreCollision", required = false) Boolean ignoreCollision) {
+                                    @RequestParam(value = "ignoreCollisions", required = false) Boolean ignoreCollisions) {
         repeatWeeks = (repeatWeeks == null ? 1 : repeatWeeks);
-        ignoreCollision = (ignoreCollision == null ? false : ignoreCollision);
+        ignoreCollisions = (ignoreCollisions == null ? false : ignoreCollisions);
         LocalDate startDate = event.getDate();
         List<String> collisions = new ArrayList<>();
         List<Event> eventsToSave = new ArrayList<>();
@@ -72,7 +72,7 @@ public class EventController {
 
         eventsToSave.forEach(eventToSave -> collisions.addAll(eventService.findCollisions(eventToSave)));
 
-        if (collisions.isEmpty() || ignoreCollision) {
+        if (collisions.isEmpty() || ignoreCollisions) {
             int created = 0;
             for (Event eventToSave : eventsToSave) {
                 created = (saveEvent(eventToSave) ? created + 1 : created);
