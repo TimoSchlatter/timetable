@@ -35,7 +35,7 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         $scope.cohortsAdvanced.unshift({name: "Alle", maniples: [{name: "Alle", centuries: [{name: "Alle"}]}]});
     };
 
-    $scope.buildEvent = function () {
+    $scope.modalToEvent = function () {
         var date = $scope.modalDate.split('.');
         $scope.event.date = date[2] + '-' + date[1] + '-' + date[0];
         $scope.event.docents = $scope.modalSelectedDocents;
@@ -46,6 +46,19 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         $scope.event.rooms = $scope.modalSelectedRooms;
         console.log(angular.toJson($scope.event));
         return $scope.event;
+    };
+
+    var eventToModal = function () {
+        var date = $scope.event.date.split('-');
+        $('#inputDate').datepicker('update', date[2] + '.' + date[1] + '.' + date[0]);
+        $scope.modalSelectedDocents = $scope.event.docents;
+        $scope.modalEndTime = $scope.event.endTime.slice(0, -3);
+        setSelectedGroup($scope.event.group);
+        $scope.modalStartTime = $scope.event.startTime.slice(0, -3);
+        $scope.modalSubjectType = $scope.event.subject.subjectType;
+        var selectedSubjects = $filter('filter')($scope.subjects(), {id: $scope.event.subject.id});
+        $scope.modalSubject = selectedSubjects[0];
+        $scope.modalSelectedRooms = $scope.event.rooms;
     };
 
     var getSelectedGroup = function () {
@@ -64,16 +77,37 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         }
     };
 
-    $scope.setSelectedEvent = function (event) {
-        $scope.event = angular.copy(event);
-        console.log('Selected Event:', $scope.event);
-        setModalValues();
-    };
-
-    var setModalValues = function () {
+    var setSelectedGroup = function (group) {
         $scope.modalSelectedCohort = $scope.cohortsAdvanced[0];
         $scope.modalSelectedManiple = $scope.modalSelectedCohort.maniples[0];
         $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
+        angular.forEach($scope.cohortsAdvanced, function (cohort) {
+            angular.forEach(cohort.maniples, function (maniple) {
+                angular.forEach(maniple.centuries, function (century) {
+                    if (group.id === century.id) {
+                        $scope.modalSelectedCohort = cohort;
+                        $scope.modalSelectedManiple = maniple;
+                        $scope.modalSelectedCentury = century;
+                    }
+                });
+                if (group.id === maniple.id) {
+                    $scope.modalSelectedCohort = cohort;
+                    $scope.modalSelectedManiple = maniple;
+                    $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
+                }
+            });
+            if (group.id === cohort.id) {
+                $scope.modalSelectedCohort = cohort;
+                $scope.modalSelectedManiple = $scope.modalSelectedCohort.maniples[0];
+                $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
+            }
+        });
+    };
+
+    $scope.setSelectedEvent = function (event) {
+        $scope.event = angular.copy(event);
+        console.log('Selected Event:', $scope.event);
+        eventToModal();
     };
 
     $scope.changedCohort = function () {
@@ -86,6 +120,7 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     };
 
     var convertToCalenderEvents = function (events) {
+        $scope.calenderEvents[0] = [];
         angular.forEach(events, function (event) {
             var event = {
                 id: event.id,
