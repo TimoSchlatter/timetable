@@ -82,8 +82,7 @@ public class EventController {
                 created = (saveEvent(eventToSave) ? created + 1 : created);
             }
             if (created > 0) {
-                return new ResponseEntity<>(new Answer(created + " von " + repeatWeeks + " Events wurden erzeugt"),
-                        HttpStatus.CREATED);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
             }
             return ResponseEntity.badRequest().build();
         } else {
@@ -183,13 +182,5 @@ public class EventController {
         } catch (RoomTooSmallForGroupException ignored) {
         }
         return false;
-    }
-
-    private class Answer {
-        private final String response;
-
-        public Answer(String response) {
-            this.response = response;
-        }
     }
 }
