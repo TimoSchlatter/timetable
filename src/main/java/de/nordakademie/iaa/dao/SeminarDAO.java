@@ -4,7 +4,9 @@ import de.nordakademie.iaa.model.Seminar;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Created by arvid on 25.10.17.
+ * DAO for Seminars
+ *
+ * @author Arvid Ottenberg
  */
 public interface SeminarDAO extends JpaRepository<Seminar,Long>,BaseDAO<Seminar, Long> {
 

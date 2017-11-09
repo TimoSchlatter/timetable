@@ -10,7 +10,9 @@ import java.time.LocalTime;
 import java.util.List;
 
 /**
- * Created by arvid on 19.10.17.
+ * DAO for Events
+ *
+ * @author Arvid Ottenberg
  */
 public interface EventDAO extends JpaRepository<Event,Long>, BaseDAO<Event, Long> {
 

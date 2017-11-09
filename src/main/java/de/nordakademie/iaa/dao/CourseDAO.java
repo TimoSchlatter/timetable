@@ -4,7 +4,9 @@ import de.nordakademie.iaa.model.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Created by arvid on 19.10.17.
+ * DAO for Courses
+ *
+ * @author Arvid Ottenberg
  */
 public interface CourseDAO extends JpaRepository<Course,Long>, BaseDAO<Course, Long> {
 

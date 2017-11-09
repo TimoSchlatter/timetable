@@ -7,6 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+/**
+ * DAO for Subjects
+ *
+ * @author Arvid Ottenberg
+ */
 public interface SubjectDAO extends JpaRepository<Subject,Long>,BaseDAO<Subject, Long> {
 
     /**
