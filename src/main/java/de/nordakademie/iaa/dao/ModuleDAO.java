@@ -3,6 +3,11 @@ package de.nordakademie.iaa.dao;
 import de.nordakademie.iaa.model.Module;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * DAO for Modules
+ *
+ * @author Arvid Ottenberg
+ */
 public interface ModuleDAO extends JpaRepository<Module,Long>,BaseDAO<Module, Long> {
 
     /**

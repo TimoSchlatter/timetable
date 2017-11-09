@@ -7,9 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * Created by arvid on 18.10.17.
+ * DAO for Rooms
+ *
+ * @author Arvid Ottenberg
  */
-
 public interface RoomDAO extends JpaRepository<Room,Long>, BaseDAO<Room, Long> {
 
     /**
