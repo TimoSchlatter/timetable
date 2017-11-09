@@ -49,7 +49,7 @@ public class DataGenerator {
      * Warning: Be careful when changing this order!
      */
     //    @PostConstruct
-    public void createData() throws Exception {
+    public void createData() throws RoomTooSmallForGroupException, NotEnoughChangeoverTimeProvidedException {
         createRooms();
         createDocents();
         createCourses();
@@ -85,21 +85,23 @@ public class DataGenerator {
         roomService.saveRoom(new Room(15, "D", 20, "103", RoomType.LECTUREROOM));
         roomService.saveRoom(new Room(15, "D", 20, "104", RoomType.LECTUREROOM));
         roomService.saveRoom(new Room(30, "D", 20, "105", RoomType.LECTUREROOM));
+
+        roomService.saveRoom(new Room(30, "H", 1000, "001", RoomType.LECTUREROOM));
     }
 
     private void createDocents() throws NotEnoughChangeoverTimeProvidedException {
         docentService.saveDocent(new Docent("", "Uwe", "Adamczak", "", "", false, 30));
         docentService.saveDocent(new Docent("", "Martin", "Müller", "", "Dr.", false, 30));
         docentService.saveDocent(new Docent("", "Soenke", "Stange", "", "", false, 30));
-        docentService.saveDocent(new Docent("", "Carlo ", "Düllings", "", "", false, 30));
+        docentService.saveDocent(new Docent("", "Carlo", "Düllings", "", "", false, 30));
         docentService.saveDocent(new Docent("", "Clemens", "Sietas", "", "", false, 30));
         docentService.saveDocent(new Docent("", "Anna Katharina", "Bartel", "", "", false, 30));
         docentService.saveDocent(new Docent("", "Andrea", "Denke", "", "Dr.", false, 30));
-        docentService.saveDocent(new Docent("", "Michael ", "Bregulla", "", "", false, 30));
+        docentService.saveDocent(new Docent("", "Michael", "Bregulla", "", "", false, 30));
         docentService.saveDocent(new Docent("", "Kersten", "Steinke", "", "", false, 30));
 
         docentService.saveDocent(new Docent("stefan.reichert@nordakademie.de", "Stefan", "Reichert", "", "", false, 30));
-        docentService.saveDocent(new Docent("stephan.anft@nordakademie.de", "Stephan ", "Anft", "", "", false, 30));
+        docentService.saveDocent(new Docent("stephan.anft@nordakademie.de", "Stephan", "Anft", "", "", false, 30));
         docentService.saveDocent(new Docent("bjoern-helge.busch@nordakademie.de", "Björn-Helge", "Busch", "+49 (0) 4121 4090-40", "", false, 30));
         docentService.saveDocent(new Docent("ludolph@goldex.de", "Fred", "Ludolph", "+49 (0) 4121 4090-40", "", false, 30));
         docentService.saveDocent(new Docent("andrew.small@nordakademie.de", "Andrew", "Small", "+49 (0) 4121 4090-40", "M.A. (TESOL)", false, 30));
@@ -232,7 +234,7 @@ public class DataGenerator {
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
         date = LocalDate.of(2017, Month.NOVEMBER, 1);
-        rooms = new HashSet<>(Arrays.asList(roomService.findByBuildingAndNumber("A", "101")));
+        rooms = new HashSet<>(Arrays.asList(roomService.findByBuildingAndNumber("H", "001")));
         docents = new HashSet<>(Arrays.asList(docentService.findByForenameAndSurname("Michael", "Bregulla")));
         group = manipleService.findByName("I14");
         startTime = LocalTime.of(20, 15);
@@ -241,7 +243,6 @@ public class DataGenerator {
                 seminarService.findByTitle("Business-Knigge"));
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
-        rooms = new HashSet<>(Arrays.asList(roomService.findByBuildingAndNumber("A", "103")));
         startTime = LocalTime.of(13, 15);
         endTime = LocalTime.of(16, 30);
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR,
@@ -249,7 +250,6 @@ public class DataGenerator {
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
         date = LocalDate.of(2017, Month.NOVEMBER, 2);
-        rooms = new HashSet<>(Arrays.asList(roomService.findByBuildingAndNumber("A", "102")));
         group = cohortService.findByName("14");
         startTime = LocalTime.of(17, 15);
         endTime = LocalTime.of(20, 30);
@@ -261,10 +261,14 @@ public class DataGenerator {
     private void saveEvent(LocalDate date, LocalTime startTime, LocalTime endTime, Set<Room> rooms, Set<Docent> docents,
                            Group group, Subject subject, int repeatWeeks) throws RoomTooSmallForGroupException {
         rooms.forEach(room -> {
-            assert room != null;
+            if (room == null) {
+                throw new IllegalArgumentException("Room must not be null!");
+            }
         });
         docents.forEach(docent -> {
-            assert docent != null;
+            if (docent == null) {
+                throw new IllegalArgumentException("Docent must not be null!");
+            }
         });
         assert group != null;
         assert subject != null;
