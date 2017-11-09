@@ -16,7 +16,6 @@ import java.util.Map;
  *
  * @author Timo Schlatter
  */
-
 @Transactional
 @RestController
 @RequestMapping("/subjecttypes")

@@ -26,7 +26,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
  *
  * @author Timo Schlatter
  */
-
 @Transactional
 @RestController
 @RequestMapping("/events")
