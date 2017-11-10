@@ -31,10 +31,6 @@ var app = angular.module('roomManagement', ["ngRoute", 'ui.calendar', 'templates
             templateUrl: "view/century.html",
             name: "Centuries",
             controller: "CenturyController"
-        }).when("/events", {
-            templateUrl: "view/event.html",
-            name: "Events",
-            controller: "EventController"
         }).when("/subjects", {
             templateUrl: "view/subject.html",
             name: "Subjects",
@@ -43,6 +39,10 @@ var app = angular.module('roomManagement', ["ngRoute", 'ui.calendar', 'templates
             templateUrl: "view/seminar.html",
             name: "Seminars",
             controller: "SeminarController"
+        }).when("/seminargroups", {
+            templateUrl: "view/seminargroup.html",
+            name: "SeminarGroups",
+            controller: "SeminarGroupController"
         }).otherwise({
         redirectTo: "/"})
     });

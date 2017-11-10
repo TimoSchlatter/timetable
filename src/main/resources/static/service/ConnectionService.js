@@ -99,10 +99,22 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
     };
 
     /* CenturiesControl */
+    var centuries = [];
     var centuriesUrl = 'http://localhost:49999/centuries/';
+    var getCenturies = function () {
+        getData(centuriesUrl, function (data) {
+            centuries = data;
+        });
+    };
 
     /*ManiplesControl */
+    var maniples = [];
     var maniplesUrl = 'http://localhost:49999/maniples/';
+    var getManiples = function () {
+        getData(maniplesUrl, function (data) {
+            maniples = data;
+        });
+    };
 
     /*CohortsControl */
     var cohorts = [];
@@ -128,6 +140,15 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
     var getSeminars = function () {
         getData(seminarsUrl, function (data) {
             seminars = data;
+        });
+    };
+
+    /* SeminarsGroupsControl */
+    var seminarGroups = [];
+    var seminarGroupsUrl = 'http://localhost:49999/seminargroups/';
+    var getSeminarGroups = function () {
+        getData(seminarGroupsUrl, function (data) {
+            seminarGroups = data;
         });
     };
 
@@ -178,19 +199,22 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
 
     /* Data Generated */
     var dataGenerated = {};
-    var dataGeneratedUrl = 'http://localhost:49999/dataGenerated/';
+    var dataGeneratedUrl = 'http://localhost:49999/datagenerated/';
     var getDataGenerated = function () {
         getData(dataGeneratedUrl, function (data) {
             dataGenerated = data;
         });
     };
 
-    var getFullDataModel = function () {
+    var updateAllDataModels = function () {
         getDocents();
         getRooms();
         getCohorts();
+        getManiples();
+        getCenturies();
         getCourses();
         getSeminars();
+        getSeminarGroups();
         getSubjects();
         getEvents();
         getSubjectTypes();
@@ -198,7 +222,7 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getRoomTypes();
         getDataGenerated();
     };
-    getFullDataModel();
+    updateAllDataModels();
 
     return {
         createDocent: function (docent) {
@@ -235,6 +259,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         deleteCentury: function (manipleId, century) {
             deleteData(maniplesUrl + manipleId + '/deleteCentury/', century.id, getCohorts);
         },
+        getCenturies: function () {
+            return centuries;
+        },
         createManiple: function (cohortId, maniple) {
             maniple.type = 'maniple';
             createData(cohortsUrl + cohortId + '/addManiple', angular.toJson(maniple), getCohorts);
@@ -244,6 +271,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         },
         deleteManiple: function (cohortId, maniple) {
             deleteData(cohortsUrl + cohortId + '/deleteManiple/', maniple.id, getCohorts);
+        },
+        getManiples: function () {
+            return maniples;
         },
         createCohort: function (cohort) {
             cohort.type = 'cohort';
@@ -284,6 +314,19 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getSeminars: function () {
             return seminars;
         },
+        createSeminarGroup: function (seminarGroup) {
+            seminarGroup.type = 'seminargroup';
+            createData(seminarGroupsUrl, angular.toJson(seminarGroup), getSeminarGroups);
+        },
+        updateSeminarGroup: function (seminarGroup) {
+            updateData(seminarGroupsUrl + seminarGroup.id, angular.toJson(seminarGroup), getSeminarGroups);
+        },
+        deleteSeminarGroup: function (seminarGroup) {
+            deleteData(seminarGroupsUrl, seminarGroup.id, getSeminarGroups);
+        },
+        getSeminarGroups: function () {
+            return seminarGroups;
+        },
         createSubject: function (subject) {
             createData(subjectsUrl, angular.toJson(subject), getSubjects);
         },
@@ -308,6 +351,15 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getEvents: function () {
             return events;
         },
+        getEventsByGroup: function (group, functionToSetModel) {
+            return getData(eventsUrl + 'findByGroup?id=' + group.id, functionToSetModel);
+        },
+        getEventsByRoom: function (docent, functionToSetModel) {
+            return getData(eventsUrl + 'findByRoom?id=' + docent.id, functionToSetModel);
+        },
+        getEventsByDocent: function (docent, functionToSetModel) {
+            return getData(eventsUrl + 'findByDocent?id=' + docent.id, functionToSetModel);
+        },
         getSubjectTypes: function () {
             return subjectTypes;
         },
@@ -318,8 +370,8 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             return roomTypes;
         },
         generateData: function () {
-            getData('http://localhost:49999/generateData', function (data) {
-                getFullDataModel();
+            getData('http://localhost:49999/generatedata', function (data) {
+                updateAllDataModels();
                 AlertService.add('Erfolgreich', 'Die Simulationsdaten wurden erfolgreich generiert!');
             });
         },
@@ -329,7 +381,5 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         createEventInsteadOfCollision: function () {
             createEventInsteadOfCollision();
         }
-
-
     }
 });
