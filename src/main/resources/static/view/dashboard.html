@@ -99,14 +99,14 @@
         <div class="modal-content card mx-auto mt-5">
             <div class="card-header">{{event.id ? 'Aktualisieren' : 'Hinzufügen'}}</div>
             <div class="card-body">
-                <form name="modal" ng-switch on="modalSubjectType">
-                    <div class="form-row">
+                <form name="modalForm" ng-switch on="modalSubjectType">
+                    <div class="form-row" name="main">
                         <div class="form-group col-md-6">
                             <label for="inputSubjectType">Veranstaltungstyp</label>
                             <select class="form-control"
                                     id="inputSubjectType"
                                     ng-options="key as value for (key , value) in subjectTypes()"
-                                    ng-class="{ 'is-invalid': !modal.inputSubjectType.$valid}"
+                                    ng-class="{ 'is-invalid': !modalForm.inputSubjectType.$valid}"
                                     name="inputSubjectType"
                                     ng-model="modalSubjectType"
                                     required>
@@ -118,7 +118,7 @@
                             <select class="form-control"
                                     id="inputSubject"
                                     ng-options="subject.module.shortTitle for subject in subjects() | filter: modalSubjectType? {subjectType: modalSubjectType} : 'undefined'"
-                                    ng-class="{ 'is-invalid': !modal.inputSubject.$valid}"
+                                    ng-class="{ 'is-invalid': !modalForm.inputSubject.$valid}"
                                     name="inputSubject"
                                     ng-model="modalSubject"
                                     required>
@@ -132,7 +132,7 @@
                             <div class="input-group date">
                                 <input type="date"
                                        class="form-control datepicker"
-                                       ng-class="{ 'is-invalid': !modal.inputDate.$valid}"
+                                       ng-class="{ 'is-invalid': !modalForm.inputDate.$valid}"
                                        name="inputDate"
                                        id="inputDate"
                                        ng-model="modalDate"
@@ -147,7 +147,7 @@
                             <div class="input-group date">
                                 <input type="time"
                                        class="form-control clockpicker"
-                                       ng-class="{ 'is-invalid': !modal.inputStartTime.$valid}"
+                                       ng-class="{ 'is-invalid': !modalForm.inputStartTime.$valid}"
                                        name="inputStartTime"
                                        id="inputStartTime"
                                        ng-model="modalStartTime"
@@ -161,7 +161,7 @@
                             <div class="input-group date">
                                 <input type="time"
                                        class="form-control clockpicker"
-                                       ng-class="{ 'is-invalid': !modal.inputEndTime.$valid}"
+                                       ng-class="{ 'is-invalid': !modalForm.inputEndTime.$valid}"
                                        name="inputEndTime"
                                        id="inputEndTime"
                                        ng-model="modalEndTime"
@@ -175,7 +175,7 @@
                             <div class="input-group">
                                 <input type="number"
                                        class="form-control"
-                                       ng-class="{ 'is-invalid': !modal.inputRepeatWeeks.$valid}"
+                                       ng-class="{ 'is-invalid': !modalForm.inputRepeatWeeks.$valid}"
                                        name="inputRepeatWeeks"
                                        ng-model="$parent.modalRepeatWeeks"
                                        id="inputRepeatWeeks"
@@ -194,7 +194,7 @@
                                     id="inputCohort"
                                     ng-disabled="event.id"
                                     ng-options="cohort.name for cohort in cohortsAdvanced"
-                                    ng-class="{ 'is-invalid': !modal.inputCohort.$valid}"
+                                    ng-class="{ 'is-invalid': !modalForm.inputCohort.$valid}"
                                     name="inputCohort"
                                     ng-model="$parent.modalSelectedCohort"
                                     ng-change="changedCohort()"
@@ -207,7 +207,7 @@
                                     id="inputManiple"
                                     ng-disabled="event.id"
                                     ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
-                                    ng-class="{ 'is-invalid': !modal.inputManiple.$valid}"
+                                    ng-class="{ 'is-invalid': !modalForm.inputManiple.$valid}"
                                     name="inputManiple"
                                     ng-Model="$parent.modalSelectedManiple"
                                     ng-change="changedManiple()"
@@ -220,7 +220,7 @@
                                     id="inputCentury"
                                     ng-disabled="event.id"
                                     ng-options="century.name for century in modalSelectedManiple.centuries"
-                                    ng-class="{ 'is-invalid': !modal.inputCentury.$valid}"
+                                    ng-class="{ 'is-invalid': !modalForm.inputCentury.$valid}"
                                     name="inputCentury"
                                     ng-Model="$parent.modalSelectedCentury"
                                     required>
@@ -234,7 +234,7 @@
                                     id="inputSeminarGroup"
                                     ng-disabled="event.id"
                                     ng-options="seminarGroup.name for seminarGroup in seminarGroups()"
-                                    ng-class="{ 'is-invalid': !modal.inputSeminarGroup.$valid}"
+                                    ng-class="{ 'is-invalid': !modalForm.inputSeminarGroup.$valid}"
                                     name="inputSeminarGroup"
                                     ng-model="$parent.modalSelectedSeminarGroup"
                                     required>
@@ -269,12 +269,12 @@
                                 ng-show="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-trash"></i></span>Löschen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-disabled="modal.$invalid"
+                        <button type="button" class="btn btn-labeled btn-success" ng-disabled="modalForm.$invalid"
                                 ng-click="updateEvent(getModalEvent())"
                                 ng-show="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-disabled="modal.$invalid"
+                        <button type="button" class="btn btn-labeled btn-success" ng-disabled="modalForm.$invalid"
                                 ng-click="createEvent(getModalEvent(), modalRepeatWeeks)"
                                 ng-hide="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
