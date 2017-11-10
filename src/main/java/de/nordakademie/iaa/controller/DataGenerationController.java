@@ -32,7 +32,7 @@ public class DataGenerationController {
      *
      * @return status OK or BAD_REQUEST (if an exception occurred while creating dummy data).
      */
-    @RequestMapping("/generateData")
+    @RequestMapping("/generatedata")
     public ResponseEntity generateData() {
         if (!dataGenerated) {
             try {
@@ -51,7 +51,7 @@ public class DataGenerationController {
      * @return boolean if data was already generated.
      */
     @ResponseBody
-    @RequestMapping("/dataGenerated")
+    @RequestMapping("/datagenerated")
     public boolean dataGenerated() {
         return dataGenerated;
     }

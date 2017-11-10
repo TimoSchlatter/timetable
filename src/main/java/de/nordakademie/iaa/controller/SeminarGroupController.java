@@ -22,7 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
  */
 @Transactional
 @RestController
-@RequestMapping("/seminarGroups")
+@RequestMapping("/seminargroups")
 public class SeminarGroupController {
 
     private EventService eventService;
