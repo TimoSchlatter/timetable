@@ -339,8 +339,8 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getSubjects: function () {
             return subjects;
         },
-        createEvent: function (event) {
-            createData(eventsUrl, angular.toJson(event), getEvents);
+        createEvent: function (event, repeatWeeks) {
+            createData(eventsUrl + '?repeatWeeks=' + repeatWeeks, angular.toJson(event), getEvents);
         },
         updateEvent: function (event) {
             updateData(eventsUrl + event.id, angular.toJson(event), getEvents);

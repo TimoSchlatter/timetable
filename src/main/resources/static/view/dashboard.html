@@ -55,37 +55,37 @@
                         ng-switch-when="Dozent"
                         ng-options="docent.fullName for docent in docents()"
                         ng-model="$parent.selectedDocent"
-                        ng-change="convertEventsByToCalender(selectedDocent, eventsByDocent);">
+                        ng-change="convertEventsByEntityToCalender(selectedDocent, eventsByDocent);">
                 </select>
                 <select class="form-control"
                         ng-switch-when="Raum"
                         ng-options="room.fullName for room in rooms()"
                         ng-model="$parent.selectedRoom"
-                        ng-change="convertEventsByToCalender(selectedRoom, eventsByRoom);">
+                        ng-change="convertEventsByEntityToCalender(selectedRoom, eventsByRoom);">
                 </select>
                 <select class="form-control"
                         ng-switch-when="Kohorte"
                         ng-options="cohort.name for cohort in cohorts()"
                         ng-model="$parent.selectedCohort"
-                        ng-change="convertEventsByToCalender(selectedCohort, eventsByGroup);">
+                        ng-change="convertEventsByEntityToCalender(selectedCohort, eventsByGroup);">
                 </select>
                 <select class="form-control"
                         ng-switch-when="Manipel"
                         ng-options="maniple.name for maniple in maniples()"
                         ng-model="$parent.selectedManiple"
-                        ng-change="convertEventsByToCalender(selectedManiple, eventsByGroup);">
+                        ng-change="convertEventsByEntityToCalender(selectedManiple, eventsByGroup);">
                 </select>
                 <select class="form-control"
                         ng-switch-when="Zenturie"
                         ng-options="century.name for century in centuries()"
                         ng-model="$parent.selectedCentury"
-                        ng-change="convertEventsByToCalender(selectedCentury, eventsByGroup);">
+                        ng-change="convertEventsByEntityToCalender(selectedCentury, eventsByGroup);">
                 </select>
                 <select class="form-control"
                         ng-switch-when="Seminargruppe"
                         ng-options="seminarGroup.name for seminarGroup in seminarGroups()"
                         ng-model="$parent.selectedSeminarGroup"
-                        ng-change="convertEventsByToCalender(selectedSeminarGroup, eventsByGroup);">
+                        ng-change="convertEventsByEntityToCalender(selectedSeminarGroup, eventsByGroup);">
                 </select>
             </div>
         </div>
@@ -101,39 +101,6 @@
             <div class="card-header">{{event.id ? 'Aktualisieren' : 'Hinzufügen'}}</div>
             <div class="card-body">
                 <form name="modal" ng-switch on="modalSubjectType">
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="inputDate">Datum</label>
-                            <div class="input-group date">
-                                <input type="text"
-                                       class="form-control datepicker"
-                                       id="inputDate"
-                                       ng-model="modalDate"
-                                       placeholder="TT.MM.JJJJ">
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputStartTime">Startzeit</label>
-                            <div class="input-group date">
-                                <input type="text"
-                                       class="form-control clockpicker"
-                                       id="inputStartTime"
-                                       ng-model="modalStartTime">
-                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputEndTime">Endzeit</label>
-                            <div class="input-group date">
-                                <input type="text"
-                                       class="form-control clockpicker"
-                                       id="inputEndTime"
-                                       ng-model="modalEndTime">
-                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                            </div>
-                        </div>
-                    </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputSubjectType">Veranstaltungstyp</label>
@@ -151,6 +118,59 @@
                                     ng-options="subject.module.shortTitle for subject in subjects() | filter: modalSubjectType? {subjectType: modalSubjectType} : 'undefined'"
                                     ng-model="modalSubject">
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"
+                             ng-class="(modalSubjectType==='SEMINAR'||modalSubjectType==='LECTURE')&&!event.id?'col-md-3':'col-md-4'">
+                            <label for="inputDate">Datum</label>
+                            <div class="input-group date">
+                                <input type="text"
+                                       class="form-control datepicker"
+                                       id="inputDate"
+                                       ng-model="modalDate"
+                                       placeholder="TT.MM.JJJJ">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="(modalSubjectType==='SEMINAR'||modalSubjectType==='LECTURE')&&!event.id?'col-md-3':'col-md-4'">
+                            <label for="inputStartTime">Startzeit</label>
+                            <div class="input-group date">
+                                <input type="text"
+                                       class="form-control clockpicker"
+                                       id="inputStartTime"
+                                       ng-model="modalStartTime">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="(modalSubjectType==='SEMINAR'||modalSubjectType==='LECTURE')&&!event.id?'col-md-3':'col-md-4'">
+                            <label for="inputEndTime">Endzeit</label>
+                            <div class="input-group date">
+                                <input type="text"
+                                       class="form-control clockpicker"
+                                       id="inputEndTime"
+                                       ng-model="modalEndTime">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3" ng-switch-when="LECTURE|SEMINAR" ng-switch-when-separator="|"
+                             ng-hide="event.id">
+                            <label for="inputRepeatWeeks">Wiederholungen</label>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       ng-class="{ 'is-invalid': !modal.inputRepeatWeeks.$valid}"
+                                       name="inputRepeatWeeks"
+                                       ng-model="$parent.modalRepeatWeeks"
+                                       id="inputRepeatWeeks"
+                                       min="1"
+                                       max="10"
+                                       step="1"
+                                       placeholder="1"/>
+                                <span class="input-group-addon">Wochen</span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-row" ng-switch-when="LECTURE|EXAM" ng-switch-when-separator="|">
@@ -223,11 +243,13 @@
                                 ng-show="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-trash"></i></span>Löschen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateEvent(modalToEvent())"
+                        <button type="button" class="btn btn-labeled btn-success"
+                                ng-click="updateEvent(getModalEvent())"
                                 ng-show="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-click="createEvent(modalToEvent())"
+                        <button type="button" class="btn btn-labeled btn-success"
+                                ng-click="createEvent(getModalEvent(), modalRepeatWeeks)"
                                 ng-hide="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
