@@ -145,7 +145,7 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
 
     /* SeminarsGroupsControl */
     var seminarGroups = [];
-    var seminarGroupsUrl = 'http://localhost:49999/seminars/';
+    var seminarGroupsUrl = 'http://localhost:49999/seminargroups/';
     var getSeminarGroups = function () {
         getData(seminarGroupsUrl, function (data) {
             seminarGroups = data;
@@ -199,7 +199,7 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
 
     /* Data Generated */
     var dataGenerated = {};
-    var dataGeneratedUrl = 'http://localhost:49999/dataGenerated/';
+    var dataGeneratedUrl = 'http://localhost:49999/datagenerated/';
     var getDataGenerated = function () {
         getData(dataGeneratedUrl, function (data) {
             dataGenerated = data;
@@ -314,6 +314,19 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getSeminars: function () {
             return seminars;
         },
+        createSeminarGroup: function (seminarGroup) {
+            seminarGroup.type = 'seminargroup';
+            createData(seminarGroupsUrl, angular.toJson(seminarGroup), getSeminarGroups);
+        },
+        updateSeminarGroup: function (seminarGroup) {
+            updateData(seminarGroupsUrl + seminarGroup.id, angular.toJson(seminarGroup), getSeminarGroups);
+        },
+        deleteSeminarGroup: function (seminarGroup) {
+            deleteData(seminarGroupsUrl, seminarGroup.id, getSeminarGroups);
+        },
+        getSeminarGroups: function () {
+            return seminarGroups;
+        },
         createSubject: function (subject) {
             createData(subjectsUrl, angular.toJson(subject), getSubjects);
         },
@@ -357,7 +370,7 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             return roomTypes;
         },
         generateData: function () {
-            getData('http://localhost:49999/generateData', function (data) {
+            getData('http://localhost:49999/generatedata', function (data) {
                 updateAllDataModels();
                 AlertService.add('Erfolgreich', 'Die Simulationsdaten wurden erfolgreich generiert!');
             });
