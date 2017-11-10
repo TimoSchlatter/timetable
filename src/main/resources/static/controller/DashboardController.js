@@ -60,12 +60,11 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     };
 
     $scope.getModalEvent = function () {
-        var date = $scope.modalDate.split('.');
-        $scope.event.date = date[2] + '-' + date[1] + '-' + date[0];
+        $scope.event.date = $filter('date')($scope.modalDate, 'yyyy-MM-dd');
         $scope.event.docents = $scope.modalSelectedDocents;
-        $scope.event.endTime = $scope.modalEndTime + ':00';
+        $scope.event.endTime = $filter('date')($scope.modalEndTime, 'HH:mm:ss');
         $scope.event.group = getSelectedGroup();
-        $scope.event.startTime = $scope.modalStartTime + ':00';
+        $scope.event.startTime = $filter('date')($scope.modalStartTime, 'HH:mm:ss');
         $scope.event.subject = $scope.modalSubject;
         $scope.event.rooms = $scope.modalSelectedRooms;
         console.log(angular.toJson($scope.event));
@@ -74,10 +73,9 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
 
     var setModalEvent = function (event) {
         if (event.id) {
-            var date = event.date.split('-');
-            $('#inputDate').datepicker('update', date[2] + '.' + date[1] + '.' + date[0]);
-            $scope.modalEndTime = event.endTime.slice(0, -3);
-            $scope.modalStartTime = $scope.event.startTime.slice(0, -3);
+            $('#inputDate').datepicker('update', event.date);
+            $scope.modalEndTime = getTime($scope.event.endTime);
+            $scope.modalStartTime = getTime($scope.event.startTime);
             $scope.modalSubjectType = event.subject.subjectType;
             var selectedSubjects = $filter('filter')($scope.subjects(), {id: event.subject.id});
             $scope.modalSubject = selectedSubjects[0];
@@ -98,6 +96,11 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
             $scope.modalSelectedRooms = [];
             $scope.modalRepeatWeeks = 1;
         }
+    };
+
+    var getTime = function (timeString) {
+        var timeTokens = timeString.split(':');
+        return new Date(1970, 0, 1, timeTokens[0], timeTokens[1], timeTokens[2]);
     };
 
     var getSelectedGroup = function () {
