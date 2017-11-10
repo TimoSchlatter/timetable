@@ -3,12 +3,12 @@
 
         var alertService = {};
 
-        // clear alert after routing
+        // Globale Variable zur Bereinigung von Hinweismeldungen
         $rootScope.$on('$stateChangeSuccess', function () {
             alertService.clear();
         });
 
-        // alerts array on root scope so that all controllers can access it
+        // Hier werden alle Hinweismeldungen zwischengespeichert
         $rootScope.alerts = [];
         $rootScope.alertEvents = [];
         return {
@@ -20,10 +20,6 @@
                     }
                 });
                 $('#modalAlert').modal('show');
-                // If you want alerts to disappear automatically after few seconds.
-                // $timeout(function(){
-                //     alertService.closeAlert(this);
-                // }, 5000);
             },
 
             addEventAlert: function (type, msg) {
@@ -34,10 +30,6 @@
                     }
                 });
                 $('#modalEventAlert').modal('show');
-                // If you want alerts to disappear automatically after few seconds.
-                // $timeout(function(){
-                //     alertService.closeAlert(this);
-                // }, 5000);
             },
             closeAlert: function (alert) {
                 this.closeAlertIdx($rootScope.alerts.indexOf(alert));
