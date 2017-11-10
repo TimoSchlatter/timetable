@@ -18,6 +18,7 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     $scope.maniples = ConnectionService.getManiples;
     $scope.centuries = ConnectionService.getCenturies;
     $scope.subjectTypes = ConnectionService.getSubjectTypes;
+    $scope.seminarGroups = ConnectionService.getSeminarGroups;
 
     $scope.calenderEvents = [[]];
 
@@ -75,11 +76,11 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         $('#inputDate').datepicker('update', date[2] + '.' + date[1] + '.' + date[0]);
         $scope.modalSelectedDocents = $scope.event.docents;
         $scope.modalEndTime = $scope.event.endTime.slice(0, -3);
-        setSelectedGroup($scope.event.group);
         $scope.modalStartTime = $scope.event.startTime.slice(0, -3);
         $scope.modalSubjectType = $scope.event.subject.subjectType;
         var selectedSubjects = $filter('filter')($scope.subjects(), {id: $scope.event.subject.id});
         $scope.modalSubject = selectedSubjects[0];
+        setSelectedGroup($scope.event.group);
         $scope.modalSelectedRooms = $scope.event.rooms;
     };
 
@@ -100,6 +101,11 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     };
 
     var setSelectedGroup = function (group) {
+        if (group.type === 'seminargroup') {
+            var selectedSubjects = $filter('filter')($scope.seminarGroups(), {id: group.id});
+            $scope.modalSelectedSeminarGroup = selectedSubjects[0];
+            return;
+        }
         $scope.modalSelectedCohort = $scope.cohortsAdvanced[0];
         $scope.modalSelectedManiple = $scope.modalSelectedCohort.maniples[0];
         $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];

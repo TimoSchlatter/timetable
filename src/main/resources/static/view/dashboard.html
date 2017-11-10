@@ -21,6 +21,8 @@
         </div>
     </div>
 </div>
+
+<!-- CalenderView-->
 <div class="card mb-3">
     <div class="card-header">
         <button class="btn btn-success btn-xs"
@@ -81,9 +83,9 @@
                 </select>
                 <select class="form-control"
                         ng-switch-when="Seminargruppe"
-                        ng-options="century.name for century in centuries()"
-                        ng-model="$parent.selectedSeminars"
-                        ng-change="convertEventsByToCalender(selectedSeminars, eventsByGroup);">
+                        ng-options="seminarGroup.name for seminarGroup in seminarGroups()"
+                        ng-model="$parent.selectedSeminarGroup"
+                        ng-change="convertEventsByToCalender(selectedSeminarGroup, eventsByGroup);">
                 </select>
             </div>
         </div>
@@ -98,38 +100,7 @@
         <div class="modal-content card mx-auto mt-5">
             <div class="card-header">{{event.id ? 'Aktualisieren' : 'Hinzufügen'}}</div>
             <div class="card-body">
-                <form name="modal">
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="inputCohort">Kohorte</label>
-                            <select class="form-control"
-                                    id="inputCohort"
-                                    ng-disabled="event.id"
-                                    ng-options="cohort.name for cohort in cohortsAdvanced"
-                                    ng-model="modalSelectedCohort"
-                                    ng-change="changedCohort()">
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputManiple">Manipel</label>
-                            <select class="form-control"
-                                    id="inputManiple"
-                                    ng-disabled="event.id"
-                                    ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
-                                    ng-Model="modalSelectedManiple"
-                                    ng-change="changedManiple()">
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputCentury">Zenturie</label>
-                            <select class="form-control"
-                                    id="inputCentury"
-                                    ng-disabled="event.id"
-                                    ng-options="century.name for century in modalSelectedManiple.centuries"
-                                    ng-Model="modalSelectedCentury">
-                            </select>
-                        </div>
-                    </div>
+                <form name="modal" ng-switch on="modalSubjectType">
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="inputDate">Datum</label>
@@ -179,6 +150,48 @@
                                     id="inputSubject"
                                     ng-options="subject.module.shortTitle for subject in subjects() | filter: modalSubjectType? {subjectType: modalSubjectType} : 'undefined'"
                                     ng-model="modalSubject">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" ng-switch-when="LECTURE|EXAM" ng-switch-when-separator="|">
+                        <div class="form-group col-md-4">
+                            <label for="inputCohort">Kohorte</label>
+                            <select class="form-control"
+                                    id="inputCohort"
+                                    ng-disabled="event.id"
+                                    ng-options="cohort.name for cohort in cohortsAdvanced"
+                                    ng-model="modalSelectedCohort"
+                                    ng-change="changedCohort()">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputManiple">Manipel</label>
+                            <select class="form-control"
+                                    id="inputManiple"
+                                    ng-disabled="event.id"
+                                    ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
+                                    ng-Model="modalSelectedManiple"
+                                    ng-change="changedManiple()">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputCentury">Zenturie</label>
+                            <select class="form-control"
+                                    id="inputCentury"
+                                    ng-disabled="event.id"
+                                    ng-options="century.name for century in modalSelectedManiple.centuries"
+                                    ng-Model="modalSelectedCentury">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" ng-switch-when="SEMINAR">
+                        <div class="form-group col-md-12">
+                            <label for="inputCohort">Seminargruppe</label>
+                            <select class="form-control"
+                                    id="inputSeminarGroup"
+                                    ng-disabled="event.id"
+                                    ng-options="seminarGroup.name for seminarGroup in seminarGroups()"
+                                    ng-model="$parent.modalSelectedSeminarGroup">
                             </select>
                         </div>
                     </div>
