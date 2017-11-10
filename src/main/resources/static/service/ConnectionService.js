@@ -360,6 +360,10 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getEventsByDocent: function (docent, functionToSetModel) {
             return getData(eventsUrl + 'findByDocent?id=' + docent.id, functionToSetModel);
         },
+        getVacantRooms: function (event, functionToSetModel) {
+            return getData('http://localhost:49999/vacantRooms?date=' + event.date + '&startTime=' + event.startTime + '&endTime=' + event.endTime
+                + '&groupId=' + event.group.id + (event.id ? '&eventId=' + event.id : ''), functionToSetModel);
+        },
         getSubjectTypes: function () {
             return subjectTypes;
         },

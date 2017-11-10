@@ -12,6 +12,7 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     $scope.updateEvent = ConnectionService.updateEvent;
     $scope.deleteEvent = ConnectionService.deleteEvent;
     $scope.rooms = ConnectionService.getRooms;
+    $scope.vacantRooms = ConnectionService.getVacantRooms;
     $scope.docents = ConnectionService.getDocents;
     $scope.subjects = ConnectionService.getSubjects;
     $scope.cohorts = ConnectionService.getCohorts;
@@ -34,6 +35,37 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         $scope.updateAllEvents();
     });
 
+    var isSubFormValid = function () {
+        return $scope.modalSubForm.$valid && (($scope.modalSubjectType === 'SEMINAR') === isDefaultSelectedCohort());
+    };
+
+    var isDefaultSelectedCohort = function () {
+        return $scope.modalSelectedCohort === $scope.cohortsAdvanced[0];
+    };
+
+    var isDefaultSelectedManiple = function () {
+        return $scope.modalSelectedManiple === $scope.modalSelectedCohort.maniples[0];
+    };
+
+    var isDefaultSelectedCentury = function () {
+        return $scope.modalSelectedCentury === $scope.modalSelectedManiple.centuries[0];
+    };
+
+    $scope.updateVacantRooms = function () {
+        if (isSubFormValid()) {
+            $scope.getModalEvent();
+            setVacantRooms($scope.event);
+        } else {
+            $scope.vacantRoomSet = [];
+        }
+    };
+
+    var setVacantRooms = function (event) {
+        $scope.vacantRooms(event, function (data) {
+            $scope.vacantRoomSet = data;
+        });
+    };
+
     $scope.updateAllEvents = function () {
         if ($scope.selectedEntity === $scope.selectableEntities[0]) {
             convertEventsToCalender($scope.events());
@@ -46,6 +78,11 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
                 convertEventsToCalender(data);
             });
         }
+    };
+
+    var getTime = function (timeString) {
+        var timeTokens = timeString.split(':');
+        return new Date(1970, 0, 1, timeTokens[0], timeTokens[1], timeTokens[2]);
     };
 
     var buildCohortsAdvanced = function (cohorts) {
@@ -71,48 +108,52 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         return $scope.event;
     };
 
-    var setModalEvent = function (event) {
+    var setEventToModal = function (event) {
         if (event.id) {
-            $('#inputDate').datepicker('update', event.date);
-            $scope.modalEndTime = getTime($scope.event.endTime);
-            $scope.modalStartTime = getTime($scope.event.startTime);
-            $scope.modalSubjectType = event.subject.subjectType;
-            var selectedSubjects = $filter('filter')($scope.subjects(), {id: event.subject.id});
-            $scope.modalSubject = selectedSubjects[0];
-            setSelectedGroup(event.group);
-            $scope.modalSelectedDocents = event.docents;
-            $scope.modalSelectedRooms = event.rooms;
+            setExistingEventToModal(event)
+            setVacantRooms(event);
         } else {
-            $('#inputDate').datepicker('update', '');
-            $scope.modalEndTime = undefined;
-            $scope.modalStartTime = undefined;
-            $scope.modalSubjectType = undefined;
-            $scope.modalSubject = undefined;
-            $scope.modalSelectedCohort = $scope.cohortsAdvanced[0];
-            $scope.modalSelectedManiple = $scope.modalSelectedCohort.maniples[0];
-            $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
-            $scope.modalSelectedSeminarGroup = undefined;
-            $scope.modalSelectedDocents = [];
-            $scope.modalSelectedRooms = [];
-            $scope.modalRepeatWeeks = 1;
+            setNewEventToModal();
         }
     };
 
-    var getTime = function (timeString) {
-        var timeTokens = timeString.split(':');
-        return new Date(1970, 0, 1, timeTokens[0], timeTokens[1], timeTokens[2]);
+    var setExistingEventToModal = function (event) {
+        $('#inputDate').datepicker('update', event.date);
+        $scope.modalEndTime = getTime($scope.event.endTime);
+        $scope.modalStartTime = getTime($scope.event.startTime);
+        $scope.modalSubjectType = event.subject.subjectType;
+        var selectedSubjects = $filter('filter')($scope.subjects(), {id: event.subject.id});
+        $scope.modalSubject = selectedSubjects[0];
+        setSelectedGroup(event.group);
+        $scope.modalSelectedDocents = event.docents;
+        $scope.modalSelectedRooms = event.rooms;
+    };
+
+    var setNewEventToModal = function () {
+        $('#inputDate').datepicker('update', '');
+        $scope.modalEndTime = undefined;
+        $scope.modalStartTime = undefined;
+        $scope.modalSubjectType = undefined;
+        $scope.modalSubject = undefined;
+        $scope.modalSelectedCohort = $scope.cohortsAdvanced[0];
+        $scope.modalSelectedManiple = $scope.modalSelectedCohort.maniples[0];
+        $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
+        $scope.modalSelectedSeminarGroup = undefined;
+        $scope.modalSelectedDocents = [];
+        $scope.modalSelectedRooms = [];
+        $scope.modalRepeatWeeks = 1;
     };
 
     var getSelectedGroup = function () {
         if ($scope.modalSubjectType === 'SEMINAR') {
             return $scope.modalSelectedSeminarGroup;
-        } else if ($scope.modalSelectedCentury !== $scope.modalSelectedManiple.centuries[0]) {
+        } else if (!isDefaultSelectedCentury()) {
             return $scope.modalSelectedCentury;
-        } else if ($scope.modalSelectedManiple !== $scope.modalSelectedCohort.maniples[0]) {
+        } else if (!isDefaultSelectedManiple()) {
             var modalSelectedManiple = angular.copy($scope.modalSelectedManiple);
             delete modalSelectedManiple.centuries;
             return modalSelectedManiple;
-        } else if ($scope.modalSelectedCohort !== $scope.cohortsAdvanced[0]) {
+        } else if (!isDefaultSelectedCohort()) {
             var modalSelectedCohort = angular.copy($scope.modalSelectedCohort);
             delete modalSelectedCohort.maniples;
             return modalSelectedCohort;
@@ -153,16 +194,18 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     $scope.setSelectedEvent = function (event) {
         $scope.event = angular.copy(event);
         console.log('Selected Event:', $scope.event);
-        setModalEvent($scope.event);
+        setEventToModal($scope.event);
     };
 
     $scope.changedCohort = function () {
         $scope.modalSelectedManiple = $scope.modalSelectedCohort.maniples[0];
         $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
+        $scope.updateVacantRooms();
     };
 
     $scope.changedManiple = function () {
         $scope.modalSelectedCentury = $scope.modalSelectedManiple.centuries[0];
+        $scope.updateVacantRooms();
     };
 
     var convertEventsToCalender = function (events) {

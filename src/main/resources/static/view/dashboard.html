@@ -99,148 +99,159 @@
         <div class="modal-content card mx-auto mt-5">
             <div class="card-header">{{event.id ? 'Aktualisieren' : 'Hinzufügen'}}</div>
             <div class="card-body">
-                <form name="modalForm" ng-switch on="modalSubjectType">
-                    <div class="form-row" name="main">
-                        <div class="form-group col-md-6">
-                            <label for="inputSubjectType">Veranstaltungstyp</label>
-                            <select class="form-control"
-                                    id="inputSubjectType"
-                                    ng-options="key as value for (key , value) in subjectTypes()"
-                                    ng-class="{ 'is-invalid': !modalForm.inputSubjectType.$valid}"
-                                    name="inputSubjectType"
-                                    ng-model="modalSubjectType"
-                                    required>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputSubject">{{modalSubjectType ? subjectTypes()[modalSubjectType] :
-                                'Modul'}}</label>
-                            <select class="form-control"
-                                    id="inputSubject"
-                                    ng-options="subject.module.shortTitle for subject in subjects() | filter: modalSubjectType? {subjectType: modalSubjectType} : 'undefined'"
-                                    ng-class="{ 'is-invalid': !modalForm.inputSubject.$valid}"
-                                    name="inputSubject"
-                                    ng-model="modalSubject"
-                                    required>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"
-                             ng-class="(modalSubjectType==='SEMINAR'||modalSubjectType==='LECTURE')&&!event.id?'col-md-3':'col-md-4'">
-                            <label for="inputDate">Datum</label>
-                            <div class="input-group date">
-                                <input type="date"
-                                       class="form-control datepicker"
-                                       ng-class="{ 'is-invalid': !modalForm.inputDate.$valid}"
-                                       name="inputDate"
-                                       id="inputDate"
-                                       ng-model="modalDate"
-                                       placeholder="TT.MM.JJJJ"
-                                       required>
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <ng-form name="modalForm" ng-switch on="modalSubjectType">
+                    <ng-form name="modalSubForm">
+                        <div class="form-row" name="main">
+                            <div class="form-group col-md-6">
+                                <label for="inputSubjectType">Veranstaltungstyp</label>
+                                <select class="form-control"
+                                        id="inputSubjectType"
+                                        ng-options="key as value for (key , value) in subjectTypes()"
+                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputSubjectType.$valid}"
+                                        name="inputSubjectType"
+                                        ng-model="modalSubjectType"
+                                        ng-change="updateVacantRooms()"
+                                        required>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputSubject">{{modalSubjectType ? subjectTypes()[modalSubjectType] :
+                                    'Modul'}}</label>
+                                <select class="form-control"
+                                        id="inputSubject"
+                                        ng-options="subject.module.shortTitle for subject in subjects() | filter: modalSubjectType? {subjectType: modalSubjectType} : 'undefined'"
+                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputSubject.$valid}"
+                                        name="inputSubject"
+                                        ng-model="modalSubject"
+                                        ng-change="updateVacantRooms()"
+                                        required>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group"
-                             ng-class="(modalSubjectType==='SEMINAR'||modalSubjectType==='LECTURE')&&!event.id?'col-md-3':'col-md-4'">
-                            <label for="inputStartTime">Startzeit</label>
-                            <div class="input-group date">
-                                <input type="time"
-                                       class="form-control clockpicker"
-                                       ng-class="{ 'is-invalid': !modalForm.inputStartTime.$valid}"
-                                       name="inputStartTime"
-                                       id="inputStartTime"
-                                       ng-model="modalStartTime"
-                                       required>
-                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                        <div class="form-row">
+                            <div class="form-group"
+                                 ng-class="(modalSubjectType==='SEMINAR'||modalSubjectType==='LECTURE')&&!event.id?'col-md-3':'col-md-4'">
+                                <label for="inputDate">Datum</label>
+                                <div class="input-group date">
+                                    <input type="date"
+                                           class="form-control datepicker"
+                                           ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputDate.$valid}"
+                                           name="inputDate"
+                                           id="inputDate"
+                                           ng-model="modalDate"
+                                           placeholder="TT.MM.JJJJ"
+                                           ng-change="updateVacantRooms()"
+                                           required>
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 ng-class="(modalSubjectType==='SEMINAR'||modalSubjectType==='LECTURE')&&!event.id?'col-md-3':'col-md-4'">
+                                <label for="inputStartTime">Startzeit</label>
+                                <div class="input-group date">
+                                    <input type="time"
+                                           class="form-control clockpicker"
+                                           ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputStartTime.$valid}"
+                                           name="inputStartTime"
+                                           id="inputStartTime"
+                                           ng-model="modalStartTime"
+                                           ng-change="updateVacantRooms()"
+                                           required>
+                                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 ng-class="(modalSubjectType==='SEMINAR'||modalSubjectType==='LECTURE')&&!event.id?'col-md-3':'col-md-4'">
+                                <label for="inputEndTime">Endzeit</label>
+                                <div class="input-group date">
+                                    <input type="time"
+                                           class="form-control clockpicker"
+                                           ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputEndTime.$valid}"
+                                           name="inputEndTime"
+                                           id="inputEndTime"
+                                           ng-model="modalEndTime"
+                                           ng-change="updateVacantRooms()"
+                                           required>
+                                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3" ng-switch-when="LECTURE|SEMINAR"
+                                 ng-switch-when-separator="|"
+                                 ng-hide="event.id">
+                                <label for="inputRepeatWeeks">Wiederholungen</label>
+                                <div class="input-group">
+                                    <input type="number"
+                                           class="form-control"
+                                           ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputRepeatWeeks.$valid}"
+                                           name="inputRepeatWeeks"
+                                           ng-model="$parent.modalRepeatWeeks"
+                                           id="inputRepeatWeeks"
+                                           ng-change="updateVacantRooms()"
+                                           min="1"
+                                           max="10"
+                                           step="1"
+                                           placeholder="1"/>
+                                    <span class="input-group-addon">Wochen</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group"
-                             ng-class="(modalSubjectType==='SEMINAR'||modalSubjectType==='LECTURE')&&!event.id?'col-md-3':'col-md-4'">
-                            <label for="inputEndTime">Endzeit</label>
-                            <div class="input-group date">
-                                <input type="time"
-                                       class="form-control clockpicker"
-                                       ng-class="{ 'is-invalid': !modalForm.inputEndTime.$valid}"
-                                       name="inputEndTime"
-                                       id="inputEndTime"
-                                       ng-model="modalEndTime"
-                                       required>
-                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                        <div class="form-row" ng-switch-when="LECTURE|EXAM" ng-switch-when-separator="|">
+                            <div class="form-group col-md-4">
+                                <label for="inputCohort">Kohorte</label>
+                                <select class="form-control"
+                                        id="inputCohort"
+                                        ng-disabled="event.id"
+                                        ng-options="cohort.name for cohort in cohortsAdvanced"
+                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputCohort.$valid}"
+                                        name="inputCohort"
+                                        ng-model="$parent.modalSelectedCohort"
+                                        ng-change="changedCohort()"
+                                        required>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputManiple">Manipel</label>
+                                <select class="form-control"
+                                        id="inputManiple"
+                                        ng-disabled="event.id"
+                                        ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
+                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputManiple.$valid}"
+                                        name="inputManiple"
+                                        ng-Model="$parent.modalSelectedManiple"
+                                        ng-change="changedManiple()"
+                                        required>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputCentury">Zenturie</label>
+                                <select class="form-control"
+                                        id="inputCentury"
+                                        ng-disabled="event.id"
+                                        ng-options="century.name for century in modalSelectedManiple.centuries"
+                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputCentury.$valid}"
+                                        name="inputCentury"
+                                        ng-Model="$parent.modalSelectedCentury"
+                                        ng-change="updateVacantRooms()"
+                                        required>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group col-md-3" ng-switch-when="LECTURE|SEMINAR" ng-switch-when-separator="|"
-                             ng-hide="event.id">
-                            <label for="inputRepeatWeeks">Wiederholungen</label>
-                            <div class="input-group">
-                                <input type="number"
-                                       class="form-control"
-                                       ng-class="{ 'is-invalid': !modalForm.inputRepeatWeeks.$valid}"
-                                       name="inputRepeatWeeks"
-                                       ng-model="$parent.modalRepeatWeeks"
-                                       id="inputRepeatWeeks"
-                                       min="1"
-                                       max="10"
-                                       step="1"
-                                       placeholder="1"/>
-                                <span class="input-group-addon">Wochen</span>
+                        <div class="form-row" ng-switch-when="SEMINAR">
+                            <div class="form-group col-md-12">
+                                <label for="inputCohort">Seminargruppe</label>
+                                <select class="form-control"
+                                        id="inputSeminarGroup"
+                                        ng-disabled="event.id"
+                                        ng-options="seminarGroup.name for seminarGroup in seminarGroups()"
+                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputSeminarGroup.$valid}"
+                                        name="inputSeminarGroup"
+                                        ng-model="$parent.modalSelectedSeminarGroup"
+                                        ng-change="updateVacantRooms()"
+                                        required>
+                                </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row" ng-switch-when="LECTURE|EXAM" ng-switch-when-separator="|">
-                        <div class="form-group col-md-4">
-                            <label for="inputCohort">Kohorte</label>
-                            <select class="form-control"
-                                    id="inputCohort"
-                                    ng-disabled="event.id"
-                                    ng-options="cohort.name for cohort in cohortsAdvanced"
-                                    ng-class="{ 'is-invalid': !modalForm.inputCohort.$valid}"
-                                    name="inputCohort"
-                                    ng-model="$parent.modalSelectedCohort"
-                                    ng-change="changedCohort()"
-                                    required>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputManiple">Manipel</label>
-                            <select class="form-control"
-                                    id="inputManiple"
-                                    ng-disabled="event.id"
-                                    ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
-                                    ng-class="{ 'is-invalid': !modalForm.inputManiple.$valid}"
-                                    name="inputManiple"
-                                    ng-Model="$parent.modalSelectedManiple"
-                                    ng-change="changedManiple()"
-                                    required>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputCentury">Zenturie</label>
-                            <select class="form-control"
-                                    id="inputCentury"
-                                    ng-disabled="event.id"
-                                    ng-options="century.name for century in modalSelectedManiple.centuries"
-                                    ng-class="{ 'is-invalid': !modalForm.inputCentury.$valid}"
-                                    name="inputCentury"
-                                    ng-Model="$parent.modalSelectedCentury"
-                                    required>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row" ng-switch-when="SEMINAR">
-                        <div class="form-group col-md-12">
-                            <label for="inputCohort">Seminargruppe</label>
-                            <select class="form-control"
-                                    id="inputSeminarGroup"
-                                    ng-disabled="event.id"
-                                    ng-options="seminarGroup.name for seminarGroup in seminarGroups()"
-                                    ng-class="{ 'is-invalid': !modalForm.inputSeminarGroup.$valid}"
-                                    name="inputSeminarGroup"
-                                    ng-model="$parent.modalSelectedSeminarGroup"
-                                    required>
-                            </select>
-                        </div>
-                    </div>
+                    </ng-form>
                     <div class="form-group" name="multipleSelectForm">
                         <label for="inputRooms">Räume</label>
                         <multiple-autocomplete ng-model="modalSelectedRooms"
@@ -248,7 +259,7 @@
                                                name="inputRooms"
                                                required="true"
                                                id="inputRooms"
-                                               suggestions-arr="rooms()">
+                                               suggestions-arr="vacantRoomSet">
                         </multiple-autocomplete>
                     </div>
                     <div class="form-group" name="multipleSelectForm">
@@ -280,7 +291,7 @@
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
                     </div>
-                </form>
+                </ng-form>
             </div>
         </div>
     </div>
