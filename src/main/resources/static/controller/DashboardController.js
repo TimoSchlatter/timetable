@@ -85,7 +85,9 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     };
 
     var getSelectedGroup = function () {
-        if ($scope.modalSelectedCentury !== $scope.modalSelectedManiple.centuries[0]) {
+        if ($scope.modalSubjectType === 'SEMINAR') {
+            return $scope.modalSelectedSeminarGroup;
+        } else if ($scope.modalSelectedCentury !== $scope.modalSelectedManiple.centuries[0]) {
             return $scope.modalSelectedCentury;
         } else if ($scope.modalSelectedManiple !== $scope.modalSelectedCohort.maniples[0]) {
             var modalSelectedManiple = angular.copy($scope.modalSelectedManiple);

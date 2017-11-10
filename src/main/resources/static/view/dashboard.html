@@ -160,7 +160,7 @@
                                     id="inputCohort"
                                     ng-disabled="event.id"
                                     ng-options="cohort.name for cohort in cohortsAdvanced"
-                                    ng-model="modalSelectedCohort"
+                                    ng-model="$parent.modalSelectedCohort"
                                     ng-change="changedCohort()">
                             </select>
                         </div>
@@ -170,7 +170,7 @@
                                     id="inputManiple"
                                     ng-disabled="event.id"
                                     ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
-                                    ng-Model="modalSelectedManiple"
+                                    ng-Model="$parent.modalSelectedManiple"
                                     ng-change="changedManiple()">
                             </select>
                         </div>
@@ -180,7 +180,7 @@
                                     id="inputCentury"
                                     ng-disabled="event.id"
                                     ng-options="century.name for century in modalSelectedManiple.centuries"
-                                    ng-Model="modalSelectedCentury">
+                                    ng-Model="$parent.modalSelectedCentury">
                             </select>
                         </div>
                     </div>
