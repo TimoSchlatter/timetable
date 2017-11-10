@@ -6,6 +6,7 @@ app.controller('CourseController', function ($scope, ConnectionService) {
     $scope.createCourse = ConnectionService.createCourse;
     $scope.updateCourse = ConnectionService.updateCourse;
     $scope.deleteCourse = ConnectionService.deleteCourse;
+    $scope.coursesLastUpdateTime = ConnectionService.getCoursesLastUpdateTime;
 
     $scope.setSelectedCourse = function (course) {
         $scope.course = angular.copy(course);

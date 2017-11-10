@@ -82,91 +82,111 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
 
     /* DocentsControl */
     var docents = [];
+    var docentsLastUpdateTime;
     var docentsUrl = 'http://localhost:49999/docents/';
     var getDocents = function () {
         getData(docentsUrl, function (data) {
-            docents = data
+            docents = data;
+            docentsLastUpdateTime = Date.now();
         });
     };
 
     /* RoomsControl */
     var rooms = [];
+    var roomsLastUpdateTime;
     var roomsUrl = 'http://localhost:49999/rooms/';
     var getRooms = function () {
         getData(roomsUrl, function (data) {
-            rooms = data
+            rooms = data;
+            roomsLastUpdateTime = Date.now();
         });
     };
 
     /* CenturiesControl */
     var centuries = [];
+    var centuriesLastUpdateTime;
     var centuriesUrl = 'http://localhost:49999/centuries/';
     var getCenturies = function () {
         getData(centuriesUrl, function (data) {
             centuries = data;
+            centuriesLastUpdateTime = Date.now();
         });
     };
 
     /*ManiplesControl */
     var maniples = [];
+    var maniplesLastUpdateTime;
     var maniplesUrl = 'http://localhost:49999/maniples/';
     var getManiples = function () {
         getData(maniplesUrl, function (data) {
             maniples = data;
+            maniplesLastUpdateTime = Date.now();
         });
     };
 
     /*CohortsControl */
     var cohorts = [];
+    var cohortsLastUpdateTime;
     var cohortsUrl = 'http://localhost:49999/cohorts/';
     var getCohorts = function () {
         getData(cohortsUrl, function (data) {
             cohorts = data;
+            cohortsLastUpdateTime = Date.now();
         });
     };
 
     /*CoursesControl */
     var courses = [];
+    var coursesLastUpdateTime;
     var coursesUrl = 'http://localhost:49999/courses/';
     var getCourses = function () {
         getData(coursesUrl, function (data) {
             courses = data;
+            coursesLastUpdateTime = Date.now();
         });
     };
 
     /* SeminarsControl */
     var seminars = [];
+    var seminarsLastUpdateTime;
     var seminarsUrl = 'http://localhost:49999/seminars/';
     var getSeminars = function () {
         getData(seminarsUrl, function (data) {
             seminars = data;
+            seminarsLastUpdateTime = Date.now();
         });
     };
 
     /* SeminarsGroupsControl */
     var seminarGroups = [];
+    var seminarGroupsLastUpdateTime;
     var seminarGroupsUrl = 'http://localhost:49999/seminargroups/';
     var getSeminarGroups = function () {
         getData(seminarGroupsUrl, function (data) {
             seminarGroups = data;
+            seminarGroupsLastUpdateTime = Date.now();
         });
     };
 
     /* SubjectsControl */
     var subjects = [];
+    var subjectsLastUpdateTime;
     var subjectsUrl = 'http://localhost:49999/subjects/';
     var getSubjects = function () {
         getData(subjectsUrl, function (data) {
             subjects = data;
+            subjectsLastUpdateTime = Date.now();
         });
     };
 
     /* EventsControl */
     var events = [];
+    var eventsLastUpdateTime;
     var eventsUrl = 'http://localhost:49999/events/';
     var getEvents = function () {
         getData(eventsUrl, function (data) {
             events = data;
+            eventsLastUpdateTime = Date.now();
         });
     };
 
@@ -237,6 +257,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getDocents: function () {
             return docents;
         },
+        getDocentsLastUpdateTime: function () {
+            return docentsLastUpdateTime;
+        },
         createRoom: function (room) {
             createData(roomsUrl, angular.toJson(room), getRooms);
         },
@@ -248,6 +271,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         },
         getRooms: function () {
             return rooms;
+        },
+        getRoomsLastUpdateTime: function () {
+            return roomsLastUpdateTime;
         },
         createCentury: function (manipleId, century) {
             century.type = 'century';
@@ -262,6 +288,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getCenturies: function () {
             return centuries;
         },
+        getCenturiesLastUpdateTime: function () {
+            return centuriesLastUpdateTime;
+        },
         createManiple: function (cohortId, maniple) {
             maniple.type = 'maniple';
             createData(cohortsUrl + cohortId + '/addManiple', angular.toJson(maniple), getCohorts);
@@ -274,6 +303,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         },
         getManiples: function () {
             return maniples;
+        },
+        getManiplesLastUpdateTime: function () {
+            return maniplesLastUpdateTime;
         },
         createCohort: function (cohort) {
             cohort.type = 'cohort';
@@ -288,6 +320,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getCohorts: function () {
             return cohorts;
         },
+        getCohortsLastUpdateTime: function () {
+            return cohortsLastUpdateTime;
+        },
         createCourse: function (course) {
             course.type = 'course';
             createData(coursesUrl, angular.toJson(course), getCourses);
@@ -300,6 +335,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         },
         getCourses: function () {
             return courses;
+        },
+        getCoursesLastUpdateTime: function () {
+            return coursesLastUpdateTime;
         },
         createSeminar: function (seminar) {
             seminar.type = 'seminar';
@@ -314,6 +352,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getSeminars: function () {
             return seminars;
         },
+        getSeminarsLastUpdateTime: function () {
+            return seminarsLastUpdateTime;
+        },
         createSeminarGroup: function (seminarGroup) {
             seminarGroup.type = 'seminargroup';
             createData(seminarGroupsUrl, angular.toJson(seminarGroup), getSeminarGroups);
@@ -327,6 +368,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getSeminarGroups: function () {
             return seminarGroups;
         },
+        getSeminarGroupsLastUpdateTime: function () {
+            return seminarGroupsLastUpdateTime;
+        },
         createSubject: function (subject) {
             createData(subjectsUrl, angular.toJson(subject), getSubjects);
         },
@@ -339,6 +383,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getSubjects: function () {
             return subjects;
         },
+        getSubjectsLastUpdateTime: function () {
+            return subjectsLastUpdateTime;
+        },
         createEvent: function (event, repeatWeeks) {
             createData(eventsUrl + '?repeatWeeks=' + repeatWeeks, angular.toJson(event), getEvents);
         },
@@ -350,6 +397,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         },
         getEvents: function () {
             return events;
+        },
+        getEventsLastUpdateTime: function () {
+            return eventsLastUpdateTime;
         },
         getEventsByGroup: function (group, functionToSetModel) {
             return getData(eventsUrl + 'findByGroup?id=' + group.id, functionToSetModel);

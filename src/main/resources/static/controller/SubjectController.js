@@ -7,6 +7,7 @@ app.controller('SubjectController', function ($scope, $http, ConnectionService) 
     $scope.updateSubject = ConnectionService.updateSubject;
     $scope.deleteSubject = ConnectionService.deleteSubject;
     $scope.subjectTypes = ConnectionService.getSubjectTypes;
+    $scope.subjectsLastUpdateTime = ConnectionService.getSubjectsLastUpdateTime;
 
     $scope.$watch('subjectTypes()', function () {
         buildSubjectTypesAdvanced($scope.subjectTypes());

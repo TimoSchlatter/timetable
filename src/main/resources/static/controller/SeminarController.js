@@ -7,6 +7,7 @@ app.controller('SeminarController', function ($scope, ConnectionService) {
     $scope.updateSeminar = ConnectionService.updateSeminar;
     $scope.deleteSeminar = ConnectionService.deleteSeminar;
     $scope.seminarTypes = ConnectionService.getSeminarTypes;
+    $scope.seminarsLastUpdateTime = ConnectionService.getSeminarsLastUpdateTime;
 
     $scope.setSelectedSeminar = function (seminar) {
         $scope.seminar = angular.copy(seminar);

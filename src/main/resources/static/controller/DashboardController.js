@@ -8,6 +8,7 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     $scope.eventsByGroup = ConnectionService.getEventsByGroup;
     $scope.eventsByRoom = ConnectionService.getEventsByRoom;
     $scope.eventsByDocent = ConnectionService.getEventsByDocent;
+    $scope.eventsLastUpdateTime = ConnectionService.getEventsLastUpdateTime;
     $scope.createEvent = ConnectionService.createEvent;
     $scope.updateEvent = ConnectionService.updateEvent;
     $scope.deleteEvent = ConnectionService.deleteEvent;
