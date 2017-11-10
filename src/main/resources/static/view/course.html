@@ -84,53 +84,64 @@
                             <input type="text"
                                    ng-model="course.field"
                                    class="form-control"
+                                   ng-class="{ 'is-invalid': !modal.inputField.$valid}"
+                                   name="inputField"
                                    id="inputField"
                                    placeholder="z.B. H"
-                                   maxlength="1">
+                                   maxlength="1"
+                                   required>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputNumber">Kursnummer</label>
                             <input type="tel"
                                    class="form-control"
-                                   ng-class="{ 'is-invalid': !modal.number.$valid}"
-                                   name="number"
+                                   ng-class="{ 'is-invalid': !modal.inputNumber.$valid}"
+                                   name="inputNumber"
                                    ng-model="course.number"
                                    id="inputNumber"
                                    minlength="3"
                                    step="1"
                                    placeholder="z.B. 001"
-                                   maxlength="3">
+                                   maxlength="3"
+                                   required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputTitle">Bezeichnung</label>
                             <input type="text"
                                    class="form-control"
+                                   ng-class="{ 'is-invalid': !modal.inputTitle.$valid}"
+                                   name="inputTitle"
                                    ng-disabled="course.id"
                                    id="inputTitle"
                                    ng-model="course.title"
-                                   placeholder="Bezeichnung">
+                                   placeholder="Bezeichnung"
+                                   required>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputShortTitle">Kurz Titel</label>
                             <input type="text"
                                    class="form-control"
+                                   ng-class="{ 'is-invalid': !modal.inputShortTitle.$valid}"
+                                   name="inputShortTitle"
                                    id="inputShortTitle"
                                    ng-model="course.shortTitle"
-                                   placeholder="Kurz Titel">
+                                   placeholder="Kurz Titel"
+                                   required>
                         </div>
-                        <div class="pull-right">
-                            <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
-                                <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
-                            </button>
-                            <button type="button" class="btn btn-labeled btn-success" ng-click="updateCourse(course)"
-                                    ng-show="course.id" data-dismiss="modal">
-                                <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
-                            </button>
-                            <button type="button" class="btn btn-labeled btn-success" ng-click="createCourse(course)"
-                                    ng-hide="course.id" data-dismiss="modal">
-                                <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
-                            </button>
-                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="updateCourse(course)"
+                                ng-disabled="modal.$invalid" ng-show="course.id" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" ng-click="createCourse(course)"
+                                ng-disabled="modal.$invalid" ng-hide="course.id" data-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -144,27 +155,27 @@
 <!-- Custom scripts for this page-->
 <script src="../vendor/sb-admin/js/sb-admin-datatables.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#courseTable').DataTable({
             "language": {
-                "sEmptyTable":      "Keine Daten in der Tabelle vorhanden",
-                "sInfo":            "_START_ bis _END_ von _TOTAL_ Einträgen",
-                "sInfoEmpty":       "0 bis 0 von 0 Einträgen",
-                "sInfoFiltered":    "(gefiltert von _MAX_ Einträgen)",
-                "sInfoPostFix":     "",
-                "sInfoThousands":   ".",
-                "sLengthMenu":      "_MENU_ Einträge anzeigen",
-                "sLoadingRecords":  "Wird geladen...",
-                "sProcessing":      "Bitte warten...",
-                "sSearch":          "Suchen:",
-                "sZeroRecords":     "Keine Einträge vorhanden.",
+                "sEmptyTable": "Keine Daten in der Tabelle vorhanden",
+                "sInfo": "_START_ bis _END_ von _TOTAL_ Einträgen",
+                "sInfoEmpty": "0 bis 0 von 0 Einträgen",
+                "sInfoFiltered": "(gefiltert von _MAX_ Einträgen)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "_MENU_ Einträge anzeigen",
+                "sLoadingRecords": "Wird geladen...",
+                "sProcessing": "Bitte warten...",
+                "sSearch": "Suchen:",
+                "sZeroRecords": "Keine Einträge vorhanden.",
                 "oPaginate": {
-                    "sFirst":       "Erste",
-                    "sPrevious":    "Zurück",
-                    "sNext":        "Nächste",
-                    "sLast":        "Letzte"
+                    "sFirst": "Erste",
+                    "sPrevious": "Zurück",
+                    "sNext": "Nächste",
+                    "sLast": "Letzte"
                 },
             }
-        } );
-    } );
+        });
+    });
 </script>

@@ -91,19 +91,25 @@
                         <div class="form-group col-md-6">
                             <label for="inputTitel">Bezeichnung</label>
                             <input type="text"
+                                   ng-class="{ 'is-invalid': !modal.inputTitel.$valid}"
+                                   name="inputTitel"
                                    ng-model="maniple.name"
                                    class="form-control"
                                    ng-disabled="maniple.id"
                                    id="inputTitel"
                                    placeholder="z.B. I"
-                                   maxlength="1">
+                                   required>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="modalSelectedCohort">Kohorte</label>
                             <select class="form-control"
+                                    ng-class="{ 'is-invalid': !modal.modalSelectedCohort.$valid}"
+                                    name="modalSelectedCohort"
                                     id="modalSelectedCohort"
+                                    ng-disabled="maniple.id"
                                     ng-options="cohort.name for cohort in cohorts()"
-                                    ng-model="modalSelectedCohort">
+                                    ng-model="modalSelectedCohort"
+                                    required>
                             </select>
                         </div>
                         <div class="form-group col-md-3">
@@ -118,7 +124,8 @@
                                        min="15"
                                        max="120"
                                        step="1"
-                                       placeholder="15"/>
+                                       placeholder="15"
+                                       required>
                                 <span class="input-group-addon">Minuten</span>
                             </div>
                         </div>
@@ -128,12 +135,12 @@
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
                         <button type="button" class="btn btn-labeled btn-success" ng-click="updateManiple(maniple)"
-                                ng-show="maniple.id" data-dismiss="modal">
+                                ng-disabled="modal.$invalid" ng-show="maniple.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
                         <button type="button" class="btn btn-labeled btn-success"
                                 ng-click="createManiple(modalSelectedCohort.id, maniple)"
-                                ng-hide="maniple.id" data-dismiss="modal">
+                                ng-disabled="modal.$invalid" ng-hide="maniple.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
                     </div>

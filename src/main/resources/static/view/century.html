@@ -103,41 +103,51 @@
                             <label for="inputTitel">Bezeichnung</label>
                             <input type="text"
                                    class="form-control"
+                                   ng-class="{ 'is-invalid': !modal.inputTitel.$valid}"
+                                   name="inputTitel"
                                    ng-disabled="century.id"
                                    ng-model="century.name"
                                    id="inputTitel"
                                    placeholder="z.B. a"
-                                   maxlength="1">
+                                   required>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="modalSelectedCohort">Kohorte</label>
                             <select class="form-control"
+                                    ng-class="{ 'is-invalid': !modal.modalSelectedCohort.$valid}"
+                                    name="modalSelectedCohort"
                                     id="modalSelectedCohort"
+                                    ng-disabled="century.id"
                                     ng-options="cohort.name for cohort in cohorts()"
-                                    ng-model="modalSelectedCohort">
+                                    ng-model="modalSelectedCohort"
+                                    required>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="modalSelectedManiple">Manipel</label>
                             <select class="form-control"
+                                    ng-class="{ 'is-invalid': !modal.modalSelectedManiple.$valid}"
+                                    name="modalSelectedManiple"
                                     id="modalSelectedManiple"
                                     ng-disabled="century.id"
                                     ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
-                                    ng-model="modalSelectedManiple">
+                                    ng-model="modalSelectedManiple"
+                                    required>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputChangeOverTime">Anz. Studenten</label>
                             <input type="number"
                                    class="form-control"
-                                   ng-class="{ 'is-invalid': !modal.students.$valid}"
-                                   name="students"
+                                   ng-class="{ 'is-invalid': !modal.inputStudents.$valid}"
+                                   name="inputStudents"
                                    ng-model="century.numberOfStudents"
                                    id="inputStudents"
                                    min="1"
                                    max="100"
                                    step="1"
-                                   placeholder="30"/>
+                                   placeholder="30"
+                                   required>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputChangeOverTime">Wechselzeit</label>
@@ -151,7 +161,8 @@
                                        min="15"
                                        max="120"
                                        step="1"
-                                       placeholder="15"/>
+                                       placeholder="15"
+                                       required>
                                 <span class="input-group-addon">Minuten</span>
                             </div>
                         </div>
@@ -161,11 +172,11 @@
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
                         <button type="button" class="btn btn-labeled btn-success" ng-click="updateCentury(century)"
-                                ng-show="century.id" data-dismiss="modal">
+                                ng-disabled="modal.$invalid" ng-show="century.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
                         <button type="button" class="btn btn-labeled btn-success" ng-click="createCentury()"
-                                ng-hide="century.id" data-dismiss="modal">
+                                ng-disabled="modal.$invalid" ng-hide="century.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
                     </div>

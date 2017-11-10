@@ -87,45 +87,53 @@
                             <label for="inputBuilding">Gebäude</label>
                             <input type="text"
                                    ng-disabled="room.id"
+                                   ng-class="{ 'is-invalid': !modal.inputBuilding.$valid}"
+                                   name="inputBuilding"
                                    ng-model="room.building"
                                    class="form-control"
                                    id="inputBuilding"
                                    placeholder="z.B. H"
-                                   maxlength="1">
+                                   maxlength="1"
+                                   required>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputNumber">Nummer</label>
                             <input type="tel"
                                    class="form-control"
                                    ng-disabled="room.id"
-                                   ng-class="{ 'is-invalid': !modal.number.$valid}"
-                                   name="number"
+                                   ng-class="{ 'is-invalid': !modal.inputNumber.$valid}"
+                                   name="inputNumber"
                                    ng-model="room.number"
                                    id="inputNumber"
                                    minlength="3"
                                    step="1"
                                    placeholder="z.B. 001"
-                                   maxlength="3">
+                                   maxlength="3"
+                                   required>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputMaxSeats">Sitzplätze</label>
                             <input type="number"
                                    class="form-control"
-                                   ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
+                                   ng-class="{ 'is-invalid': !modal.maxSeats.$valid}"
                                    name="maxSeats"
                                    ng-model="room.maxSeats"
                                    id="inputMaxSeats"
                                    min="0"
                                    max="500"
                                    step="1"
-                                   placeholder="0"/>
+                                   placeholder="0"
+                                   required>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="modalSelectedRoomtype">Raumtyp</label>
+                            <label for="inputSelectedRoomtype">Raumtyp</label>
                             <select class="form-control"
-                                    id="modalSelectedRoomtype"
+                                    ng-class="{ 'is-invalid': !modal.inputSelectedRoomtype.$valid}"
+                                    name="inputSelectedRoomtype"
+                                    id="inputSelectedRoomtype"
                                     ng-options="key as name for (key,name) in roomTypes()"
-                                    ng-model="room.roomType">
+                                    ng-model="room.roomType"
+                                    required>
                             </select>
                         </div>
                         <div class="form-group col-md-3">
@@ -140,7 +148,8 @@
                                        min="0"
                                        max="120"
                                        step="1"
-                                       placeholder="0"/>
+                                       placeholder="0"
+                                       required="">
                                 <span class="input-group-addon">Minuten</span>
                             </div>
                         </div>
@@ -150,11 +159,11 @@
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
                         <button type="button" class="btn btn-labeled btn-success" ng-click="updateRoom(room)"
-                                ng-show="room.id" data-dismiss="modal">
+                                ng-disabled="modal.$invalid" ng-show="room.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
                         <button type="button" class="btn btn-labeled btn-success" ng-click="createRoom(room)"
-                                ng-hide="room.id" data-dismiss="modal">
+                                ng-disabled="modal.$invalid" ng-hide="room.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
                     </div>
