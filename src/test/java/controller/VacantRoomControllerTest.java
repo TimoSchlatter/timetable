@@ -6,6 +6,7 @@ import de.nordakademie.iaa.controller.VacantRoomController;
 import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.service.EventService;
+import de.nordakademie.iaa.service.GroupService;
 import de.nordakademie.iaa.service.RoomService;
 import org.junit.After;
 import org.junit.Before;
@@ -112,13 +113,18 @@ public class VacantRoomControllerTest {
         }
 
         @Bean
+        public GroupService groupService() {
+            return mock(GroupService.class);
+        }
+
+        @Bean
         public RoomService roomService() {
             return mock(RoomService.class);
         }
 
         @Bean
         public VacantRoomController vacantRoomController() {
-            return new VacantRoomController(eventService(), roomService());
+            return new VacantRoomController(eventService(), groupService(), roomService());
         }
     }
 }
