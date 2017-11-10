@@ -39,6 +39,10 @@ var app = angular.module('roomManagement', ["ngRoute", 'ui.calendar', 'templates
             templateUrl: "view/seminar.html",
             name: "Seminars",
             controller: "SeminarController"
+        }).when("/seminargroups", {
+            templateUrl: "view/seminargroup.html",
+            name: "SeminarGroups",
+            controller: "SeminarGroupController"
         }).otherwise({
         redirectTo: "/"})
     });
