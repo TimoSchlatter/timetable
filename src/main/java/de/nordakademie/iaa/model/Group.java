@@ -25,7 +25,8 @@ import java.io.Serializable;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Cohort.class, name = "cohort"),
         @JsonSubTypes.Type(value = Maniple.class, name = "maniple"),
-        @JsonSubTypes.Type(value = Century.class, name = "century")})
+        @JsonSubTypes.Type(value = Century.class, name = "century"),
+        @JsonSubTypes.Type(value = SeminarGroup.class, name = "seminargroup")})
 public abstract class Group extends HasMinChangeoverTime implements Serializable {
 
     private String name;
