@@ -21,6 +21,8 @@
         </div>
     </div>
 </div>
+
+<!-- CalenderView-->
 <div class="card mb-3">
     <div class="card-header">
         <button class="btn btn-success btn-xs"
@@ -33,26 +35,59 @@
         <i class="fa fa-calendar"></i> Veranstaltungsplanung
     </div>
     <div class="card-body">
-        <div class="form-group col-md-2">
-            <label for="modalSelectedEntity">Entity</label>
-            <select class="form-control"
-                    id="modalSelectedEntity"
-                    ng-switch="modalSelectedEntity"
-                    ng-model="modalSelectedEntity">
-                <option>Raum</option>
-                <option>Dozent</option>
-                <option>Kohorte</option>
-                <option>Manipel</option>
-                <option>Zenturie</option>
-                <option>Seminargruppe</option>
-            </select>
-        </div>
-        <div class="form-group col-md-2">
-            <label for="modalSelectedEntityName">Entity-Name</label>
-            <select class="form-control"
-                    id="modalSelectedEntityName"
-                    ng-Model="modalSelectedEntityName">
-            </select>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="selectableEntities">Filter nach (Typ)</label>
+                <select class="form-control"
+                        id="selectableEntities"
+                        ng-options="selectableEntity for selectableEntity in selectableEntities"
+                        ng-model="selectedEntity"
+                        ng-change="updateAllEvents()">
+                </select>
+            </div>
+            <div class="form-group col-md-6" ng-switch on="selectedEntity">
+                <label>Filtern nach (Wert)</label>
+                <select class="form-control"
+                        ng-switch-default
+                        disabled>
+                </select>
+                <select class="form-control"
+                        ng-switch-when="Dozent"
+                        ng-options="docent.fullName for docent in docents()"
+                        ng-model="$parent.selectedDocent"
+                        ng-change="convertEventsByToCalender(selectedDocent, eventsByDocent);">
+                </select>
+                <select class="form-control"
+                        ng-switch-when="Raum"
+                        ng-options="room.fullName for room in rooms()"
+                        ng-model="$parent.selectedRoom"
+                        ng-change="convertEventsByToCalender(selectedRoom, eventsByRoom);">
+                </select>
+                <select class="form-control"
+                        ng-switch-when="Kohorte"
+                        ng-options="cohort.name for cohort in cohorts()"
+                        ng-model="$parent.selectedCohort"
+                        ng-change="convertEventsByToCalender(selectedCohort, eventsByGroup);">
+                </select>
+                <select class="form-control"
+                        ng-switch-when="Manipel"
+                        ng-options="maniple.name for maniple in maniples()"
+                        ng-model="$parent.selectedManiple"
+                        ng-change="convertEventsByToCalender(selectedManiple, eventsByGroup);">
+                </select>
+                <select class="form-control"
+                        ng-switch-when="Zenturie"
+                        ng-options="century.name for century in centuries()"
+                        ng-model="$parent.selectedCentury"
+                        ng-change="convertEventsByToCalender(selectedCentury, eventsByGroup);">
+                </select>
+                <select class="form-control"
+                        ng-switch-when="Seminargruppe"
+                        ng-options="seminarGroup.name for seminarGroup in seminarGroups()"
+                        ng-model="$parent.selectedSeminarGroup"
+                        ng-change="convertEventsByToCalender(selectedSeminarGroup, eventsByGroup);">
+                </select>
+            </div>
         </div>
         <div ui-calendar="uiConfig.calendar" ng-model="calenderEvents"></div>
     </div>
@@ -65,38 +100,7 @@
         <div class="modal-content card mx-auto mt-5">
             <div class="card-header">{{event.id ? 'Aktualisieren' : 'Hinzufügen'}}</div>
             <div class="card-body">
-                <form name="modal">
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="inputCohort">Kohorte</label>
-                            <select class="form-control"
-                                    id="inputCohort"
-                                    ng-disabled="event.id"
-                                    ng-options="cohort.name for cohort in cohortsAdvanced"
-                                    ng-model="modalSelectedCohort"
-                                    ng-change="changedCohort()">
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputManiple">Manipel</label>
-                            <select class="form-control"
-                                    id="inputManiple"
-                                    ng-disabled="event.id"
-                                    ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
-                                    ng-Model="modalSelectedManiple"
-                                    ng-change="changedManiple()">
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputCentury">Zenturie</label>
-                            <select class="form-control"
-                                    id="inputCentury"
-                                    ng-disabled="event.id"
-                                    ng-options="century.name for century in modalSelectedManiple.centuries"
-                                    ng-Model="modalSelectedCentury">
-                            </select>
-                        </div>
-                    </div>
+                <form name="modal" ng-switch on="modalSubjectType">
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="inputDate">Datum</label>
@@ -146,6 +150,48 @@
                                     id="inputSubject"
                                     ng-options="subject.module.shortTitle for subject in subjects() | filter: modalSubjectType? {subjectType: modalSubjectType} : 'undefined'"
                                     ng-model="modalSubject">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" ng-switch-when="LECTURE|EXAM" ng-switch-when-separator="|">
+                        <div class="form-group col-md-4">
+                            <label for="inputCohort">Kohorte</label>
+                            <select class="form-control"
+                                    id="inputCohort"
+                                    ng-disabled="event.id"
+                                    ng-options="cohort.name for cohort in cohortsAdvanced"
+                                    ng-model="$parent.modalSelectedCohort"
+                                    ng-change="changedCohort()">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputManiple">Manipel</label>
+                            <select class="form-control"
+                                    id="inputManiple"
+                                    ng-disabled="event.id"
+                                    ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
+                                    ng-Model="$parent.modalSelectedManiple"
+                                    ng-change="changedManiple()">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputCentury">Zenturie</label>
+                            <select class="form-control"
+                                    id="inputCentury"
+                                    ng-disabled="event.id"
+                                    ng-options="century.name for century in modalSelectedManiple.centuries"
+                                    ng-Model="$parent.modalSelectedCentury">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" ng-switch-when="SEMINAR">
+                        <div class="form-group col-md-12">
+                            <label for="inputCohort">Seminargruppe</label>
+                            <select class="form-control"
+                                    id="inputSeminarGroup"
+                                    ng-disabled="event.id"
+                                    ng-options="seminarGroup.name for seminarGroup in seminarGroups()"
+                                    ng-model="$parent.modalSelectedSeminarGroup">
                             </select>
                         </div>
                     </div>

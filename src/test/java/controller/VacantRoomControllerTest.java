@@ -2,8 +2,11 @@ package controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.nordakademie.iaa.Application;
 import de.nordakademie.iaa.controller.VacantRoomController;
+import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.model.Event;
+import de.nordakademie.iaa.model.Group;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.GroupService;
@@ -44,6 +47,9 @@ public class VacantRoomControllerTest {
     private EventService eventService;
 
     @Autowired
+    private GroupService groupService;
+
+    @Autowired
     private RoomService roomService;
 
     @Autowired
@@ -51,10 +57,12 @@ public class VacantRoomControllerTest {
 
     private MockMvc mockMvc;
     private final LocalDate date = LocalDate.of(2017, Month.DECEMBER, 17);
-    private final LocalTime startTime = LocalTime.of(9, 15);
-    private final LocalTime endTime = LocalTime.of(11, 30);
+    private final LocalTime startTime = LocalTime.of(9, 15, 0);
+    private final LocalTime endTime = LocalTime.of(11, 30, 0);
     private final int groupSize = 40;
-    private final Room room1 = new Room(15, "A", 35, "001", LECTUREROOM);
+    private final Long groupId = 1L;
+    private final Group group = new Century("I14a", groupSize);
+    private final Room room1 = new Room(15, "A", groupSize, "001", LECTUREROOM);
     private final Room room2 = new Room(15, "A", 35, "002", LECTUREROOM);
     private final Room room3 = new Room(15, "A", 35, "003", LECTUREROOM);
     private final Room room4 = new Room(15, "A", 35, "004", LECTUREROOM);
@@ -74,34 +82,46 @@ public class VacantRoomControllerTest {
     public void testListVacantRooms() throws Exception {
         when(roomService.listRooms()).thenReturn(Arrays.asList(room1, room2, room3, room4, room5, room6));
         when(eventService.findEventsByTime(date, startTime, endTime)).thenReturn(Arrays.asList(event1, event2));
-        MvcResult mvcResult = mockMvc.perform(get("/vacantRooms?date=" + date.toString() + "&startTime=" + startTime.toString() + "&endTime=" + endTime.toString()))
-                .andExpect(status().isOk())
-                .andReturn();
-        verify(eventService, times(1)).findEventsByTime(date, startTime, endTime);
-        verify(roomService, times(1)).listRooms();
-        String jsonResponse = mvcResult.getResponse().getContentAsString();
-        List<Room> roomsResponse = new ObjectMapper().readValue(jsonResponse, new TypeReference<List<Room>>() {});
-        assertEquals(Arrays.asList(room5, room6), roomsResponse);
-    }
-
-    @Test
-    public void testListVacantRoomsWithGroupSize() throws Exception {
-        when(roomService.listRooms()).thenReturn(Arrays.asList(room1, room2, room3, room4, room5, room6));
-        when(eventService.findEventsByTime(date, startTime, endTime)).thenReturn(Arrays.asList(event1, event2));
+        when(groupService.loadGroup(groupId)).thenReturn(group);
         MvcResult mvcResult = mockMvc.perform(get("/vacantRooms?date=" + date.toString() + "&startTime=" +
-                startTime.toString() + "&endTime=" + endTime.toString() + "&groupSize=" + groupSize))
+                startTime.format(Application.TIMEFORMATTER) + "&endTime=" + endTime.format(Application.TIMEFORMATTER) +
+                "&groupId=" + groupId))
                 .andExpect(status().isOk())
                 .andReturn();
-        verify(eventService, times(1)).findEventsByTime(date, startTime, endTime);
+        verify(groupService, times(1)).loadGroup(groupId);
         verify(roomService, times(1)).listRooms();
+        verify(eventService, times(1)).findEventsByTime(date, startTime, endTime);
+        verify(eventService, times(0)).loadEvent(anyLong());
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<Room> roomsResponse = new ObjectMapper().readValue(jsonResponse, new TypeReference<List<Room>>() {});
         assertEquals(Arrays.asList(room6), roomsResponse);
     }
 
+    @Test
+    public void testListVacantRoomsWithEventId() throws Exception {
+        Long eventId = groupId+1;
+        when(roomService.listRooms()).thenReturn(Arrays.asList(room1, room2, room3, room4, room5, room6));
+        when(eventService.findEventsByTime(date, startTime, endTime)).thenReturn(Arrays.asList(event1, event2));
+        when(groupService.loadGroup(groupId)).thenReturn(group);
+        when(eventService.loadEvent(eventId)).thenReturn(event1);
+        MvcResult mvcResult = mockMvc.perform(get("/vacantRooms?date=" + date.toString() + "&startTime=" +
+                startTime.format(Application.TIMEFORMATTER) + "&endTime=" + endTime.format(Application.TIMEFORMATTER) +
+                "&groupId=" + groupId + "&eventId=" + eventId))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(groupService, times(1)).loadGroup(groupId);
+        verify(roomService, times(1)).listRooms();
+        verify(eventService, times(1)).findEventsByTime(date, startTime, endTime);
+        verify(eventService, times(1)).loadEvent(eventId);
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<Room> roomsResponse = new ObjectMapper().readValue(jsonResponse, new TypeReference<List<Room>>() {});
+        assertEquals(Arrays.asList(room1, room6), roomsResponse);
+    }
+
     @After
     public void reset() {
         Mockito.reset(eventService);
+        Mockito.reset(groupService);
         Mockito.reset(roomService);
     }
 

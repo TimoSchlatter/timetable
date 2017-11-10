@@ -58,7 +58,7 @@ public class VacantRoomController {
         if (group != null) {
             List<Room> rooms = new ArrayList<>(roomService.listRooms());
             if (!rooms.isEmpty()) {
-                List<Event> events = eventService.findEventsByTime(date, startTime, endTime);
+                List<Event> events = new ArrayList<>(eventService.findEventsByTime(date, startTime, endTime));
                 if (!events.isEmpty()) {
                     if (eventId != null) {
                         Event event = eventService.loadEvent(eventId);
