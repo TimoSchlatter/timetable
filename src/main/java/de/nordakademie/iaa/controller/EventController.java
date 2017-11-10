@@ -66,7 +66,7 @@ public class EventController {
                                     @RequestParam(value = "repeatWeeks", required = false) Integer repeatWeeks,
                                     @RequestParam(value = "ignoreCollisions", required = false)
                                                 Boolean ignoreCollisions) {
-        repeatWeeks = (repeatWeeks == null ? 1 : repeatWeeks);
+        repeatWeeks = (repeatWeeks == null  || repeatWeeks > 10 ? 1 : repeatWeeks);
         ignoreCollisions = (ignoreCollisions == null ? false : ignoreCollisions);
         LocalDate startDate = event.getDate();
         List<String> collisions = new ArrayList<>();
