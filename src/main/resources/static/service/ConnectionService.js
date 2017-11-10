@@ -229,10 +229,10 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             createData(docentsUrl, angular.toJson(docent), getDocents);
         },
         updateDocent: function (docent) {
-            updateData(docentsUrl + docent.id, angular.toJson(docent), getDocents);
+            updateData(docentsUrl + docent.id, angular.toJson(docent), updateAllDataModels);
         },
         deleteDocent: function (docent) {
-            deleteData(docentsUrl, docent.id, getDocents);
+            deleteData(docentsUrl, docent.id, updateAllDataModels);
         },
         getDocents: function () {
             return docents;
@@ -241,10 +241,10 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             createData(roomsUrl, angular.toJson(room), getRooms);
         },
         updateRoom: function (room) {
-            updateData(roomsUrl + room.id, angular.toJson(room), getRooms);
+            updateData(roomsUrl + room.id, angular.toJson(room), updateAllDataModels);
         },
         deleteRoom: function (room) {
-            deleteData(roomsUrl, room.id, getRooms);
+            deleteData(roomsUrl, room.id, updateAllDataModels);
         },
         getRooms: function () {
             return rooms;
@@ -254,10 +254,10 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             createData(maniplesUrl + manipleId + '/addCentury', angular.toJson(century), getCohorts);
         },
         updateCentury: function (century) {
-            updateData(centuriesUrl + century.id, angular.toJson(century), getCohorts);
+            updateData(centuriesUrl + century.id, angular.toJson(century), updateAllDataModels);
         },
         deleteCentury: function (manipleId, century) {
-            deleteData(maniplesUrl + manipleId + '/deleteCentury/', century.id, getCohorts);
+            deleteData(maniplesUrl + manipleId + '/deleteCentury/', century.id, updateAllDataModels);
         },
         getCenturies: function () {
             return centuries;
@@ -267,10 +267,10 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             createData(cohortsUrl + cohortId + '/addManiple', angular.toJson(maniple), getCohorts);
         },
         updateManiple: function (maniple) {
-            updateData(maniplesUrl + maniple.id, angular.toJson(maniple), getCohorts);
+            updateData(maniplesUrl + maniple.id, angular.toJson(maniple), updateAllDataModels);
         },
         deleteManiple: function (cohortId, maniple) {
-            deleteData(cohortsUrl + cohortId + '/deleteManiple/', maniple.id, getCohorts);
+            deleteData(cohortsUrl + cohortId + '/deleteManiple/', maniple.id, updateAllDataModels);
         },
         getManiples: function () {
             return maniples;
@@ -280,10 +280,10 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             createData(cohortsUrl, angular.toJson(cohort), getCohorts);
         },
         updateCohort: function (cohort) {
-            updateData(cohortsUrl + cohort.id, angular.toJson(cohort), getCohorts);
+            updateData(cohortsUrl + cohort.id, angular.toJson(cohort), updateAllDataModels);
         },
         deleteCohort: function (cohort) {
-            deleteData(cohortsUrl, cohort.id, getCohorts);
+            deleteData(cohortsUrl, cohort.id, updateAllDataModels);
         },
         getCohorts: function () {
             return cohorts;
@@ -293,10 +293,10 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             createData(coursesUrl, angular.toJson(course), getCourses);
         },
         updateCourse: function (course) {
-            updateData(coursesUrl + course.id, angular.toJson(course), getCourses);
+            updateData(coursesUrl + course.id, angular.toJson(course), updateAllDataModels);
         },
         deleteCourse: function (course) {
-            deleteData(coursesUrl, course.id, getCourses);
+            deleteData(coursesUrl, course.id, updateAllDataModels);
         },
         getCourses: function () {
             return courses;
@@ -306,10 +306,10 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             createData(seminarsUrl, angular.toJson(seminar), getSeminars);
         },
         updateSeminar: function (seminar) {
-            updateData(seminarsUrl + seminar.id, angular.toJson(seminar), getSeminars);
+            updateData(seminarsUrl + seminar.id, angular.toJson(seminar), updateAllDataModels);
         },
         deleteSeminar: function (seminar) {
-            deleteData(seminarsUrl, seminar.id, getSeminars);
+            deleteData(seminarsUrl, seminar.id, updateAllDataModels);
         },
         getSeminars: function () {
             return seminars;
@@ -319,10 +319,10 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             createData(seminarGroupsUrl, angular.toJson(seminarGroup), getSeminarGroups);
         },
         updateSeminarGroup: function (seminarGroup) {
-            updateData(seminarGroupsUrl + seminarGroup.id, angular.toJson(seminarGroup), getSeminarGroups);
+            updateData(seminarGroupsUrl + seminarGroup.id, angular.toJson(seminarGroup), updateAllDataModels);
         },
         deleteSeminarGroup: function (seminarGroup) {
-            deleteData(seminarGroupsUrl, seminarGroup.id, getSeminarGroups);
+            deleteData(seminarGroupsUrl, seminarGroup.id, updateAllDataModels);
         },
         getSeminarGroups: function () {
             return seminarGroups;
@@ -331,10 +331,10 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             createData(subjectsUrl, angular.toJson(subject), getSubjects);
         },
         updateSubject: function (subject) {
-            updateData(subjectsUrl + subject.id, angular.toJson(subject), getSubjects);
+            updateData(subjectsUrl + subject.id, angular.toJson(subject), updateAllDataModels);
         },
         deleteSubject: function (subject) {
-            deleteData(subjectsUrl, subject.id, getSubjects);
+            deleteData(subjectsUrl, subject.id, updateAllDataModels);
         },
         getSubjects: function () {
             return subjects;
