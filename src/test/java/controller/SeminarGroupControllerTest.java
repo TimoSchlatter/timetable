@@ -67,7 +67,7 @@ public class SeminarGroupControllerTest {
         JacksonTester.initFields(this, objectMapper);
         List<SeminarGroup> seminarGroups = new ArrayList<>(Arrays.asList(seminarGroup));
         when(seminarGroupService.listSeminarGroups()).thenReturn(seminarGroups);
-        MvcResult mvcResult = mockMvc.perform(get("/seminarGroups"))
+        MvcResult mvcResult = mockMvc.perform(get("/seminargroups"))
                 .andExpect(status().isOk())
                 .andReturn();
         verify(seminarGroupService, times(1)).listSeminarGroups();
@@ -80,7 +80,7 @@ public class SeminarGroupControllerTest {
     @Test
     public void testSaveSeminarGroup() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
-        String url = "/seminarGroups";
+        String url = "/seminargroups";
         // SeminarGroup already existing
         when(seminarGroupService.findByName(seminarGroup.getName())).thenReturn(seminarGroup);
         mockMvc.perform(post(url).content(jacksonTester.write(seminarGroup).getJson())
@@ -109,7 +109,7 @@ public class SeminarGroupControllerTest {
 
     @Test
     public void testUpdateSeminarGroup() throws Exception {
-        final String url = "/seminarGroups/" + seminarGroupId;
+        final String url = "/seminargroups/" + seminarGroupId;
         JacksonTester.initFields(this, new ObjectMapper());
         // SeminarGroup not existing
         when(seminarGroupService.loadSeminarGroup(seminarGroupId)).thenReturn(null);
@@ -137,7 +137,7 @@ public class SeminarGroupControllerTest {
     @Test
     public void testDeleteSeminarGroup() throws Exception {
         InOrder inOrder = inOrder(seminarGroupService, eventService);
-        final String url = "/seminarGroups/" + seminarGroupId;
+        final String url = "/seminargroups/" + seminarGroupId;
 
         // SeminarGroup not existing
         when(seminarGroupService.loadSeminarGroup(anyLong())).thenReturn(null);

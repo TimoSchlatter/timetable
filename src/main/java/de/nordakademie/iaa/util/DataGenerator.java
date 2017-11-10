@@ -235,6 +235,14 @@ public class DataGenerator {
             assert subject != null;
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
+        date = LocalDate.of(2017, Month.NOVEMBER, 2);
+        group = seminarGroupService.findByName("Max. 25 Studenten");
+        startTime = LocalTime.of(17, 15);
+        endTime = LocalTime.of(20, 30);
+        subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR,
+                seminarService.findByTitle("Große Dokumente in Word"));
+        saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
+
         startTime = LocalTime.of(20, 15);
         endTime = LocalTime.of(22, 30);
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR,
@@ -244,7 +252,7 @@ public class DataGenerator {
         date = LocalDate.of(2017, Month.NOVEMBER, 1);
         rooms = new HashSet<>(Arrays.asList(roomService.findByBuildingAndNumber("H", "001")));
         docents = new HashSet<>(Arrays.asList(docentService.findByForenameAndSurname("Michael", "Bregulla")));
-        group = manipleService.findByName("I14");
+        group = seminarGroupService.findByName("Max. 20 Studenten");
         startTime = LocalTime.of(20, 15);
         endTime = LocalTime.of(22, 30);
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR,
@@ -253,14 +261,6 @@ public class DataGenerator {
 
         startTime = LocalTime.of(13, 15);
         endTime = LocalTime.of(16, 30);
-        subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR,
-                seminarService.findByTitle("Große Dokumente in Word"));
-        saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
-
-        date = LocalDate.of(2017, Month.NOVEMBER, 2);
-        group = cohortService.findByName("14");
-        startTime = LocalTime.of(17, 15);
-        endTime = LocalTime.of(20, 30);
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR,
                 seminarService.findByTitle("Große Dokumente in Word"));
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
