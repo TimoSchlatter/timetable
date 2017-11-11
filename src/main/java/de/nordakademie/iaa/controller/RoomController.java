@@ -110,5 +110,4 @@ public class RoomController {
         }
         return ResponseEntity.badRequest().build();
     }
-
 }

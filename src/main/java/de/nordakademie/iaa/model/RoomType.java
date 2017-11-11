@@ -1,7 +1,7 @@
 package de.nordakademie.iaa.model;
 
 /**
- * Room type enum.
+ * Room type enumeration.
  *
  * @author Arvid Ottenberg
  */

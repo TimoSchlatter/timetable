@@ -52,9 +52,20 @@ public abstract class Group extends HasMinChangeoverTime implements Serializable
         this.name = name;
     }
 
+    /**
+     * Determines the number of students belonging to the group.
+     *
+     * @return the number of students in the group.
+     */
     public abstract int calculateNumberOfStudents();
 
-    public boolean hasSubGroup(Group group) {
+    /**
+     * Determines if a given group is included in the group's set of subgroups.
+     *
+     * @param subGroup the group for which the affiliation should be determined.
+     * @return <tt>true</tt> if the subGroup is contained in the group's list of subgroups.
+     */
+    public boolean hasSubGroup(Group subGroup) {
         return false;
     }
 

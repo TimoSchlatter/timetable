@@ -4,7 +4,7 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 
 /**
- * Century entity.
+ * Seminar group entity.
  *
  * @author Arvid Ottenberg
  */

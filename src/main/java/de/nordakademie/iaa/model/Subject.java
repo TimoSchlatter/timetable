@@ -1,7 +1,7 @@
 package de.nordakademie.iaa.model;
 
 /**
- * Century entity.
+ * Subject entity.
  *
  * @author Arvid Ottenberg
  */

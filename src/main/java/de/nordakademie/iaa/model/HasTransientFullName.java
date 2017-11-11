@@ -7,33 +7,29 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 /**
- * Abstract superclass for all entities containing a @Transient fullName.
+ * Abstract superclass for all entities containing a <tt>@Transient</tt> fullName.
  *
  * @author Arvid Ottenberg
  */
 @MappedSuperclass
 abstract class HasTransientFullName extends HasMinChangeoverTime {
 
-	@JsonIgnore
-	@Transient
-	private String fullName;
+    @Transient
+    @JsonIgnore
+    private String fullName;
 
-	HasTransientFullName() {}
+    HasTransientFullName() {
+    }
 
-	HasTransientFullName(String fullName) {
-		this.fullName = fullName;
-	}
+    HasTransientFullName(int minChangeoverTime) {
+        super(minChangeoverTime);
+    }
 
-	HasTransientFullName(int minChangeoverTime) {
-		super(minChangeoverTime);
-	}
+    @JsonProperty(value = "fullName")
+    public abstract String getFullName();
 
-	@JsonProperty(value = "fullName")
-	public abstract String getFullName();
-
-	@JsonIgnore
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
+    @JsonIgnore
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 }

@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.OptionalInt;
 import java.util.Set;
 
 /**
@@ -111,66 +112,44 @@ public class Event extends HasId implements Serializable {
         this.subject = subject;
     }
 
+    /**
+     * Removes a given room from the event's set of rooms.
+     *
+     * @param room the room to remove.
+     * @return <tt>true</tt> if the rooms set contained the specified room.
+     */
     public boolean removeRoom(Room room) {
         return rooms.remove(room);
     }
 
+    /**
+     * Removes a given docent from the event's set of docents.
+     *
+     * @param docent the docent to remove.
+     * @return <tt>true</tt> if the docents set contained the specified docent.
+     */
     public boolean removeDocent(Docent docent) {
         return docents.remove(docent);
     }
 
     /**
-     * Calculates the maximum minChangeoverTime of all entities belonging to the event.
-     * @return event's minChangeoverTime.
+     * Calculates the maximum minChangeoverTime of all entities having a changeover time belonging to the event.
+     *
+     * @return minChangeoverTime for the event.
      */
     public int calculateMinChangeoverTime() {
-        int maxCoT = group.getMinChangeoverTime();
-        Docent docent = findDocentWithMaxChangeoverTime();
-        Room room = findRoomWithMaxChangeoverTime();
-        if (docent.getMinChangeoverTime() > maxCoT) {
-            maxCoT = docent.getMinChangeoverTime();
-        } else if (room.getMinChangeoverTime() > maxCoT) {
-            maxCoT = room.getMinChangeoverTime();
+        int maxMinChangeoverTime = group.getMinChangeoverTime();
+        OptionalInt optionalDocentMax = docents.stream().mapToInt(Docent::getMinChangeoverTime).max();
+        if (optionalDocentMax.isPresent()) {
+            int docentMax = optionalDocentMax.getAsInt();
+            maxMinChangeoverTime = (docentMax > maxMinChangeoverTime ? docentMax : maxMinChangeoverTime);
         }
-        return maxCoT;
-    }
-
-    private Docent findDocentWithMaxChangeoverTime() {
-        Docent maxDocent = null;
-        for (Docent docent : docents) {
-            if (maxDocent == null) {
-                maxDocent = docent;
-            } else if (docent.getMinChangeoverTime() > maxDocent.getMinChangeoverTime()) {
-                maxDocent = docent;
-            }
+        OptionalInt optionalRoomMax = rooms.stream().mapToInt(Room::getMinChangeoverTime).max();
+        if (optionalRoomMax.isPresent()) {
+            int roomMax = optionalRoomMax.getAsInt();
+            maxMinChangeoverTime = (roomMax > maxMinChangeoverTime ? roomMax : maxMinChangeoverTime);
         }
-        return maxDocent;
-    }
-
-    private Room findRoomWithMaxChangeoverTime() {
-        Room maxRoom = null;
-        for (Room room : rooms) {
-            if (maxRoom == null) {
-                maxRoom = room;
-            } else if (room.getMinChangeoverTime() > maxRoom.getMinChangeoverTime()) {
-                maxRoom = room;
-            }
-        }
-        return maxRoom;
-    }
-
-    private String printRooms() {
-        if (rooms.size() == 1) {
-            return rooms.toArray()[0].toString();
-        }
-        return rooms.toString();
-    }
-
-    private String printDocents() {
-        if (docents.size() == 1) {
-            return docents.toArray()[0].toString();
-        }
-        return docents.toString();
+        return maxMinChangeoverTime;
     }
 
     @Override
@@ -198,5 +177,19 @@ public class Event extends HasId implements Serializable {
         result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
         result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
         return result;
+    }
+
+    private String printRooms() {
+        if (rooms.size() == 1) {
+            return rooms.toArray()[0].toString();
+        }
+        return rooms.toString();
+    }
+
+    private String printDocents() {
+        if (docents.size() == 1) {
+            return docents.toArray()[0].toString();
+        }
+        return docents.toString();
     }
 }

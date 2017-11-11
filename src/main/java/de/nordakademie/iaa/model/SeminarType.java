@@ -1,7 +1,7 @@
 package de.nordakademie.iaa.model;
 
 /**
- * Century entity.
+ * Seminar type enumeration.
  *
  * @author Arvid Ottenberg
  */

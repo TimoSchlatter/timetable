@@ -58,8 +58,8 @@ public class Cohort extends Group {
     }
 
     @Override
-    public boolean hasSubGroup(Group group) {
-        return maniples.contains(group) || maniples.stream().anyMatch(maniple -> maniple.hasSubGroup(group));
+    public boolean hasSubGroup(Group subGroup) {
+        return maniples.contains(subGroup) || maniples.stream().anyMatch(maniple -> maniple.hasSubGroup(subGroup));
     }
 
     @Override

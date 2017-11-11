@@ -96,5 +96,4 @@ public class SeminarController {
         }
         return ResponseEntity.badRequest().build();
     }
-
 }

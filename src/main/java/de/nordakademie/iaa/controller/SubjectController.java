@@ -96,5 +96,4 @@ public class SubjectController {
         }
         return ResponseEntity.badRequest().build();
     }
-
 }

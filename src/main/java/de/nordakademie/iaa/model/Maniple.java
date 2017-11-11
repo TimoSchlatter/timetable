@@ -16,50 +16,51 @@ public class Maniple extends Group {
 
     private List<Century> centuries = new ArrayList<>();
 
-	public Maniple() {}
-
-	public Maniple(String name) {
-		super(name);
-	}
-
-	public Maniple(String name, int minChangeoverTime) {
-		super(name, minChangeoverTime);
-	}
-
-	public Maniple(String name, int minChangeoverTime, List<Century> centuries) {
-		super(name, minChangeoverTime);
-		this.centuries = centuries;
+    public Maniple() {
     }
 
-	@OneToMany(cascade = CascadeType.ALL)
-	public List<Century> getCenturies() {
-		return centuries;
-	}
+    public Maniple(String name) {
+        super(name);
+    }
 
-	public void setCenturies(List<Century> centuries) {
-		this.centuries = centuries;
-	}
+    public Maniple(String name, int minChangeoverTime) {
+        super(name, minChangeoverTime);
+    }
 
-	public void addCentury(Century century) {
-		centuries.add(century);
-	}
+    public Maniple(String name, int minChangeoverTime, List<Century> centuries) {
+        super(name, minChangeoverTime);
+        this.centuries = centuries;
+    }
 
-	public void removeCentury(Century century) {
-		centuries.remove(century);
-	}
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<Century> getCenturies() {
+        return centuries;
+    }
 
-	@Override
-	public int calculateNumberOfStudents() {
-		return !centuries.isEmpty() ? centuries.stream().mapToInt(Century::getNumberOfStudents).sum() : 0;
-	}
+    public void setCenturies(List<Century> centuries) {
+        this.centuries = centuries;
+    }
 
-	@Override
-	public boolean hasSubGroup(Group group) {
-		return centuries.contains(group);
-	}
+    public void addCentury(Century century) {
+        centuries.add(century);
+    }
 
-	@Override
-	public String toString() {
-		return "Manipel" + super.toString();
-	}
+    public void removeCentury(Century century) {
+        centuries.remove(century);
+    }
+
+    @Override
+    public int calculateNumberOfStudents() {
+        return !centuries.isEmpty() ? centuries.stream().mapToInt(Century::getNumberOfStudents).sum() : 0;
+    }
+
+    @Override
+    public boolean hasSubGroup(Group subGroup) {
+        return centuries.contains(subGroup);
+    }
+
+    @Override
+    public String toString() {
+        return "Manipel" + super.toString();
+    }
 }

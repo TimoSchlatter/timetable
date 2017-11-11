@@ -6,7 +6,7 @@ import javax.persistence.Enumerated;
 import java.io.Serializable;
 
 /**
- * Century entity.
+ * Seminar entity.
  *
  * @author Arvid Ottenberg
  */
