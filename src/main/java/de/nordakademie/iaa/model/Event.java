@@ -160,26 +160,24 @@ public class Event extends HasId implements Serializable {
     }
 
     private String printRooms() {
-        String rooms = "";
-        for (Room room : this.rooms) {
-            rooms += room.toString() + ", ";
+        if (rooms.size() == 1) {
+            return rooms.toArray()[0].toString();
         }
-        return rooms.substring(0, rooms.length()-3);
+        return rooms.toString();
     }
 
     private String printDocents() {
-        String docents = "";
-        for (Docent docent : this.docents) {
-            docents += docent.toString() + ", ";
+        if (docents.size() == 1) {
+            return docents.toArray()[0].toString();
         }
-        return docents.substring(0, docents.length()-3);
+        return docents.toString();
     }
 
     @Override
     public String toString() {
         return "Veranstaltung " + subject.toString() + " am " + date.format(dateFormatter) + " von " +
                 startTime.format(timeFormatter) + "-" + endTime.format(timeFormatter) + " für " + group.toString() +
-                " in " + rooms.toString() + " von " + printDocents() + " " + printRooms();
+                " in " + printRooms() + " von " + printDocents();
     }
 
     @Override

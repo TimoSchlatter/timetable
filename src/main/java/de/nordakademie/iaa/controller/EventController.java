@@ -65,17 +65,20 @@ public class EventController {
     public ResponseEntity saveEvent(@RequestBody Event event,
                                     @RequestParam(value = "repeatWeeks", required = false) Integer repeatWeeks,
                                     @RequestParam(value = "ignoreCollisions", required = false)
-                                                Boolean ignoreCollisions) {
-        repeatWeeks = (repeatWeeks == null  || repeatWeeks > 10 ? 1 : repeatWeeks);
+                                            Boolean ignoreCollisions) {
+        repeatWeeks = (repeatWeeks == null || repeatWeeks > 10 ? 1 : repeatWeeks);
         ignoreCollisions = (ignoreCollisions == null ? false : ignoreCollisions);
-        LocalDate startDate = event.getDate();
         List<String> collisions = new ArrayList<>();
         List<Event> eventsToSave = new ArrayList<>();
+        LocalDate startDate = event.getDate();
+        // Create event series
         for (int i = 0; i < repeatWeeks; i++) {
             event.setDate(startDate.plusDays(i * 7));
             eventsToSave.add(event);
         }
+        // Check collisions for each event
         eventsToSave.forEach(eventToSave -> collisions.addAll(eventService.findCollisions(eventToSave)));
+        // Save events if no collisions were detected or collisions should be ignored
         if (collisions.isEmpty() || ignoreCollisions) {
             int created = 0;
             for (Event eventToSave : eventsToSave) {
@@ -85,9 +88,8 @@ public class EventController {
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
             return ResponseEntity.badRequest().build();
-        } else {
-            return ResponseEntity.ok(collisions);
         }
+        return ResponseEntity.ok(collisions);
     }
 
     /**
@@ -101,7 +103,7 @@ public class EventController {
     public ResponseEntity updateEvent(@PathVariable Long id,
                                       @RequestBody Event event,
                                       @RequestParam(value = "ignoreCollisions", required = false)
-                                                  Boolean ignoreCollisions) {
+                                              Boolean ignoreCollisions) {
         ignoreCollisions = (ignoreCollisions == null ? false : ignoreCollisions);
         Event oldEvent = eventService.loadEvent(id);
         if (oldEvent != null) {

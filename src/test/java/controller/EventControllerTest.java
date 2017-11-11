@@ -15,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
@@ -99,37 +100,67 @@ public class EventControllerTest {
 
     @Test
     public void testSaveEvent() throws Exception {
+        InOrder inOrder = inOrder(eventService);
+        List<String> collisions = Arrays.asList("Test1", "Test2");
         String url = "/events";
         // Event already existing
-        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group)).thenReturn(event);
-        mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-        verify(eventService, times(0)).saveEvent(event);
-        // Event not yet existing & no collisions
-        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group)).thenReturn(null);
-        when(eventService.findCollisions(event)).thenReturn(new ArrayList<>());
-        mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.CREATED.value()));
-        verify(eventService, times(1)).findCollisions(event);
-        verify(eventService, times(1)).saveEvent(event);
-        // Event existing & collisions
-        List<String> collisions = Arrays.asList("Test1", "Test2");
+        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group))
+                .thenReturn(event);
         when(eventService.findCollisions(event)).thenReturn(collisions);
-        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group)).thenReturn(null);
         MvcResult mvcResult = mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
-        verify(eventService, times(1)).findCollisions(event);
-        verify(eventService, times(0)).saveEvent(event);
+        inOrder.verify(eventService, times(1)).findCollisions(event);
+        inOrder.verify(eventService, times(0)).saveEvent(any());
+        inOrder.verify(eventService, times(0)).findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any());
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<String> collisionsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<String>>() {});
         assertEquals(collisions, collisionsResponse);
+
+        // Event not yet existing & collisions
+        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group))
+                .thenReturn(null);
+        when(eventService.findCollisions(event)).thenReturn(collisions);
+        mvcResult = mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        inOrder.verify(eventService, times(1)).findCollisions(event);
+        inOrder.verify(eventService, times(0)).findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group);
+        inOrder.verify(eventService, times(0)).saveEvent(event);
+        jsonResponse = mvcResult.getResponse().getContentAsString();
+        collisionsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<String>>() {});
+        assertEquals(collisions, collisionsResponse);
+
+        // Event not yet existing & collisions & ignoreCollisions
+        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group))
+                .thenReturn(null);
+        when(eventService.findCollisions(event)).thenReturn(collisions);
+        mockMvc.perform(post(url + "?ignoreCollisions=true").content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+        inOrder.verify(eventService, times(1)).findCollisions(event);
+        inOrder.verify(eventService, times(1))
+                .findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group);
+        inOrder.verify(eventService, times(1)).saveEvent(event);
+
+        // Event not yet existing & no collisions
+        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group))
+                .thenReturn(null);
+        when(eventService.findCollisions(event)).thenReturn(new ArrayList<>());
+        mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.CREATED.value()));
+        inOrder.verify(eventService, times(1)).findCollisions(event);
+        inOrder.verify(eventService, times(1)).findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group);
+        inOrder.verify(eventService, times(1)).saveEvent(event);
+
         // Event not yet existing & no collisions & saving failed
         doThrow(new RoomTooSmallForGroupException()).when(eventService).saveEvent(any());
         when(eventService.findCollisions(event)).thenReturn(new ArrayList<>());
@@ -137,34 +168,98 @@ public class EventControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(eventService, times(2)).saveEvent(event);
+        inOrder.verify(eventService, times(1)).saveEvent(event);
     }
 
     @Test
-    public void testSaveEventSeries() throws Exception {
-        int repeatWeeks = 10;
-        String url = "/events?repeatWeeks=" + repeatWeeks;
+    public void testSaveAlreadyExistingEventSeries() throws Exception {
         // Events already existing
+        int repeatWeeks = 10;
+        List<String> collisions = Arrays.asList("Test1", "Test2");
+        String url = "/events?repeatWeeks=" + repeatWeeks;
+        when(eventService.findCollisions(any())).thenReturn(collisions);
         when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any())).thenReturn(event);
-        mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
+        MvcResult mvcResult = mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(eventService, times(repeatWeeks)).findCollisions(any(Event.class));
+        verify(eventService, times(0)).saveEvent(event);
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<String> collisionsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<String>>() {});
+        assertEquals(collisions.size() * repeatWeeks, collisionsResponse.size());
+        // Ignore collisions
+        mockMvc.perform(post(url + "&ignoreCollisions=true").content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(eventService, times(0)).saveEvent(event);
-        // Events not yet existing
+    }
+
+    @Test
+    public void testSaveNonExistingEventSeriesWithCollisions() throws Exception {
+        // Events not yet existing & collisions
+        int repeatWeeks = 10;
+        List<String> collisions = Arrays.asList("Test1", "Test2");
+        String url = "/events?repeatWeeks=" + repeatWeeks;
+        when(eventService.findCollisions(any())).thenReturn(collisions);
         when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any())).thenReturn(null);
+        MvcResult mvcResult = mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(eventService, times(repeatWeeks)).findCollisions(any(Event.class));
+        verify(eventService, times(0)).findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any());
+        verify(eventService, times(0)).saveEvent(any());
+        String jsonResponse = mvcResult.getResponse().getContentAsString();
+        List<String> collisionsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<String>>() {});
+        assertEquals(collisions.size() * repeatWeeks, collisionsResponse.size());
+
+        // Ignore collisions
+        mockMvc.perform(post(url + "&ignoreCollisions=true").content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+        verify(eventService, times(2* repeatWeeks)).findCollisions(any(Event.class));
+        verify(eventService, times(repeatWeeks))
+                .findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any());
+        verify(eventService, times(repeatWeeks)).saveEvent(any(Event.class));
+    }
+
+    @Test
+    public void testSaveNonExistingEventSeriesWithoutCollisions() throws Exception {
+        // Events not yet existing & no collisions
+        int repeatWeeks = 10;
+        String url = "/events?repeatWeeks=" + repeatWeeks;
+        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any())).thenReturn(null);
+        when(eventService.findCollisions(any())).thenReturn(new ArrayList<>());
         mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
-        verify(eventService, times(repeatWeeks)).saveEvent(isA(Event.class));
-        // Events not yet existing & saving failed
-        doThrow(new RuntimeException()).when(eventService).saveEvent(any());
+        verify(eventService, times(repeatWeeks))
+                .findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any());
+        verify(eventService, times(repeatWeeks)).saveEvent(any(Event.class));
+    }
+
+    @Test
+    public void testSavingFailedForNonExistingEventSeriesWithoutCollisions() throws Exception {
+        // Events not yet existing & no collisions & saving failed
+        int repeatWeeks = 10;
+        String url = "/events?repeatWeeks=" + repeatWeeks;
+        when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any())).thenReturn(null);
+        when(eventService.findCollisions(any())).thenReturn(new ArrayList<>());
+        doThrow(new RoomTooSmallForGroupException()).when(eventService).saveEvent(any());
         mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(eventService, times(2 * repeatWeeks)).saveEvent(isA(Event.class));
+        verify(eventService, times(repeatWeeks))
+                .findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any());
+        verify(eventService, times(repeatWeeks)).saveEvent(any(Event.class));
     }
 
     @Test
