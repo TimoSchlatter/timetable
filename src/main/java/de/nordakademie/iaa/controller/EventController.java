@@ -83,7 +83,10 @@ public class EventController {
         if (collisions.isEmpty() || ignoreCollisions) {
             int created = 0;
             for (Event eventToSave : eventsToSave) {
-                created = (saveEvent(eventToSave) ? created + 1 : created);
+                if (eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(event.getDate(),
+                        event.getStartTime(), event.getEndTime(), event.getGroup()) == null) {
+                    created = (saveEvent(eventToSave) ? created + 1 : created);
+                }
             }
             if (created > 0) {
                 return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -105,9 +108,9 @@ public class EventController {
                                       @RequestBody Event event,
                                       @RequestParam(value = "ignoreCollisions", required = false)
                                               Boolean ignoreCollisions) {
-        ignoreCollisions = (ignoreCollisions == null ? false : ignoreCollisions);
         Event oldEvent = eventService.loadEvent(id);
         if (oldEvent != null) {
+            ignoreCollisions = (ignoreCollisions == null ? false : ignoreCollisions);
             List<String> collisions = eventService.findCollisions(event, oldEvent);
             if (collisions.isEmpty() || ignoreCollisions) {
                 if (saveEvent(event)) {
@@ -178,11 +181,8 @@ public class EventController {
 
     private boolean saveEvent(Event event) {
         try {
-            if (eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(event.getDate(),
-                    event.getStartTime(), event.getEndTime(), event.getGroup()) == null) {
-                eventService.saveEvent(event);
-                return true;
-            }
+            eventService.saveEvent(event);
+            return true;
         } catch (RoomTooSmallForGroupException | StartTimeAfterEndTimeException ignored) {
         }
         return false;

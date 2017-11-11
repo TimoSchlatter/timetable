@@ -264,6 +264,7 @@ public class EventControllerTest {
 
     @Test
     public void testUpdateEvent() throws Exception {
+        InOrder inOrder = inOrder(eventService);
         final String url = "/events/" + eventId;
         // Event not existing
         when(eventService.loadEvent(eventId)).thenReturn(null);
@@ -271,18 +272,23 @@ public class EventControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(eventService, times(0)).saveEvent(event);
+        inOrder.verify(eventService, times(0)).findCollisions(event);
+        inOrder.verify(eventService, times(0)).saveEvent(event);
+
         // Event existing & no collisions
         when(eventService.loadEvent(eventId)).thenReturn(event);
-        when(eventService.findCollisions(event)).thenReturn(new ArrayList<>());
+        when(eventService.findCollisions(event, event)).thenReturn(new ArrayList<>());
         mockMvc.perform(put(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
-        verify(eventService, times(1)).saveEvent(isA(Event.class));
+        inOrder.verify(eventService, times(1)).findCollisions(event, event);
+        inOrder.verify(eventService, times(1)).saveEvent(any(Event.class));
+
         // Event existing & collisions
+        when(eventService.loadEvent(eventId)).thenReturn(event);
         List<String> collisions = Arrays.asList("Test1", "Test2");
-        when(eventService.findCollisions(event)).thenReturn(collisions);
+        when(eventService.findCollisions(event, event)).thenReturn(collisions);
         MvcResult mvcResult = mockMvc.perform(put(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -291,15 +297,29 @@ public class EventControllerTest {
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         List<String> collisionsResponse = objectMapper.readValue(jsonResponse, new TypeReference<List<String>>() {});
         assertEquals(collisions, collisionsResponse);
-        verify(eventService, times(1)).saveEvent(isA(Event.class));
+        inOrder.verify(eventService, times(1)).findCollisions(event, event);
+        inOrder.verify(eventService, times(0)).saveEvent(any(Event.class));
+
+        // Event existing & collisions & ignoreCollisions
+        when(eventService.loadEvent(eventId)).thenReturn(event);
+        when(eventService.findCollisions(event, event)).thenReturn(collisions);
+        mockMvc.perform(put(url + "?ignoreCollisions=true").content(jacksonTester.write(event).getJson())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+        inOrder.verify(eventService, times(1)).findCollisions(event, event);
+        inOrder.verify(eventService, times(1)).saveEvent(any(Event.class));
+
         // Event existing & no collisions & updating failed
+        when(eventService.loadEvent(eventId)).thenReturn(event);
         doThrow(new RoomTooSmallForGroupException()).when(eventService).saveEvent(any());
-        when(eventService.findCollisions(event)).thenReturn(new ArrayList<>());
+        when(eventService.findCollisions(event, event)).thenReturn(new ArrayList<>());
         mockMvc.perform(put(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-        verify(eventService, times(2)).saveEvent(event);
+        inOrder.verify(eventService, times(1)).findCollisions(event, event);
+        inOrder.verify(eventService, times(1)).saveEvent(event);
     }
 
     @Test
