@@ -9,6 +9,7 @@ import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.GroupService;
 import de.nordakademie.iaa.service.RoomService;
 import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
+import de.nordakademie.iaa.service.exception.StartTimeAfterEndTimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -182,7 +183,7 @@ public class EventController {
                 eventService.saveEvent(event);
                 return true;
             }
-        } catch (RoomTooSmallForGroupException ignored) {
+        } catch (RoomTooSmallForGroupException | StartTimeAfterEndTimeException ignored) {
         }
         return false;
     }

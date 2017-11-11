@@ -2,6 +2,7 @@ package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
+import de.nordakademie.iaa.service.exception.StartTimeAfterEndTimeException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,7 +16,7 @@ public interface EventService {
      *
      * @param event the event to be saved.
      */
-    void saveEvent(Event event) throws RoomTooSmallForGroupException;
+    void saveEvent(Event event) throws RoomTooSmallForGroupException, StartTimeAfterEndTimeException;
 
     /**
      * List all events currently stored in the database.

@@ -6,6 +6,7 @@ import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.EventService;
 
 import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
+import de.nordakademie.iaa.service.exception.StartTimeAfterEndTimeException;
 import de.nordakademie.iaa.service.impl.EventServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -56,29 +57,43 @@ public class EventServiceTest {
     private final Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
 
     @Test
-    public void testSaveEvent() throws RoomTooSmallForGroupException {
+    public void testSaveEvent() throws Exception {
         eventService.saveEvent(event);
         Mockito.verify(eventDAO, times(1)).save(event);
     }
 
     @Test(expected = RoomTooSmallForGroupException.class)
-    public void testSaveEventWithTooSmallRoom() throws RoomTooSmallForGroupException {
+    public void testSaveEventWithTooSmallRoom() throws Exception {
         room2.setMaxSeats(group.calculateNumberOfStudents()-1);
         try {
             eventService.saveEvent(event);
         } catch (RoomTooSmallForGroupException e) {
             verify(eventDAO, times(0)).save(event);
-            assertEquals("Der " + room2 + " ist zu klein für " + group, e.getMessage());
+            assertEquals(room2 + " can not provide enough seats for " + group, e.getMessage());
             throw e;
         }
     }
 
     @Test(expected = RoomTooSmallForGroupException.class)
-    public void testSaveEventWithTooSmallRooms() throws RoomTooSmallForGroupException {
+    public void testSaveEventWithTooSmallRooms() throws Exception {
         room1.setMaxSeats(group.calculateNumberOfStudents()-1);
         room2.setMaxSeats(group.calculateNumberOfStudents()-1);
         eventService.saveEvent(event);
         Mockito.verify(eventDAO, times(0)).save(event);
+    }
+
+    @Test(expected = StartTimeAfterEndTimeException.class)
+    public void testSaveEventWithStartTimeNotBeforeEndTime() throws Exception {
+        event.setStartTime(endTime);
+        try {
+            eventService.saveEvent(event);
+        } catch (StartTimeAfterEndTimeException e) {
+            verify(eventDAO, times(0)).save(event);
+            assertEquals("Provided startTime (" + endTime + ") must be before endTime (" + endTime + ")",
+                    e.getMessage());
+        }
+        event.setEndTime(startTime);
+        eventService.saveEvent(event);
     }
 
     @Test

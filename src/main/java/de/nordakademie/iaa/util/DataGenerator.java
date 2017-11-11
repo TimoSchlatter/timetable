@@ -3,7 +3,6 @@ package de.nordakademie.iaa.util;
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.*;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
-import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +48,7 @@ public class DataGenerator {
      * Warning: Be careful when changing this order!
      */
     //    @PostConstruct
-    public void createData() throws RoomTooSmallForGroupException, NotEnoughChangeoverTimeProvidedException {
+    public void createData() throws Exception {
         createRooms();
         createDocents();
         createCourses();
@@ -189,7 +188,7 @@ public class DataGenerator {
         }
     }
 
-    private void createEvents() throws RoomTooSmallForGroupException {
+    private void createEvents() throws Exception {
         LocalDate date = LocalDate.of(2017, Month.OCTOBER, 30);
         LocalTime startTime = LocalTime.of(9, 15);
         LocalTime endTime = LocalTime.of(11, 30);
@@ -267,7 +266,7 @@ public class DataGenerator {
     }
 
     private void saveEvent(LocalDate date, LocalTime startTime, LocalTime endTime, Set<Room> rooms, Set<Docent> docents,
-                           Group group, Subject subject, int repeatWeeks) throws RoomTooSmallForGroupException {
+                           Group group, Subject subject, int repeatWeeks) throws Exception {
         rooms.forEach(room -> {
             if (room == null) {
                 throw new IllegalArgumentException("Room must not be null!");

@@ -23,6 +23,6 @@ public class RoomTooSmallForGroupException extends Exception {
      * @param group THe group that does not fit in the room.
      */
     public RoomTooSmallForGroupException(Room room, Group group) {
-        super("Der " + room  + " ist zu klein für " + group);
+        super(room  + " can not provide enough seats for " + group);
     }
 }

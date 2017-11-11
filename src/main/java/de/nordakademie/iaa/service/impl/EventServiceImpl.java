@@ -4,6 +4,7 @@ import de.nordakademie.iaa.dao.EventDAO;
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.EventService;
 import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
+import de.nordakademie.iaa.service.exception.StartTimeAfterEndTimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +27,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void saveEvent(Event event) throws RoomTooSmallForGroupException {
+    public void saveEvent(Event event) throws RoomTooSmallForGroupException, StartTimeAfterEndTimeException {
+        LocalTime startTime = event.getStartTime();
+        LocalTime endTime = event.getEndTime();
+        if (!startTime.isBefore(endTime)) {
+            throw new StartTimeAfterEndTimeException(startTime, endTime);
+        }
         Group eventGroup = event.getGroup();
         int students = eventGroup.calculateNumberOfStudents();
-        Optional<Room> optionalRoom = event.getRooms().stream().filter(room -> room.getMaxSeats() < students).findFirst();
+        Optional<Room> optionalRoom = event.getRooms().stream()
+                .filter(room -> room.getMaxSeats() < students).findFirst();
         if (optionalRoom.isPresent()) {
             throw new RoomTooSmallForGroupException(optionalRoom.get(), eventGroup);
         }
@@ -57,7 +64,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event findEventByDateAndStartTimeAndEndTimeAndGroup(LocalDate date, LocalTime startTime, LocalTime endTime, Group group) {
+    public Event findEventByDateAndStartTimeAndEndTimeAndGroup(LocalDate date, LocalTime startTime, LocalTime endTime,
+                                                               Group group) {
         return eventDAO.findByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group);
     }
 
