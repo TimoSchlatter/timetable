@@ -46,15 +46,21 @@ public class EventServiceTest {
     private final Long id = 1L;
     private final Room room1 = new Room(15, "A", 40, "001", RoomType.LECTUREROOM);
     private final Room room2 = new Room(15, "A", 30, "002", RoomType.COMPUTERROOM);
-    private final Set<Room> rooms = new HashSet<>(Arrays.asList(room1, room2));
-    private final Docent docent = new Docent("a@a.com", "Ed", "Sy", "0115273487", "Dr.", true, 20);
-    private final Set<Docent> docents = new HashSet<>(Arrays.asList(docent));
-    private final Group group = new Century("I14a", 30, 30);
+    private final Set<Room> rooms1 = new HashSet<>(Arrays.asList(room1, room2));
+    private final Room room3 = new Room(15, "A", 40, "003", RoomType.LECTUREROOM);
+    private final Set<Room> rooms2 = new HashSet<>(Arrays.asList(room3));
+    private final Docent docent1 = new Docent("a@a.com", "Ed", "Sy", "0115273487", "Dr.", true, 20);
+    private final Set<Docent> docents1 = new HashSet<>(Arrays.asList(docent1));
+    private final Docent docent2 = new Docent("b@b.com", "Bob", "Sy", "0115541487", "Prof.", false, 30);
+    private final Set<Docent> docents2 = new HashSet<>(Arrays.asList(docent2));
+    private final Century centuryI14a = new Century("I14a", 30, 30);
+    private final Maniple manipleI14 = new Maniple("I14", 30, Arrays.asList(centuryI14a));
+    private final Cohort cohort14 = new Cohort("I14a", 30, Arrays.asList(manipleI14));
     private final LocalDate date = LocalDate.of(2018, Month.APRIL, 1);
     private final LocalTime startTime = LocalTime.of(9, 30);
     private final LocalTime endTime = LocalTime.of(11, 30);
     private final Subject subject = new Subject(30, SubjectType.EXAM, new Course("Test", "I", 154));
-    private final Event event = new Event(rooms, docents, group, date, startTime, endTime, subject);
+    private final Event event = new Event(rooms1, docents1, centuryI14a, date, startTime, endTime, subject);
 
     @Test
     public void testSaveEvent() throws Exception {
@@ -64,20 +70,20 @@ public class EventServiceTest {
 
     @Test(expected = RoomTooSmallForGroupException.class)
     public void testSaveEventWithTooSmallRoom() throws Exception {
-        room2.setMaxSeats(group.calculateNumberOfStudents()-1);
+        room2.setMaxSeats(centuryI14a.calculateNumberOfStudents()-1);
         try {
             eventService.saveEvent(event);
         } catch (RoomTooSmallForGroupException e) {
             verify(eventDAO, times(0)).save(event);
-            assertEquals(room2 + " can not provide enough seats for " + group, e.getMessage());
+            assertEquals(room2 + " can not provide enough seats for " + centuryI14a, e.getMessage());
             throw e;
         }
     }
 
     @Test(expected = RoomTooSmallForGroupException.class)
     public void testSaveEventWithTooSmallRooms() throws Exception {
-        room1.setMaxSeats(group.calculateNumberOfStudents()-1);
-        room2.setMaxSeats(group.calculateNumberOfStudents()-1);
+        room1.setMaxSeats(centuryI14a.calculateNumberOfStudents()-1);
+        room2.setMaxSeats(centuryI14a.calculateNumberOfStudents()-1);
         eventService.saveEvent(event);
         Mockito.verify(eventDAO, times(0)).save(event);
     }
@@ -124,8 +130,8 @@ public class EventServiceTest {
 
     @Test
     public void testFindEventByDateAndStartTimeAndEndTimeAndGroup() {
-        eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group);
-        verify(eventDAO, times(1)).findByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, group);
+        eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, centuryI14a);
+        verify(eventDAO, times(1)).findByDateAndStartTimeAndEndTimeAndGroup(date, startTime, endTime, centuryI14a);
     }
 
     @Test
@@ -136,8 +142,8 @@ public class EventServiceTest {
 
     @Test
     public void testDeleteEventByGroup() {
-        eventService.deleteEventsByGroup(group);
-        verify(eventDAO, times(1)).deleteByGroup(group);
+        eventService.deleteEventsByGroup(centuryI14a);
+        verify(eventDAO, times(1)).deleteByGroup(centuryI14a);
     }
 
     @Test
@@ -154,14 +160,19 @@ public class EventServiceTest {
 
     @Test
     public void testFindEventsByGroup() {
-        eventService.findEventsByGroup(group);
-        verify(eventDAO, times(1)).findByGroup(group);
+        eventService.findEventsByGroup(centuryI14a);
+        verify(eventDAO, times(1)).findByGroup(centuryI14a);
     }
 
     @Test
     public void testFindEventsByDocent() {
-        eventService.findEventsByDocent(docent);
-        verify(eventDAO, times(1)).findByDocents(docent);
+        eventService.findEventsByDocent(docent1);
+        verify(eventDAO, times(1)).findByDocents(docent1);
+    }
+
+    @Test
+    public void testFindGroupCollisions() {
+        Event concurrentEvent = new Event()
     }
 
     @After

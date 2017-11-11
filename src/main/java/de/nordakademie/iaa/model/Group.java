@@ -54,6 +54,10 @@ public abstract class Group extends HasMinChangeoverTime implements Serializable
 
     public abstract int calculateNumberOfStudents();
 
+    public boolean hasSubGroup(Group group) {
+        return false;
+    }
+
     @Override
     public String toString() {
         return " " + name + " (" + calculateNumberOfStudents() + " Studenten)";

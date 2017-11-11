@@ -41,6 +41,14 @@ public class Cohort extends Group {
         this.maniples = maniples;
     }
 
+    public void addManiple(Maniple maniple) {
+        maniples.add(maniple);
+    }
+
+    public void removeManiple(Maniple maniple) {
+        maniples.remove(maniple);
+    }
+
     @Override
     public int calculateNumberOfStudents() {
         if (maniples.isEmpty()) {
@@ -49,12 +57,9 @@ public class Cohort extends Group {
         return maniples.stream().mapToInt(Maniple::calculateNumberOfStudents).sum();
     }
 
-    public void addManiple(Maniple maniple) {
-        maniples.add(maniple);
-    }
-
-    public void removeManiple(Maniple maniple) {
-        maniples.remove(maniple);
+    @Override
+    public boolean hasSubGroup(Group group) {
+        return maniples.contains(group) || maniples.stream().anyMatch(maniple -> maniple.hasSubGroup(group));
     }
 
     @Override

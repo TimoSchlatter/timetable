@@ -36,11 +36,6 @@ public class Maniple extends Group {
 		return centuries;
 	}
 
-	@Override
-	public int calculateNumberOfStudents() {
-		return !centuries.isEmpty() ? centuries.stream().mapToInt(Century::getNumberOfStudents).sum() : 0;
-	}
-
 	public void setCenturies(List<Century> centuries) {
 		this.centuries = centuries;
 	}
@@ -51,6 +46,16 @@ public class Maniple extends Group {
 
 	public void removeCentury(Century century) {
 		centuries.remove(century);
+	}
+
+	@Override
+	public int calculateNumberOfStudents() {
+		return !centuries.isEmpty() ? centuries.stream().mapToInt(Century::getNumberOfStudents).sum() : 0;
+	}
+
+	@Override
+	public boolean hasSubGroup(Group group) {
+		return centuries.contains(group);
 	}
 
 	@Override
