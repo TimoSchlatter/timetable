@@ -80,13 +80,6 @@ public class CenturyDAOTest {
 
     }
 
-    @Test
-    public void testDeleteById() {
-        centuryDAO.deleteById(this.century.getId());
-        List<Century> centurys = centuryDAO.findAll();
-        assertTrue(centurys.isEmpty());
-    }
-
     private void compareCentury(Century century) {
         assertEquals(this.century.getNumberOfStudents(), century.getNumberOfStudents());
         assertEquals(this.century.getName(), century.getName());

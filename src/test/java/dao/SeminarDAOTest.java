@@ -82,13 +82,6 @@ public class SeminarDAOTest {
 
     }
 
-    @Test
-    public void testDeleteById() {
-        seminarDAO.deleteById(this.seminar.getId());
-        List<Seminar> seminars = seminarDAO.findAll();
-        assertTrue(seminars.isEmpty());
-    }
-
     private void compareSeminars(Seminar seminar) {
         assertEquals(this.seminar.getSeminarType(), seminar.getSeminarType());
         assertEquals(this.seminar.getTitle(), seminar.getTitle());

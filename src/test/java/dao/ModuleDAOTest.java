@@ -82,13 +82,6 @@ public class ModuleDAOTest {
 
     }
 
-    @Test
-    public void testDeleteById() {
-        moduleDAO.deleteById(this.module.getId());
-        List<Module> modules = moduleDAO.findAll();
-        assertTrue(modules.isEmpty());
-    }
-
     private void compareModules(Module module) {
         assertEquals(this.module.getShortTitle(), module.getShortTitle());
         assertEquals(this.module.getTitle(), module.getTitle());

@@ -17,9 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
@@ -55,13 +53,6 @@ public class GroupServiceTest {
     public void testLoadGroup() {
         groupService.loadGroup(id);
         verify(groupDAO, times(1)).findOne(id);
-    }
-
-    @Test
-    public void testDeleteNonExistingGroup() {
-        when(groupDAO.findOne(id)).thenReturn(null);
-        assertFalse(groupService.deleteGroup(id));
-        verify(groupDAO, times(0)).deleteById(anyLong());
     }
 
     @Test

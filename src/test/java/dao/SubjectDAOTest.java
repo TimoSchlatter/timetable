@@ -97,13 +97,6 @@ public class SubjectDAOTest {
     }
 
     @Test
-    public void testDeleteById() {
-        subjectDAO.deleteById(this.subject.getId());
-        List<Subject> subjects = subjectDAO.findAll();
-        assertTrue(subjects.isEmpty());
-    }
-
-    @Test
     public void testDeleteByModule() {
         subjectDAO.deleteByModule(course);
         List<Subject> subjects = subjectDAO.findAll();

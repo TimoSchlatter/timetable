@@ -93,13 +93,6 @@ public class ManipleDAOTest {
 
     }
 
-    @Test
-    public void testDeleteById() {
-        manipleDAO.deleteById(this.maniple.getId());
-        List<Maniple> maniples = manipleDAO.findAll();
-        assertTrue(maniples.isEmpty());
-    }
-
     private void compareManiple(Maniple maniple) {
         assertEquals(this.maniple.getCenturies(), maniple.getCenturies());
         assertEquals(this.maniple.getName(), maniple.getName());

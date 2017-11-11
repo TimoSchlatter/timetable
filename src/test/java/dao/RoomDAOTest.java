@@ -85,13 +85,6 @@ public class RoomDAOTest {
         assertTrue(rooms.isEmpty());
     }
 
-    @Test
-    public void testDeleteById() {
-        roomDAO.deleteById(this.room.getId());
-        List<Room> rooms = roomDAO.findAll();
-        assertTrue(rooms.isEmpty());
-    }
-
     private void compareRooms(Room room) {
         assertEquals(this.room.getNumber(), room.getNumber());
         assertEquals(this.room.getMinChangeoverTime(), room.getMinChangeoverTime());

@@ -1,10 +1,11 @@
 package de.nordakademie.iaa.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.io.Serializable;
 
 /**
@@ -13,16 +14,12 @@ import java.io.Serializable;
  * @author Arvid Ottenberg
  */
 @Entity
-public class Room extends HasMinChangeoverTime implements Serializable {
+public class Room extends HasTransientFullName implements Serializable {
 
     private String building;
     private String number;
     private int maxSeats;
     private RoomType roomType;
-
-    @JsonIgnore
-    @Transient
-    private String fullName;
 
     public Room() {
     }
@@ -71,14 +68,9 @@ public class Room extends HasMinChangeoverTime implements Serializable {
         this.roomType = roomType;
     }
 
-    @JsonProperty(value = "fullName")
+    @Override
     public String getFullName() {
         return building + number;
-    }
-
-    @JsonIgnore
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     @Override

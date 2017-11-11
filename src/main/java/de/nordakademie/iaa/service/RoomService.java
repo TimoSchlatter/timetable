@@ -34,7 +34,7 @@ public interface RoomService {
     /**
      * Deletes the room with the given id.
      *
-     * @param id The identifier.
+     * @param id the identifier.
      * @return
      */
     boolean deleteRoom(Long id);

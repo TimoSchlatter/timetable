@@ -4,7 +4,6 @@ package service;
 import de.nordakademie.iaa.dao.CourseDAO;
 import de.nordakademie.iaa.model.Course;
 import de.nordakademie.iaa.service.CourseService;
-
 import de.nordakademie.iaa.service.impl.CourseServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -16,12 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -57,13 +52,6 @@ public class CourseServiceTest {
     public void testLoadCourse() {
         courseService.loadCourse(id);
         verify(courseDAO, times(1)).findOne(id);
-    }
-
-    @Test
-    public void testDeleteNonExistingCourse() {
-        when(courseDAO.findOne(id)).thenReturn(null);
-        assertFalse(courseService.deleteCourse(id));
-        verify(courseDAO, times(0)).deleteById(anyLong());
     }
 
     @Test

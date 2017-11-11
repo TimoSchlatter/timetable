@@ -89,13 +89,6 @@ public class DocentDAOTest {
 
     }
 
-    @Test
-    public void testDeleteById() {
-        docentDAO.deleteById(this.docent.getId());
-        List<Docent> docents = docentDAO.findAll();
-        assertTrue(docents.isEmpty());
-    }
-
     private void compareDocents(Docent docent) {
         assertEquals(this.docent.getMinChangeoverTime(), docent.getMinChangeoverTime());
         assertEquals(this.docent.getEmail(), docent.getEmail());

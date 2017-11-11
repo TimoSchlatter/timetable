@@ -75,13 +75,6 @@ public class GroupDAOTest {
 
     }
 
-    @Test
-    public void testDeleteById() {
-        groupDAO.deleteById(this.group.getId());
-        List<Group> groups = groupDAO.findAll();
-        assertTrue(groups.isEmpty());
-    }
-
     private void compareGroups(Group group) {
         assertEquals(this.group.getMinChangeoverTime(), group.getMinChangeoverTime());
         assertEquals(this.group.getName(), group.getName());

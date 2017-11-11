@@ -4,7 +4,6 @@ package service;
 import de.nordakademie.iaa.dao.SeminarGroupDAO;
 import de.nordakademie.iaa.model.SeminarGroup;
 import de.nordakademie.iaa.service.SeminarGroupService;
-
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.SeminarGroupServiceImpl;
 import org.junit.After;
@@ -17,9 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
@@ -56,13 +53,6 @@ public class SeminarGroupServiceTest {
     public void testLoadSeminarGroup() {
         seminarGroupService.loadSeminarGroup(id);
         verify(seminarGroupDAO, times(1)).findOne(id);
-    }
-
-    @Test
-    public void testDeleteNonExistingSeminarGroup() {
-        when(seminarGroupDAO.findOne(id)).thenReturn(null);
-        assertFalse(seminarGroupService.deleteSeminarGroup(id));
-        verify(seminarGroupDAO, times(0)).deleteById(anyLong());
     }
 
     @Test

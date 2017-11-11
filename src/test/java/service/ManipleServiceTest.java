@@ -15,9 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -60,13 +58,6 @@ public class ManipleServiceTest {
     public void testLoadManiple() {
         manipleService.loadManiple(id);
         verify(manipleDAO, times(1)).findOne(id);
-    }
-
-    @Test
-    public void testDeleteNonExistingManiple() {
-        when(manipleDAO.findOne(id)).thenReturn(null);
-        assertFalse(manipleService.deleteManiple(id));
-        verify(manipleDAO, times(0)).deleteById(anyLong());
     }
 
     @Test

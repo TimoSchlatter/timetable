@@ -105,13 +105,6 @@ public class CohortDAOTest {
 
     }
 
-    @Test
-    public void testDeleteById() {
-        cohortDAO.deleteById(this.cohort.getId());
-        List<Cohort> cohorts = cohortDAO.findAll();
-        assertTrue(cohorts.isEmpty());
-    }
-
     private void compareCohort(Cohort cohort) {
         assertEquals(this.cohort.getManiples(), cohort.getManiples());
         assertEquals(this.cohort.getName(), cohort.getName());

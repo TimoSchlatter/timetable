@@ -7,7 +7,6 @@ import de.nordakademie.iaa.model.Module;
 import de.nordakademie.iaa.model.Subject;
 import de.nordakademie.iaa.model.SubjectType;
 import de.nordakademie.iaa.service.SubjectService;
-
 import de.nordakademie.iaa.service.impl.SubjectServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -19,9 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -57,13 +54,6 @@ public class SubjectServiceTest {
     public void testLoadSubject() {
         subjectService.loadSubject(id);
         Mockito.verify(subjectDAO, times(1)).findOne(id);
-    }
-
-    @Test
-    public void testDeleteNonExistingSubject() {
-        when(subjectDAO.findOne(id)).thenReturn(null);
-        assertFalse(subjectService.deleteSubject(id));
-        verify(subjectDAO, times(0)).deleteById(anyLong());
     }
 
     @Test

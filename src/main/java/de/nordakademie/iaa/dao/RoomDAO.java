@@ -7,26 +7,26 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * DAO for Rooms
+ * DAO for room entities.
  *
  * @author Arvid Ottenberg
  */
-public interface RoomDAO extends JpaRepository<Room,Long>, BaseDAO<Room, Long> {
+public interface RoomDAO extends JpaRepository<Room, Long> {
 
     /**
-     * Find a room by its building and number
+     * Finds a room by its building and number.
      *
-     * @param building building the room is located in
-     * @param number number of the room
-     * @return the room with the given building and number
+     * @param building building the room is located in.
+     * @param number   number of the room.
+     * @return the room with the given building and number.
      */
     Room findByBuildingAndNumber(String building, String number);
 
     /**
-     * Find all rooms with a specific room type
+     * Finds all rooms with a specific room type.
      *
-     * @param roomType the type of rooms that is searched for
-     * @return rooms of the given room type
+     * @param roomType the type of room.
+     * @return rooms with the given room type.
      */
     List<Room> findByRoomType(RoomType roomType);
 }

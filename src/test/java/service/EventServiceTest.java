@@ -4,7 +4,6 @@ package service;
 import de.nordakademie.iaa.dao.EventDAO;
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.EventService;
-
 import de.nordakademie.iaa.service.exception.RoomTooSmallForGroupException;
 import de.nordakademie.iaa.service.exception.StartTimeAfterEndTimeException;
 import de.nordakademie.iaa.service.impl.EventServiceImpl;
@@ -26,10 +25,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -113,13 +110,6 @@ public class EventServiceTest {
     public void testLoadEvent() {
         eventService.loadEvent(id);
         Mockito.verify(eventDAO, times(1)).findOne(id);
-    }
-
-    @Test
-    public void testDeleteNonExistingEvent() {
-        when(eventDAO.findOne(id)).thenReturn(null);
-        assertFalse(eventService.deleteEvent(id));
-        verify(eventDAO, times(0)).deleteById(anyLong());
     }
 
     @Test

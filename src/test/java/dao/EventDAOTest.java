@@ -180,13 +180,6 @@ public class EventDAOTest {
     }
 
     @Test
-    public void testDeleteById() {
-        eventDAO.deleteById(this.event.getId());
-        List<Event> events = eventDAO.findAll();
-        assertTrue(events.isEmpty());
-    }
-
-    @Test
     public void testDeleteByGroup() {
         assertEquals(eventDAO.findAll().size(),1);
         eventDAO.deleteByGroup(group);

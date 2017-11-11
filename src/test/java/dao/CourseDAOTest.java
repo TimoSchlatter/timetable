@@ -87,13 +87,6 @@ public class CourseDAOTest
 
     }
 
-    @Test
-    public void testDeleteById() {
-        courseDAO.deleteById(this.course.getId());
-        List<Course> courses = courseDAO.findAll();
-        assertTrue(courses.isEmpty());
-    }
-
     private void compareCourses(Course course) {
         assertEquals(this.course.getField(), course.getField());
         assertEquals(this.course.getNumber(), course.getNumber());

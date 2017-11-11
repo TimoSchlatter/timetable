@@ -81,13 +81,6 @@ public class SeminarGroupDAOTest {
 
     }
 
-    @Test
-    public void testDeleteById() {
-        seminarGroupDAO.deleteById(this.seminarGroup.getId());
-        List<SeminarGroup> seminarGroups = seminarGroupDAO.findAll();
-        assertTrue(seminarGroups.isEmpty());
-    }
-
     private void compareSeminarGroups(SeminarGroup seminarGroup) {
         assertEquals(this.seminarGroup.getMaximumNumberOfStudents(), seminarGroup.getMaximumNumberOfStudents());
         assertEquals(this.seminarGroup.getMinChangeoverTime(), seminarGroup.getMinChangeoverTime());

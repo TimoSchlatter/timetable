@@ -15,7 +15,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
- * REST-Controller for cohort entities.
+ * REST-Controller for course entities.
  *
  * @author Timo Schlatter
  */
