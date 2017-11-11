@@ -73,8 +73,8 @@ public class EventController {
         LocalDate startDate = event.getDate();
         // Create event series
         for (int i = 0; i < repeatWeeks; i++) {
-            event.setDate(startDate.plusDays(i * 7));
-            eventsToSave.add(event);
+            eventsToSave.add(new Event(event.getRooms(), event.getDocents(), event.getGroup(),
+                    startDate.plusDays(i * 7), event.getStartTime(), event.getEndTime(), event.getSubject()));
         }
         // Check collisions for each event
         eventsToSave.forEach(eventToSave -> collisions.addAll(eventService.findCollisions(eventToSave)));
