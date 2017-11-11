@@ -1,3 +1,10 @@
+/*
+ AngularJS Service
+ Service has substitutable objects that are wired together using dependency injection (DI).
+ It is used to organize the timetable objects across the web application.
+ @author Jonas Jacobsen and Jonas Gehrke
+ */
+
 app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
 
     var callPut = false;
@@ -19,7 +26,7 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
                 if(data.status == 200) {
                     AlertService.addEventAlert('Kollisionen', data.data.toString());
                     $rootScope.collisionEvent = angular.copy(objectToCreateData);
-                    }
+                }
                 functionToUpdateModel();
             }, function errorCallback(data, status, header, config) {
                 AlertService.add('Fehler', 'Die Daten konnten nicht erfolgreich auf dem Server gesichert werden.');

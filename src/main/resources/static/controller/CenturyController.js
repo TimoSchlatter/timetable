@@ -1,5 +1,12 @@
 'use strict';
 
+/*
+ AngularJS Controller
+ Controller is defined to augment the Century View.
+ The Controller is attached to the DOM via the ng-controller directive.
+ @author Jonas Jacobsen and Jonas Gehrke
+ */
+
 app.controller('CenturyController', function ($scope, ConnectionService) {
 
     // RUD Calls for Centuries via ConnectionService

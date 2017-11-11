@@ -1,5 +1,12 @@
 'use strict';
 
+/*
+ AngularJS Controller
+ Controller is defined to augment the Maniple View.
+ The Controller is attached to the DOM via the ng-controller directive.
+ @author Jonas Jacobsen
+ */
+
 app.controller('ManipleController', function ($scope, ConnectionService) {
 
     // //CRUD function calls for cohorts via ConnectionService

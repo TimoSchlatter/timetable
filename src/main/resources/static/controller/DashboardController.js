@@ -1,5 +1,12 @@
 'use strict'
 
+/*
+ AngularJS Controller
+ Controller is defined to augment the Dashboard View.
+ The Controller is attached to the DOM via the ng-controller directive.
+ @author Jonas Jacobsen and Jonas Gehrke
+ */
+
 app.controller('DashboardController', function($scope , $http, AlertService, ConnectionService, $filter) {
 
     $scope.generateData = ConnectionService.generateData;

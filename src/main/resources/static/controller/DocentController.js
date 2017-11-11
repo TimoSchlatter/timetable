@@ -1,5 +1,12 @@
 'use strict';
 
+/*
+ AngularJS Controller
+ Controller is defined to augment the Docent View.
+ The Controller is attached to the DOM via the ng-controller directive.
+ @author Jonas Gehrke
+ */
+
 app.controller('DocentController', function ($scope, ConnectionService) {
 
     //CRUD function calls for docents via ConnectionService

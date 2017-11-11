@@ -1,5 +1,12 @@
 'use strict';
 
+/*
+ AngularJS Controller
+ Controller is defined to augment the SeminarGroup View.
+ The Controller is attached to the DOM via the ng-controller directive.
+ @author Jonas Gehrke
+ */
+
 app.controller('SeminarGroupController', function ($scope, ConnectionService) {
 
     $scope.seminarGroups = ConnectionService.getSeminarGroups;
