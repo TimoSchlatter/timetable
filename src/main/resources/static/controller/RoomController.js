@@ -7,6 +7,7 @@ app.controller('RoomController', function ($scope, ConnectionService) {
     $scope.updateRoom = ConnectionService.updateRoom;
     $scope.deleteRoom = ConnectionService.deleteRoom;
     $scope.roomTypes = ConnectionService.getRoomTypes;
+    $scope.roomsLastUpdateTime = ConnectionService.getRoomsLastUpdateTime;
 
     $scope.setSelectedRoom = function (room) {
         $scope.room = angular.copy(room);

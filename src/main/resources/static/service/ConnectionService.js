@@ -82,91 +82,111 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
 
     /* DocentsControl */
     var docents = [];
+    var docentsLastUpdateTime;
     var docentsUrl = 'http://localhost:49999/docents/';
     var getDocents = function () {
         getData(docentsUrl, function (data) {
-            docents = data
+            docents = data;
+            docentsLastUpdateTime = Date.now();
         });
     };
 
     /* RoomsControl */
     var rooms = [];
+    var roomsLastUpdateTime;
     var roomsUrl = 'http://localhost:49999/rooms/';
     var getRooms = function () {
         getData(roomsUrl, function (data) {
-            rooms = data
+            rooms = data;
+            roomsLastUpdateTime = Date.now();
         });
     };
 
     /* CenturiesControl */
     var centuries = [];
+    var centuriesLastUpdateTime;
     var centuriesUrl = 'http://localhost:49999/centuries/';
     var getCenturies = function () {
         getData(centuriesUrl, function (data) {
             centuries = data;
+            centuriesLastUpdateTime = Date.now();
         });
     };
 
     /*ManiplesControl */
     var maniples = [];
+    var maniplesLastUpdateTime;
     var maniplesUrl = 'http://localhost:49999/maniples/';
     var getManiples = function () {
         getData(maniplesUrl, function (data) {
             maniples = data;
+            maniplesLastUpdateTime = Date.now();
         });
     };
 
     /*CohortsControl */
     var cohorts = [];
+    var cohortsLastUpdateTime;
     var cohortsUrl = 'http://localhost:49999/cohorts/';
     var getCohorts = function () {
         getData(cohortsUrl, function (data) {
             cohorts = data;
+            cohortsLastUpdateTime = Date.now();
         });
     };
 
     /*CoursesControl */
     var courses = [];
+    var coursesLastUpdateTime;
     var coursesUrl = 'http://localhost:49999/courses/';
     var getCourses = function () {
         getData(coursesUrl, function (data) {
             courses = data;
+            coursesLastUpdateTime = Date.now();
         });
     };
 
     /* SeminarsControl */
     var seminars = [];
+    var seminarsLastUpdateTime;
     var seminarsUrl = 'http://localhost:49999/seminars/';
     var getSeminars = function () {
         getData(seminarsUrl, function (data) {
             seminars = data;
+            seminarsLastUpdateTime = Date.now();
         });
     };
 
     /* SeminarsGroupsControl */
     var seminarGroups = [];
+    var seminarGroupsLastUpdateTime;
     var seminarGroupsUrl = 'http://localhost:49999/seminargroups/';
     var getSeminarGroups = function () {
         getData(seminarGroupsUrl, function (data) {
             seminarGroups = data;
+            seminarGroupsLastUpdateTime = Date.now();
         });
     };
 
     /* SubjectsControl */
     var subjects = [];
+    var subjectsLastUpdateTime;
     var subjectsUrl = 'http://localhost:49999/subjects/';
     var getSubjects = function () {
         getData(subjectsUrl, function (data) {
             subjects = data;
+            subjectsLastUpdateTime = Date.now();
         });
     };
 
     /* EventsControl */
     var events = [];
+    var eventsLastUpdateTime;
     var eventsUrl = 'http://localhost:49999/events/';
     var getEvents = function () {
         getData(eventsUrl, function (data) {
             events = data;
+            eventsLastUpdateTime = Date.now();
         });
     };
 
@@ -229,115 +249,142 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             createData(docentsUrl, angular.toJson(docent), getDocents);
         },
         updateDocent: function (docent) {
-            updateData(docentsUrl + docent.id, angular.toJson(docent), getDocents);
+            updateData(docentsUrl + docent.id, angular.toJson(docent), updateAllDataModels);
         },
         deleteDocent: function (docent) {
-            deleteData(docentsUrl, docent.id, getDocents);
+            deleteData(docentsUrl, docent.id, updateAllDataModels);
         },
         getDocents: function () {
             return docents;
+        },
+        getDocentsLastUpdateTime: function () {
+            return docentsLastUpdateTime;
         },
         createRoom: function (room) {
             createData(roomsUrl, angular.toJson(room), getRooms);
         },
         updateRoom: function (room) {
-            updateData(roomsUrl + room.id, angular.toJson(room), getRooms);
+            updateData(roomsUrl + room.id, angular.toJson(room), updateAllDataModels);
         },
         deleteRoom: function (room) {
-            deleteData(roomsUrl, room.id, getRooms);
+            deleteData(roomsUrl, room.id, updateAllDataModels);
         },
         getRooms: function () {
             return rooms;
+        },
+        getRoomsLastUpdateTime: function () {
+            return roomsLastUpdateTime;
         },
         createCentury: function (manipleId, century) {
             century.type = 'century';
             createData(maniplesUrl + manipleId + '/addCentury', angular.toJson(century), getCohorts);
         },
         updateCentury: function (century) {
-            updateData(centuriesUrl + century.id, angular.toJson(century), getCohorts);
+            updateData(centuriesUrl + century.id, angular.toJson(century), updateAllDataModels);
         },
         deleteCentury: function (manipleId, century) {
-            deleteData(maniplesUrl + manipleId + '/deleteCentury/', century.id, getCohorts);
+            deleteData(maniplesUrl + manipleId + '/deleteCentury/', century.id, updateAllDataModels);
         },
         getCenturies: function () {
             return centuries;
+        },
+        getCenturiesLastUpdateTime: function () {
+            return centuriesLastUpdateTime;
         },
         createManiple: function (cohortId, maniple) {
             maniple.type = 'maniple';
             createData(cohortsUrl + cohortId + '/addManiple', angular.toJson(maniple), getCohorts);
         },
         updateManiple: function (maniple) {
-            updateData(maniplesUrl + maniple.id, angular.toJson(maniple), getCohorts);
+            updateData(maniplesUrl + maniple.id, angular.toJson(maniple), updateAllDataModels);
         },
         deleteManiple: function (cohortId, maniple) {
-            deleteData(cohortsUrl + cohortId + '/deleteManiple/', maniple.id, getCohorts);
+            deleteData(cohortsUrl + cohortId + '/deleteManiple/', maniple.id, updateAllDataModels);
         },
         getManiples: function () {
             return maniples;
+        },
+        getManiplesLastUpdateTime: function () {
+            return maniplesLastUpdateTime;
         },
         createCohort: function (cohort) {
             cohort.type = 'cohort';
             createData(cohortsUrl, angular.toJson(cohort), getCohorts);
         },
         updateCohort: function (cohort) {
-            updateData(cohortsUrl + cohort.id, angular.toJson(cohort), getCohorts);
+            updateData(cohortsUrl + cohort.id, angular.toJson(cohort), updateAllDataModels);
         },
         deleteCohort: function (cohort) {
-            deleteData(cohortsUrl, cohort.id, getCohorts);
+            deleteData(cohortsUrl, cohort.id, updateAllDataModels);
         },
         getCohorts: function () {
             return cohorts;
+        },
+        getCohortsLastUpdateTime: function () {
+            return cohortsLastUpdateTime;
         },
         createCourse: function (course) {
             course.type = 'course';
             createData(coursesUrl, angular.toJson(course), getCourses);
         },
         updateCourse: function (course) {
-            updateData(coursesUrl + course.id, angular.toJson(course), getCourses);
+            updateData(coursesUrl + course.id, angular.toJson(course), updateAllDataModels);
         },
         deleteCourse: function (course) {
-            deleteData(coursesUrl, course.id, getCourses);
+            deleteData(coursesUrl, course.id, updateAllDataModels);
         },
         getCourses: function () {
             return courses;
+        },
+        getCoursesLastUpdateTime: function () {
+            return coursesLastUpdateTime;
         },
         createSeminar: function (seminar) {
             seminar.type = 'seminar';
             createData(seminarsUrl, angular.toJson(seminar), getSeminars);
         },
         updateSeminar: function (seminar) {
-            updateData(seminarsUrl + seminar.id, angular.toJson(seminar), getSeminars);
+            updateData(seminarsUrl + seminar.id, angular.toJson(seminar), updateAllDataModels);
         },
         deleteSeminar: function (seminar) {
-            deleteData(seminarsUrl, seminar.id, getSeminars);
+            deleteData(seminarsUrl, seminar.id, updateAllDataModels);
         },
         getSeminars: function () {
             return seminars;
+        },
+        getSeminarsLastUpdateTime: function () {
+            return seminarsLastUpdateTime;
         },
         createSeminarGroup: function (seminarGroup) {
             seminarGroup.type = 'seminargroup';
             createData(seminarGroupsUrl, angular.toJson(seminarGroup), getSeminarGroups);
         },
         updateSeminarGroup: function (seminarGroup) {
-            updateData(seminarGroupsUrl + seminarGroup.id, angular.toJson(seminarGroup), getSeminarGroups);
+            updateData(seminarGroupsUrl + seminarGroup.id, angular.toJson(seminarGroup), updateAllDataModels);
         },
         deleteSeminarGroup: function (seminarGroup) {
-            deleteData(seminarGroupsUrl, seminarGroup.id, getSeminarGroups);
+            deleteData(seminarGroupsUrl, seminarGroup.id, updateAllDataModels);
         },
         getSeminarGroups: function () {
             return seminarGroups;
+        },
+        getSeminarGroupsLastUpdateTime: function () {
+            return seminarGroupsLastUpdateTime;
         },
         createSubject: function (subject) {
             createData(subjectsUrl, angular.toJson(subject), getSubjects);
         },
         updateSubject: function (subject) {
-            updateData(subjectsUrl + subject.id, angular.toJson(subject), getSubjects);
+            updateData(subjectsUrl + subject.id, angular.toJson(subject), updateAllDataModels);
         },
         deleteSubject: function (subject) {
-            deleteData(subjectsUrl, subject.id, getSubjects);
+            deleteData(subjectsUrl, subject.id, updateAllDataModels);
         },
         getSubjects: function () {
             return subjects;
+        },
+        getSubjectsLastUpdateTime: function () {
+            return subjectsLastUpdateTime;
         },
         createEvent: function (event, repeatWeeks) {
             createData(eventsUrl + '?repeatWeeks=' + repeatWeeks, angular.toJson(event), getEvents);
@@ -350,6 +397,9 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         },
         getEvents: function () {
             return events;
+        },
+        getEventsLastUpdateTime: function () {
+            return eventsLastUpdateTime;
         },
         getEventsByGroup: function (group, functionToSetModel) {
             return getData(eventsUrl + 'findByGroup?id=' + group.id, functionToSetModel);

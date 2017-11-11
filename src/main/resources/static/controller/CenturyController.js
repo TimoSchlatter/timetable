@@ -5,6 +5,7 @@ app.controller('CenturyController', function ($scope, ConnectionService) {
     $scope.cohorts = ConnectionService.getCohorts;
     $scope.updateCentury = ConnectionService.updateCentury;
     $scope.deleteCentury = ConnectionService.deleteCentury;
+    $scope.centuriesLastUpdateTime = ConnectionService.getCenturiesLastUpdateTime;
 
     $scope.createCentury = function () {
         this.century.type = 'century';
