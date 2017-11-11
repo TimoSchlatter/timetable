@@ -2,6 +2,7 @@
 
 app.controller('DocentController', function ($scope, ConnectionService) {
 
+    //CRUD function calls for docents via ConnectionService
     $scope.docents = ConnectionService.getDocents;
     $scope.createDocent = ConnectionService.createDocent;
     $scope.updateDocent = ConnectionService.updateDocent;

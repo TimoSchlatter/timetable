@@ -13,6 +13,7 @@
         $rootScope.alertEvents = [];
         return {
 
+            //Hinzufügen eines Alerts
             add: function (type, msg) {
                 $rootScope.alerts.push({
                     'type': type, 'msg': msg, close: function () {
@@ -22,6 +23,7 @@
                 $('#modalAlert').modal('show');
             },
 
+            //Hinzufügen eines Kollisionsalerts
             addEventAlert: function (type, msg) {
 
                 $rootScope.alertEvents.push({
@@ -37,6 +39,8 @@
             closeAlertIdx: function (index) {
                 return $rootScope.alerts.splice(index, 1);
             },
+
+            //Bereinigen der Alert-Arrays
             clear: function () {
                 $rootScope.alerts = [];
                 $rootScope.alertEvents = [];

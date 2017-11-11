@@ -2,16 +2,19 @@
 
 app.controller('CenturyController', function ($scope, ConnectionService) {
 
+    // RUD Calls for Centuries via ConnectionService
     $scope.cohorts = ConnectionService.getCohorts;
     $scope.updateCentury = ConnectionService.updateCentury;
     $scope.deleteCentury = ConnectionService.deleteCentury;
     $scope.centuriesLastUpdateTime = ConnectionService.getCenturiesLastUpdateTime;
 
+    // Create Call via ConnectionService
     $scope.createCentury = function () {
         this.century.type = 'century';
         ConnectionService.createCentury(this.modalSelectedManiple.id, this.century);
     };
 
+    //Watcher for cohort-array to build all centuries
     $scope.$watch('cohorts()', function () {
         buildCohortsAdvanced($scope.cohorts());
         $scope.setSelectedValues();
@@ -32,6 +35,7 @@ app.controller('CenturyController', function ($scope, ConnectionService) {
         $scope.cohortsAdvanced.unshift({name: "Alle", maniples: [{name: "Alle", centuries: allCenturies}]});
     };
 
+    // set cohort and maniple value in update modal
     var setModalSelectedValues = function (id) {
         $scope.modalSelectedCohort = undefined;
         $scope.modalSelectedManiple = undefined;
