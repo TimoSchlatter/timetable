@@ -97,7 +97,7 @@ public class SubjectServiceTest {
     }
 
     @Configuration
-    static class AccountServiceTestContextConfiguration {
+    static class TestConfiguration {
 
         @Bean
         public SubjectService subjectService() {

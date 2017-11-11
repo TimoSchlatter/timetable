@@ -90,7 +90,7 @@ public class CohortServiceTest {
     }
 
     @Configuration
-    static class AccountServiceTestContextConfiguration {
+    static class TestConfiguration {
 
         @Bean
         public CohortService cohortService() {

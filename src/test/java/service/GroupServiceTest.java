@@ -77,7 +77,7 @@ public class GroupServiceTest {
     }
 
     @Configuration
-    static class AccountServiceTestContextConfiguration {
+    static class TestConfiguration {
 
         @Bean
         public GroupService groupService() {

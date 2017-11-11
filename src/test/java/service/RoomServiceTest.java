@@ -92,7 +92,7 @@ public class RoomServiceTest {
     }
 
     @Configuration
-    static class AccountServiceTestContextConfiguration {
+    static class TestConfiguration {
 
         @Bean
         public RoomService roomService() {

@@ -90,7 +90,7 @@ public class CenturyServiceTest {
     }
 
     @Configuration
-    static class AccountServiceTestContextConfiguration {
+    static class TestConfiguration {
 
         @Bean
         public CenturyService centuryService() {

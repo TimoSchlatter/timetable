@@ -23,6 +23,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static junit.framework.TestCase.assertFalse;
@@ -172,7 +173,55 @@ public class EventServiceTest {
 
     @Test
     public void testFindGroupCollisions() {
-        Event concurrentEvent = new Event()
+        Event concurrentEvent = new Event(rooms2, docents2, cohort14, date, startTime, endTime, subject);
+        when(eventDAO.findByTime(date, startTime, endTime.plusMinutes(event.calculateMinChangeoverTime())))
+                .thenReturn(Arrays.asList(concurrentEvent));
+        List<String> collisions = eventService.findCollisions(event);
+        assertEquals(1, collisions.size());
+        assertEquals(event + ": " + event.getGroup() + " ist bereits für folgendes Event eingeplant: "
+                + concurrentEvent, collisions.get(0));
+
+        when(eventDAO.findByTime(date, startTime, endTime.plusMinutes(concurrentEvent.calculateMinChangeoverTime())))
+                .thenReturn(Arrays.asList(event));
+        collisions = eventService.findCollisions(concurrentEvent);
+        assertEquals(1, collisions.size());
+        assertEquals(concurrentEvent + ": " + concurrentEvent.getGroup()
+                + " ist bereits für folgendes Event eingeplant: " + event, collisions.get(0));
+    }
+
+    @Test
+    public void testFindRoomCollisions() {
+        Event concurrentEvent =
+                new Event(rooms1, docents2, new Century("I14b", 30, 30), date, startTime, endTime, subject);
+        when(eventDAO.findByTime(date, startTime, endTime.plusMinutes(event.calculateMinChangeoverTime())))
+                .thenReturn(Arrays.asList(concurrentEvent));
+        List<String> collisions = eventService.findCollisions(event);
+        assertEquals(rooms1.size(), collisions.size());
+        rooms1.forEach(room -> assertTrue(collisions.contains(event + ": " + room
+                + " ist bereits für folgendes Event eingeplant: " + concurrentEvent)));
+    }
+
+    @Test
+    public void testFindDocentCollisions() {
+        Event concurrentEvent =
+                new Event(rooms2, docents1, new Century("I14b", 30, 30), date, startTime, endTime, subject);
+        when(eventDAO.findByTime(date, startTime, endTime.plusMinutes(event.calculateMinChangeoverTime())))
+                .thenReturn(Arrays.asList(concurrentEvent));
+        List<String> collisions = eventService.findCollisions(event);
+        assertEquals(docents1.size(), collisions.size());
+        docents1.forEach(docent -> assertTrue(collisions.contains(event + ": " + docent
+                + " ist bereits für folgendes Event eingeplant: " + concurrentEvent)));
+    }
+
+    @Test
+    public void testFindCollisions() {
+        Event concurrentEvent = new Event(rooms1, docents1, centuryI14a, date, startTime, endTime, subject);
+        when(eventDAO.findByTime(date, startTime, endTime.plusMinutes(event.calculateMinChangeoverTime())))
+                .thenReturn(Arrays.asList(concurrentEvent));
+        List<String> collisions = eventService.findCollisions(event);
+        assertEquals(docents1.size() + rooms1.size() + 1, collisions.size());
+        collisions = eventService.findCollisions(event, concurrentEvent);
+        assertEquals(0, collisions.size());
     }
 
     @After
@@ -181,7 +230,7 @@ public class EventServiceTest {
     }
 
     @Configuration
-    static class AccountServiceTestContextConfiguration {
+    static class TestConfiguration {
 
         @Bean
         public EventService eventService() {

@@ -84,7 +84,7 @@ public class SeminarGroupServiceTest {
     }
 
     @Configuration
-    static class AccountServiceTestContextConfiguration {
+    static class TestConfiguration {
 
         @Bean
         public SeminarGroupService seminarGroupService() {

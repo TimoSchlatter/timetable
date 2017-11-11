@@ -84,7 +84,7 @@ public class SeminarServiceTest {
     }
 
     @Configuration
-    static class AccountServiceTestContextConfiguration {
+    static class TestConfiguration {
 
         @Bean
         public SeminarService seminarService() {

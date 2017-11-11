@@ -97,8 +97,8 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<String> findCollisions(Event newEvent, Event oldEvent) {
         List<String> collisions = new ArrayList<>();
-        List<Event> concurrentEvents = findEventsByTime(newEvent.getDate(), newEvent.getStartTime(),
-                (newEvent.getEndTime().plusMinutes(newEvent.calculateMinChangeoverTime())));
+        List<Event> concurrentEvents = new ArrayList<>(findEventsByTime(newEvent.getDate(), newEvent.getStartTime(),
+                (newEvent.getEndTime().plusMinutes(newEvent.calculateMinChangeoverTime()))));
         if (oldEvent != null) {
             concurrentEvents.remove(oldEvent);
         }
@@ -108,7 +108,7 @@ public class EventServiceImpl implements EventService {
                     .filter(docent -> concurrentEvent.getDocents().contains(docent))
                     .forEach(docent -> collisions.add(createCollisionString(newEvent, docent, concurrentEvent)));
             // rooms
-            newEvent.getDocents().stream()
+            newEvent.getRooms().stream()
                     .filter(room -> concurrentEvent.getRooms().contains(room))
                     .forEach(room -> collisions.add(createCollisionString(newEvent, room, concurrentEvent)));
             // group
@@ -127,11 +127,11 @@ public class EventServiceImpl implements EventService {
         return findCollisions(newEvent, null);
     }
 
-    private String createCollisionString(Event eventToBeCreated, Object collidingObject, Event concurrentEvent) {
-        return eventToBeCreated.toString() + ": " + collidingObject.toString() +
-                " ist bereits für folgendes Event eingeplant: " + concurrentEvent.toString();
-    }
-
     @Override
     public List<Event> findEventsByGroup(Group group) { return eventDAO.findByGroup(group); }
+
+    private String createCollisionString(Event eventToBeCreated, Object collidingObject, Event concurrentEvent) {
+        return eventToBeCreated + ": " + collidingObject + " ist bereits für folgendes Event eingeplant: "
+                + concurrentEvent;
+    }
 }

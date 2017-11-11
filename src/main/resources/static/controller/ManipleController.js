@@ -2,6 +2,7 @@
 
 app.controller('ManipleController', function ($scope, ConnectionService) {
 
+    // //CRUD function calls for cohorts via ConnectionService
     $scope.cohorts = ConnectionService.getCohorts;
     $scope.createManiple = ConnectionService.createManiple;
     $scope.updateManiple = ConnectionService.updateManiple;
@@ -23,12 +24,14 @@ app.controller('ManipleController', function ($scope, ConnectionService) {
         $scope.cohortsAdvanced.unshift({name: "Alle", maniples: allManiples});
     };
 
+    // set active selected course
     $scope.setSelectedManiple = function (maniple) {
         $scope.maniple = angular.copy(maniple);
         setModalSelectedCohort(maniple.id);
         console.log('Selected Maniple:', $scope.maniple);
     };
 
+    // set cohort value in update modal
     var setModalSelectedCohort = function (id) {
         $scope.modalSelectedCohort = undefined;
         angular.forEach($scope.cohorts(), function (cohort) {
