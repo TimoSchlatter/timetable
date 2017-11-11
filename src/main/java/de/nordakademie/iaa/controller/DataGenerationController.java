@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class DataGenerationController {
 
-    private DataGenerator dataGenerator;
+    private final DataGenerator dataGenerator;
     private boolean dataGenerated = false;
 
     @Autowired

@@ -26,9 +26,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/maniples")
 public class ManipleController {
 
-    private EventService eventService;
-    private ManipleService manipleService;
-    private CenturyService centuryService;
+    private final EventService eventService;
+    private final ManipleService manipleService;
+    private final CenturyService centuryService;
 
     @Autowired
     public ManipleController(EventService eventService, ManipleService manipleService, CenturyService centuryService) {

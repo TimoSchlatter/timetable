@@ -32,10 +32,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/events")
 public class EventController {
 
-    private DocentService docentService;
-    private EventService eventService;
-    private GroupService groupService;
-    private RoomService roomService;
+    private final DocentService docentService;
+    private final EventService eventService;
+    private final GroupService groupService;
+    private final RoomService roomService;
 
     @Autowired
     public EventController(DocentService docentService, EventService eventService, GroupService groupService,

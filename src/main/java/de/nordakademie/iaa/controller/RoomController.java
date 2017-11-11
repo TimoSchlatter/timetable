@@ -25,8 +25,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RequestMapping("/rooms")
 public class RoomController {
 
-    private EventService eventService;
-    private RoomService roomService;
+    private final EventService eventService;
+    private final RoomService roomService;
 
     @Autowired
     public RoomController(EventService eventService, RoomService roomService) {

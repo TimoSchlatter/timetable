@@ -29,9 +29,9 @@ import java.util.List;
 @RequestMapping("/vacantRooms")
 public class VacantRoomController {
 
-    private EventService eventService;
-    private GroupService groupService;
-    private RoomService roomService;
+    private final EventService eventService;
+    private final GroupService groupService;
+    private final RoomService roomService;
 
     @Autowired
     public VacantRoomController(EventService eventService, GroupService groupService, RoomService roomService) {

@@ -19,7 +19,7 @@ import java.util.Optional;
 @Transactional
 public class EventServiceImpl implements EventService {
 
-    private EventDAO eventDAO;
+    private final EventDAO eventDAO;
 
     @Autowired
     public EventServiceImpl(EventDAO eventDAO) {

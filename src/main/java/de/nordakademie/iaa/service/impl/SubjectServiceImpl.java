@@ -15,7 +15,7 @@ import java.util.List;
 @Transactional
 public class SubjectServiceImpl implements SubjectService {
 
-    private SubjectDAO subjectDAO;
+    private final SubjectDAO subjectDAO;
 
     @Autowired
     public SubjectServiceImpl(SubjectDAO subjectDAO) {

@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public class CohortServiceImpl implements CohortService {
 
-    private CohortDAO cohortDAO;
+    private final CohortDAO cohortDAO;
 
     @Autowired
     public CohortServiceImpl(CohortDAO cohortDAO) {

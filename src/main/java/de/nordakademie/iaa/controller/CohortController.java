@@ -26,9 +26,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/cohorts")
 public class CohortController {
 
-    private EventService eventService;
-    private CohortService cohortService;
-    private ManipleService manipleService;
+    private final EventService eventService;
+    private final CohortService cohortService;
+    private final ManipleService manipleService;
 
     @Autowired
     public CohortController(EventService eventService, CohortService cohortService, ManipleService manipleService) {

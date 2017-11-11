@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public class DocentServiceImpl implements DocentService {
 
-    private DocentDAO docentDAO;
+    private final DocentDAO docentDAO;
 
     @Autowired
     public DocentServiceImpl(DocentDAO docentDAO) {

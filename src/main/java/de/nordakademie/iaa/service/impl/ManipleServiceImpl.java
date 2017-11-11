@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public class ManipleServiceImpl implements ManipleService {
 
-    private ManipleDAO manipleDAO;
+    private final ManipleDAO manipleDAO;
 
     @Autowired
     public ManipleServiceImpl(ManipleDAO manipleDAO) {

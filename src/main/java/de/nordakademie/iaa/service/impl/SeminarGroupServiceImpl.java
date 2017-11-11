@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 public class SeminarGroupServiceImpl implements SeminarGroupService {
 
-    private SeminarGroupDAO seminarGroupDAO;
+    private final SeminarGroupDAO seminarGroupDAO;
 
     @Autowired
     public SeminarGroupServiceImpl(SeminarGroupDAO seminarGroupDAO) {

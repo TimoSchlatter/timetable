@@ -3,6 +3,7 @@ package de.nordakademie.iaa.util;
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.*;
 import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,17 +21,18 @@ import static de.nordakademie.iaa.model.SeminarType.*;
 @Transactional
 public class DataGenerator {
 
-    private CenturyService centuryService;
-    private CohortService cohortService;
-    private CourseService courseService;
-    private DocentService docentService;
-    private EventService eventService;
-    private ManipleService manipleService;
-    private RoomService roomService;
-    private SeminarService seminarService;
-    private SubjectService subjectService;
-    private SeminarGroupService seminarGroupService;
+    private final CenturyService centuryService;
+    private final CohortService cohortService;
+    private final CourseService courseService;
+    private final DocentService docentService;
+    private final EventService eventService;
+    private final ManipleService manipleService;
+    private final RoomService roomService;
+    private final SeminarService seminarService;
+    private final SubjectService subjectService;
+    private final SeminarGroupService seminarGroupService;
 
+    @Autowired
     public DataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService, DocentService docentService, EventService eventService, ManipleService manipleService, RoomService roomService, SeminarService seminarService, SubjectService subjectService, SeminarGroupService seminarGroupService) {
         this.centuryService = centuryService;
         this.cohortService = cohortService;
@@ -47,7 +49,6 @@ public class DataGenerator {
     /**
      * Warning: Be careful when changing this order!
      */
-    //    @PostConstruct
     public void createData() throws Exception {
         createRooms();
         createDocents();

@@ -24,8 +24,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RequestMapping("/courses")
 public class CourseController {
 
-    private CourseService courseService;
-    private SubjectService subjectService;
+    private final CourseService courseService;
+    private final SubjectService subjectService;
 
     @Autowired
     public CourseController(CourseService courseService, SubjectService subjectService) {

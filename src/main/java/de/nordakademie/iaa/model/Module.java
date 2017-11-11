@@ -30,15 +30,15 @@ public abstract class Module extends HasId implements Serializable {
     private String title;
     private String shortTitle;
 
-    public Module() {
+    Module() {
     }
 
-    public Module(String title) {
+    Module(String title) {
         this.title = title;
         this.shortTitle = title;
     }
 
-    public Module(String title, String shortTitle) {
+    Module(String title, String shortTitle) {
         this.title = title;
         this.shortTitle = shortTitle;
     }

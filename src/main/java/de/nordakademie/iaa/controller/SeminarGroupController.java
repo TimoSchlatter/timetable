@@ -25,8 +25,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RequestMapping("/seminargroups")
 public class SeminarGroupController {
 
-    private EventService eventService;
-    private SeminarGroupService seminarGroupService;
+    private final EventService eventService;
+    private final SeminarGroupService seminarGroupService;
 
     @Autowired
     public SeminarGroupController(EventService eventService, SeminarGroupService seminarGroupService, ManipleService manipleService) {

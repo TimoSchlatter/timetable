@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public class CenturyServiceImpl implements CenturyService {
 
-    private CenturyDAO centuryDAO;
+    private final CenturyDAO centuryDAO;
 
     @Autowired
     public CenturyServiceImpl(CenturyDAO centuryDAO) {

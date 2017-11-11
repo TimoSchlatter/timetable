@@ -25,8 +25,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RequestMapping("/docents")
 public class DocentController {
 
-    private DocentService docentService;
-    private EventService eventService;
+    private final DocentService docentService;
+    private final EventService eventService;
 
     @Autowired
     public DocentController(DocentService docentService, EventService eventService) {

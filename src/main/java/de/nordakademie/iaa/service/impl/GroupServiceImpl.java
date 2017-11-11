@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 public class GroupServiceImpl implements GroupService {
 
-    private GroupDAO groupDAO;
+    private final GroupDAO groupDAO;
 
     @Autowired
     public GroupServiceImpl(GroupDAO groupDAO) {

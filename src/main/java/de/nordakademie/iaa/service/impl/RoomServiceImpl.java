@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public class RoomServiceImpl implements RoomService {
 
-    private RoomDAO roomDAO;
+    private final RoomDAO roomDAO;
 
     @Autowired
     public RoomServiceImpl(RoomDAO roomDAO) {

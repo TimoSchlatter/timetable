@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 public class CourseServiceImpl implements CourseService {
 
-    private CourseDAO courseDAO;
+    private final CourseDAO courseDAO;
 
     @Autowired
     public CourseServiceImpl(CourseDAO courseDAO) {

@@ -14,12 +14,8 @@ public class NotEnoughChangeoverTimeProvidedException extends Exception {
         super();
     }
 
-    /**
-     * Constructor with message.
-     *
-     * @param message The message.
-     */
-    public NotEnoughChangeoverTimeProvidedException(String message) {
-        super(message);
+    public NotEnoughChangeoverTimeProvidedException(Object objectWithoutEnoughChangeoverTime, int needed, int provided) {
+        super(objectWithoutEnoughChangeoverTime + " needs at least " + needed + "min changeover time. Provided: "
+                + provided);
     }
 }

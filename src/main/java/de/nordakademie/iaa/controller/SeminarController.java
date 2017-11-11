@@ -24,8 +24,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RequestMapping("/seminars")
 public class SeminarController {
 
-    private SeminarService seminarService;
-    private SubjectService subjectService;
+    private final SeminarService seminarService;
+    private final SubjectService subjectService;
 
     @Autowired
     public SeminarController(SeminarService seminarService, SubjectService subjectService) {

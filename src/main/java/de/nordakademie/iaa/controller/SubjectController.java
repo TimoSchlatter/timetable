@@ -24,8 +24,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RequestMapping("/subjects")
 public class SubjectController {
 
-    private EventService eventService;
-    private SubjectService subjectService;
+    private final EventService eventService;
+    private final SubjectService subjectService;
 
     @Autowired
     public SubjectController(EventService eventService, SubjectService subjectService) {

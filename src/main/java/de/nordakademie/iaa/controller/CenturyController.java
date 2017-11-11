@@ -22,7 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RequestMapping("/centuries")
 public class CenturyController {
 
-    private CenturyService centuryService;
+    private final CenturyService centuryService;
 
     @Autowired
     public CenturyController(CenturyService centuryService) {
