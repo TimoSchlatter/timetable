@@ -4,11 +4,12 @@ import de.nordakademie.iaa.model.Group;
 import de.nordakademie.iaa.model.Room;
 
 /**
- * Exception throws if an event was tried to be saved with a room which is too small for the event's group.
+ * Exception thrown if an event was attempted to save with a room which is too small for the event's group.
  *
  * @author Timo Schlatter
  */
 public class RoomTooSmallForGroupException extends Exception {
+
     /**
      * Default constructor.
      */
@@ -17,12 +18,12 @@ public class RoomTooSmallForGroupException extends Exception {
     }
 
     /**
-     * Constructor with message.
+     * Constructor for providing extra information in the message.
      *
-     * @param room The room which is too small for the group.
-     * @param group THe group that does not fit in the room.
+     * @param room  the room which is too small for the group.
+     * @param group the group that does not fit in the room.
      */
     public RoomTooSmallForGroupException(Room room, Group group) {
-        super(room  + " can not provide enough seats for " + group);
+        super(room + " can not provide enough seats for " + group);
     }
 }
