@@ -218,10 +218,22 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
                 start: event.date + 'T' + event.startTime,
                 end: event.date + 'T' + event.endTime,
                 allDay: false,
-                editable: false
+                editable: false,
+                backgroundColor: getEventColor(event.subject)
             };
             $scope.calenderEvents[0].push(event);
         });
+    };
+
+    var getEventColor = function (subject) {
+        switch (subject.subjectType) {
+            case 'SEMINAR':
+                return '#ffffcc';
+            case 'EXAM':
+                return '#ff6666';
+            default:
+                return '#ccffff';
+        }
     };
 
     $scope.alertEventOnClick = function (event) {
@@ -237,7 +249,7 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
             dayNames: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
             dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa'],
             locale: 'de',
-            height: 500,
+            height: 650,
             editable: true,
             header:{
                 left: 'month agendaWeek agendaDay',
