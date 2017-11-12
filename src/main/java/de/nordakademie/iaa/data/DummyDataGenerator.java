@@ -24,7 +24,7 @@ import static de.nordakademie.iaa.model.SeminarType.*;
  */
 @Component
 @Transactional
-public class DataGenerator {
+public class DummyDataGenerator {
 
     private final CenturyService centuryService;
     private final CohortService cohortService;
@@ -33,12 +33,15 @@ public class DataGenerator {
     private final EventService eventService;
     private final ManipleService manipleService;
     private final RoomService roomService;
+    private final SeminarGroupService seminarGroupService;
     private final SeminarService seminarService;
     private final SubjectService subjectService;
-    private final SeminarGroupService seminarGroupService;
 
     @Autowired
-    public DataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService, DocentService docentService, EventService eventService, ManipleService manipleService, RoomService roomService, SeminarService seminarService, SubjectService subjectService, SeminarGroupService seminarGroupService) {
+    public DummyDataGenerator(CenturyService centuryService, CohortService cohortService, CourseService courseService,
+                              DocentService docentService, EventService eventService, ManipleService manipleService,
+                              RoomService roomService, SeminarGroupService seminarGroupService,
+                              SeminarService seminarService, SubjectService subjectService) {
         this.centuryService = centuryService;
         this.cohortService = cohortService;
         this.courseService = courseService;
@@ -46,9 +49,9 @@ public class DataGenerator {
         this.eventService = eventService;
         this.manipleService = manipleService;
         this.roomService = roomService;
+        this.seminarGroupService = seminarGroupService;
         this.seminarService = seminarService;
         this.subjectService = subjectService;
-        this.seminarGroupService = seminarGroupService;
     }
 
     /**
@@ -56,7 +59,6 @@ public class DataGenerator {
      */
     public void createData() throws Exception {
         // Warning: Be careful when changing this order!
-        clearDatabase();
         createRooms();
         createDocents();
         createCourses();
@@ -65,18 +67,6 @@ public class DataGenerator {
         createSeminarGroups();
         createSubjects();
         createEvents();
-    }
-
-    private void clearDatabase() {
-        eventService.listEvents().forEach(event -> eventService.deleteEvent(event.getId()));
-        subjectService.listSubjects().forEach(subject -> subjectService.deleteSubject(subject.getId()));
-        seminarGroupService.listSeminarGroups()
-                .forEach(seminarGroup -> seminarGroupService.deleteSeminarGroup(seminarGroup.getId()));
-        cohortService.listCohorts().forEach(cohort -> cohortService.deleteCohort(cohort.getId()));
-        seminarService.listSeminars().forEach(seminar -> seminarService.deleteSeminar(seminar.getId()));
-        courseService.listCourses().forEach(course -> courseService.deleteCourse(course.getId()));
-        docentService.listDocents().forEach(docent -> docentService.deleteDocent(docent.getId()));
-        roomService.listRooms().forEach(room -> roomService.deleteRoom(room.getId()));
     }
 
     private void createSeminarGroups() {
