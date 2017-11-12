@@ -83,8 +83,8 @@ public class EventController {
         if (collisions.isEmpty() || ignoreCollisions) {
             int created = 0;
             for (Event eventToSave : eventsToSave) {
-                if (eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(event.getDate(),
-                        event.getStartTime(), event.getEndTime(), event.getGroup()) == null) {
+                if (eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(eventToSave.getDate(),
+                        eventToSave.getStartTime(), eventToSave.getEndTime(), eventToSave.getGroup()) == null) {
                     created = (saveEvent(eventToSave) ? created + 1 : created);
                 }
             }
