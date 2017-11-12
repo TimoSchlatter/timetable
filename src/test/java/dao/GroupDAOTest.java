@@ -21,14 +21,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 25.10.17.
+ * Test class for GroupDAO class.
+ *
+ * @author Arvid Ottenberg
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class})
+@ContextConfiguration(classes = {Application.class})
 @Transactional
 public class GroupDAOTest {
 
-
+    @Autowired
     private GroupDAO groupDAO;
 
     @PersistenceContext
@@ -36,20 +38,10 @@ public class GroupDAOTest {
 
     private Group group;
 
-    @Autowired
-    public void setGroupDAO(GroupDAO groupDAO) {
-        this.groupDAO = groupDAO;
-    }
-
     @Before
     public void setupData() {
-        group = new Century("I14a",20, 42);
+        group = new Century("I14a", 20, 42);
         groupDAO.save(group);
-    }
-
-    @After
-    public void tearDown() {
-        entityManager.clear();
     }
 
     @Test
@@ -62,17 +54,18 @@ public class GroupDAOTest {
     public void testFindAll() {
         List<Group> groups = groupDAO.findAll();
         assertEquals(1, groups.size());
-        for (Group group : groups) {
-            compareGroups(group);
-        }
+        groups.forEach(this::compareGroups);
     }
 
     @Test
     public void testDelete() {
-        groupDAO.delete(this.group);
-        List<Group> groups = groupDAO.findAll();
-        assertTrue(groups.isEmpty());
+        groupDAO.delete(group);
+        assertTrue(groupDAO.findAll().isEmpty());
+    }
 
+    @After
+    public void tearDown() {
+        entityManager.clear();
     }
 
     private void compareGroups(Group group) {

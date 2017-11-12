@@ -23,15 +23,19 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 24.10.17.
+ * Test class for ManipleDAO class.
+ *
+ * @author Arvid Ottenberg
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class})
+@ContextConfiguration(classes = {Application.class})
 @Transactional
 public class ManipleDAOTest {
 
+    @Autowired
     private ManipleDAO manipleDAO;
+
+    @Autowired
     private CenturyDAO centuryDAO;
 
     @PersistenceContext
@@ -39,29 +43,14 @@ public class ManipleDAOTest {
 
     private Maniple maniple;
 
-    @Autowired
-    public void setManipleDAO(ManipleDAO manipleDAO) {
-        this.manipleDAO = manipleDAO;
-    }
-
-    @Autowired
-    public void setCenturyDAO(CenturyDAO centuryDAO) {
-        this.centuryDAO = centuryDAO;
-    }
-
     @Before
     public void setupData() {
         List<Century> centuries = new ArrayList<>();
-        Century century = new Century("I14a",20, 42);
+        Century century = new Century("I14a", 20, 42);
         centuryDAO.save(century);
         centuries.add(century);
-        maniple = new Maniple("I14", 20,centuries);
+        maniple = new Maniple("I14", 20, centuries);
         manipleDAO.save(maniple);
-    }
-
-    @After
-    public void tearDown() {
-        entityManager.clear();
     }
 
     @Test
@@ -74,9 +63,7 @@ public class ManipleDAOTest {
     public void testFindAll() {
         List<Maniple> maniples = manipleDAO.findAll();
         assertEquals(1, maniples.size());
-        for(Maniple maniple : maniples) {
-            compareManiple(maniple);
-        }
+        maniples.forEach(this::compareManiple);
     }
 
     @Test
@@ -87,10 +74,13 @@ public class ManipleDAOTest {
 
     @Test
     public void testDelete() {
-        manipleDAO.delete(this.maniple);
-        List<Maniple> maniples = manipleDAO.findAll();
-        assertTrue(maniples.isEmpty());
+        manipleDAO.delete(maniple);
+        assertTrue(manipleDAO.findAll().isEmpty());
+    }
 
+    @After
+    public void tearDown() {
+        entityManager.clear();
     }
 
     private void compareManiple(Maniple maniple) {

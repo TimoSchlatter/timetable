@@ -21,15 +21,16 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 25.10.17.
+ * Test class for ModuleDAO class.
+ *
+ * @author Arvid Ottenberg
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class})
+@ContextConfiguration(classes = {Application.class})
 @Transactional
 public class ModuleDAOTest {
 
-
+    @Autowired
     private ModuleDAO moduleDAO;
 
     @PersistenceContext
@@ -37,20 +38,10 @@ public class ModuleDAOTest {
 
     private Module module;
 
-    @Autowired
-    public void setModuleDAO(ModuleDAO moduleDAO) {
-        this.moduleDAO = moduleDAO;
-    }
-
     @Before
     public void setupData() {
-        module = new Course("Rudern ohne Paddel", "R",234 );
+        module = new Course("Rudern ohne Paddel", "R", 234);
         moduleDAO.save(module);
-    }
-
-    @After
-    public void tearDown() {
-        entityManager.clear();
     }
 
     @Test
@@ -63,9 +54,7 @@ public class ModuleDAOTest {
     public void testFindAll() {
         List<Module> modules = moduleDAO.findAll();
         assertEquals(1, modules.size());
-        for (Module module : modules) {
-            compareModules(module);
-        }
+        modules.forEach(this::compareModules);
     }
 
     @Test
@@ -76,10 +65,13 @@ public class ModuleDAOTest {
 
     @Test
     public void testDelete() {
-        moduleDAO.delete(this.module);
-        List<Module> modules = moduleDAO.findAll();
-        assertTrue(modules.isEmpty());
+        moduleDAO.delete(module);
+        assertTrue(moduleDAO.findAll().isEmpty());
+    }
 
+    @After
+    public void tearDown() {
+        entityManager.clear();
     }
 
     private void compareModules(Module module) {

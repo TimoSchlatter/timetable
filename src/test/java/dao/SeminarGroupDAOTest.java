@@ -20,15 +20,16 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 25.10.17.
+ * Test class for SeminarGroupDAO class.
+ *
+ * @author Arvid Ottenberg
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class})
+@ContextConfiguration(classes = {Application.class})
 @Transactional
 public class SeminarGroupDAOTest {
 
-
+    @Autowired
     private SeminarGroupDAO seminarGroupDAO;
 
     @PersistenceContext
@@ -36,20 +37,10 @@ public class SeminarGroupDAOTest {
 
     private SeminarGroup seminarGroup;
 
-    @Autowired
-    public void setSeminarGroupDAO(SeminarGroupDAO seminarGroupDAO) {
-        this.seminarGroupDAO = seminarGroupDAO;
-    }
-
     @Before
     public void setupData() {
         seminarGroup = new SeminarGroup("Gruppe Lesen", 20, 30);
         seminarGroupDAO.save(seminarGroup);
-    }
-
-    @After
-    public void tearDown() {
-        entityManager.clear();
     }
 
     @Test
@@ -62,9 +53,7 @@ public class SeminarGroupDAOTest {
     public void testFindAll() {
         List<SeminarGroup> seminarGroups = seminarGroupDAO.findAll();
         assertEquals(1, seminarGroups.size());
-        for (SeminarGroup seminarGroup : seminarGroups) {
-            compareSeminarGroups(seminarGroup);
-        }
+        seminarGroups.forEach(this::compareSeminarGroups);
     }
 
     @Test
@@ -75,10 +64,13 @@ public class SeminarGroupDAOTest {
 
     @Test
     public void testDelete() {
-        seminarGroupDAO.delete(this.seminarGroup);
-        List<SeminarGroup> seminarGroups = seminarGroupDAO.findAll();
-        assertTrue(seminarGroups.isEmpty());
+        seminarGroupDAO.delete(seminarGroup);
+        assertTrue(seminarGroupDAO.findAll().isEmpty());
+    }
 
+    @After
+    public void tearDown() {
+        entityManager.clear();
     }
 
     private void compareSeminarGroups(SeminarGroup seminarGroup) {

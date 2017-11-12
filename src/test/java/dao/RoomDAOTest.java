@@ -21,14 +21,16 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 24.10.17.
+ * Test class for RoomDAO class.
+ *
+ * @author Arvid Ottenberg
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {Application.class})
 @Transactional
 public class RoomDAOTest {
 
+    @Autowired
     private RoomDAO roomDAO;
 
     @PersistenceContext
@@ -36,20 +38,10 @@ public class RoomDAOTest {
 
     private Room room;
 
-    @Autowired
-    public void setRoomDAO(RoomDAO roomDAO) {
-        this.roomDAO = roomDAO;
-    }
-
     @Before
     public void setupData() {
         room = new Room(20,"X", 42, "999", RoomType.COMPUTERROOM);
         roomDAO.save(room);
-    }
-
-    @After
-    public void tearDown() {
-        entityManager.clear();
     }
 
     @Test
@@ -74,8 +66,12 @@ public class RoomDAOTest {
     @Test
     public void testDelete() {
         roomDAO.delete(this.room);
-        List<Room> rooms = roomDAO.findAll();
-        assertTrue(rooms.isEmpty());
+        assertTrue(roomDAO.findAll().isEmpty());
+    }
+
+    @After
+    public void tearDown() {
+        entityManager.clear();
     }
 
     private void compareRooms(Room room) {

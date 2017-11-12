@@ -20,35 +20,26 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 24.10.17.
+ * Test class for CenturyDAO class.
+ *
+ * @author Arvid Ottenberg
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class})
+@ContextConfiguration(classes = {Application.class})
 @Transactional
 public class CenturyDAOTest {
-    
+
+    @Autowired
     private CenturyDAO centuryDAO;
-    
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    private Century century;
+    private final Century century = new Century("I14a", 20, 42);;
 
-    @Autowired
-    public void setCenturyDAO(CenturyDAO centuryDAO) {
-        this.centuryDAO = centuryDAO;
-    }
-        
     @Before
     public void setupData() {
-        century = new Century("I14a",20, 42);
         centuryDAO.save(century);
-    }
-
-    @After
-    public void tearDown() {
-        entityManager.clear();
     }
 
     @Test
@@ -61,9 +52,7 @@ public class CenturyDAOTest {
     public void testFindAll() {
         List<Century> centurys = centuryDAO.findAll();
         assertEquals(1, centurys.size());
-        for(Century century : centurys) {
-            compareCentury(century);
-        }
+        centurys.forEach(this::compareCentury);
     }
 
     @Test
@@ -74,10 +63,13 @@ public class CenturyDAOTest {
 
     @Test
     public void testDelete() {
-        centuryDAO.delete(this.century);
-        List<Century> centurys = centuryDAO.findAll();
-        assertTrue(centurys.isEmpty());
+        centuryDAO.delete(century);
+        assertTrue(centuryDAO.findAll().isEmpty());
+    }
 
+    @After
+    public void tearDown() {
+        entityManager.clear();
     }
 
     private void compareCentury(Century century) {

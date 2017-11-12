@@ -20,14 +20,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 24.10.17.
+ * Test class for DocentDAO class.
+ *
+ * @author Arvid Ottenberg
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class})
+@ContextConfiguration(classes = {Application.class})
 @Transactional
 public class DocentDAOTest {
 
-
+    @Autowired
     private DocentDAO docentDAO;
 
     @PersistenceContext
@@ -35,20 +37,10 @@ public class DocentDAOTest {
 
     private Docent docent;
 
-    @Autowired
-    public void setDocentDAO(DocentDAO docentDAO) {
-        this.docentDAO = docentDAO;
-    }
-
     @Before
     public void setupData() {
         docent = new Docent("test@docent.com", "John", "Doe", "0123123123", "Dr.Dr.", true, 20);
         docentDAO.save(docent);
-    }
-
-    @After
-    public void tearDown() {
-        entityManager.clear();
     }
 
     @Test
@@ -61,23 +53,24 @@ public class DocentDAOTest {
     public void testFindAll() {
         List<Docent> docents = docentDAO.findAll();
         assertEquals(1, docents.size());
-        for (Docent docent : docents) {
-            compareDocents(docent);
-        }
+        docents.forEach(this::compareDocents);
     }
 
     @Test
     public void testFindDocentByName() {
-        Docent docent = docentDAO.findByForenameAndSurname("John","Doe");
+        Docent docent = docentDAO.findByForenameAndSurname("John", "Doe");
         compareDocents(docent);
     }
 
     @Test
     public void testDelete() {
-        docentDAO.delete(this.docent);
-        List<Docent> docents = docentDAO.findAll();
-        assertTrue(docents.isEmpty());
+        docentDAO.delete(docent);
+        assertTrue(docentDAO.findAll().isEmpty());
+    }
 
+    @After
+    public void tearDown() {
+        entityManager.clear();
     }
 
     private void compareDocents(Docent docent) {

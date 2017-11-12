@@ -21,15 +21,16 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 25.10.17.
+ * Test class for SeminarDAO class.
+ *
+ * @author Arvid Ottenberg
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class})
+@ContextConfiguration(classes = {Application.class})
 @Transactional
 public class SeminarDAOTest {
 
-
+    @Autowired
     private SeminarDAO seminarDAO;
 
     @PersistenceContext
@@ -37,20 +38,10 @@ public class SeminarDAOTest {
 
     private Seminar seminar;
 
-    @Autowired
-    public void setSeminarDAO(SeminarDAO seminarDAO) {
-        this.seminarDAO = seminarDAO;
-    }
-
     @Before
     public void setupData() {
         seminar = new Seminar("Richtig lesen", SeminarType.KEY_QUALIFICATION);
         seminarDAO.save(seminar);
-    }
-
-    @After
-    public void tearDown() {
-        entityManager.clear();
     }
 
     @Test
@@ -63,9 +54,7 @@ public class SeminarDAOTest {
     public void testFindAll() {
         List<Seminar> seminars = seminarDAO.findAll();
         assertEquals(1, seminars.size());
-        for (Seminar seminar : seminars) {
-            compareSeminars(seminar);
-        }
+        seminars.forEach(this::compareSeminars);
     }
 
     @Test
@@ -76,10 +65,13 @@ public class SeminarDAOTest {
 
     @Test
     public void testDelete() {
-        seminarDAO.delete(this.seminar);
-        List<Seminar> seminars = seminarDAO.findAll();
-        assertTrue(seminars.isEmpty());
+        seminarDAO.delete(seminar);
+        assertTrue(seminarDAO.findAll().isEmpty());
+    }
 
+    @After
+    public void tearDown() {
+        entityManager.clear();
     }
 
     private void compareSeminars(Seminar seminar) {

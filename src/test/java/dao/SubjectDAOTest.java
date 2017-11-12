@@ -23,15 +23,19 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 24.10.17.
+ * Test class for SubjectDAO class.
+ *
+ * @author Arvid Ottenberg
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {Application.class})
 @Transactional
 public class SubjectDAOTest {
 
+    @Autowired
     private SubjectDAO subjectDAO;
+
+    @Autowired
     private CourseDAO courseDAO;
 
     @PersistenceContext
@@ -40,27 +44,12 @@ public class SubjectDAOTest {
     private Subject subject;
     private Course course;
 
-    @Autowired
-    public void setSubjectDAO(SubjectDAO subjectDAO) {
-        this.subjectDAO = subjectDAO;
-    }
-
-    @Autowired
-    public void setCourseDAO(CourseDAO courseDAO) {
-        this.courseDAO = courseDAO;
-    }
-
     @Before
     public void setupData() {
-        course = new Course("Treppensteigen III","I",123);
+        course = new Course("Treppensteigen III", "I", 123);
         courseDAO.save(course);
         subject = new Subject(20, SubjectType.LECTURE, course);
         subjectDAO.save(subject);
-    }
-
-    @After
-    public void tearDown() {
-        entityManager.clear();
     }
 
     @Test
@@ -84,16 +73,19 @@ public class SubjectDAOTest {
 
     @Test
     public void testDelete() {
-        subjectDAO.delete(this.subject);
-        List<Subject> subjects = subjectDAO.findAll();
-        assertTrue(subjects.isEmpty());
+        subjectDAO.delete(subject);
+        assertTrue(subjectDAO.findAll().isEmpty());
     }
 
     @Test
     public void testDeleteByModule() {
         subjectDAO.deleteByModule(course);
-        List<Subject> subjects = subjectDAO.findAll();
-        assertTrue(subjects.isEmpty());
+        assertTrue(subjectDAO.findAll().isEmpty());
+    }
+
+    @After
+    public void tearDown() {
+        entityManager.clear();
     }
 
     private void compareSubjects(Subject subject) {

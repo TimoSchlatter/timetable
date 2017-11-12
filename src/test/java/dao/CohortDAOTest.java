@@ -18,23 +18,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 25.10.17.
+ * Test class for CohortDAO class.
+ *
+ * @author Arvid Ottenberg
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class})
+@ContextConfiguration(classes = {Application.class})
 @Transactional
 public class CohortDAOTest {
 
+    @Autowired
     private CohortDAO cohortDAO;
+
+    @Autowired
     private ManipleDAO manipleDAO;
+
+    @Autowired
     private CenturyDAO centuryDAO;
 
     @PersistenceContext
@@ -42,38 +48,14 @@ public class CohortDAOTest {
 
     private Cohort cohort;
 
-    @Autowired
-    public void setCohortDAO(CohortDAO cohortDAO) {
-        this.cohortDAO = cohortDAO;
-    }
-
-    @Autowired
-    public void setManipleDAO(ManipleDAO manipleDAO) {
-        this.manipleDAO = manipleDAO;
-    }
-
-    @Autowired
-    public void setCenturyDAO(CenturyDAO centuryDAO) {
-        this.centuryDAO = centuryDAO;
-    }
-
     @Before
     public void setupData() {
-        List<Century> centuries = new ArrayList<>();
-        Century century = new Century("I14a",20, 42);
+        Century century = new Century("I14a", 20, 42);
         centuryDAO.save(century);
-        centuries.add(century);
-        Maniple maniple = new Maniple("I14", 20,centuries);
+        Maniple maniple = new Maniple("I14", 20, Arrays.asList(century));
         manipleDAO.save(maniple);
-        List<Maniple> maniples = new ArrayList<>();
-        maniples.add(maniple);
-        cohort = new Cohort("I",42, maniples);
+        cohort = new Cohort("I", 42, Arrays.asList(maniple));
         cohortDAO.save(cohort);
-    }
-
-    @After
-    public void tearDown() {
-        entityManager.clear();
     }
 
     @Test
@@ -86,9 +68,7 @@ public class CohortDAOTest {
     public void testFindAll() {
         List<Cohort> cohorts = cohortDAO.findAll();
         assertEquals(1, cohorts.size());
-        for(Cohort cohort : cohorts) {
-            compareCohort(cohort);
-        }
+        cohorts.forEach(this::compareCohort);
     }
 
     @Test
@@ -99,10 +79,13 @@ public class CohortDAOTest {
 
     @Test
     public void testDelete() {
-        cohortDAO.delete(this.cohort);
-        List<Cohort> cohorts = cohortDAO.findAll();
-        assertTrue(cohorts.isEmpty());
+        cohortDAO.delete(cohort);
+        assertTrue(cohortDAO.findAll().isEmpty());
+    }
 
+    @After
+    public void tearDown() {
+        entityManager.clear();
     }
 
     private void compareCohort(Cohort cohort) {

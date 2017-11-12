@@ -20,16 +20,16 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by arvid on 24.10.17.
+ * Test class for CourseDAO class.
+ *
+ * @author Arvid Ottenberg
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { Application.class})
 @Transactional
-public class CourseDAOTest
-{
+public class CourseDAOTest {
 
-
+    @Autowired
     private CourseDAO courseDAO;
 
     @PersistenceContext
@@ -37,19 +37,10 @@ public class CourseDAOTest
 
     private Course course;
 
-    @Autowired
-    public void setCourseDAO(CourseDAO courseDAO) {
-        this.courseDAO = courseDAO;
-    }
     @Before
     public void setupData() {
         course = new Course("Test Driven Development", "I", 123 );
         courseDAO.save(course);
-    }
-
-    @After
-    public void tearDown() {
-        entityManager.clear();
     }
 
     @Test
@@ -62,9 +53,7 @@ public class CourseDAOTest
     public void testFindAll() {
         List<Course> courses = courseDAO.findAll();
         assertEquals(1, courses.size());
-        for(Course course : courses) {
-            compareCourses(course);
-        }
+        courses.forEach(this::compareCourses);
     }
 
     @Test
@@ -75,10 +64,13 @@ public class CourseDAOTest
 
     @Test
     public void testDelete() {
-        courseDAO.delete(this.course);
-        List<Course> courses = courseDAO.findAll();
-        assertTrue(courses.isEmpty());
+        courseDAO.delete(course);
+        assertTrue(courseDAO.findAll().isEmpty());
+    }
 
+    @After
+    public void tearDown() {
+        entityManager.clear();
     }
 
     private void compareCourses(Course course) {
