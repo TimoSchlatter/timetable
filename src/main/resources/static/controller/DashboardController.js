@@ -45,7 +45,8 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     });
 
     var isSubFormValid = function () {
-        return $scope.modalSubForm.$valid && (($scope.modalSubjectType === 'SEMINAR') === isDefaultSelectedCohort());
+        return $scope.modalSubForm.$valid && (($scope.modalSubjectType === 'SEMINAR') === isDefaultSelectedCohort())
+            && ($scope.modalStartTime < $scope.modalEndTime);
     };
 
     var isDefaultSelectedCohort = function () {
