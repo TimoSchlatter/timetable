@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 /**
  * Controller for dummy data generation.
  *
@@ -30,7 +32,7 @@ public class DataGenerationController {
      *
      * @return status OK or BAD_REQUEST (if an exception occurred while creating dummy data).
      */
-    @RequestMapping("/generatedata")
+    @RequestMapping(value = "/generatedata", method = GET)
     public ResponseEntity generateData() {
         if (!dataGenerated) {
             try {
@@ -49,7 +51,7 @@ public class DataGenerationController {
      * @return boolean if data was already generated.
      */
     @ResponseBody
-    @RequestMapping("/datagenerated")
+    @RequestMapping(value = "/datagenerated", method = GET)
     public boolean dataGenerated() {
         return dataGenerated;
     }

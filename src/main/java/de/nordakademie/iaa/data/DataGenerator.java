@@ -56,6 +56,7 @@ public class DataGenerator {
      */
     public void createData() throws Exception {
         // Warning: Be careful when changing this order!
+        clearDatabase();
         createRooms();
         createDocents();
         createCourses();
@@ -64,6 +65,18 @@ public class DataGenerator {
         createSeminarGroups();
         createSubjects();
         createEvents();
+    }
+
+    private void clearDatabase() {
+        eventService.listEvents().forEach(event -> eventService.deleteEvent(event.getId()));
+        subjectService.listSubjects().forEach(subject -> subjectService.deleteSubject(subject.getId()));
+        seminarGroupService.listSeminarGroups()
+                .forEach(seminarGroup -> seminarGroupService.deleteSeminarGroup(seminarGroup.getId()));
+        cohortService.listCohorts().forEach(cohort -> cohortService.deleteCohort(cohort.getId()));
+        seminarService.listSeminars().forEach(seminar -> seminarService.deleteSeminar(seminar.getId()));
+        courseService.listCourses().forEach(course -> courseService.deleteCourse(course.getId()));
+        docentService.listDocents().forEach(docent -> docentService.deleteDocent(docent.getId()));
+        roomService.listRooms().forEach(room -> roomService.deleteRoom(room.getId()));
     }
 
     private void createSeminarGroups() {
