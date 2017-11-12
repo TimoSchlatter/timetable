@@ -1,5 +1,12 @@
 'use strict';
 
+/*
+ AngularJS Controller
+ Controller is defined to augment the Cohort View.
+ The Controller is attached to the DOM via the ng-controller directive.
+ @author Jonas Gehrke
+ */
+
 app.controller('CohortController', function ($scope, ConnectionService) {
 
     //CRUD function calls for cohorts via ConnectionService

@@ -1,5 +1,12 @@
 'use strict';
 
+/*
+ AngularJS Controller
+ Controller is defined to augment the Room View.
+ The Controller is attached to the DOM via the ng-controller directive.
+ @author Jonas Gehrke
+ */
+
 app.controller('RoomController', function ($scope, ConnectionService) {
 
     $scope.rooms = ConnectionService.getRooms;

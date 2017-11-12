@@ -1,5 +1,12 @@
 'use strict';
 
+/*
+ AngularJS Controller
+ Controller is defined to augment the Subject View.
+ The Controller is attached to the DOM via the ng-controller directive.
+ @author Jonas Jacobsen
+ */
+
 app.controller('SubjectController', function ($scope, $http, ConnectionService) {
 
     $scope.subjects = ConnectionService.getSubjects;
