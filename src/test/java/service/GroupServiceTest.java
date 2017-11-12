@@ -1,9 +1,6 @@
 package service;
 
-
 import de.nordakademie.iaa.dao.GroupDAO;
-import de.nordakademie.iaa.model.Century;
-import de.nordakademie.iaa.model.Group;
 import de.nordakademie.iaa.service.GroupService;
 import de.nordakademie.iaa.service.impl.GroupServiceImpl;
 import org.junit.After;
@@ -20,6 +17,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
+/**
+ * Test class for GroupService class.
+ *
+ * @author Timo Schlatter
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class GroupServiceTest {
@@ -30,13 +32,9 @@ public class GroupServiceTest {
     @Autowired
     private GroupDAO groupDAO;
 
-    private final String name = "A";
-    private final int numberOfStudents = 42;
-    private final Long id = 1L;
-    private final Group group = new Century(name, numberOfStudents);
-
     @Test
     public void testLoadGroup() {
+        Long id = 1L;
         groupService.loadGroup(id);
         verify(groupDAO, times(1)).findOne(id);
     }

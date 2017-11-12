@@ -20,6 +20,11 @@ import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
+/**
+ * Test class for CohortService class.
+ *
+ * @author Timo Schlatter
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class CohortServiceTest {

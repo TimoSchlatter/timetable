@@ -1,6 +1,5 @@
 package service;
 
-
 import de.nordakademie.iaa.dao.EventDAO;
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.EventService;
@@ -31,6 +30,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
+/**
+ * Test class for EventService class.
+ *
+ * @author Timo Schlatter
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class EventServiceTest {
@@ -194,7 +198,7 @@ public class EventServiceTest {
     @Test
     public void testFindDocentCollisions() {
         Event concurrentEvent =
-                new Event(rooms2, docents1, new Century("I14b", 30, 30), date, startTime, endTime, subject);
+                new Event(rooms2, docents1, new Century("I14c", 30, 30), date, startTime, endTime, subject);
         when(eventDAO.findByTime(date, startTime, endTime.plusMinutes(event.calculateMinChangeoverTime())))
                 .thenReturn(Arrays.asList(concurrentEvent));
         List<String> collisions = eventService.findCollisions(event);

@@ -20,6 +20,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
+/**
+ * Test class for ManipleService class.
+ *
+ * @author Timo Schlatter
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class ManipleServiceTest {

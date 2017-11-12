@@ -9,6 +9,11 @@ import java.util.HashSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Test class for Event class.
+ *
+ * @author Arvid Ottenberg
+ */
 public class EventTest {
 
     private final Room room1 = new Room(15, "A", 40, "001", RoomType.LECTUREROOM);

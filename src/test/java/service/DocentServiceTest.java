@@ -1,6 +1,5 @@
 package service;
 
-
 import de.nordakademie.iaa.dao.DocentDAO;
 import de.nordakademie.iaa.model.Docent;
 import de.nordakademie.iaa.service.DocentService;
@@ -20,6 +19,11 @@ import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
+/**
+ * Test class for DocentService class.
+ *
+ * @author Timo Schlatter
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class DocentServiceTest {

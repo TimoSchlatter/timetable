@@ -12,6 +12,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Test class for Group class.
+ *
+ * @author Arvid Ottenberg
+ */
 public class GroupTest {
 
     private final Cohort cohort14 = new Cohort("14");

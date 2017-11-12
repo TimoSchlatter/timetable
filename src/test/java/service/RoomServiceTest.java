@@ -1,6 +1,5 @@
 package service;
 
-
 import de.nordakademie.iaa.dao.RoomDAO;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.model.RoomType;
@@ -20,6 +19,11 @@ import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
+/**
+ * Test class for RoomService class.
+ *
+ * @author Timo Schlatter
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class RoomServiceTest {
