@@ -5,7 +5,6 @@ import de.nordakademie.iaa.dao.GroupDAO;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.model.Group;
 import de.nordakademie.iaa.service.GroupService;
-import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.GroupServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -17,8 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,29 +36,9 @@ public class GroupServiceTest {
     private final Group group = new Century(name, numberOfStudents);
 
     @Test
-    public void testSaveGroup() throws NotEnoughChangeoverTimeProvidedException {
-        group.setMinChangeoverTime(15);
-        groupService.saveGroup(group);
-        verify(groupDAO, times(1)).save(group);
-    }
-
-    @Test
-    public void testListGroups() {
-        groupService.listGroups();
-        verify(groupDAO, times(1)).findAll();
-    }
-
-    @Test
     public void testLoadGroup() {
         groupService.loadGroup(id);
         verify(groupDAO, times(1)).findOne(id);
-    }
-
-    @Test
-    public void testDeleteExistingGroup() {
-        when(groupDAO.findOne(id)).thenReturn(group);
-        assertTrue(groupService.deleteGroup(id));
-        verify(groupDAO, times(1)).delete(group);
     }
 
     @After

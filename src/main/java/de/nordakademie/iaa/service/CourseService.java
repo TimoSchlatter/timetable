@@ -4,7 +4,11 @@ import de.nordakademie.iaa.model.Course;
 
 import java.util.List;
 
-
+/**
+ * Service interface for course entities.
+ *
+ * @author Timo Schlatter
+ */
 public interface CourseService {
 
     /**
@@ -15,41 +19,33 @@ public interface CourseService {
     void saveCourse(Course course);
 
     /**
-     * List all courses currently stored in the database.
+     * Lists all courses currently stored in the database.
      *
-     * @return a list of Course entities. If no course was found an empty list is returned.
+     * @return a list of course entities. If no course was found an empty list is returned.
      */
     List<Course> listCourses();
 
     /**
-     * Returns the course identified by the given id.
+     * Retrieves a course by its id.
      *
-     * @param id The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @param id the identifier.
+     * @return the found course or {@code null} if no course was found with the given id.
      */
     Course loadCourse(Long id);
 
     /**
      * Deletes the course with the given id.
      *
-     * @param id The identifier.
-     * @return
+     * @param id the identifier.
+     * @return <tt>true</tt> if the course was deleted.
      */
     boolean deleteCourse(Long id);
 
-
     /**
      * Retrieves a course by its title.
+     *
      * @param title the identifier.
-     * @return the found course or null if no course was found with given identifier.
+     * @return the found course or {@code null} if no course was found with the given identifier.
      */
-    Course findByTitle(String title);
-
-    /**
-     * Retrieves a course by its field and number.
-     * @param field the identifier.
-     * @param number the identifier.
-     * @return the found course or null if no course was found with given identifiers.
-     */
-    Course findByFieldAndNumber(String field, int number);
+    Course findCourseByTitle(String title);
 }

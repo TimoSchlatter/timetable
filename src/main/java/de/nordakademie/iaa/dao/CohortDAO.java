@@ -11,10 +11,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CohortDAO extends JpaRepository<Cohort, Long> {
 
     /**
-     * Finds a cohort by its name.
+     * Retrieves a cohort by its name.
      *
-     * @param name name of the cohort.
-     * @return the cohort with the given name.
+     * @param name the identifier.
+     * @return the found cohort or {@code null} if no cohort was found with the given identifier.
      */
     Cohort findByName(String name);
 }

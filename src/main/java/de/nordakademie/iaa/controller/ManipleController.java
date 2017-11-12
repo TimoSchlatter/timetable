@@ -79,7 +79,7 @@ public class ManipleController {
         Maniple maniple = manipleService.loadManiple(id);
         if (maniple != null) {
             String newCenturyName = maniple.getName() + century.getName();
-            if (centuryService.findByName(newCenturyName) == null) {
+            if (centuryService.findCenturyByName(newCenturyName) == null) {
                 century.setName(newCenturyName);
                 try {
                     centuryService.saveCentury(century);

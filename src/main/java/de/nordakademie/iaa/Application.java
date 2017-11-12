@@ -22,6 +22,11 @@ import java.time.format.DateTimeFormatter;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
 
+/**
+ * Main class.
+ *
+ * @author Timo Schlatter
+ */
 @SpringBootApplication
 @ComponentScan
 @Configuration
@@ -33,8 +38,8 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-    public static final DateTimeFormatter DATEFORMATTER = ofPattern("yyyy-MM-dd");
-    public static final DateTimeFormatter TIMEFORMATTER = ofPattern("HH:mm:ss");
+    public static final DateTimeFormatter DATE_FORMATTER = ofPattern("yyyy-MM-dd");
+    public static final DateTimeFormatter TIME_FORMATTER = ofPattern("HH:mm:ss");
 
     @Bean
     @Primary

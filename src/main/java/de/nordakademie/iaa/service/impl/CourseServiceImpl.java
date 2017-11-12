@@ -9,6 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service for course entities.
+ *
+ * @author Timo Schlatter
+ */
 @Service
 @Transactional
 public class CourseServiceImpl implements CourseService {
@@ -46,12 +51,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course findByTitle(String title) {
+    public Course findCourseByTitle(String title) {
         return courseDAO.findByTitle(title);
-    }
-
-    @Override
-    public Course findByFieldAndNumber(String field, int number) {
-        return courseDAO.findByFieldAndNumber(field, number);
     }
 }

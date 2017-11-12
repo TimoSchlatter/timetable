@@ -70,7 +70,7 @@ public class CohortServiceTest {
 
     @Test
     public void testFindByName() {
-        cohortService.findByName(name);
+        cohortService.findCohortByName(name);
         verify(cohortDAO, times(1)).findByName(name);
     }
 

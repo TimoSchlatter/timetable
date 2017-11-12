@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
+/**
+ * Service for group entities.
+ *
+ * @author Timo Schlatter
+ */
 @Service
 @Transactional
 public class GroupServiceImpl implements GroupService {
@@ -21,27 +24,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void saveGroup(Group group){
-        groupDAO.save(group);
-    }
-
-    @Override
-    public List<Group> listGroups() {
-        return groupDAO.findAll();
-    }
-
-    @Override
     public Group loadGroup(Long id) {
         return groupDAO.findOne(id);
-    }
-
-    @Override
-    public boolean deleteGroup(Long id) {
-        Group group = loadGroup(id);
-        if (group == null) {
-            return false;
-        }
-        groupDAO.delete(group);
-        return true;
     }
 }

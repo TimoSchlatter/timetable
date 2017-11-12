@@ -11,10 +11,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SeminarDAO extends JpaRepository<Seminar, Long> {
 
     /**
-     * Finds a seminar by its title.
+     * Retrieves a seminar by its title.
      *
-     * @param title title of the seminar.
-     * @return the seminar with the given title.
+     * @param title the identifier.
+     * @return the found seminar or {@code null} if no seminar was found with the given identifier.
      */
     Seminar findByTitle(String title);
 }

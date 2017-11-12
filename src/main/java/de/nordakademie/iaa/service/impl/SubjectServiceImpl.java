@@ -11,6 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service for subject entities.
+ *
+ * @author Timo Schlatter
+ */
 @Service
 @Transactional
 public class SubjectServiceImpl implements SubjectService {
@@ -50,11 +55,6 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Subject findSubjectBySubjectTypeAndModule(SubjectType subjectType, Module module) {
         return subjectDAO.findBySubjectTypeAndModule(subjectType, module);
-    }
-
-    @Override
-    public List<Subject> findSubjectBySubjectType(SubjectType subjectType) {
-        return subjectDAO.findBySubjectType(subjectType);
     }
 
     @Override

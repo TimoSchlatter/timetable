@@ -70,12 +70,6 @@ public class SubjectServiceTest {
     }
 
     @Test
-    public void testFindSubjectBySubjectType() {
-        subjectService.findSubjectBySubjectType(subjectType);
-        verify(subjectDAO, times(1)).findBySubjectType(subjectType);
-    }
-
-    @Test
     public void testDeleteSubjectByModule() {
         subjectService.deleteSubjectByModule(module);
         verify(subjectDAO, times(1)).deleteByModule(module);

@@ -17,6 +17,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static de.nordakademie.iaa.model.SeminarType.*;
 
+/**
+ * Utility class for generating dummy data.
+ *
+ * @author Timo Schlatter
+ */
 @Component
 @Transactional
 public class DataGenerator {
@@ -47,9 +52,10 @@ public class DataGenerator {
     }
 
     /**
-     * Warning: Be careful when changing this order!
+     * Generates dummy date.
      */
     public void createData() throws Exception {
+        // Warning: Be careful when changing this order!
         createRooms();
         createDocents();
         createCourses();
@@ -61,10 +67,10 @@ public class DataGenerator {
     }
 
     private void createSeminarGroups() {
-        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 15 Studenten",30,15));
-        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 20 Studenten",30,20));
-        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 25 Studenten",30,25));
-        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 30 Studenten",30,30));
+        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 15 Studenten", 30, 15));
+        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 20 Studenten", 30, 20));
+        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 25 Studenten", 30, 25));
+        seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 30 Studenten", 30, 30));
     }
 
     private void createRooms() {
@@ -194,75 +200,75 @@ public class DataGenerator {
         LocalTime startTime = LocalTime.of(9, 15);
         LocalTime endTime = LocalTime.of(11, 30);
         Set<Room> rooms = new HashSet<>(Arrays.asList(
-                roomService.findByBuildingAndNumber("A", "001"),
-                roomService.findByBuildingAndNumber("A", "002")));
+                roomService.findRoomByBuildingAndNumber("A", "001"),
+                roomService.findRoomByBuildingAndNumber("A", "002")));
         Set<Docent> docents = new HashSet<>(Arrays.asList(
-                docentService.findByForenameAndSurname("Uwe", "Neuhaus"),
-                docentService.findByForenameAndSurname("Joachim", "Sauer")));
-        Group group = centuryService.findByName("I14a");
+                docentService.findDocentByForenameAndSurname("Uwe", "Neuhaus"),
+                docentService.findDocentByForenameAndSurname("Joachim", "Sauer")));
+        Group group = centuryService.findCenturyByName("I14a");
         Subject subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.LECTURE,
-                courseService.findByTitle("Softwaretechnik"));
+                courseService.findCourseByTitle("Softwaretechnik"));
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
         startTime = LocalTime.of(12, 15);
         endTime = LocalTime.of(16, 30);
         docents = new HashSet<>(Arrays.asList(
-                docentService.findByForenameAndSurname("Uwe", "Adamczak"),
-                docentService.findByForenameAndSurname("Joachim", "Sauer")));
+                docentService.findDocentByForenameAndSurname("Uwe", "Adamczak"),
+                docentService.findDocentByForenameAndSurname("Joachim", "Sauer")));
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.LECTURE,
-                courseService.findByTitle("Allgemeine Volkswirtschaftslehre"));
+                courseService.findCourseByTitle("Allgemeine Volkswirtschaftslehre"));
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
         date = LocalDate.of(2017, Month.OCTOBER, 29);
         startTime = LocalTime.of(9, 15);
         endTime = LocalTime.of(11, 30);
-        docents = new HashSet<>(Arrays.asList(docentService.findByForenameAndSurname("Soenke", "Stange")));
+        docents = new HashSet<>(Arrays.asList(docentService.findDocentByForenameAndSurname("Soenke", "Stange")));
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.LECTURE,
-                courseService.findByTitle("Controlling"));
+                courseService.findCourseByTitle("Controlling"));
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
         startTime = LocalTime.of(13, 15);
         endTime = LocalTime.of(18, 30);
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.LECTURE,
-                courseService.findByTitle("Allgemeine Betriebswirtschaftslehre"));
+                courseService.findCourseByTitle("Allgemeine Betriebswirtschaftslehre"));
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
         date = LocalDate.of(2017, Month.OCTOBER, 31);
         startTime = LocalTime.of(12, 15);
         endTime = LocalTime.of(14, 30);
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.EXAM,
-                courseService.findByTitle("Englisch 2"));
-            assert subject != null;
+                courseService.findCourseByTitle("Englisch 2"));
+        assert subject != null;
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
         date = LocalDate.of(2017, Month.NOVEMBER, 2);
-        group = seminarGroupService.findByName("Max. 25 Studenten");
+        group = seminarGroupService.findSeminarGroupByName("Max. 25 Studenten");
         startTime = LocalTime.of(17, 15);
         endTime = LocalTime.of(20, 30);
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR,
-                seminarService.findByTitle("Große Dokumente in Word"));
+                seminarService.findSeminarByTitle("Große Dokumente in Word"));
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
         startTime = LocalTime.of(20, 15);
         endTime = LocalTime.of(22, 30);
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR,
-                seminarService.findByTitle("Business-Knigge"));
+                seminarService.findSeminarByTitle("Business-Knigge"));
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
         date = LocalDate.of(2017, Month.NOVEMBER, 1);
-        rooms = new HashSet<>(Arrays.asList(roomService.findByBuildingAndNumber("H", "001")));
-        docents = new HashSet<>(Arrays.asList(docentService.findByForenameAndSurname("Michael", "Bregulla")));
-        group = seminarGroupService.findByName("Max. 20 Studenten");
+        rooms = new HashSet<>(Arrays.asList(roomService.findRoomByBuildingAndNumber("H", "001")));
+        docents = new HashSet<>(Arrays.asList(docentService.findDocentByForenameAndSurname("Michael", "Bregulla")));
+        group = seminarGroupService.findSeminarGroupByName("Max. 20 Studenten");
         startTime = LocalTime.of(20, 15);
         endTime = LocalTime.of(22, 30);
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR,
-                seminarService.findByTitle("Business-Knigge"));
+                seminarService.findSeminarByTitle("Business-Knigge"));
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
         startTime = LocalTime.of(13, 15);
         endTime = LocalTime.of(16, 30);
         subject = subjectService.findSubjectBySubjectTypeAndModule(SubjectType.SEMINAR,
-                seminarService.findByTitle("Große Dokumente in Word"));
+                seminarService.findSeminarByTitle("Große Dokumente in Word"));
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
     }
 

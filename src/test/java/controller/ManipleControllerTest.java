@@ -118,7 +118,7 @@ public class ManipleControllerTest {
     @Test
     public void testAddNonExistingCenturyToExistingManiple() throws Exception {
         when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
-        when(centuryService.findByName(newCenturyName)).thenReturn(null);
+        when(centuryService.findCenturyByName(newCenturyName)).thenReturn(null);
         JacksonTester.initFields(this, new ObjectMapper());
         mockMvc.perform(post("/maniples/" + manipleId + "/addCentury")
                 .content(jacksonCenturyTester.write(century).getJson())
@@ -126,7 +126,7 @@ public class ManipleControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
         verify(manipleService, times(1)).loadManiple(manipleId);
-        verify(centuryService, times(1)).findByName(newCenturyName);
+        verify(centuryService, times(1)).findCenturyByName(newCenturyName);
         century.setName(newCenturyName);
         verify(centuryService, times(1)).saveCentury(century);
         assertThat(maniple.getCenturies(), contains(century));
@@ -135,7 +135,7 @@ public class ManipleControllerTest {
     @Test
     public void testAddExistingCenturyToExistingManiple() throws Exception {
         when(manipleService.loadManiple(manipleId)).thenReturn(maniple);
-        when(centuryService.findByName(newCenturyName)).thenReturn(century);
+        when(centuryService.findCenturyByName(newCenturyName)).thenReturn(century);
         JacksonTester.initFields(this, new ObjectMapper());
         mockMvc.perform(post("/maniples/" + manipleId + "/addCentury")
                 .content(jacksonCenturyTester.write(century).getJson())
@@ -143,7 +143,7 @@ public class ManipleControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
-        verify(centuryService, times(1)).findByName(newCenturyName);
+        verify(centuryService, times(1)).findCenturyByName(newCenturyName);
         verify(centuryService, times(0)).saveCentury(any());
         assertThat(century, not(isIn(maniple.getCenturies())));
     }
@@ -158,7 +158,7 @@ public class ManipleControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(manipleService, times(1)).loadManiple(manipleId);
-        verify(centuryService, times(0)).findByName(anyString());
+        verify(centuryService, times(0)).findCenturyByName(anyString());
         verify(centuryService, times(0)).saveCentury(any());
     }
 

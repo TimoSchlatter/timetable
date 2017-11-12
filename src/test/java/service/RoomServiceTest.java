@@ -64,14 +64,8 @@ public class RoomServiceTest {
     @Test
     public void testFindByBuildingAndNumber() {
         when(roomDAO.findByBuildingAndNumber(building, number)).thenReturn(room);
-        roomService.findByBuildingAndNumber(building, number);
+        roomService.findRoomByBuildingAndNumber(building, number);
         verify(roomDAO, times(1)).findByBuildingAndNumber(building, number);
-    }
-
-    @Test
-    public void testFindByRoomType() {
-        roomService.findByRoomType(roomType);
-        verify(roomDAO, times(1)).findByRoomType(roomType);
     }
 
     @After

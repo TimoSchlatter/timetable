@@ -5,7 +5,11 @@ import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedExce
 
 import java.util.List;
 
-
+/**
+ * Service interface for cohort entities.
+ *
+ * @author Timo Schlatter
+ */
 public interface CohortService {
 
     /**
@@ -16,32 +20,33 @@ public interface CohortService {
     void saveCohort(Cohort cohort) throws NotEnoughChangeoverTimeProvidedException;
 
     /**
-     * List all cohorts currently stored in the database.
+     * Lists all cohorts currently stored in the database.
      *
-     * @return a list of Cohort entities. If no cohort was found an empty list is returned.
+     * @return a list of cohort entities. If no cohort was found an empty list is returned.
      */
     List<Cohort> listCohorts();
 
     /**
-     * Returns the cohort identified by the given id.
+     * Retrieves a cohort by its id.
      *
-     * @param id The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @param id the identifier.
+     * @return the found cohort or {@code null} if no cohort was found with the given id.
      */
     Cohort loadCohort(Long id);
 
     /**
      * Deletes the cohort with the given id.
      *
-     * @param id The identifier.
-     * @return .
+     * @param id the identifier.
+     * @return <tt>true</tt> if the cohort was deleted.
      */
     boolean deleteCohort(Long id);
 
     /**
      * Retrieves a cohort by its name.
+     *
      * @param name the identifier.
-     * @return the found cohort or null if no cohort was found with given identifier.
+     * @return the found cohort or {@code null} if no cohort was found with the given identifier.
      */
-    Cohort findByName(String name);
+    Cohort findCohortByName(String name);
 }

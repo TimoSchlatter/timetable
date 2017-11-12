@@ -52,7 +52,7 @@ public class CourseController {
     @PostMapping
     public ResponseEntity saveCourse(@RequestBody Course course) {
         try {
-            if (courseService.findByTitle(course.getTitle()) == null) {
+            if (courseService.findCourseByTitle(course.getTitle()) == null) {
                 courseService.saveCourse(course);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }

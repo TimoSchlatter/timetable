@@ -3,8 +3,6 @@ package de.nordakademie.iaa.dao;
 import de.nordakademie.iaa.model.Docent;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 /**
  * DAO for docent entities.
  *
@@ -13,19 +11,11 @@ import java.util.List;
 public interface DocentDAO extends JpaRepository<Docent, Long> {
 
     /**
-     * Finds a docent by his/her forename and surname.
+     * Retrieves a docent by his forename and surname.
      *
-     * @param forename forename of the docent.
-     * @param surname  surname of the docent.
-     * @return the docent with the given forename and surname.
+     * @param forename the identifier.
+     * @param surname  the identifier.
+     * @return the found docent or {@code null} if no docent was found with the given identifier.
      */
     Docent findByForenameAndSurname(String forename, String surname);
-
-    /**
-     * Finds docents by their employment state.
-     *
-     * @param isPermanentlyEmployed the employment state of the docent.
-     * @return the docents with the given employment state.
-     */
-    List<Docent> findByPermanentlyEmployed(boolean isPermanentlyEmployed);
 }

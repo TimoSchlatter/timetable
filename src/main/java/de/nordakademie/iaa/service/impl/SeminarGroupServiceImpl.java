@@ -9,6 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service for seminar group entities.
+ *
+ * @author Timo Schlatter
+ */
 @Service
 @Transactional
 public class SeminarGroupServiceImpl implements SeminarGroupService {
@@ -46,7 +51,7 @@ public class SeminarGroupServiceImpl implements SeminarGroupService {
     }
 
     @Override
-    public SeminarGroup findByName(String name) {
+    public SeminarGroup findSeminarGroupByName(String name) {
         return seminarGroupDAO.findByName(name);
     }
 }

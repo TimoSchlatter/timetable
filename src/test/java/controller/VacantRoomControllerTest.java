@@ -84,7 +84,7 @@ public class VacantRoomControllerTest {
         when(eventService.findEventsByTime(date, startTime, endTime)).thenReturn(Arrays.asList(event1, event2));
         when(groupService.loadGroup(groupId)).thenReturn(group);
         MvcResult mvcResult = mockMvc.perform(get("/vacantRooms?date=" + date.toString() + "&startTime=" +
-                startTime.format(Application.TIMEFORMATTER) + "&endTime=" + endTime.format(Application.TIMEFORMATTER) +
+                startTime.format(Application.TIME_FORMATTER) + "&endTime=" + endTime.format(Application.TIME_FORMATTER) +
                 "&groupId=" + groupId))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -105,7 +105,7 @@ public class VacantRoomControllerTest {
         when(groupService.loadGroup(groupId)).thenReturn(group);
         when(eventService.loadEvent(eventId)).thenReturn(event1);
         MvcResult mvcResult = mockMvc.perform(get("/vacantRooms?date=" + date.toString() + "&startTime=" +
-                startTime.format(Application.TIMEFORMATTER) + "&endTime=" + endTime.format(Application.TIMEFORMATTER) +
+                startTime.format(Application.TIME_FORMATTER) + "&endTime=" + endTime.format(Application.TIME_FORMATTER) +
                 "&groupId=" + groupId + "&eventId=" + eventId))
                 .andExpect(status().isOk())
                 .andReturn();

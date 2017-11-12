@@ -70,7 +70,7 @@ public class CenturyServiceTest {
 
     @Test
     public void testFindByName() {
-        centuryService.findByName(name);
+        centuryService.findCenturyByName(name);
         verify(centuryDAO, times(1)).findByName(name);
     }
 

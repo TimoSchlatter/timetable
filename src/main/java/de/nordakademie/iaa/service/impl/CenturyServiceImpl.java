@@ -10,6 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service for century entities.
+ *
+ * @author Timo Schlatter
+ */
 @Service
 @Transactional
 public class CenturyServiceImpl implements CenturyService {
@@ -50,7 +55,7 @@ public class CenturyServiceImpl implements CenturyService {
     }
 
     @Override
-    public Century findByName(String name) {
+    public Century findCenturyByName(String name) {
         return centuryDAO.findByName(name);
     }
 }

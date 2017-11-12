@@ -11,10 +11,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ManipleDAO extends JpaRepository<Maniple, Long> {
 
     /**
-     * Finds a maniple by its name.
+     * Retrieves a maniple by its name.
      *
-     * @param name name of the maniple.
-     * @return the maniple with the given name.
+     * @param name the identifier.
+     * @return the found maniple or {@code null} if no maniple was found with the given identifier.
      */
     Maniple findByName(String name);
 }

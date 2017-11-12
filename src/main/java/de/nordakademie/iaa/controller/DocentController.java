@@ -53,7 +53,7 @@ public class DocentController {
     @PostMapping
     public ResponseEntity saveDocent(@RequestBody Docent docent) {
         try {
-            if (docentService.findByForenameAndSurname(docent.getForename(), docent.getSurname()) == null) {
+            if (docentService.findDocentByForenameAndSurname(docent.getForename(), docent.getSurname()) == null) {
                 docentService.saveDocent(docent);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }

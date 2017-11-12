@@ -82,14 +82,14 @@ public class DocentControllerTest {
         JacksonTester.initFields(this, new ObjectMapper());
         String url = "/docents";
         // Docent already existing
-        when(docentService.findByForenameAndSurname(anyString(), anyString())).thenReturn(docent);
+        when(docentService.findDocentByForenameAndSurname(anyString(), anyString())).thenReturn(docent);
         mockMvc.perform(post(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(docentService, times(0)).saveDocent(docent);
         // Docent not yet existing
-        when(docentService.findByForenameAndSurname(anyString(), anyString())).thenReturn(null);
+        when(docentService.findDocentByForenameAndSurname(anyString(), anyString())).thenReturn(null);
         mockMvc.perform(post(url).content(jacksonTester.write(docent).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

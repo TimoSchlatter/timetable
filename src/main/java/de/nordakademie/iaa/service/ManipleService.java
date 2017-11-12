@@ -5,7 +5,11 @@ import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedExce
 
 import java.util.List;
 
-
+/**
+ * Service interface for maniple entities.
+ *
+ * @author Timo Schlatter
+ */
 public interface ManipleService {
 
     /**
@@ -16,32 +20,33 @@ public interface ManipleService {
     void saveManiple(Maniple maniple) throws NotEnoughChangeoverTimeProvidedException;
 
     /**
-     * List all maniples currently stored in the database.
+     * Lists all maniples currently stored in the database.
      *
-     * @return a list of Maniple entities. If no maniple was found an empty list is returned.
+     * @return a list of maniple entities. If no maniple was found an empty list is returned.
      */
     List<Maniple> listManiples();
 
     /**
-     * Returns the maniple identified by the given id.
+     * Retrieves a maniple by its id.
      *
-     * @param id The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @param id the identifier.
+     * @return the found maniple or {@code null} if no maniple was found with the given id.
      */
     Maniple loadManiple(Long id);
 
     /**
      * Deletes the maniple with the given id.
      *
-     * @param id The identifier.
-     * @return
+     * @param id the identifier.
+     * @return <tt>true</tt> if the maniple was deleted.
      */
     boolean deleteManiple(Long id);
 
     /**
      * Retrieves a maniple by its name.
+     *
      * @param name the identifier.
-     * @return the found maniple or null if no maniple was found with given identifier.
+     * @return the found maniple or {@code null} if no maniple was found with the given identifier.
      */
-    Maniple findByName(String name);
+    Maniple findManipleByName(String name);
 }

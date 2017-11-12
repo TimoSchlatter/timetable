@@ -6,7 +6,11 @@ import de.nordakademie.iaa.model.SubjectType;
 
 import java.util.List;
 
-
+/**
+ * Service interface for subject entities.
+ *
+ * @author Timo Schlatter
+ */
 public interface SubjectService {
 
     /**
@@ -17,48 +21,41 @@ public interface SubjectService {
     void saveSubject(Subject subject);
 
     /**
-     * List all subjects currently stored in the database.
+     * Lists all subjects currently stored in the database.
      *
-     * @return a list of Subject entities. If no subject was found an empty list is
-     * returned.
+     * @return a list of subject entities. If no subject was found an empty list is returned.
      */
     List<Subject> listSubjects();
 
     /**
-     * Returns the subject identified by the given id.
+     * Retrieves a subject by its id.
      *
-     * @param id The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @param id the identifier.
+     * @return the found subject or {@code null} if no subject was found with the given id.
      */
     Subject loadSubject(Long id);
 
     /**
      * Deletes the subject with the given id.
      *
-     * @param id The identifier.
-     *           @return
+     * @param id the identifier.
+     * @return <tt>true</tt> if the subject was deleted.
      */
     boolean deleteSubject(Long id);
 
     /**
-     * Retrieves a subject by its subjectType and module.
+     * Retrieves a subject by its type and module.
+     *
      * @param subjectType the identifier.
-     * @param module the identifier.
-     * @return the found subject or null if no subject was found with given identifiers.
+     * @param module      the identifier.
+     * @return the found subject or {@code null} if no subject was found with the given identifier.
      */
     Subject findSubjectBySubjectTypeAndModule(SubjectType subjectType, Module module);
 
     /**
-     * Retrieves a subject by its subjectType.
-     * @param subjectType the identifier.
-     * @return the found subject or null if no subject was found with given identifier.
-     */
-    List<Subject> findSubjectBySubjectType(SubjectType subjectType);
-
-    /**
-     * Delete subjects that contain the given module
+     * Deletes subjects which contain the given module.
      *
-     * @param module the module of the subject
+     * @param module the identifier.
      */
     void deleteSubjectByModule(Module module);
 }

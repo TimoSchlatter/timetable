@@ -7,7 +7,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 /**
- * Abstract superclass for all entities containing a <tt>@Transient</tt> fullName.
+ * Abstract superclass for all entities containing a {@code @Transient} fullName.
  *
  * @author Arvid Ottenberg
  */

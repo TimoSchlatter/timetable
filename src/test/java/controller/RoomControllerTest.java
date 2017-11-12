@@ -85,14 +85,14 @@ public class RoomControllerTest {
         JacksonTester.initFields(this, new ObjectMapper());
         String url = "/rooms";
         // Room already existing
-        when(roomService.findByBuildingAndNumber(building, number)).thenReturn(room);
+        when(roomService.findRoomByBuildingAndNumber(building, number)).thenReturn(room);
         mockMvc.perform(post(url).content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(roomService, times(0)).saveRoom(room);
         // Room not yet existing
-        when(roomService.findByBuildingAndNumber(building, number)).thenReturn(null);
+        when(roomService.findRoomByBuildingAndNumber(building, number)).thenReturn(null);
         mockMvc.perform(post(url).content(jacksonTester.write(room).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

@@ -4,43 +4,49 @@ import de.nordakademie.iaa.model.SeminarGroup;
 
 import java.util.List;
 
+/**
+ * Service interface for seminar group entities.
+ *
+ * @author Timo Schlatter
+ */
 public interface SeminarGroupService {
 
 
     /**
-     * Stores the given seminarGroup into the database.
+     * Stores the given seminar group into the database.
      *
-     * @param seminarGroup the seminarGroup to be saved.
+     * @param seminarGroup the seminar group to be saved.
      */
     void saveSeminarGroup(SeminarGroup seminarGroup);
 
     /**
-     * List all seminarGroups currently stored in the database.
+     * Lists all seminar groups currently stored in the database.
      *
-     * @return a list of SeminarGroup entities. If no seminarGroup was found an empty list is returned.
+     * @return a list of seminar group entities. If no seminarGroup was found an empty list is returned.
      */
     List<SeminarGroup> listSeminarGroups();
 
     /**
-     * Returns the seminarGroup identified by the given id.
+     * Retrieves a seminar group by its id.
      *
-     * @param id The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @param id the identifier.
+     * @return the found seminar group or {@code null} if no seminar group was found with the given id.
      */
     SeminarGroup loadSeminarGroup(Long id);
 
     /**
-     * Deletes the seminarGroup with the given id.
+     * Deletes the seminar group with the given id.
      *
-     * @param id The identifier.
-     * @return .
+     * @param id the identifier.
+     * @return <tt>true</tt> if the seminar group was deleted.
      */
     boolean deleteSeminarGroup(Long id);
 
     /**
-     * Retrieves a seminarGroup by its name.
+     * Retrieves a seminar group by its name.
+     *
      * @param name the identifier.
-     * @return the found seminarGroup or null if no seminarGroup was found with given identifier.
+     * @return the found seminar group or {@code null} if no seminar group was found with the given identifier.
      */
-    SeminarGroup findByName(String name);
+    SeminarGroup findSeminarGroupByName(String name);
 }

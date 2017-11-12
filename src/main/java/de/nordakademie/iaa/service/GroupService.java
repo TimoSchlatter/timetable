@@ -2,38 +2,18 @@ package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Group;
 
-import java.util.List;
-
+/**
+ * Service interface for group entities.
+ *
+ * @author Timo Schlatter
+ */
 public interface GroupService {
 
     /**
-     * Stores the given group into the database.
-     *
-     * @param group the group to be saved.
-     */
-    void saveGroup(Group group);
-
-    /**
-     * List all centuries currently stored in the database.
-     *
-     * @return a list of Group entities. If no group was found an empty list is returned.
-     */
-    List<Group> listGroups();
-
-    /**
-     * Returns the group identified by the given id.
-     *
-     * @param id The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
-     */
-    Group loadGroup(Long id);
-
-    /**
-     * Deletes the group with the given id.
+     * Retrieves a group by its id.
      *
      * @param id the identifier.
-     * @return
+     * @return the found group or {@code null} if no group was found with the given id.
      */
-    boolean deleteGroup(Long id);
-
+    Group loadGroup(Long id);
 }

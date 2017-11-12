@@ -193,13 +193,6 @@ public class EventDAOTest {
         assertTrue(eventDAO.findAll().isEmpty());
     }
 
-    @Test
-    public void testDeleteByRooms() {
-        assertEquals(eventDAO.findAll().size(),1);
-        eventDAO.deleteByRooms(room);
-        assertTrue(eventDAO.findAll().isEmpty());
-    }
-
     private void compareEvent(Event event) {
         assertEquals(this.event.getDate(), event.getDate());
         assertEquals(this.event.getDocents(), event.getDocents());
@@ -209,6 +202,4 @@ public class EventDAOTest {
         assertEquals(this.event.getSubject(), event.getSubject());
         assertEquals(this.event.getRooms(), event.getRooms());
     }
-
 }
-

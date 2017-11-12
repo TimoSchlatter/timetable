@@ -1,11 +1,14 @@
 package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Room;
-import de.nordakademie.iaa.model.RoomType;
 
 import java.util.List;
 
-
+/**
+ * Service interface for room entities.
+ *
+ * @author Timo Schlatter
+ */
 public interface RoomService {
 
     /**
@@ -16,18 +19,17 @@ public interface RoomService {
     void saveRoom(Room room);
 
     /**
-     * List all rooms currently stored in the database.
+     * Lists all rooms currently stored in the database.
      *
-     * @return a list of Room entities. If no room was found an empty list is
-     * returned.
+     * @return a list of room entities. If no room was found an empty list is returned.
      */
     List<Room> listRooms();
 
     /**
-     * Returns the room identified by the given id.
+     * Retrieves a room by its id.
      *
-     * @param id The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @param id the identifier.
+     * @return the found room or {@code null} if no room was found with the given id.
      */
     Room loadRoom(Long id);
 
@@ -35,22 +37,16 @@ public interface RoomService {
      * Deletes the room with the given id.
      *
      * @param id the identifier.
-     * @return
+     * @return <tt>true</tt> if the room was deleted.
      */
     boolean deleteRoom(Long id);
 
     /**
-     * Retrieves a room by its field and number.
+     * Retrieves a room by its building and number.
+     *
      * @param building the identifier.
-     * @param number the identifier.
-     * @return the found room or null if no room was found with given identifiers.
+     * @param number   the identifier.
+     * @return the found room or {@code null} if no room was found with the given identifiers.
      */
-    Room findByBuildingAndNumber(String building, String number);
-
-    /**
-     * Retrieves a room by its roomType.
-     * @param roomType the identifier.
-     * @return the found room or null if no room was found with given identifier.
-     */
-    List<Room> findByRoomType(RoomType roomType);
+    Room findRoomByBuildingAndNumber(String building, String number);
 }

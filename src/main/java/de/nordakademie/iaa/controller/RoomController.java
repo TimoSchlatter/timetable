@@ -53,7 +53,7 @@ public class RoomController {
     @PostMapping
     public ResponseEntity saveRoom(@RequestBody Room room) {
         try {
-            if (roomService.findByBuildingAndNumber(room.getBuilding(), room.getNumber()) == null) {
+            if (roomService.findRoomByBuildingAndNumber(room.getBuilding(), room.getNumber()) == null) {
                 roomService.saveRoom(room);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }

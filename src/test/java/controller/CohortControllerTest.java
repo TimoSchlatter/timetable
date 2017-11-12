@@ -102,14 +102,14 @@ public class CohortControllerTest {
         JacksonTester.initFields(this, new ObjectMapper());
         String url = "/cohorts";
         // Cohort already existing
-        when(cohortService.findByName(cohort.getName())).thenReturn(cohort);
+        when(cohortService.findCohortByName(cohort.getName())).thenReturn(cohort);
         mockMvc.perform(post(url).content(jacksonCohortTester.write(cohort).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(cohortService, times(0)).saveCohort(cohort);
         // Cohort not yet existing
-        when(cohortService.findByName(cohort.getName())).thenReturn(null);
+        when(cohortService.findCohortByName(cohort.getName())).thenReturn(null);
         mockMvc.perform(post(url).content(jacksonCohortTester.write(cohort).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -181,7 +181,7 @@ public class CohortControllerTest {
     @Test
     public void testAddNonExistingManipleToExistingCohort() throws Exception {
         when(cohortService.loadCohort(cohortId)).thenReturn(cohort);
-        when(manipleService.findByName(newManipleName)).thenReturn(null);
+        when(manipleService.findManipleByName(newManipleName)).thenReturn(null);
         JacksonTester.initFields(this, new ObjectMapper());
         mockMvc.perform(post("/cohorts/" + cohortId + "/addManiple")
                 .content(jacksonManipleTester.write(maniple).getJson())
@@ -189,7 +189,7 @@ public class CohortControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.CREATED.value()));
         verify(cohortService, times(1)).loadCohort(cohortId);
-        verify(manipleService, times(1)).findByName(newManipleName);
+        verify(manipleService, times(1)).findManipleByName(newManipleName);
         maniple.setName(newManipleName);
         verify(manipleService, times(1)).saveManiple(maniple);
         assertThat(cohort.getManiples(), contains(maniple));
@@ -198,7 +198,7 @@ public class CohortControllerTest {
     @Test
     public void testAddExistingManipleToExistingCohort() throws Exception {
         when(cohortService.loadCohort(cohortId)).thenReturn(cohort);
-        when(manipleService.findByName(newManipleName)).thenReturn(maniple);
+        when(manipleService.findManipleByName(newManipleName)).thenReturn(maniple);
         JacksonTester.initFields(this, new ObjectMapper());
         mockMvc.perform(post("/cohorts/" + cohortId + "/addManiple")
                 .content(jacksonManipleTester.write(maniple).getJson())
@@ -206,7 +206,7 @@ public class CohortControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
-        verify(manipleService, times(1)).findByName(newManipleName);
+        verify(manipleService, times(1)).findManipleByName(newManipleName);
         verify(manipleService, times(0)).saveManiple(any());
         assertThat(maniple, not(isIn(cohort.getManiples())));
     }
@@ -221,7 +221,7 @@ public class CohortControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(cohortService, times(1)).loadCohort(cohortId);
-        verify(manipleService, times(0)).findByName(anyString());
+        verify(manipleService, times(0)).findManipleByName(anyString());
         verify(manipleService, times(0)).saveManiple(any());
     }
 

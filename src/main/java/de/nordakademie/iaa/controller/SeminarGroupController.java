@@ -53,7 +53,7 @@ public class SeminarGroupController {
     @PostMapping
     public ResponseEntity saveSeminarGroup(@RequestBody SeminarGroup seminarGroup) {
         try {
-            if (seminarGroupService.findByName(seminarGroup.getName()) == null) {
+            if (seminarGroupService.findSeminarGroupByName(seminarGroup.getName()) == null) {
                 seminarGroup.setName("Max. " + seminarGroup.getMaximumNumberOfStudents() + " Teilnehmer");
                 seminarGroupService.saveSeminarGroup(seminarGroup);
                 return ResponseEntity.status(HttpStatus.CREATED).build();

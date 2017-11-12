@@ -2,7 +2,6 @@ package de.nordakademie.iaa.service.impl;
 
 import de.nordakademie.iaa.dao.RoomDAO;
 import de.nordakademie.iaa.model.Room;
-import de.nordakademie.iaa.model.RoomType;
 import de.nordakademie.iaa.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service for room entities.
+ *
+ * @author Timo Schlatter
+ */
 @Service
 @Transactional
 public class RoomServiceImpl implements RoomService {
@@ -47,12 +51,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room findByBuildingAndNumber(String building, String number) {
+    public Room findRoomByBuildingAndNumber(String building, String number) {
         return roomDAO.findByBuildingAndNumber(building, number);
-    }
-
-    @Override
-    public List<Room> findByRoomType(RoomType roomType) {
-        return roomDAO.findByRoomType(roomType);
     }
 }

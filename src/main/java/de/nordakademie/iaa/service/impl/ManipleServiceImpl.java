@@ -10,6 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service for maniple entities.
+ *
+ * @author Timo Schlatter
+ */
 @Service
 @Transactional
 public class ManipleServiceImpl implements ManipleService {
@@ -50,7 +55,7 @@ public class ManipleServiceImpl implements ManipleService {
     }
 
     @Override
-    public Maniple findByName(String name) {
+    public Maniple findManipleByName(String name) {
         return manipleDAO.findByName(name);
     }
 }

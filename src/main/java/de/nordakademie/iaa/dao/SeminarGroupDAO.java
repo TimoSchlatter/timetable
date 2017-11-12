@@ -11,10 +11,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SeminarGroupDAO extends JpaRepository<SeminarGroup, Long> {
 
     /**
-     * Finds a seminar group by its name.
+     * Retrieves a seminar group by its name.
      *
-     * @param name name of the seminar group.
-     * @return the seminar group with the given name.
+     * @param name the identifier.
+     * @return the found seminar group or {@code null} if no seminar group was found with the given identifier.
      */
     SeminarGroup findByName(String name);
 }

@@ -10,6 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service for cohort entities.
+ *
+ * @author Timo Schlatter
+ */
 @Service
 @Transactional
 public class CohortServiceImpl implements CohortService {
@@ -50,7 +55,7 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public Cohort findByName(String name) {
+    public Cohort findCohortByName(String name) {
         return cohortDAO.findByName(name);
     }
 }

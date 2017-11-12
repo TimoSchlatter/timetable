@@ -73,15 +73,6 @@ public class DocentDAOTest {
     }
 
     @Test
-    public void testFindDocentsByEmploymentState() {
-        List<Docent> docents = docentDAO.findByPermanentlyEmployed(true);
-        assertEquals(1, docents.size());
-        for (Docent docent : docents) {
-            compareDocents(docent);
-        }
-    }
-
-    @Test
     public void testDelete() {
         docentDAO.delete(this.docent);
         List<Docent> docents = docentDAO.findAll();

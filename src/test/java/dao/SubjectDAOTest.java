@@ -83,13 +83,6 @@ public class SubjectDAOTest {
     }
 
     @Test
-    public void testFindSubjectsByType() {
-        List<Subject> subjects = subjectDAO.findBySubjectType(this.subject.getSubjectType());
-        assertEquals(1, subjects.size());
-        subjects.forEach(this::compareSubjects);
-    }
-
-    @Test
     public void testDelete() {
         subjectDAO.delete(this.subject);
         List<Subject> subjects = subjectDAO.findAll();

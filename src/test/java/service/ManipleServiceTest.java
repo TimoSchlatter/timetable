@@ -69,7 +69,7 @@ public class ManipleServiceTest {
 
     @Test
     public void testFindByName() {
-        manipleService.findByName(name);
+        manipleService.findManipleByName(name);
         verify(manipleDAO, times(1)).findByName(name);
     }
 

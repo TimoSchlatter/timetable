@@ -64,7 +64,7 @@ public class SeminarGroupServiceTest {
 
     @Test
     public void testFindByName() {
-        seminarGroupService.findByName(name);
+        seminarGroupService.findSeminarGroupByName(name);
         verify(seminarGroupDAO, times(1)).findByName(name);
     }
 

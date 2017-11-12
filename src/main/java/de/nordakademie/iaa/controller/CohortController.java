@@ -56,7 +56,7 @@ public class CohortController {
     @PostMapping
     public ResponseEntity saveCohort(@RequestBody Cohort cohort) {
         try {
-            if (cohortService.findByName(cohort.getName()) == null) {
+            if (cohortService.findCohortByName(cohort.getName()) == null) {
                 cohortService.saveCohort(cohort);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
@@ -117,7 +117,7 @@ public class CohortController {
         Cohort cohort = cohortService.loadCohort(id);
         if (cohort != null) {
             String newCenturyName = maniple.getName() + cohort.getName();
-            if (manipleService.findByName(newCenturyName) == null) {
+            if (manipleService.findManipleByName(newCenturyName) == null) {
                 try {
                     maniple.setName(newCenturyName);
                     manipleService.saveManiple(maniple);

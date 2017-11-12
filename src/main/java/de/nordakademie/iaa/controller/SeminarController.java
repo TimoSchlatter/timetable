@@ -52,7 +52,7 @@ public class SeminarController {
     @PostMapping
     public ResponseEntity saveSeminar(@RequestBody Seminar seminar) {
         try {
-            if (seminarService.findByTitle(seminar.getTitle()) == null) {
+            if (seminarService.findSeminarByTitle(seminar.getTitle()) == null) {
                 seminarService.saveSeminar(seminar);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }

@@ -6,9 +6,10 @@ import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedExce
 import java.util.List;
 
 /**
- * Service for
+ * Service interface for century entities.
+ *
+ * @author Timo Schlatter
  */
-
 public interface CenturyService {
 
     /**
@@ -19,17 +20,17 @@ public interface CenturyService {
     void saveCentury(Century century) throws NotEnoughChangeoverTimeProvidedException;
 
     /**
-     * List all centuries currently stored in the database.
+     * Lists all centuries currently stored in the database.
      *
-     * @return a list of Century entities. If no century was found an empty list is returned.
+     * @return a list of century entities. If no century was found an empty list is returned.
      */
     List<Century> listCenturies();
 
     /**
-     * Returns the century identified by the given id.
+     * Retrieves a century by its id.
      *
-     * @param id The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @param id the identifier.
+     * @return the found century or {@code null} if no century was found with the given id.
      */
     Century loadCentury(Long id);
 
@@ -37,14 +38,15 @@ public interface CenturyService {
      * Deletes the century with the given id.
      *
      * @param id the identifier.
-     * @return
+     * @return <tt>true</tt> if the century was deleted.
      */
     boolean deleteCentury(Long id);
 
     /**
      * Retrieves a century by its name.
+     *
      * @param name the identifier.
-     * @return the found century or null if no century was found with given identifier.
+     * @return the found century or {@code null} if no century was found with the given identifier.
      */
-    Century findByName(String name);
+    Century findCenturyByName(String name);
 }

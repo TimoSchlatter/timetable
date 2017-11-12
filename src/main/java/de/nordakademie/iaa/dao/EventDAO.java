@@ -17,47 +17,47 @@ import java.util.List;
 public interface EventDAO extends JpaRepository<Event, Long> {
 
     /**
-     * Finds an event by its date, start time, end time and group.
+     * Retrieves an event by its date, start time, end time and group.
      *
      * @param date      date on which the event is taking place.
      * @param startTime start time of the event.
      * @param endTime   end time of the event.
      * @param group     group that attends the event.
-     * @return the event that the group attends at the given time and date.
+     * @return the found event or {@code null} if no event was found with the given identifier.
      */
     Event findByDateAndStartTimeAndEndTimeAndGroup(LocalDate date, LocalTime startTime, LocalTime endTime, Group group);
 
     /**
-     * Finds events by room.
-     *
-     * @param room the room where the events are taking place.
-     * @return events that take place in the given room.
-     */
-    List<Event> findByRooms(Room room);
-
-    /**
-     * Finds events by docents.
+     * Retrieves events by their docent.
      *
      * @param docent the docent who is holding the event.
-     * @return events that are held by the given docent.
+     * @return a list of events or an empty list if no event was found with the given identifier.
      */
     List<Event> findByDocents(Docent docent);
 
     /**
-     * Finds events by group.
+     * Retrieves events by their group.
      *
      * @param group the group that attends the events.
-     * @return the events that are attended by the given group.
+     * @return a list of events or an empty list if no event was found with the given identifier.
      */
     List<Event> findByGroup(Group group);
 
     /**
-     * Finds events that take place in a given period.
+     * Retrieves events by their room.
+     *
+     * @param room the room where the events are taking place.
+     * @return a list of events or an empty list if no event was found with the given identifier.
+     */
+    List<Event> findByRooms(Room room);
+
+    /**
+     * Retrieves events that take place in a given period.
      *
      * @param date      the date on which the events are scheduled.
      * @param startTime the start time of the period when the events should take place.
      * @param endTime   the end time of the period when the events should take place.
-     * @return events that take place during the given period.
+     * @return a list of events or an empty list if no event was found with the given identifiers.
      */
     @Query("select e from Event e where e.date = :date and e.startTime between :start and :end")
     List<Event> findByTime(@Param("date") LocalDate date, @Param("start") LocalTime startTime, @Param("end") LocalTime endTime);
@@ -75,11 +75,4 @@ public interface EventDAO extends JpaRepository<Event, Long> {
      * @param subject the subject the events are related to.
      */
     void deleteBySubject(Subject subject);
-
-    /**
-     * Deletes events that happen in a specific room.
-     *
-     * @param room the room where the events take place.
-     */
-    void deleteByRooms(Room room);
 }

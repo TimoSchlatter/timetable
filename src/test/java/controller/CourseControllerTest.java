@@ -80,14 +80,14 @@ public class CourseControllerTest {
         JacksonTester.initFields(this, new ObjectMapper());
         String url = "/courses";
         // Course already existing
-        when(courseService.findByTitle(course.getTitle())).thenReturn(course);
+        when(courseService.findCourseByTitle(course.getTitle())).thenReturn(course);
         mockMvc.perform(post(url).content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(courseService, times(0)).saveCourse(course);
         // Course not yet existing
-        when(courseService.findByTitle(course.getTitle())).thenReturn(null);
+        when(courseService.findCourseByTitle(course.getTitle())).thenReturn(null);
         mockMvc.perform(post(url).content(jacksonTester.write(course).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

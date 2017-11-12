@@ -82,14 +82,14 @@ public class SeminarGroupControllerTest {
         JacksonTester.initFields(this, new ObjectMapper());
         String url = "/seminargroups";
         // SeminarGroup already existing
-        when(seminarGroupService.findByName(seminarGroup.getName())).thenReturn(seminarGroup);
+        when(seminarGroupService.findSeminarGroupByName(seminarGroup.getName())).thenReturn(seminarGroup);
         mockMvc.perform(post(url).content(jacksonTester.write(seminarGroup).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         verify(seminarGroupService, times(0)).saveSeminarGroup(any());
         // SeminarGroup not yet existing
-        when(seminarGroupService.findByName(seminarGroup.getName())).thenReturn(null);
+        when(seminarGroupService.findSeminarGroupByName(seminarGroup.getName())).thenReturn(null);
         mockMvc.perform(post(url).content(jacksonTester.write(seminarGroup).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

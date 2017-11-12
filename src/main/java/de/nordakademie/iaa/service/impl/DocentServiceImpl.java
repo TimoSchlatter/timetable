@@ -10,6 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service for docent entities.
+ *
+ * @author Timo Schlatter
+ */
 @Service
 @Transactional
 public class DocentServiceImpl implements DocentService {
@@ -50,7 +55,7 @@ public class DocentServiceImpl implements DocentService {
     }
 
     @Override
-    public Docent findByForenameAndSurname(String forename, String surname) {
+    public Docent findDocentByForenameAndSurname(String forename, String surname) {
         return docentDAO.findByForenameAndSurname(forename, surname);
     }
 }

@@ -15,6 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service for event entities.
+ *
+ * @author Timo Schlatter
+ */
 @Service
 @Transactional
 public class EventServiceImpl implements EventService {
@@ -70,6 +75,19 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Event> findEventsByDocent(Docent docent) {
+        return eventDAO.findByDocents(docent);
+    }
+
+    @Override
+    public List<Event> findEventsByGroup(Group group) { return eventDAO.findByGroup(group); }
+
+    @Override
+    public List<Event> findEventsByRoom(Room room) {
+        return eventDAO.findByRooms(room);
+    }
+
+    @Override
     public List<Event> findEventsByTime(LocalDate date, LocalTime startTime, LocalTime endTime) {
         return eventDAO.findByTime(date, startTime, endTime);
     }
@@ -85,13 +103,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> findEventsByRoom(Room room) {
-        return eventDAO.findByRooms(room);
-    }
-
-    @Override
-    public List<Event> findEventsByDocent(Docent docent) {
-        return eventDAO.findByDocents(docent);
+    public List<String> findCollisions(Event newEvent) {
+        return findCollisions(newEvent, null);
     }
 
     @Override
@@ -121,14 +134,6 @@ public class EventServiceImpl implements EventService {
         }
         return collisions;
     }
-
-    @Override
-    public List<String> findCollisions(Event newEvent) {
-        return findCollisions(newEvent, null);
-    }
-
-    @Override
-    public List<Event> findEventsByGroup(Group group) { return eventDAO.findByGroup(group); }
 
     private String createCollisionString(Event eventToBeCreated, Object collidingObject, Event concurrentEvent) {
         return eventToBeCreated + ": " + collidingObject + " ist bereits für folgendes Event eingeplant: "

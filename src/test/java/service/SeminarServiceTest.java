@@ -62,7 +62,7 @@ public class SeminarServiceTest {
 
     @Test
     public void testFindByTitle() {
-        seminarService.findByTitle(title);
+        seminarService.findSeminarByTitle(title);
         verify(seminarDAO, times(1)).findByTitle(title);
     }
 

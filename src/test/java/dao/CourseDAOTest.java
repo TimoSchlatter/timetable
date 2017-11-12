@@ -74,12 +74,6 @@ public class CourseDAOTest
     }
 
     @Test
-    public void testFindCourseByFieldAndNumber() {
-        Course course = courseDAO.findByFieldAndNumber(this.course.getField(), this.course.getNumber());
-        compareCourses(course);
-    }
-
-    @Test
     public void testDelete() {
         courseDAO.delete(this.course);
         List<Course> courses = courseDAO.findAll();

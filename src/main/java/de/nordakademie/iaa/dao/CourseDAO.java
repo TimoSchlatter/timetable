@@ -11,19 +11,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CourseDAO extends JpaRepository<Course, Long> {
 
     /**
-     * Finds a course by its title.
+     * Retrieves a course by its title.
      *
-     * @param title title of the course.
-     * @return the course with the given title.
+     * @param title the identifier.
+     * @return the found course or {@code null} if no course was found with the given identifier.
      */
     Course findByTitle(String title);
-
-    /**
-     * Finds a course by its field and number.
-     *
-     * @param field  field of the course.
-     * @param number number of the course.
-     * @return the course with the given field and number.
-     */
-    Course findByFieldAndNumber(String field, int number);
 }

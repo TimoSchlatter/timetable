@@ -75,7 +75,7 @@ public class DocentServiceTest {
 
     @Test
     public void testFindByForenameAndSurname() {
-        docentService.findByForenameAndSurname(forename, surname);
+        docentService.findDocentByForenameAndSurname(forename, surname);
         verify(docentDAO, times(1)).findByForenameAndSurname(forename, surname);
     }
 

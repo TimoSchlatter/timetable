@@ -63,14 +63,8 @@ public class CourseServiceTest {
 
     @Test
     public void testFindByTitle() {
-        courseService.findByTitle(title);
+        courseService.findCourseByTitle(title);
         verify(courseDAO, times(1)).findByTitle(title);
-    }
-
-    @Test
-    public void testFindByFieldAndNumber() {
-        courseService.findByFieldAndNumber(field, number);
-        verify(courseDAO, times(1)).findByFieldAndNumber(field, number);
     }
 
     @After
