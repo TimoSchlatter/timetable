@@ -19,7 +19,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  */
 @Transactional
 @Controller
-@RequestMapping("data")
+@RequestMapping("/data")
 public class DataController {
 
     private final DummyDataGenerator dummyDataGenerator;
