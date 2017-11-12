@@ -225,11 +225,11 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
     };
 
     /* Data Generated */
-    var dataGenerated = {};
-    var dataGeneratedUrl = 'http://localhost:49999/datagenerated/';
-    var getDataGenerated = function () {
-        getData(dataGeneratedUrl, function (data) {
-            dataGenerated = data;
+    var dataEmpty = {};
+    var dataEmptyUrl = 'http://localhost:49999/data/isempty/';
+    var isDataEmpty = function () {
+        getData(dataEmptyUrl, function (data) {
+            dataEmpty = data;
         });
     };
 
@@ -247,7 +247,7 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
         getSubjectTypes();
         getSeminarTypes();
         getRoomTypes();
-        getDataGenerated();
+        isDataEmpty();
     };
     updateAllDataModels();
 
@@ -431,13 +431,19 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             return roomTypes;
         },
         generateData: function () {
-            getData('http://localhost:49999/generatedata', function (data) {
+            getData('http://localhost:49999/data/generate', function (data) {
                 updateAllDataModels();
                 AlertService.add('Erfolgreich', 'Die Simulationsdaten wurden erfolgreich generiert!');
             });
         },
-        dataGenerated: function () {
-            return dataGenerated;
+        clearData: function () {
+            getData('http://localhost:49999/data/clear', function (data) {
+                updateAllDataModels();
+                AlertService.add('Erfolgreich', 'Alle Datenbankeinträge wurden erfolgreich gelöscht!');
+            });
+        },
+        isDataEmpty: function () {
+            return dataEmpty;
         },
         createEventInsteadOfCollision: function () {
             createEventInsteadOfCollision();

@@ -10,7 +10,8 @@
 app.controller('DashboardController', function($scope , $http, AlertService, ConnectionService, $filter) {
 
     $scope.generateData = ConnectionService.generateData;
-    $scope.dataGenerated = ConnectionService.dataGenerated;
+    $scope.clearData = ConnectionService.clearData;
+    $scope.isDataEmpty = ConnectionService.isDataEmpty;
     $scope.events = ConnectionService.getEvents;
     $scope.eventsByGroup = ConnectionService.getEventsByGroup;
     $scope.eventsByRoom = ConnectionService.getEventsByRoom;

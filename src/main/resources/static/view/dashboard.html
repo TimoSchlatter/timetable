@@ -1,5 +1,5 @@
 <!-- Icon Cards-->
-<div class="row" ng-hide="dataGenerated()">
+<div class="row" ng-hide="!isDataEmpty()">
     <div class="col-xl-12 col-sm-6 mb-3">
         <div class="card text-white bg-warning o-hidden h-100">
             <div class="card-body">
@@ -9,6 +9,22 @@
                 <div class="mr-5">Simulationsdaten generieren</div>
             </div>
             <a style="cursor: pointer" class="card-footer text-white clearfix small z-1" ng-click="generateData()">
+                <span>Hier Klicken!</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-hide="isDataEmpty()">
+    <div class="col-xl-12 col-sm-6 mb-3">
+        <div class="card text-white bg-danger o-hidden h-100">
+            <div class="card-body">
+                <div class="card-body-icon">
+                    <i class="fa fa-fw fa-support"></i>
+                </div>
+                <div class="mr-5">Datenbankinhalte löschen</div>
+            </div>
+            <a style="cursor: pointer" class="card-footer text-white clearfix small z-1" ng-click="clearData()">
                 <span>Hier Klicken!</span>
             </a>
         </div>
@@ -101,7 +117,7 @@
                                 <select class="form-control"
                                         id="inputSubjectType"
                                         ng-options="key as value for (key , value) in subjectTypes()"
-                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputSubjectType.$valid}"
+                                        ng-class="{'is-invalid': !modalForm.modalSubForm.inputSubjectType.$valid}"
                                         name="inputSubjectType"
                                         ng-model="modalSubjectType"
                                         ng-change="updateVacantRooms()"
@@ -114,7 +130,7 @@
                                 <select class="form-control"
                                         id="inputSubject"
                                         ng-options="subject.module.shortTitle for subject in subjects() | filter: modalSubjectType? {subjectType: modalSubjectType} : 'undefined'"
-                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputSubject.$valid}"
+                                        ng-class="{'is-invalid': !modalForm.modalSubForm.inputSubject.$valid}"
                                         name="inputSubject"
                                         ng-model="modalSubject"
                                         ng-change="updateVacantRooms()"
@@ -129,7 +145,7 @@
                                 <div class="input-group date">
                                     <input type="date"
                                            class="form-control datepicker"
-                                           ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputDate.$valid}"
+                                           ng-class="{'is-invalid': !modalForm.modalSubForm.inputDate.$valid}"
                                            name="inputDate"
                                            id="inputDate"
                                            ng-model="modalDate"
@@ -145,7 +161,7 @@
                                 <div class="input-group date">
                                     <input type="time"
                                            class="form-control clockpicker"
-                                           ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputStartTime.$valid}"
+                                           ng-class="{'is-invalid': !modalForm.modalSubForm.inputStartTime.$valid||(modalStartTime > modalEndTime)}"
                                            name="inputStartTime"
                                            id="inputStartTime"
                                            ng-model="modalStartTime"
@@ -160,7 +176,7 @@
                                 <div class="input-group date">
                                     <input type="time"
                                            class="form-control clockpicker"
-                                           ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputEndTime.$valid}"
+                                           ng-class="{'is-invalid': !modalForm.modalSubForm.inputEndTime.$valid||(modalStartTime > modalEndTime)}"
                                            name="inputEndTime"
                                            id="inputEndTime"
                                            ng-model="modalEndTime"
@@ -176,7 +192,7 @@
                                 <div class="input-group">
                                     <input type="number"
                                            class="form-control"
-                                           ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputRepeatWeeks.$valid}"
+                                           ng-class="{'is-invalid': !modalForm.modalSubForm.inputRepeatWeeks.$valid}"
                                            name="inputRepeatWeeks"
                                            ng-model="$parent.modalRepeatWeeks"
                                            id="inputRepeatWeeks"
@@ -196,7 +212,7 @@
                                         id="inputCohort"
                                         ng-disabled="event.id"
                                         ng-options="cohort.name for cohort in cohortsAdvanced"
-                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputCohort.$valid}"
+                                        ng-class="{'is-invalid': !modalForm.modalSubForm.inputCohort.$valid}"
                                         name="inputCohort"
                                         ng-model="$parent.modalSelectedCohort"
                                         ng-change="changedCohort()"
@@ -209,7 +225,7 @@
                                         id="inputManiple"
                                         ng-disabled="event.id"
                                         ng-options="maniple.name for maniple in modalSelectedCohort.maniples"
-                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputManiple.$valid}"
+                                        ng-class="{'is-invalid': !modalForm.modalSubForm.inputManiple.$valid}"
                                         name="inputManiple"
                                         ng-Model="$parent.modalSelectedManiple"
                                         ng-change="changedManiple()"
@@ -222,7 +238,7 @@
                                         id="inputCentury"
                                         ng-disabled="event.id"
                                         ng-options="century.name for century in modalSelectedManiple.centuries"
-                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputCentury.$valid}"
+                                        ng-class="{'is-invalid': !modalForm.modalSubForm.inputCentury.$valid}"
                                         name="inputCentury"
                                         ng-Model="$parent.modalSelectedCentury"
                                         ng-change="updateVacantRooms()"
@@ -237,7 +253,7 @@
                                         id="inputSeminarGroup"
                                         ng-disabled="event.id"
                                         ng-options="seminarGroup.name for seminarGroup in seminarGroups()"
-                                        ng-class="{ 'is-invalid': !modalForm.modalSubForm.inputSeminarGroup.$valid}"
+                                        ng-class="{'is-invalid': !modalForm.modalSubForm.inputSeminarGroup.$valid}"
                                         name="inputSeminarGroup"
                                         ng-model="$parent.modalSelectedSeminarGroup"
                                         ng-change="updateVacantRooms()"
@@ -274,12 +290,14 @@
                                 ng-show="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-trash"></i></span>Löschen
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-disabled="modalForm.$invalid"
+                        <button type="button" class="btn btn-labeled btn-success"
+                                ng-disabled="modalForm.$invalid ||(modalStartTime > modalEndTime)"
                                 ng-click="updateEvent(getModalEvent())"
                                 ng-show="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
-                        <button type="button" class="btn btn-labeled btn-success" ng-disabled="modalForm.$invalid"
+                        <button type="button" class="btn btn-labeled btn-success"
+                                ng-disabled="modalForm.$invalid ||(modalStartTime > modalEndTime)"
                                 ng-click="createEvent(getModalEvent(), modalRepeatWeeks)"
                                 ng-hide="event.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
