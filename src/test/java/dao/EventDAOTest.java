@@ -19,8 +19,8 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class for EventDAO class.

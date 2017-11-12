@@ -2,8 +2,8 @@ package controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.nordakademie.iaa.Application;
 import de.nordakademie.iaa.controller.VacantRoomController;
+import de.nordakademie.iaa.conversion.ConversionConfig;
 import de.nordakademie.iaa.model.Century;
 import de.nordakademie.iaa.model.Event;
 import de.nordakademie.iaa.model.Group;
@@ -89,7 +89,7 @@ public class VacantRoomControllerTest {
         when(eventService.findEventsByTime(date, startTime, endTime)).thenReturn(Arrays.asList(event1, event2));
         when(groupService.loadGroup(groupId)).thenReturn(group);
         MvcResult mvcResult = mockMvc.perform(get("/vacantRooms?date=" + date.toString() + "&startTime=" +
-                startTime.format(Application.TIME_FORMATTER) + "&endTime=" + endTime.format(Application.TIME_FORMATTER) +
+                startTime.format(ConversionConfig.TIME_FORMATTER) + "&endTime=" + endTime.format(ConversionConfig.TIME_FORMATTER) +
                 "&groupId=" + groupId))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -110,7 +110,7 @@ public class VacantRoomControllerTest {
         when(groupService.loadGroup(groupId)).thenReturn(group);
         when(eventService.loadEvent(eventId)).thenReturn(event1);
         MvcResult mvcResult = mockMvc.perform(get("/vacantRooms?date=" + date.toString() + "&startTime=" +
-                startTime.format(Application.TIME_FORMATTER) + "&endTime=" + endTime.format(Application.TIME_FORMATTER) +
+                startTime.format(ConversionConfig.TIME_FORMATTER) + "&endTime=" + endTime.format(ConversionConfig.TIME_FORMATTER) +
                 "&groupId=" + groupId + "&eventId=" + eventId))
                 .andExpect(status().isOk())
                 .andReturn();
