@@ -1,5 +1,16 @@
+# Port for the webservice to operate on
 server:
     port: 49999
+
+# BasicAuth configuration
+security:
+  basic:
+    authorize-mode: authenticated
+    realm: NAK Stundenplan Manager
+  user:
+    name: NAK
+    password: TIMETABLE
+
 
 spring:
   # H2 console configuration

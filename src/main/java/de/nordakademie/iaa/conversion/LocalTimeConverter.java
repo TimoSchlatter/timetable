@@ -1,4 +1,4 @@
-package de.nordakademie.iaa.util;
+package de.nordakademie.iaa.conversion;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

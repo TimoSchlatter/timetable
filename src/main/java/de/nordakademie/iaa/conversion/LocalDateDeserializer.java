@@ -1,4 +1,4 @@
-package de.nordakademie.iaa.util;
+package de.nordakademie.iaa.conversion;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static de.nordakademie.iaa.Application.DATE_FORMATTER;
+import static de.nordakademie.iaa.conversion.ConversionConfig.DATE_FORMATTER;
 
 /**
  * Utility class for deserializing {@code java.time.LocalDate}.

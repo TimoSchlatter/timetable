@@ -1,4 +1,4 @@
-package de.nordakademie.iaa.util;
+package de.nordakademie.iaa.data;
 
 import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.*;

@@ -1,6 +1,6 @@
 package de.nordakademie.iaa.controller;
 
-import de.nordakademie.iaa.util.DataGenerator;
+import de.nordakademie.iaa.data.DataGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

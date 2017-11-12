@@ -1,4 +1,4 @@
-package de.nordakademie.iaa.util;
+package de.nordakademie.iaa.conversion;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 import java.time.LocalTime;
 
-import static de.nordakademie.iaa.Application.TIME_FORMATTER;
+import static de.nordakademie.iaa.conversion.ConversionConfig.TIME_FORMATTER;
 
 /**
  * Utility class for serializing {@code java.time.LocalTime}.
