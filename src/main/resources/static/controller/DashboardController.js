@@ -36,6 +36,8 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     $scope.selectableEntities = ['Alle', 'Dozent', 'Raum', 'Kohorte', 'Manipel', 'Zenturie', 'Seminargruppe'];
     $scope.selectedEntity = $scope.selectableEntities[0];
 
+    var lastSelectedEntity;
+    var lastFunctionEventsByEntity;
 
     $scope.$watch('cohorts()', function () {
         buildCohortsAdvanced($scope.cohorts());
@@ -80,10 +82,14 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     $scope.updateAllEvents = function () {
         if ($scope.selectedEntity === $scope.selectableEntities[0]) {
             convertEventsToCalender($scope.events());
+        } else {
+            $scope.convertEventsByEntityToCalender(lastSelectedEntity, lastFunctionEventsByEntity);
         }
     };
 
     $scope.convertEventsByEntityToCalender = function (entity, functionEventsByEntity) {
+        lastSelectedEntity = entity;
+        lastFunctionEventsByEntity = functionEventsByEntity;
         if (entity) {
             functionEventsByEntity(entity, function (data) {
                 convertEventsToCalender(data);
