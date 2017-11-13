@@ -141,7 +141,7 @@
                             <div class="input-group">
                                 <input type="number"
                                        class="form-control"
-                                       ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
+                                       ng-class="{ 'is-invalid': !modal.changeOverTime.$valid||(room.roomType==='COMPUTERROOM'&&room.minChangeoverTime<15)}"
                                        name="changeOverTime"
                                        ng-model="room.minChangeoverTime"
                                        id="inputChangeOverTime"
@@ -159,11 +159,13 @@
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
                         <button type="button" class="btn btn-labeled btn-success" ng-click="updateRoom(room)"
-                                ng-disabled="modal.$invalid" ng-show="room.id" data-dismiss="modal">
+                                ng-disabled="modal.$invalid||(room.roomType==='COMPUTERROOM'&&room.minChangeoverTime<15)"
+                                ng-show="room.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
                         <button type="button" class="btn btn-labeled btn-success" ng-click="createRoom(room)"
-                                ng-disabled="modal.$invalid" ng-hide="room.id" data-dismiss="modal">
+                                ng-disabled="modal.$invalid||(room.roomType==='COMPUTERROOM'&&room.minChangeoverTime<15)"
+                                ng-hide="room.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
                     </div>
