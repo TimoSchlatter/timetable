@@ -11,13 +11,6 @@ import de.nordakademie.iaa.model.Room;
 public class RoomTooSmallForGroupException extends Exception {
 
     /**
-     * Default constructor.
-     */
-    public RoomTooSmallForGroupException() {
-        super();
-    }
-
-    /**
      * Constructor for providing extra information in the message.
      *
      * @param room  the room which is too small for the group.

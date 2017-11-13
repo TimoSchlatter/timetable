@@ -8,13 +8,6 @@ package de.nordakademie.iaa.service.exception;
 public class NotEnoughChangeoverTimeProvidedException extends Exception {
 
     /**
-     * Default constructor.
-     */
-    public NotEnoughChangeoverTimeProvidedException() {
-        super();
-    }
-
-    /**
      * Constructor for providing extra information in the message.
      * @param objectWithoutEnoughChangeoverTime the object whose minChangeoverTime was not enough.
      * @param needed the minimum required changeover time for the entity.

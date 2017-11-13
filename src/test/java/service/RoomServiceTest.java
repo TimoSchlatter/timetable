@@ -4,6 +4,7 @@ import de.nordakademie.iaa.dao.RoomDAO;
 import de.nordakademie.iaa.model.Room;
 import de.nordakademie.iaa.model.RoomType;
 import de.nordakademie.iaa.service.RoomService;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.RoomServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -38,12 +39,19 @@ public class RoomServiceTest {
     private final String building = "A";
     private final String number = "123";
     private final RoomType roomType = RoomType.LECTUREROOM;
-    private final Room room = new Room(20, building, 30, number, roomType);
+    private final Room room = new Room(14, building, 30, number, roomType);
 
     @Test
-    public void testSaveRoom() {
+    public void testSaveRoom() throws NotEnoughChangeoverTimeProvidedException {
         roomService.saveRoom(room);
         verify(roomDAO, times(1)).save(room);
+    }
+
+    @Test(expected = NotEnoughChangeoverTimeProvidedException.class)
+    public void testSaveComputerroomWithoutEnoughChangeoverTime() throws NotEnoughChangeoverTimeProvidedException {
+        Room computerRoom = new Room(14, building, 30, number, RoomType.COMPUTERROOM);
+        roomService.saveRoom(computerRoom);
+        verify(roomDAO, times(0)).save(room);
     }
 
     @Test

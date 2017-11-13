@@ -3,6 +3,7 @@ package de.nordakademie.iaa.service;
 import de.nordakademie.iaa.model.Module;
 import de.nordakademie.iaa.model.Subject;
 import de.nordakademie.iaa.model.SubjectType;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface SubjectService {
      *
      * @param subject the subject to be saved.
      */
-    void saveSubject(Subject subject);
+    void saveSubject(Subject subject) throws NotEnoughChangeoverTimeProvidedException;
 
     /**
      * Lists all subjects currently stored in the database.

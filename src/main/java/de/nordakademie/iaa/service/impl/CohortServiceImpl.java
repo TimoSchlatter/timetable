@@ -19,6 +19,7 @@ import java.util.List;
 @Transactional
 public class CohortServiceImpl implements CohortService {
 
+    private static final int MIN_CHANGEOVER_TIME = 15;
     private final CohortDAO cohortDAO;
 
     @Autowired
@@ -28,8 +29,9 @@ public class CohortServiceImpl implements CohortService {
 
     @Override
     public void saveCohort(Cohort cohort) throws NotEnoughChangeoverTimeProvidedException {
-        if (cohort.getMinChangeoverTime() < 15) {
-            throw new NotEnoughChangeoverTimeProvidedException();
+        final int actualMinChangeoverTime = cohort.getMinChangeoverTime();
+        if (actualMinChangeoverTime < MIN_CHANGEOVER_TIME) {
+            throw new NotEnoughChangeoverTimeProvidedException(cohort, MIN_CHANGEOVER_TIME, actualMinChangeoverTime);
         }
         cohortDAO.save(cohort);
     }

@@ -1,6 +1,7 @@
 package de.nordakademie.iaa.service;
 
 import de.nordakademie.iaa.model.Room;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface RoomService {
      *
      * @param room the room to be saved.
      */
-    void saveRoom(Room room);
+    void saveRoom(Room room) throws NotEnoughChangeoverTimeProvidedException;
 
     /**
      * Lists all rooms currently stored in the database.

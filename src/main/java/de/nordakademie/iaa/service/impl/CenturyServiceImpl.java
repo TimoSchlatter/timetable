@@ -19,6 +19,7 @@ import java.util.List;
 @Transactional
 public class CenturyServiceImpl implements CenturyService {
 
+    private static final int MIN_CHANGEOVER_TIME = 15;
     private final CenturyDAO centuryDAO;
 
     @Autowired
@@ -28,8 +29,9 @@ public class CenturyServiceImpl implements CenturyService {
 
     @Override
     public void saveCentury(Century century) throws NotEnoughChangeoverTimeProvidedException {
-        if (century.getMinChangeoverTime() < 15) {
-            throw new NotEnoughChangeoverTimeProvidedException();
+        final int actualMinChangeoverTime = century.getMinChangeoverTime();
+        if (actualMinChangeoverTime < MIN_CHANGEOVER_TIME) {
+            throw new NotEnoughChangeoverTimeProvidedException(century, MIN_CHANGEOVER_TIME, actualMinChangeoverTime);
         }
         centuryDAO.save(century);
     }

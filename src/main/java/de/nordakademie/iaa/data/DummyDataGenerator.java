@@ -76,7 +76,7 @@ public class DummyDataGenerator {
         seminarGroupService.saveSeminarGroup(new SeminarGroup("Max. 30 Studenten", 30, 30));
     }
 
-    private void createRooms() {
+    private void createRooms() throws NotEnoughChangeoverTimeProvidedException {
         roomService.saveRoom(new Room(20, "A", 40, "001", RoomType.COMPUTERROOM));
         roomService.saveRoom(new Room(15, "A", 40, "002", RoomType.LECTUREROOM));
         roomService.saveRoom(new Room(15, "A", 40, "003", RoomType.LECTUREROOM));
@@ -167,10 +167,14 @@ public class DummyDataGenerator {
         seminarService.saveSeminar(new Seminar("Zeit- und Selbstmanagement", OTHER));
     }
 
-    private void createSubjects() {
-        courseService.listCourses().forEach(course -> subjectService.saveSubject(new Subject(15, SubjectType.LECTURE, course)));
-        courseService.listCourses().forEach(course -> subjectService.saveSubject(new Subject(30, SubjectType.EXAM, course)));
-        seminarService.listSeminars().forEach(seminar -> subjectService.saveSubject(new Subject(20, SubjectType.SEMINAR, seminar)));
+    private void createSubjects() throws NotEnoughChangeoverTimeProvidedException {
+        for (Course course : courseService.listCourses()) {
+            subjectService.saveSubject(new Subject(15, SubjectType.LECTURE, course));
+            subjectService.saveSubject(new Subject(30, SubjectType.EXAM, course));
+        }
+        for (Seminar seminar : seminarService.listSeminars()) {
+            subjectService.saveSubject(new Subject(20, SubjectType.SEMINAR, seminar));
+        }
     }
 
     private void createGroups() throws NotEnoughChangeoverTimeProvidedException {

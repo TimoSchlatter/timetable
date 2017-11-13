@@ -19,6 +19,7 @@ import java.util.List;
 @Transactional
 public class DocentServiceImpl implements DocentService {
 
+    private static final int MIN_CHANGEOVER_TIME = 15;
     private final DocentDAO docentDAO;
 
     @Autowired
@@ -28,8 +29,9 @@ public class DocentServiceImpl implements DocentService {
 
     @Override
     public void saveDocent(Docent docent) throws NotEnoughChangeoverTimeProvidedException {
-        if (docent.getMinChangeoverTime() < 15) {
-            throw new NotEnoughChangeoverTimeProvidedException();
+        final int actualMinChangeoverTime = docent.getMinChangeoverTime();
+        if (actualMinChangeoverTime < MIN_CHANGEOVER_TIME) {
+            throw new NotEnoughChangeoverTimeProvidedException(docent, MIN_CHANGEOVER_TIME, actualMinChangeoverTime);
         }
         docentDAO.save(docent);
     }

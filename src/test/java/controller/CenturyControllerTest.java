@@ -93,7 +93,7 @@ public class CenturyControllerTest {
                 .andExpect(status().isNoContent());
         verify(centuryService, times(1)).saveCentury(century);
         // Century existing & updating failed
-        doThrow(new NotEnoughChangeoverTimeProvidedException()).when(centuryService).saveCentury(any());
+        doThrow(new NotEnoughChangeoverTimeProvidedException(century, 15, 14)).when(centuryService).saveCentury(any());
         mockMvc.perform(put(url).content(jacksonTester.write(century).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

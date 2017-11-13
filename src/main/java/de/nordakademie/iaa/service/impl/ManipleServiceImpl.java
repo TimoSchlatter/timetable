@@ -19,6 +19,7 @@ import java.util.List;
 @Transactional
 public class ManipleServiceImpl implements ManipleService {
 
+    private static final int MIN_CHANGEOVER_TIME = 15;
     private final ManipleDAO manipleDAO;
 
     @Autowired
@@ -28,8 +29,9 @@ public class ManipleServiceImpl implements ManipleService {
 
     @Override
     public void saveManiple(Maniple maniple) throws NotEnoughChangeoverTimeProvidedException {
-        if (maniple.getMinChangeoverTime() < 15) {
-            throw new NotEnoughChangeoverTimeProvidedException();
+        final int actualMinChangeoverTime = maniple.getMinChangeoverTime();
+        if (actualMinChangeoverTime < MIN_CHANGEOVER_TIME) {
+            throw new NotEnoughChangeoverTimeProvidedException(maniple, MIN_CHANGEOVER_TIME, actualMinChangeoverTime);
         }
         manipleDAO.save(maniple);
     }

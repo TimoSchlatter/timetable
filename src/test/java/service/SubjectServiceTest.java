@@ -1,11 +1,9 @@
 package service;
 
 import de.nordakademie.iaa.dao.SubjectDAO;
-import de.nordakademie.iaa.model.Course;
-import de.nordakademie.iaa.model.Module;
-import de.nordakademie.iaa.model.Subject;
-import de.nordakademie.iaa.model.SubjectType;
+import de.nordakademie.iaa.model.*;
 import de.nordakademie.iaa.service.SubjectService;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import de.nordakademie.iaa.service.impl.SubjectServiceImpl;
 import org.junit.After;
 import org.junit.Test;
@@ -43,9 +41,16 @@ public class SubjectServiceTest {
     private final Subject subject = new Subject(20, subjectType, module);
 
     @Test
-    public void testSaveSubject() {
+    public void testSaveSubject() throws NotEnoughChangeoverTimeProvidedException {
         subjectService.saveSubject(subject);
         Mockito.verify(subjectDAO, times(1)).save(subject);
+    }
+
+    @Test(expected = NotEnoughChangeoverTimeProvidedException.class)
+    public void testSaveExamWithoutEnoughChangeoverTime() throws NotEnoughChangeoverTimeProvidedException {
+       Subject exam = new Subject(29, SubjectType.EXAM, module);
+        subjectService.saveSubject(exam);
+        verify(subjectDAO, times(0)).save(exam);
     }
 
     @Test

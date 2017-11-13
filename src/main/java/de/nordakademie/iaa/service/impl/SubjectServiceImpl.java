@@ -5,6 +5,7 @@ import de.nordakademie.iaa.model.Module;
 import de.nordakademie.iaa.model.Subject;
 import de.nordakademie.iaa.model.SubjectType;
 import de.nordakademie.iaa.service.SubjectService;
+import de.nordakademie.iaa.service.exception.NotEnoughChangeoverTimeProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.List;
 @Transactional
 public class SubjectServiceImpl implements SubjectService {
 
+    private static final int EXAM_MIN_CHANGEOVER_TIME = 30;
     private final SubjectDAO subjectDAO;
 
     @Autowired
@@ -28,7 +30,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public void saveSubject(Subject subject) {
+    public void saveSubject(Subject subject) throws NotEnoughChangeoverTimeProvidedException {
+        int actualMinChangeoverTime = subject.getMinChangeoverTime();
+        if (subject.getSubjectType().equals(SubjectType.EXAM) &&
+                actualMinChangeoverTime < EXAM_MIN_CHANGEOVER_TIME) {
+            throw new NotEnoughChangeoverTimeProvidedException(subject, EXAM_MIN_CHANGEOVER_TIME,
+                    actualMinChangeoverTime);
+        }
         subjectDAO.save(subject);
     }
 

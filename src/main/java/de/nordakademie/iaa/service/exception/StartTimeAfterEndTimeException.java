@@ -10,13 +10,6 @@ import java.time.LocalTime;
 public class StartTimeAfterEndTimeException extends Exception {
 
     /**
-     * Default constructor.
-     */
-    public StartTimeAfterEndTimeException() {
-        super();
-    }
-
-    /**
      * Constructor for providing extra information in the message.
      *
      * @param startTime the provided faulty startTime.

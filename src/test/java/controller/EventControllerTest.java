@@ -167,7 +167,7 @@ public class EventControllerTest {
         inOrder.verify(eventService, times(1)).saveEvent(event);
 
         // Event not yet existing & no collisions & saving failed
-        doThrow(new RoomTooSmallForGroupException()).when(eventService).saveEvent(any());
+        doThrow(new RoomTooSmallForGroupException(room, group)).when(eventService).saveEvent(any());
         when(eventService.findCollisions(event)).thenReturn(new ArrayList<>());
         mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -257,7 +257,7 @@ public class EventControllerTest {
         String url = "/events?repeatWeeks=" + repeatWeeks;
         when(eventService.findEventByDateAndStartTimeAndEndTimeAndGroup(any(), any(), any(), any())).thenReturn(null);
         when(eventService.findCollisions(any())).thenReturn(new ArrayList<>());
-        doThrow(new RoomTooSmallForGroupException()).when(eventService).saveEvent(any());
+        doThrow(new RoomTooSmallForGroupException(room, group)).when(eventService).saveEvent(any());
         mockMvc.perform(post(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -317,7 +317,7 @@ public class EventControllerTest {
 
         // Event existing & no collisions & updating failed
         when(eventService.loadEvent(eventId)).thenReturn(event);
-        doThrow(new RoomTooSmallForGroupException()).when(eventService).saveEvent(any());
+        doThrow(new RoomTooSmallForGroupException(room, group)).when(eventService).saveEvent(any());
         when(eventService.findCollisions(event, event)).thenReturn(new ArrayList<>());
         mockMvc.perform(put(url).content(jacksonTester.write(event).getJson())
                 .contentType(MediaType.APPLICATION_JSON)
