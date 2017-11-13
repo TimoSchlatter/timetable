@@ -222,7 +222,7 @@ public class DummyDataGenerator {
                 courseService.findCourseByTitle("Allgemeine Volkswirtschaftslehre"));
         saveEvent(date, startTime, endTime, rooms, docents, group, subject, 10);
 
-        date = LocalDate.of(2017, Month.OCTOBER, 29);
+        date = LocalDate.of(2017, Month.NOVEMBER, 3);
         startTime = LocalTime.of(9, 15);
         endTime = LocalTime.of(11, 30);
         docents = new HashSet<>(Arrays.asList(docentService.findDocentByForenameAndSurname("Soenke", "Stange")));
