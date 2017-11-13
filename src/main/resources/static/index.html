@@ -161,7 +161,11 @@
                 <div class="card-header">Achtung</div>
                 <div class="card-body">
                     <form name="modal">
-                        <div class="form-group" ng-repeat="alert in alertEvents">{{alert.type}}: {{alert.msg}}</div>
+                        <div class="form-group" ng-repeat="alert in alertEvents">{{alert.type}}:
+                            <ul class="form-group" ng-repeat="msg in alert.msg">
+                                <li>{{msg}}</li>
+                            </ul>
+                        </div>
                         <div class="pull-right">
                             <button type="button" class="btn btn-labeled btn-secondary" data-dismiss="modal"
                                     ng-click="setIgnore()">
