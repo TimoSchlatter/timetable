@@ -121,7 +121,7 @@
                             <div class="input-group">
                                 <input type="number"
                                        class="form-control"
-                                       ng-class="{ 'is-invalid': !modal.changeOverTime.$valid}"
+                                       ng-class="{ 'is-invalid': !modal.changeOverTime.$valid||(subject.subjectType==='EXAM'&&subject.minChangeoverTime<30)}"
                                        name="changeOverTime"
                                        ng-model="subject.minChangeoverTime"
                                        id="inputChangeOverTime"
@@ -139,11 +139,13 @@
                             <span class="btn-label"><i class="fa fa-times"></i></span>Abbrechen
                         </button>
                         <button type="button" class="btn btn-labeled btn-success" ng-click="updateSubject(subject)"
-                                ng-disabled="modal.$invalid" ng-show="subject.id" data-dismiss="modal">
+                                ng-disabled="modal.$invalid||(subject.subjectType==='EXAM'&&subject.minChangeoverTime<30)"
+                                ng-show="subject.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-refresh"></i></span>Aktualisieren
                         </button>
                         <button type="button" class="btn btn-labeled btn-success" ng-click="createSubject(subject)"
-                                ng-disabled="modal.$invalid" ng-hide="subject.id" data-dismiss="modal">
+                                ng-disabled="modal.$invalid||(subject.subjectType==='EXAM'&&subject.minChangeoverTime<30)"
+                                ng-hide="subject.id" data-dismiss="modal">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Hinzufügen
                         </button>
                     </div>
