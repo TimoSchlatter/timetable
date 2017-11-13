@@ -9,6 +9,7 @@
 
 app.controller('DashboardController', function($scope , $http, AlertService, ConnectionService, $filter) {
 
+    // CRUD function calls for dashboard via ConnectionService
     $scope.generateData = ConnectionService.generateData;
     $scope.dataGenerated = ConnectionService.dataGenerated;
     $scope.events = ConnectionService.getEvents;
@@ -216,6 +217,7 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         $scope.updateVacantRooms();
     };
 
+    // convert date and times for ui calendar
     var convertEventsToCalender = function (events) {
         $scope.calenderEvents[0] = [];
         angular.forEach(events, function (event) {
@@ -243,12 +245,14 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
         }
     };
 
+    // open modal on click at calendar item
     $scope.alertEventOnClick = function (event) {
         var selectedEvent = $filter('filter')($scope.events(), {id: event.id});
         $scope.setSelectedEvent(selectedEvent[0]);
         $('#addEditModal').modal('show');
     };
 
+    // configuration of the ui-calender
     $scope.uiConfig = {
         calendar:{
             monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],

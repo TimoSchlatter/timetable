@@ -9,6 +9,7 @@
 
 app.controller('SeminarController', function ($scope, ConnectionService) {
 
+    //CRUD function calls for seminars via ConnectionService
     $scope.seminars = ConnectionService.getSeminars;
     $scope.createSeminar = ConnectionService.createSeminar;
     $scope.updateSeminar = ConnectionService.updateSeminar;

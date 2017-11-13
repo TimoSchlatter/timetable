@@ -9,6 +9,7 @@
 
 app.controller('SubjectController', function ($scope, $http, ConnectionService) {
 
+    // CRUD function calls for subjects via ConnectionService
     $scope.subjects = ConnectionService.getSubjects;
     $scope.createSubject = ConnectionService.createSubject;
     $scope.updateSubject = ConnectionService.updateSubject;
@@ -29,6 +30,7 @@ app.controller('SubjectController', function ($scope, $http, ConnectionService) 
         $scope.subjectTypesAdvanced.unshift({key: '', name: "Alle"});
     };
 
+    // set active selected subject
     $scope.setSelectedSubject = function (subject) {
         $scope.subject = angular.copy(subject);
         if ($scope.subject.id) {

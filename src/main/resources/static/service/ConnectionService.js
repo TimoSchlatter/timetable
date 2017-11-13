@@ -24,7 +24,7 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             .then(function successCallback(data) {
                 console.log(data);
                 if(data.status == 200) {
-                    AlertService.addEventAlert('Kollisionen', data.data.toString());
+                    AlertService.addEventAlert('Kollisionen', data.data);
                     $rootScope.collisionEvent = angular.copy(objectToCreateData);
                 }
                 functionToUpdateModel();
@@ -39,7 +39,7 @@ app.factory('ConnectionService', function ($http, AlertService, $rootScope) {
             .then(function successCallback(data) {
                 console.log(data);
                 if(data.status == 200) {
-                    AlertService.addEventAlert('Kollisionen', data.data.toString());
+                    AlertService.addEventAlert('Kollisionen', data.data);
                     $rootScope.collisionEvent = angular.copy(objectToUpdateData);
                     $rootScope.putEventUrl = angular.copy(urlToUpdateData);
                     callPut = true;

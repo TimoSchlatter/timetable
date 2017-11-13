@@ -1,19 +1,24 @@
+/*
+ AngularJS Service
+ It is used to organize the alerts across the web application.
+ @author Jonas Gehrke
+ */
 
     app.factory('AlertService', ['$rootScope', '$timeout', function ($rootScope) {
 
         var alertService = {};
 
-        // Globale Variable zur Bereinigung von Hinweismeldungen
+        // global variable for clearing alerts
         $rootScope.$on('$stateChangeSuccess', function () {
             alertService.clear();
         });
 
-        // Hier werden alle Hinweismeldungen zwischengespeichert
+
         $rootScope.alerts = [];
         $rootScope.alertEvents = [];
         return {
 
-            //Hinzufügen eines Alerts
+            // add an alert to rootScope element
             add: function (type, msg) {
                 $rootScope.alerts.push({
                     'type': type, 'msg': msg, close: function () {
@@ -23,11 +28,16 @@
                 $('#modalAlert').modal('show');
             },
 
-            //Hinzufügen eines Kollisionsalerts
-            addEventAlert: function (type, msg) {
+            // add collison alert to rootScope element
+            addEventAlert: function (type, data) {
+                var advancedData = '';
+                angular.forEach(data,function (value) {
+                    advancedData = advancedData + value.toString() + "--------------------------------------------";
+
+                })
 
                 $rootScope.alertEvents.push({
-                    'type': type, 'msg': msg, close: function () {
+                    'type': type, 'msg':advancedData , close: function () {
                         return alertService.closeAlert(this);
                     }
                 });
@@ -40,7 +50,7 @@
                 return $rootScope.alerts.splice(index, 1);
             },
 
-            //Bereinigen der Alert-Arrays
+            // clear alert arrays
             clear: function () {
                 $rootScope.alerts = [];
                 $rootScope.alertEvents = [];

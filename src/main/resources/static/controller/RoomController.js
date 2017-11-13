@@ -9,6 +9,7 @@
 
 app.controller('RoomController', function ($scope, ConnectionService) {
 
+    //CRUD function calls for rooms via ConnectionService
     $scope.rooms = ConnectionService.getRooms;
     $scope.createRoom = ConnectionService.createRoom;
     $scope.updateRoom = ConnectionService.updateRoom;
