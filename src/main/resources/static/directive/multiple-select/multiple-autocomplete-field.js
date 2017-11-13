@@ -1,3 +1,9 @@
+/*
+ External Directive
+ MIT License (MIT)
+ https://github.com/jagdeep-singh/angularMultipleSelect
+ */
+
 (function () {
 
     app.directive('multipleAutocomplete', [
