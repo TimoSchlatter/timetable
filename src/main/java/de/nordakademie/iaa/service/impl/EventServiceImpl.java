@@ -125,11 +125,13 @@ public class EventServiceImpl implements EventService {
                     .filter(room -> concurrentEvent.getRooms().contains(room))
                     .forEach(room -> collisions.add(createCollisionString(newEvent, room, concurrentEvent)));
             // group
-            Group newGroup = newEvent.getGroup();
-            Group concurrentGroup = concurrentEvent.getGroup();
-            if (newGroup.equals(concurrentGroup) || concurrentGroup.hasSubGroup(newGroup) ||
-                    newGroup.hasSubGroup(concurrentGroup)) {
-                collisions.add(createCollisionString(newEvent, newGroup, concurrentEvent));
+            if (!newEvent.getSubject().getSubjectType().equals(SubjectType.SEMINAR)) {
+                Group newGroup = newEvent.getGroup();
+                Group concurrentGroup = concurrentEvent.getGroup();
+                if (newGroup.equals(concurrentGroup) || concurrentGroup.hasSubGroup(newGroup) ||
+                        newGroup.hasSubGroup(concurrentGroup)) {
+                    collisions.add(createCollisionString(newEvent, newGroup, concurrentEvent));
+                }
             }
         }
         return collisions;
