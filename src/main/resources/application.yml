@@ -1,6 +1,6 @@
 # Port for the webservice to operate on
 server:
-    port: 49999
+    port: 80
 
 # BasicAuth configuration
 security:
