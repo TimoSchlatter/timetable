@@ -11,7 +11,8 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
 
     // CRUD function calls for dashboard via ConnectionService
     $scope.generateData = ConnectionService.generateData;
-    $scope.dataGenerated = ConnectionService.dataGenerated;
+    $scope.clearData = ConnectionService.clearData;
+    $scope.isDataEmpty = ConnectionService.isDataEmpty;
     $scope.events = ConnectionService.getEvents;
     $scope.eventsByGroup = ConnectionService.getEventsByGroup;
     $scope.eventsByRoom = ConnectionService.getEventsByRoom;
@@ -45,7 +46,8 @@ app.controller('DashboardController', function($scope , $http, AlertService, Con
     });
 
     var isSubFormValid = function () {
-        return $scope.modalSubForm.$valid && (($scope.modalSubjectType === 'SEMINAR') === isDefaultSelectedCohort());
+        return $scope.modalSubForm.$valid && (($scope.modalSubjectType === 'SEMINAR') === isDefaultSelectedCohort())
+            && ($scope.modalStartTime < $scope.modalEndTime);
     };
 
     var isDefaultSelectedCohort = function () {
