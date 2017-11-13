@@ -18,7 +18,7 @@
                         id="selectedCohort"
                         ng-options="cohort.name for cohort in cohortsAdvanced"
                         ng-model="selectedCohort"
-                        ng-change="setSelectedValues()">
+                        ng-change="selectedManiple = selectedCohort.maniples[0]">
                 </select>
             </div>
             <div class="form-group">

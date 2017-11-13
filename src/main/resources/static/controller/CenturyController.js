@@ -21,13 +21,16 @@ app.controller('CenturyController', function ($scope, ConnectionService) {
         ConnectionService.createCentury(this.modalSelectedManiple.id, this.century);
     };
 
-    //Watcher for cohort-array to build all centuries
+    // Watcher for cohort-array to build all centuries and set selectable dropdowns
     $scope.$watch('cohorts()', function () {
+        var lastSelectedCohort = ($scope.cohortsAdvanced ? $scope.cohortsAdvanced.indexOf($scope.selectedCohort) : 0);
+        var lastSelectedManiple = ($scope.cohortsAdvanced ? $scope.selectedCohort.maniples.indexOf($scope.selectedManiple) : 0);
         buildCohortsAdvanced($scope.cohorts());
-        $scope.setSelectedValues();
+        $scope.selectedCohort = $scope.cohortsAdvanced[lastSelectedCohort];
+        $scope.selectedManiple = $scope.selectedCohort.maniples[lastSelectedManiple];
     });
 
-    /* Sort centuries to get all by default selection */
+    // Sort centuries to get all by default selection
     var buildCohortsAdvanced = function () {
         $scope.cohortsAdvanced = angular.copy($scope.cohorts());
         var allCenturies = [];
@@ -56,13 +59,6 @@ app.controller('CenturyController', function ($scope, ConnectionService) {
                 });
             });
         });
-    };
-
-    $scope.setSelectedValues = function () {
-        if (!$scope.selectedCohort) {
-            $scope.selectedCohort = $scope.cohortsAdvanced[0];
-        }
-        $scope.selectedManiple = $scope.selectedCohort.maniples[0];
     };
 
     $scope.setSelectedCentury = function (century) {

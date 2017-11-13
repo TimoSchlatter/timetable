@@ -17,11 +17,12 @@ app.controller('ManipleController', function ($scope, ConnectionService) {
     $scope.maniplesLastUpdateTime = ConnectionService.getManiplesLastUpdateTime;
 
     $scope.$watch('cohorts()', function () {
+        var lastSelectedCohort = ($scope.cohortsAdvanced ? $scope.cohortsAdvanced.indexOf($scope.selectedCohort) : 0);
         buildCohortsAdvanced($scope.cohorts());
-        $scope.selectedCohort = $scope.cohortsAdvanced[0];
+        $scope.selectedCohort = $scope.cohortsAdvanced[lastSelectedCohort];
     });
 
-    /* Sort centuries to get all by default selection */
+    // Sort centuries to get all by default selection
     var buildCohortsAdvanced = function (cohorts) {
         $scope.cohortsAdvanced = angular.copy(cohorts);
         var allManiples = [];
