@@ -30,14 +30,8 @@
 
             // add collison alert to rootScope element
             addEventAlert: function (type, data) {
-                var advancedData = '';
-                angular.forEach(data,function (value) {
-                    advancedData = advancedData + value.toString() + "--------------------------------------------";
-
-                })
-
                 $rootScope.alertEvents.push({
-                    'type': type, 'msg':advancedData , close: function () {
+                    'type': type, 'msg': data , close: function () {
                         return alertService.closeAlert(this);
                     }
                 });
